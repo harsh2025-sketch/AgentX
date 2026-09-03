@@ -1,0 +1,115 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentx"
+description = "AgentX: a Windows-first, local-first Adaptive Personal Operating Intelligence research system."
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "AgentX Contributors" }]
+keywords = ["agent", "agentos", "windows", "local-first", "research"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+# The runtime package has zero third-party dependencies at this stage.
+# Do not add dependencies "for later"; each one must be justified by a task.
+dependencies = []
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5",
+    "mypy>=1.10",
+]
+
+[project.scripts]
+agentx = "agentx.__main__:main"
+
+[project.urls]
+Repository = "https://github.com/harsh2025-sketch/AgentX"
+
+# --------------------------------------------------------------------------
+# setuptools (src-layout)
+# --------------------------------------------------------------------------
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["agentx*"]
+
+[tool.setuptools.package-data]
+agentx = ["py.typed"]
+
+[tool.setuptools.dynamic]
+version = { attr = "agentx.__version__" }
+
+# --------------------------------------------------------------------------
+# pytest
+# --------------------------------------------------------------------------
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --strict-config"
+xfail_strict = true
+filterwarnings = ["error"]
+markers = [
+    "integration: tests that exercise the package as an installed artifact (subprocesses, CLI).",
+]
+
+# --------------------------------------------------------------------------
+# Ruff (linter + formatter)
+# --------------------------------------------------------------------------
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "N",   # pep8-naming
+    "SIM", # flake8-simplify
+    "RUF", # ruff-specific rules
+    "PTH", # flake8-use-pathlib (Windows-first: no hand-rolled path strings)
+    "T20", # flake8-print (no stray print(); the CLI writes to explicit streams)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["T20"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["agentx"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+# --------------------------------------------------------------------------
+# mypy
+# --------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unreachable = true
+show_error_codes = true
+pretty = true
+files = ["src/agentx", "tests"]
+mypy_path = ["src"]
