@@ -305,12 +305,14 @@ def test_wall_clock_accounting_is_explicit_elapsed_duration_without_sleep() -> N
 def test_external_cost_uses_exact_decimal_accounting() -> None:
     budget = ResourceBudget(_envelope(max_external_cost=Decimal("0.30")))
 
-    assert budget.check_and_consume(
-        _request(delta=_delta(external_cost=Decimal("0.10")))
-    ).decision is BudgetDecision.ALLOW
-    assert budget.check_and_consume(
-        _request(delta=_delta(external_cost=Decimal("0.20")))
-    ).decision is BudgetDecision.ALLOW
+    assert (
+        budget.check_and_consume(_request(delta=_delta(external_cost=Decimal("0.10")))).decision
+        is BudgetDecision.ALLOW
+    )
+    assert (
+        budget.check_and_consume(_request(delta=_delta(external_cost=Decimal("0.20")))).decision
+        is BudgetDecision.ALLOW
+    )
 
     at_limit = budget.snapshot()
     assert at_limit.external_cost == Decimal("0.30")
