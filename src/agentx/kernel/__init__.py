@@ -9,7 +9,7 @@ manifest allows ``agentx.capabilities`` and ``agentx.cognition`` to be clients
 of this package; it forbids ``agentx.learning`` and ``agentx.infrastructure``
 from importing it.
 
-Status: C1.07 adds explicit permission/authority contracts and the deterministic
-Action Gate. Risk classification remains separate descriptive input; gate
-evaluation itself never executes actions or approval flows.
+Status: C1.08 adds explicit resource envelopes, deterministic budget evaluation,
+and process-local atomic accounting. Resource allowance remains separate from
+permission/action authorization and never executes work.
 """
