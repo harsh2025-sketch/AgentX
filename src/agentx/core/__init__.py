@@ -16,6 +16,11 @@ Status:
       priority vocabulary, and deterministic serialization (A1.05). Data
       model only: the Task state machine is A1.06 and the Task Manager is
       owned by Day 2.
+    - ``task_state`` — canonical Task status transition contract (A1.06):
+      the explicit legal transition matrix, terminal-state semantics, and
+      pure/stateless helpers to ask, validate, and derive a transitioned
+      Task. Transitions only: no Task Manager, execution, scheduling,
+      cancellation, or persistence.
     - ``events`` — canonical immutable Event envelope, taxonomy, payloads,
       validation, and deterministic serialization (C1.02 / A1.02b).
 """
