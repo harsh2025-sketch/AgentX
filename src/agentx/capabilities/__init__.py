@@ -1,7 +1,8 @@
-"""Ownership boundary: Capability Fabric.
+"""Ownership boundary: ``agentx.capabilities``.
 
-Reserved for provider-neutral capability abstractions (Windows, browser,
-device) through which the system will act on the outside world.
+Canonical responsibility: governed machine/browser/device capability
+implementations and contracts. Capabilities are provider abstractions and they
+eventually execute only through governed runtime paths.
 
-Status: not implemented. This package intentionally contains no code yet.
+Status: not implemented. This package deliberately contains no code yet.
 """

@@ -1,7 +1,8 @@
-"""Ownership boundary: cognitive models.
+"""Ownership boundary: ``agentx.cognition``.
 
-Reserved for provider-neutral model integration. Models will never receive
-unrestricted machine access from this layer.
+Canonical responsibility: provider-neutral reasoning, planning, and model
+interfaces. Cognition produces proposals; it must not directly own machine
+execution.
 
-Status: not implemented. This package intentionally contains no code yet.
+Status: not implemented. This package deliberately contains no code yet.
 """

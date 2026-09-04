@@ -1,8 +1,13 @@
-"""Ownership boundary: Trusted Kernel.
+"""Ownership boundary: ``agentx.kernel``.
 
-Reserved for the trusted, non-adaptive layer that every action will
-eventually pass through: policy, authority boundaries, and verification of
-outcomes. Adaptive components must never own their own authority boundary.
+Canonical responsibility: trusted authority boundary. Permissions, risk,
+budgets, capability gating, and audit/security policy live here. The kernel is
+the only layer that may grant authority.
 
-Status: not implemented. This package intentionally contains no code yet.
+Adaptive components must never own their own authority boundary. The boundary
+manifest allows ``agentx.capabilities`` and ``agentx.cognition`` to be clients
+of this package; it forbids ``agentx.learning`` and ``agentx.infrastructure``
+from importing it.
+
+Status: not implemented. This package deliberately contains no code yet.
 """

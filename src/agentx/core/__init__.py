@@ -1,7 +1,11 @@
-"""Ownership boundary: agent runtime core.
+"""Ownership boundary: ``agentx.core``.
 
-Reserved for the agent runtime and the shared domain contracts that the other
-subsystems build on (task/lifecycle concepts, runtime orchestration).
+Canonical responsibility: shared domain contracts and Agent Runtime primitives
+that other subsystems build on.
 
-Status: not implemented. This package intentionally contains no code yet.
+This package is a low-level, non-authority foundation. It may hold contracts and
+runtime primitives; it does not implement the Trusted Kernel, capabilities,
+Hive storage, or any adaptive subsystem.
+
+Status: not implemented. This package deliberately contains no code yet.
 """

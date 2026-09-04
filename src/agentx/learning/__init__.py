@@ -1,7 +1,8 @@
-"""Ownership boundary: learning and repair systems.
+"""Ownership boundary: ``agentx.learning``.
 
-Reserved for adaptive components that improve or repair procedures over time,
-operating strictly within limits set by the Trusted Kernel.
+Canonical responsibility: research, skill compilation, reflection, repair, and
+adaptive mechanisms. Learning may improve procedures over time, but it must
+not grant permissions or modify its own authority boundary.
 
-Status: not implemented. This package intentionally contains no code yet.
+Status: not implemented. This package deliberately contains no code yet.
 """
