@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import FrozenInstanceError, MISSING, fields
+from dataclasses import MISSING, FrozenInstanceError, fields
 from datetime import timedelta
 from decimal import Decimal
 from threading import Barrier, Lock, Thread
@@ -157,11 +157,11 @@ def test_invalid_numeric_values_fail_validation() -> None:
 
 
 def test_no_implicit_unlimited_mode_from_none_or_missing_values() -> None:
-    with pytest.raises(TypeError, match="max_model_calls|model_calls"):
+    with pytest.raises(TypeError, match=r"max_model_calls|model_calls"):
         _envelope(max_model_calls=cast(int, None))
-    with pytest.raises(TypeError, match="max_wall_clock|wall_clock"):
+    with pytest.raises(TypeError, match=r"max_wall_clock|wall_clock"):
         _envelope(max_wall_clock=cast(timedelta, None))
-    with pytest.raises(TypeError, match="max_external_cost|external_cost"):
+    with pytest.raises(TypeError, match=r"max_external_cost|external_cost"):
         _envelope(max_external_cost=cast(Decimal, None))
 
 
@@ -377,7 +377,7 @@ def test_malformed_requests_and_inconsistent_usage_fail_closed() -> None:
             risk_level=cast(RiskLevel, "R0"),
         )
 
-    with pytest.raises(ValueError, match="usage.model_calls exceeds envelope"):
+    with pytest.raises(ValueError, match=r"usage\.model_calls exceeds envelope"):
         BudgetEvaluator().evaluate(
             _envelope(max_model_calls=0),
             ResourceUsage(
