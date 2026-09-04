@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import ast
 import importlib
 import re
+from pathlib import Path
 
 import pytest
 
@@ -14,7 +16,7 @@ import agentx
 _PEP440_PUBLIC = re.compile(r"^\d+(\.\d+)*((a|b|rc)\d+)?(\.post\d+)?(\.dev\d+)?$")
 
 # Every sub-package that establishes an ownership boundary. Keep in sync with
-# the module map in README.md.
+# the canonical architecture manifest.
 BOUNDARY_PACKAGES = (
     "agentx.core",
     "agentx.kernel",
@@ -67,13 +69,21 @@ def test_boundary_packages_import(name: str) -> None:
 
 
 @pytest.mark.parametrize("name", BOUNDARY_PACKAGES)
-def test_boundary_packages_are_empty(name: str) -> None:
-    """Bootstrap invariant: boundary packages carry a docstring and nothing else.
+def test_boundary_package_initializers_are_clean(name: str) -> None:
+    """Subsystem ``__init__.py`` files stay declarative and side-effect free.
 
-    This guards against speculative placeholder implementations creeping in
-    outside of a task that explicitly owns the subsystem.
+    A subsystem may gain explicitly owned implementation modules without turning
+    its package initializer into an implementation surface. This preserves the
+    bootstrap cleanliness invariant while allowing C1.02's event contract under
+    ``agentx.infrastructure.events``.
     """
     module = importlib.import_module(name)
-    assert module.__doc__ and "not implemented" in module.__doc__
-    public_names = [n for n in vars(module) if not n.startswith("__")]
-    assert public_names == [], f"{name} unexpectedly defines: {public_names}"
+    assert module.__file__ is not None
+    init_path = Path(module.__file__)
+    tree = ast.parse(init_path.read_text(encoding="utf-8"))
+
+    assert len(tree.body) == 1, f"{name} initializer must contain only its docstring"
+    statement = tree.body[0]
+    assert isinstance(statement, ast.Expr)
+    assert isinstance(statement.value, ast.Constant)
+    assert isinstance(statement.value.value, str)
