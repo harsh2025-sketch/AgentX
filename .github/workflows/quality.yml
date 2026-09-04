@@ -1,0 +1,53 @@
+name: C1.01 Quality Gate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate runtime-only installation
+        shell: pwsh
+        run: |
+          python -m venv .runtime-venv
+          $runtimePython = (Resolve-Path ".runtime-venv\Scripts\python.exe").Path
+          & $runtimePython -m pip install .
+          Push-Location $env:TEMP
+          try {
+            & $runtimePython -I -c "import agentx; from importlib.metadata import version; assert version('agentx') == agentx.__version__"
+            & $runtimePython -I -c "import importlib.util; assert all(importlib.util.find_spec(name) is None for name in ('pytest', 'ruff', 'mypy'))"
+            & $runtimePython -I -m agentx --version
+          }
+          finally {
+            Pop-Location
+          }
+
+      - name: Install development tools
+        run: python -m pip install ".[dev]"
+
+      - name: Run pytest
+        run: python -m pytest
+
+      - name: Run Ruff lint
+        run: python -m ruff check .
+
+      - name: Run Ruff format check
+        run: python -m ruff format --check .
+
+      - name: Run mypy
+        run: python -m mypy
