@@ -39,37 +39,40 @@ def test_create_fresh_database(tmp_path: Path) -> None:
 
 def test_migration_metadata_created(tmp_path: Path) -> None:
     with SQLiteDatabase(_database_path(tmp_path)).connection() as connection:
-        row = connection.execute(
+        rows = connection.execute(
             """
             SELECT version, name, applied_at_utc
             FROM agentx_schema_migrations
+            ORDER BY version
             """
-        ).fetchone()
+        ).fetchall()
 
-        assert row is not None
-        assert row["version"] == 1
-        assert row["name"] == "create_persistence_metadata"
-        assert isinstance(row["applied_at_utc"], str)
-        assert row["applied_at_utc"].endswith("Z")
+    assert [(row["version"], row["name"]) for row in rows] == [
+        (1, "create_persistence_metadata"),
+        (2, "create_event_journal"),
+    ]
+    assert all(isinstance(row["applied_at_utc"], str) for row in rows)
+    assert all(row["applied_at_utc"].endswith("Z") for row in rows)
 
 
 def test_migrations_apply_in_order(tmp_path: Path) -> None:
     path = _database_path(tmp_path)
     with SQLiteDatabase(path).connection() as connection:
+        first_version = len(_MIGRATIONS) + 1
         migrations = (
             *_MIGRATIONS,
             _Migration(
-                version=2,
+                version=first_version,
                 name="test_first",
                 statements=(
                     "CREATE TABLE test_order (position INTEGER NOT NULL)",
-                    "INSERT INTO test_order (position) VALUES (2)",
+                    f"INSERT INTO test_order (position) VALUES ({first_version})",
                 ),
             ),
             _Migration(
-                version=3,
+                version=first_version + 1,
                 name="test_second",
-                statements=("INSERT INTO test_order (position) VALUES (3)",),
+                statements=(f"INSERT INTO test_order (position) VALUES ({first_version + 1})",),
             ),
         )
 
@@ -80,8 +83,8 @@ def test_migrations_apply_in_order(tmp_path: Path) -> None:
         ).fetchall()
         positions = connection.execute("SELECT position FROM test_order ORDER BY rowid").fetchall()
 
-        assert [row["version"] for row in applied] == [1, 2, 3]
-        assert [row["position"] for row in positions] == [2, 3]
+    assert [row["version"] for row in applied] == list(range(1, first_version + 2))
+    assert [row["position"] for row in positions] == [first_version, first_version + 1]
 
 
 def test_reopening_current_database_is_idempotent(tmp_path: Path) -> None:
@@ -89,18 +92,16 @@ def test_reopening_current_database_is_idempotent(tmp_path: Path) -> None:
 
     with SQLiteDatabase(path).connection() as connection:
         first = connection.execute(
-            "SELECT version, name, applied_at_utc FROM agentx_schema_migrations"
-        ).fetchone()
-        assert first is not None
-        first_values = tuple(first)
+            "SELECT version, name, applied_at_utc FROM agentx_schema_migrations ORDER BY version"
+        ).fetchall()
+        first_values = [tuple(row) for row in first]
 
     with SQLiteDatabase(path).connection() as connection:
-        rows = connection.execute(
-            "SELECT version, name, applied_at_utc FROM agentx_schema_migrations"
+        second = connection.execute(
+            "SELECT version, name, applied_at_utc FROM agentx_schema_migrations ORDER BY version"
         ).fetchall()
 
-    assert len(rows) == 1
-    assert tuple(rows[0]) == first_values
+    assert [tuple(row) for row in second] == first_values
 
 
 def test_transaction_commit(tmp_path: Path) -> None:
@@ -173,13 +174,12 @@ def test_required_connection_settings_and_row_policy(tmp_path: Path) -> None:
 
 def test_newer_schema_is_rejected(tmp_path: Path) -> None:
     database = SQLiteDatabase(_database_path(tmp_path))
+    future_version = len(_MIGRATIONS) + 1
 
     with database.connection() as connection, transaction(connection):
         connection.execute(
-            """
-            INSERT INTO agentx_schema_migrations (version, name)
-            VALUES (2, 'future_schema')
-            """
+            "INSERT INTO agentx_schema_migrations (version, name) VALUES (?, ?)",
+            (future_version, "future_schema"),
         )
 
     with (
@@ -191,10 +191,11 @@ def test_newer_schema_is_rejected(tmp_path: Path) -> None:
 
 def test_failed_migration_rolls_back_atomically(tmp_path: Path) -> None:
     with SQLiteDatabase(_database_path(tmp_path)).connection() as connection:
+        failed_version = len(_MIGRATIONS) + 1
         migrations = (
             *_MIGRATIONS,
             _Migration(
-                version=2,
+                version=failed_version,
                 name="test_broken",
                 statements=(
                     "CREATE TABLE must_rollback (value INTEGER)",
@@ -213,8 +214,8 @@ def test_failed_migration_rolls_back_atomically(tmp_path: Path) -> None:
             "SELECT version FROM agentx_schema_migrations ORDER BY version"
         ).fetchall()
 
-        assert table is None
-        assert [row["version"] for row in versions] == [1]
+    assert table is None
+    assert [row["version"] for row in versions] == list(range(1, failed_version))
 
 
 def test_connection_is_closed_after_context_exit(tmp_path: Path) -> None:
@@ -283,7 +284,7 @@ def test_import_does_not_create_database_or_files(tmp_path: Path) -> None:
     assert list(working_directory.iterdir()) == []
 
 
-def test_fresh_schema_contains_only_persistence_metadata(tmp_path: Path) -> None:
+def test_fresh_schema_contains_registered_migration_tables(tmp_path: Path) -> None:
     with SQLiteDatabase(_database_path(tmp_path)).connection() as connection:
         rows = connection.execute(
             """
@@ -294,14 +295,21 @@ def test_fresh_schema_contains_only_persistence_metadata(tmp_path: Path) -> None
             """
         ).fetchall()
 
-    assert [row["name"] for row in rows] == ["agentx_schema_migrations"]
+    assert [row["name"] for row in rows] == [
+        "agentx_event_journal",
+        "agentx_schema_migrations",
+    ]
 
 
 def test_migration_plan_rejects_nonconsecutive_versions(tmp_path: Path) -> None:
     with SQLiteDatabase(_database_path(tmp_path)).connection() as connection:
         invalid = (
             *_MIGRATIONS,
-            _Migration(version=3, name="skipped_two", statements=("SELECT 1",)),
+            _Migration(
+                version=len(_MIGRATIONS) + 2,
+                name="skipped_next",
+                statements=("SELECT 1",),
+            ),
         )
 
         with pytest.raises(MigrationError, match="consecutive"):

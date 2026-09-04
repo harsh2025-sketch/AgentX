@@ -84,6 +84,21 @@ _MIGRATIONS: Final[tuple[_Migration, ...]] = (
             """,
         ),
     ),
+    _Migration(
+        version=2,
+        name="create_event_journal",
+        statements=(
+            """
+            CREATE TABLE agentx_event_journal (
+                sequence INTEGER PRIMARY KEY AUTOINCREMENT,
+                event_id TEXT NOT NULL UNIQUE CHECK (length(event_id) > 0),
+                event_json TEXT NOT NULL CHECK (length(event_json) > 0),
+                recorded_at_utc TEXT NOT NULL
+                    DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+            )
+            """,
+        ),
+    ),
 )
 
 
