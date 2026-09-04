@@ -9,5 +9,7 @@ manifest allows ``agentx.capabilities`` and ``agentx.cognition`` to be clients
 of this package; it forbids ``agentx.learning`` and ``agentx.infrastructure``
 from importing it.
 
-Status: not implemented. This package deliberately contains no code yet.
+Status: C1.06 implements the canonical risk classification contract in
+``agentx.kernel.risk``. This package initializer remains declarative and
+side-effect free; risk classification itself grants no authority.
 """
