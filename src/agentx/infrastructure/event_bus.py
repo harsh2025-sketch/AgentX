@@ -1,6 +1,6 @@
 """Synchronous in-process transport for canonical AgentX events.
 
-The EventBus transports immutable :class:`~agentx.infrastructure.events.Event`
+The EventBus transports immutable :class:`~agentx.core.events.Event`
 records only. Publishing an event does not grant permission, execute an action,
 or otherwise turn event data into authority.
 
@@ -30,7 +30,7 @@ from threading import Lock
 from uuid import UUID
 from weakref import ReferenceType, ref
 
-from agentx.infrastructure.events import Event, EventCategory, EventType
+from agentx.core.events import Event, EventCategory, EventType
 
 type EventHandler = Callable[[Event], None]
 

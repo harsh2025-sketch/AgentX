@@ -7,8 +7,8 @@ from threading import Barrier, Lock, Thread
 
 import pytest
 
+from agentx.core.events import ActionPayload, Event, EventCategory, EventType
 from agentx.infrastructure.event_bus import EventBus, Subscription
-from agentx.infrastructure.events import ActionPayload, Event, EventCategory, EventType
 
 
 def _event(event_type: EventType = EventType.TASK_CREATED) -> Event:

@@ -99,22 +99,18 @@ def _boundary_violations(
 ) -> tuple[tuple[str, str], ...]:
     """Return the imports from ``source`` that violate the boundary model.
 
-    A canonical subsystem may import only the *package boundary* of another
-    subsystem that is on its returned allowed set. Cross-subsystem imports
-    below that boundary (``agentx.kernel._internal``, for example) are treated
-    as implementation internals and are not permitted until that subsystem's
-    public contract is owned by its own task.
+    An allowed subsystem edge permits imports of the target package itself and
+    modules owned beneath that package. The permission does not extend to any
+    other subsystem, so forbidden reverse/cross edges remain violations.
     """
     violations: list[tuple[str, str]] = []
     for imported, target in targets:
         if source == target:
             # Internal implementation details within the same subsystem.
             continue
-        allowed_boundary = (
-            source,
-            target,
-        ) in _architecture.ALLOWED_ARCHITECTURE_EDGES and imported == target
-        if not allowed_boundary:
+        allowed_subsystem = (source, target) in _architecture.ALLOWED_ARCHITECTURE_EDGES
+        imported_is_owned_by_target = imported == target or imported.startswith(f"{target}.")
+        if not (allowed_subsystem and imported_is_owned_by_target):
             violations.append((imported, target))
     return tuple(violations)
 
@@ -156,23 +152,36 @@ def test_manifest_declares_only_canonical_subsystems() -> None:
         assert source != target
 
 
-def test_manifest_allows_domain_subsystems_to_depend_on_core() -> None:
-    """Shared domain contracts are a foundation for every domain subsystem.
-
-    ``agentx.infrastructure`` is deliberately a non-domain leaf and is the one
-    exception.
-    """
+def test_manifest_allows_outer_subsystems_to_depend_on_core() -> None:
+    """Shared domain contracts are the inward foundation for every outer subsystem."""
     for package in _architecture.SUBSYSTEMS:
-        if package in (_architecture.CORE, _architecture.INFRASTRUCTURE):
+        if package == _architecture.CORE:
             continue
         assert (package, _architecture.CORE) in _architecture.ALLOWED_ARCHITECTURE_EDGES
 
 
 def test_core_does_not_depend_on_other_subsystems() -> None:
-    """Agent Runtime shared contracts must not depend on domain subsystems."""
+    """Agent Runtime shared contracts must not depend on outer subsystems."""
     assert all(
         source != _architecture.CORE for source, _target in _architecture.ALLOWED_ARCHITECTURE_EDGES
     )
+
+
+def test_kernel_does_not_depend_on_infrastructure() -> None:
+    """Kernel may consume core contracts but must not depend outward on infrastructure."""
+    assert (
+        _architecture.KERNEL,
+        _architecture.INFRASTRUCTURE,
+    ) not in _architecture.ALLOWED_ARCHITECTURE_EDGES
+
+
+def test_unneeded_future_infrastructure_edges_are_not_predeclared() -> None:
+    """Hive/procedures/learning do not gain outward plumbing dependencies speculatively."""
+    for source in (_architecture.HIVE, _architecture.PROCEDURES, _architecture.LEARNING):
+        assert (
+            source,
+            _architecture.INFRASTRUCTURE,
+        ) not in _architecture.ALLOWED_ARCHITECTURE_EDGES
 
 
 def test_boundary_manifest_module_imports_no_subsystem() -> None:
@@ -183,7 +192,7 @@ def test_boundary_manifest_module_imports_no_subsystem() -> None:
 
 @pytest.mark.parametrize("source", _architecture.SUBSYSTEMS)
 def test_source_package_respects_allowed_dependency_model(source: str) -> None:
-    """Each canonical subsystem only imports from its allowed boundary set."""
+    """Each canonical subsystem only imports from its allowed dependency set."""
     violations = _boundary_violations(source, _module_import_edges(source))
     assert violations == (), f"{source} violates the boundary model: " + ", ".join(
         f"{imported} (owned by {target})" for imported, target in violations
@@ -206,30 +215,49 @@ def test_checker_detects_forbidden_top_level_edge() -> None:
     assert ("agentx.capabilities", "agentx.capabilities") in violations
 
 
-def test_checker_detects_kernel_internals_from_cognition() -> None:
-    """Allowed ``cognition -> kernel`` does not license implementation internals."""
-    source = "import agentx.kernel._internal as _kernel_internal\n"
-    edges = _ast_import_targets(source, "agentx.cognition")
+def test_checker_allows_explicitly_allowed_submodule_import() -> None:
+    """Positive control: ``infrastructure -> core.events`` is a valid inward edge."""
+    source = "from agentx.core.events import Event\n"
+    edges = _ast_import_targets(source, "agentx.infrastructure")
 
-    assert ("agentx.kernel._internal", "agentx.kernel") in edges
-    violations = _boundary_violations("agentx.cognition", edges)
-    assert ("agentx.kernel._internal", "agentx.kernel") in violations
+    assert ("agentx.core.events", "agentx.core") in edges
+    assert _boundary_violations("agentx.infrastructure", edges) == ()
 
 
-def test_checker_detects_capabilities_internals_from_cognition() -> None:
-    """Direct imports of capability internals from cognition are forbidden."""
+def test_checker_allows_allowed_package_boundary_import() -> None:
+    """Positive control: the target package itself remains valid on an allowed edge."""
+    source = "import agentx.core as _core\n"
+    edges = _ast_import_targets(source, "agentx.infrastructure")
+
+    assert ("agentx.core", "agentx.core") in edges
+    assert _boundary_violations("agentx.infrastructure", edges) == ()
+
+
+def test_checker_rejects_core_to_infrastructure_submodule() -> None:
+    """Negative control: moving Event inward must not license the reverse edge."""
+    source = "from agentx.infrastructure.event_bus import EventBus\n"
+    edges = _ast_import_targets(source, "agentx.core")
+
+    assert ("agentx.infrastructure.event_bus", "agentx.infrastructure") in edges
+    violations = _boundary_violations("agentx.core", edges)
+    assert ("agentx.infrastructure.event_bus", "agentx.infrastructure") in violations
+
+
+def test_checker_rejects_kernel_to_infrastructure_submodule() -> None:
+    """Negative control: kernel remains independent of concrete infrastructure."""
+    source = "from agentx.infrastructure.event_bus import EventBus\n"
+    edges = _ast_import_targets(source, "agentx.kernel")
+
+    assert ("agentx.infrastructure.event_bus", "agentx.infrastructure") in edges
+    violations = _boundary_violations("agentx.kernel", edges)
+    assert ("agentx.infrastructure.event_bus", "agentx.infrastructure") in violations
+
+
+def test_checker_does_not_let_allowed_edge_cover_another_subsystem() -> None:
+    """An allowed core edge cannot make an unrelated subsystem import legal."""
     source = "import agentx.capabilities._internal as _capability_internal\n"
-    edges = _ast_import_targets(source, "agentx.cognition")
+    edges = _ast_import_targets(source, "agentx.infrastructure")
 
     assert ("agentx.capabilities._internal", "agentx.capabilities") in edges
-    violations = _boundary_violations("agentx.cognition", edges)
+    violations = _boundary_violations("agentx.infrastructure", edges)
     assert ("agentx.capabilities._internal", "agentx.capabilities") in violations
-
-
-def test_checker_allows_an_allowed_edge_fixture() -> None:
-    """Positive control: ``learning -> infrastructure`` package boundary passes."""
-    source = "import agentx.infrastructure as _infrastructure\n"
-    edges = _ast_import_targets(source, "agentx.learning")
-
-    assert ("agentx.infrastructure", "agentx.infrastructure") in edges
-    assert _boundary_violations("agentx.learning", edges) == ()
