@@ -9,7 +9,7 @@ from uuid import UUID
 
 import pytest
 
-from agentx.infrastructure.events import (
+from agentx.core.events import (
     CURRENT_EVENT_SCHEMA_VERSION,
     ActionPayload,
     DecisionPayload,

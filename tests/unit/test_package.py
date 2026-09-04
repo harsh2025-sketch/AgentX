@@ -75,7 +75,7 @@ def test_boundary_package_initializers_are_clean(name: str) -> None:
     A subsystem may gain explicitly owned implementation modules without turning
     its package initializer into an implementation surface. This preserves the
     cleanliness invariant while allowing legitimate child modules such as
-    ``agentx.infrastructure.events`` and ``agentx.infrastructure.config``.
+    ``agentx.core.events`` and ``agentx.infrastructure.config``.
     """
     module = importlib.import_module(name)
     assert module.__file__ is not None

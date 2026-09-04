@@ -16,4 +16,6 @@ Status:
       priority vocabulary, and deterministic serialization (A1.05). Data
       model only: the Task state machine is A1.06 and the Task Manager is
       owned by Day 2.
+    - ``events`` — canonical immutable Event envelope, taxonomy, payloads,
+      validation, and deterministic serialization (C1.02 / A1.02b).
 """
