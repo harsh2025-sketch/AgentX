@@ -50,14 +50,10 @@ def test_version_has_single_source_of_truth() -> None:
 
 
 def test_installed_distribution_metadata_matches_package_version() -> None:
-    """The installed distribution (``pip install -e .``) reports the same version."""
+    """The installed distribution reports the same version as the package."""
     from importlib import metadata
 
-    try:
-        dist_version = metadata.version("agentx")
-    except metadata.PackageNotFoundError:
-        pytest.skip("agentx distribution is not installed (running from source tree only)")
-    assert dist_version == agentx.__version__
+    assert metadata.version("agentx") == agentx.__version__
 
 
 @pytest.mark.parametrize("name", BOUNDARY_PACKAGES)
