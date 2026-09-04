@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 from dataclasses import FrozenInstanceError, fields
-from typing import cast
+from typing import cast, get_type_hints
 
 import pytest
 
-import agentx.kernel.action_gate as action_gate_module
 from agentx.kernel.action_gate import ActionGate, GateDecision, GateRequest, GateResult
 from agentx.kernel.permissions import (
     AuthorityContext,
@@ -170,7 +169,7 @@ def test_r4_broad_permission_is_not_enough() -> None:
     assert "DESTRUCTIVE authority" in result.reason
 
 
-def test_r4_with_explicit_destructive_authority_still_never_allows() -> None:
+def test_r4_with_explicit_destructive_authority_still_requires_confirmation() -> None:
     result = ActionGate().evaluate(
         _request(RiskLevel.R4, Permission.WRITE),
         AuthorityContext(
@@ -179,18 +178,16 @@ def test_r4_with_explicit_destructive_authority_still_never_allows() -> None:
     )
 
     assert result.decision is GateDecision.REQUIRE_CONFIRMATION
-    assert result.decision is not GateDecision.ALLOW
     assert "never be silently allowed" in result.reason
 
 
-def test_require_confirmation_is_distinct_from_denial() -> None:
-    assert GateDecision.REQUIRE_CONFIRMATION is not GateDecision.DENY
-    assert GateDecision.REQUIRE_CONFIRMATION is not GateDecision.ALLOW
+def test_require_confirmation_is_a_distinct_decision_value() -> None:
     assert tuple(decision.value for decision in GateDecision) == (
         "ALLOW",
         "DENY",
         "REQUIRE_CONFIRMATION",
     )
+    assert len(set(GateDecision)) == 3
 
 
 def test_gate_decision_reason_is_inspectable_and_immutable() -> None:
@@ -329,8 +326,7 @@ def test_risk_contract_is_reused_not_duplicated() -> None:
     )
 
     assert request.risk_assessment is assessment
-    assert action_gate_module.RiskAssessment is RiskAssessment
-    assert action_gate_module.RiskLevel is RiskLevel
+    assert get_type_hints(GateRequest)["risk_assessment"] is RiskAssessment
 
 
 def test_denial_is_an_ordinary_domain_decision() -> None:
