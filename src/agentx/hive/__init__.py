@@ -1,6 +1,8 @@
-"""Ownership boundary: Hive persistent memory.
+"""Ownership boundary: ``agentx.hive``.
 
-Reserved for durable memory with provenance tracking.
+Canonical responsibility: persistent semantic, episodic, procedural, causal,
+and environmental knowledge. Hive records where each item came from
+(provenance); it must not perform machine actions.
 
-Status: not implemented. This package intentionally contains no code yet.
+Status: not implemented. This package deliberately contains no code yet.
 """
