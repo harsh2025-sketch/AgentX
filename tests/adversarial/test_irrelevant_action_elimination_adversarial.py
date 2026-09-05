@@ -159,8 +159,13 @@ def test_identical_failure_duplicates_do_not_create_elimination_signal() -> None
     analysis = analyze_irrelevant_actions(extraction)
 
     assert len(analysis.decisions) == 2
-    assert all(decision.disposition is ActionDisposition.RETAIN for decision in analysis.decisions)
-    assert analysis.decisions[0].source_experience_sha256 == analysis.decisions[1].source_experience_sha256
+    assert all(
+        decision.disposition is ActionDisposition.RETAIN for decision in analysis.decisions
+    )
+    assert (
+        analysis.decisions[0].source_experience_sha256
+        == analysis.decisions[1].source_experience_sha256
+    )
 
 
 def test_missing_observation_and_verification_do_not_create_elimination_signal() -> None:
