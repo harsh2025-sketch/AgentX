@@ -19,6 +19,10 @@ from agentx.cognition.anti_loop import (
     ProgressFingerprint,
 )
 
+type FingerprintType = (
+    type[AttemptFingerprint] | type[OutcomeFingerprint] | type[ProgressFingerprint]
+)
+
 
 def _attempt(
     attempt: str,
@@ -287,7 +291,7 @@ def test_total_attempt_trigger_has_deterministic_priority() -> None:
     ["", " leading", "trailing ", "has space", "line\nbreak", "☃", "x" * 257],
 )
 def test_malformed_fingerprints_are_rejected(
-    fingerprint_type: type[AttemptFingerprint] | type[OutcomeFingerprint] | type[ProgressFingerprint],
+    fingerprint_type: FingerprintType,
     bad: str,
 ) -> None:
     with pytest.raises(ValueError):
@@ -298,9 +302,7 @@ def test_malformed_fingerprints_are_rejected(
     "fingerprint_type",
     [AttemptFingerprint, OutcomeFingerprint, ProgressFingerprint],
 )
-def test_fingerprint_requires_string(
-    fingerprint_type: type[AttemptFingerprint] | type[OutcomeFingerprint] | type[ProgressFingerprint],
-) -> None:
+def test_fingerprint_requires_string(fingerprint_type: FingerprintType) -> None:
     with pytest.raises(TypeError):
         fingerprint_type(123)  # type: ignore[arg-type]
 
@@ -317,7 +319,14 @@ def test_stable_fingerprint_grammar_accepts_common_ids_and_hash_tokens() -> None
         assert AttemptFingerprint(value).value == value
 
 
-@pytest.mark.parametrize("field_name", ["max_total_attempts", "max_same_attempts", "max_same_outcomes_without_progress"])
+@pytest.mark.parametrize(
+    "field_name",
+    [
+        "max_total_attempts",
+        "max_same_attempts",
+        "max_same_outcomes_without_progress",
+    ],
+)
 @pytest.mark.parametrize("bad", [0, -1])
 def test_limits_must_be_positive(field_name: str, bad: int) -> None:
     values = {
