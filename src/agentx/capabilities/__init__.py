@@ -36,4 +36,10 @@ browser connection/session and target references in
 ``agentx.capabilities.browser_connection``. These are immutable identity/state
 snapshots only: they establish no network connection, browser liveness,
 execution authority, DOM access, navigation, or verification behavior.
+
+C5.03 adds the provider-neutral read-only structured browser observation
+boundary in ``agentx.capabilities.browser_dom``. DOM observations and node
+references are immutable target-scoped snapshots of untrusted webpage data;
+they add no browser mutation surface, liveness authority, permission,
+verification, persistence, or execution path.
 """
