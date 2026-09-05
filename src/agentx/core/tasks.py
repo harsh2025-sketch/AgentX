@@ -65,7 +65,7 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from enum import StrEnum
 from types import MappingProxyType
-from typing import Final, cast
+from typing import Final
 
 from agentx.core.ids import TaskId
 
@@ -516,19 +516,16 @@ def _parse_task_id(value: object, *, field_name: str) -> TaskId:
         parsed = TaskId.parse(value)
     except ValueError as exc:
         raise TaskDeserializationError(f"{field_name} is not a valid TaskId: {value!r}") from exc
-    # ``DomainId.parse`` is declared as returning ``DomainId``; restore the
-    # concrete type at the single point of use.
-    return cast(TaskId, parsed)
+    return parsed
 
 
 def _new_task_id() -> TaskId:
     """Generate a new canonical TaskId.
 
-    ``DomainId.create()`` is declared as returning ``DomainId`` (A1.04 predates
-    ``Self`` typing on the factory), so the concrete type is restored here, at
-    the single point of use.
+    ``DomainId.create`` is annotated with ``Self`` typing, so the concrete
+    ``TaskId`` type is preserved directly.
     """
-    return cast(TaskId, TaskId.create())
+    return TaskId.create()
 
 
 def _parse_optional_task_id(value: object) -> TaskId | None:

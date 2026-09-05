@@ -22,12 +22,13 @@ from agentx.core.ids import (
     CapabilityId,
     DomainId,
     EpisodeId,
+    KnowledgeId,
     ProcedureId,
     TaskId,
     _IdConstructionError,
 )
 
-ALL_ID_TYPES = (TaskId, CapabilityId, ProcedureId, EpisodeId, ArtifactId)
+ALL_ID_TYPES = (TaskId, CapabilityId, ProcedureId, EpisodeId, KnowledgeId, ArtifactId)
 
 
 # ---------------------------------------------------------------------------
@@ -258,6 +259,9 @@ class TestDomainTag:
 
     def test_episode_id_has_episode_domain(self) -> None:
         assert EpisodeId.create().domain == "episode"
+
+    def test_knowledge_id_has_knowledge_domain(self) -> None:
+        assert KnowledgeId.create().domain == "knowledge"
 
     def test_artifact_id_has_artifact_domain(self) -> None:
         assert ArtifactId.create().domain == "artifact"

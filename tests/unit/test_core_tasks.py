@@ -48,14 +48,14 @@ _FIXED_CREATED_AT = datetime(2026, 9, 4, 12, 30, 45, 123456, tzinfo=UTC)
 def _task_id() -> TaskId:
     """Create a canonical TaskId.
 
-    ``DomainId.create()`` is declared as returning ``DomainId`` by A1.04, so the
-    concrete type is restored here for the tests that must pass a ``TaskId``.
+    ``DomainId.create`` is annotated with ``Self`` typing, so the concrete
+    ``TaskId`` type is preserved directly.
     """
-    return cast(TaskId, TaskId.create())
+    return TaskId.create()
 
 
 def _parsed_task_id(value: str) -> TaskId:
-    return cast(TaskId, TaskId.parse(value))
+    return TaskId.parse(value)
 
 
 # ---------------------------------------------------------------------------

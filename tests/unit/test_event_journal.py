@@ -67,10 +67,13 @@ def test_fresh_journal_creation_via_migration(tmp_path: Path) -> None:
             "SELECT name FROM sqlite_schema WHERE type = 'table' AND name = 'agentx_event_journal'"
         ).fetchone()
 
-    assert [(row["version"], row["name"]) for row in migrations] == [
+    assert [(row["version"], row["name"]) for row in migrations][:2] == [
         (1, "create_persistence_metadata"),
         (2, "create_event_journal"),
     ]
+    # Only the journal's own migrations are pinned by number; later migrations
+    # appended by concurrent store tasks must not break this test.
+    assert [row["version"] for row in migrations] == list(range(1, len(_MIGRATIONS) + 1))
     assert table is not None
 
 
@@ -91,7 +94,8 @@ def test_existing_c105_v1_database_migrates_forward(tmp_path: Path) -> None:
             "SELECT version FROM agentx_schema_migrations ORDER BY version"
         ).fetchall()
 
-    assert [row["version"] for row in versions] == [1, 2]
+    # The v1 database must migrate fully forward to the latest schema.
+    assert [row["version"] for row in versions] == list(range(1, len(_MIGRATIONS) + 1))
 
 
 def test_append_one_event(tmp_path: Path) -> None:
