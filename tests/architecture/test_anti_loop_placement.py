@@ -51,8 +51,14 @@ def _referenced_names() -> set[str]:
 
 def test_anti_loop_is_in_cognition_and_preserves_canonical_boundary() -> None:
     assert _MODULE.exists()
-    assert (_architecture.COGNITION, _architecture.CORE) in _architecture.ALLOWED_ARCHITECTURE_EDGES
-    assert (_architecture.COGNITION, _architecture.KERNEL) in _architecture.ALLOWED_ARCHITECTURE_EDGES
+    assert (
+        _architecture.COGNITION,
+        _architecture.CORE,
+    ) in _architecture.ALLOWED_ARCHITECTURE_EDGES
+    assert (
+        _architecture.COGNITION,
+        _architecture.KERNEL,
+    ) in _architecture.ALLOWED_ARCHITECTURE_EDGES
 
     # A2.09 currently needs neither edge: its decision engine is a pure
     # cognition-local/stdlib contract and therefore introduces no new edge.
