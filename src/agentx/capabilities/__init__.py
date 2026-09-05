@@ -14,8 +14,12 @@ per run: authority -> gate -> emergency stop -> budget -> execute ->
 observation -> verify -> Task state -> canonical events/audit), and A2.04 adds
 the narrow Executor boundary in ``agentx.capabilities.executor`` (a typed
 ``ExecutorRequest`` delegated to the canonical A1.10 loop — it adds no
-authority, no verification, no retry, and no routing). There is still no
-Verifier subsystem, Task Manager, Router, agent loop, or concrete production
-capability implementation in this package; demo capabilities live under
-``tests/`` only.
+authority, no verification, no retry, and no routing). A2.05 adds the narrow
+Verifier boundary in ``agentx.capabilities.verifier`` (evaluates an
+already-produced canonical A1.10 outcome against an explicit deterministic
+verification requirement — it never invokes ``Capability.verify``, never
+manufactures a ``VerificationResult``, never rewrites a ``ClosedLoopOutcome``,
+and fails closed on missing evidence). There is still no Task Manager, Router,
+agent loop, or concrete production capability implementation in this package;
+demo capabilities live under ``tests/`` only.
 """
