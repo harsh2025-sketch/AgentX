@@ -31,6 +31,18 @@ JSON-compatible data, and WAIT is a declarative requirement plus an optional
 canonical-duration timeout bound. ACTION/OBSERVE/VERIFY remain owned by A3.02
 in ``agentx.procedures.nodes``.
 
+A3.05 adds the typed node-family DATA contracts for the ROLLBACK,
+SUBPROCEDURE, and END node families here, in ``agentx.procedures.rollback``,
+``agentx.procedures.subprocedure``, and ``agentx.procedures.end``. Each
+contract is strictly validated, inert data with no interpreter, no rollback
+execution, no procedure invocation, no outcome, and no authority; it embeds
+in the A3.01 graph through ``ProcedureNode.params`` (the graph stays opaque
+and is not redesigned). ROLLBACK records an explicit typed, inert rollback
+scope; SUBPROCEDURE records a canonical ``(procedure_id, revision)``
+reference with inert JSON bindings and never an implicit "latest" version;
+END is the smallest useful termination payload, structurally incapable of
+encoding success — reaching END is never verified task success.
+
 The C2.03 durable storage contract remains inward in ``agentx.core.procedures`` and
 ``agentx.infrastructure.procedure_store``, which persist the graph opaquely as a
 ``CANONICAL_JSON`` :class:`agentx.core.procedures.ProcedurePayload`.
