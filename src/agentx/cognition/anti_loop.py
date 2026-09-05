@@ -48,9 +48,7 @@ __all__ = [
 
 _MAX_FINGERPRINT_LENGTH: Final[int] = 256
 _MAX_LIMIT: Final[int] = (1 << 63) - 1
-_FINGERPRINT_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"[A-Za-z0-9][A-Za-z0-9._:/+=@-]{0,255}"
-)
+_FINGERPRINT_PATTERN: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:/+=@-]{0,255}")
 
 
 def _validate_fingerprint(value: object, *, field_name: str) -> str:
@@ -65,9 +63,7 @@ def _validate_fingerprint(value: object, *, field_name: str) -> str:
     if not value or value != value.strip():
         raise ValueError(f"{field_name} must be non-empty and trimmed")
     if len(value) > _MAX_FINGERPRINT_LENGTH:
-        raise ValueError(
-            f"{field_name} must not exceed {_MAX_FINGERPRINT_LENGTH} characters"
-        )
+        raise ValueError(f"{field_name} must not exceed {_MAX_FINGERPRINT_LENGTH} characters")
     if _FINGERPRINT_PATTERN.fullmatch(value) is None:
         raise ValueError(
             f"{field_name} must be an opaque stable token containing only "
