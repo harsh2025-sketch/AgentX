@@ -213,6 +213,40 @@ _MIGRATIONS: Final[tuple[_Migration, ...]] = (
             """,
         ),
     ),
+    _Migration(
+        version=7,
+        name="create_knowledge_integrity",
+        statements=(
+            """
+            CREATE TABLE agentx_knowledge_contradictions (
+                first_knowledge_id TEXT NOT NULL,
+                second_knowledge_id TEXT NOT NULL,
+                PRIMARY KEY (first_knowledge_id, second_knowledge_id),
+                CHECK (first_knowledge_id < second_knowledge_id),
+                FOREIGN KEY (first_knowledge_id)
+                    REFERENCES agentx_knowledge (knowledge_id) ON DELETE RESTRICT,
+                FOREIGN KEY (second_knowledge_id)
+                    REFERENCES agentx_knowledge (knowledge_id) ON DELETE RESTRICT
+            )
+            """,
+            """
+            CREATE TABLE agentx_knowledge_supersessions (
+                replacement_knowledge_id TEXT NOT NULL,
+                superseded_knowledge_id TEXT NOT NULL,
+                PRIMARY KEY (replacement_knowledge_id, superseded_knowledge_id),
+                CHECK (replacement_knowledge_id <> superseded_knowledge_id),
+                FOREIGN KEY (replacement_knowledge_id)
+                    REFERENCES agentx_knowledge (knowledge_id) ON DELETE RESTRICT,
+                FOREIGN KEY (superseded_knowledge_id)
+                    REFERENCES agentx_knowledge (knowledge_id) ON DELETE RESTRICT
+            )
+            """,
+            """
+            CREATE INDEX agentx_knowledge_supersessions_superseded_idx
+            ON agentx_knowledge_supersessions (superseded_knowledge_id)
+            """,
+        ),
+    ),
 )
 
 
