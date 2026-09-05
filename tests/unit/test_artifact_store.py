@@ -80,7 +80,9 @@ def test_fresh_database_creates_artifact_and_audit_tables(tmp_path: Path) -> Non
         (3, "create_knowledge_store"),
     ]
     artifact_audit_migrations = [
-        migration for migration in _MIGRATIONS if migration.name == "create_artifact_and_audit_stores"
+        migration
+        for migration in _MIGRATIONS
+        if migration.name == "create_artifact_and_audit_stores"
     ]
     assert len(artifact_audit_migrations) == 1
     assert artifact_audit_migrations[0].version == 6
