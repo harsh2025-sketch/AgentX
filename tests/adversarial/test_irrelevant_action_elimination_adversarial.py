@@ -19,6 +19,7 @@ from agentx.learning.causal_actions import extract_causal_action_candidates
 from agentx.learning.irrelevant_actions import (
     ActionDisposition,
     ActionDispositionReason,
+    ActionEliminationDecision,
     analyze_irrelevant_actions,
 )
 from agentx.learning.trajectory import normalize_trajectory
@@ -65,7 +66,7 @@ def _experience(
     return CausalExperience(**common)  # type: ignore[arg-type]
 
 
-def _decision(experience: CausalExperience):
+def _decision(experience: CausalExperience) -> ActionEliminationDecision:
     extraction = extract_causal_action_candidates(normalize_trajectory([experience]))
     return analyze_irrelevant_actions(extraction).decisions[0]
 
