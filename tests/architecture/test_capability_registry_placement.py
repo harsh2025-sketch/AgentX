@@ -88,12 +88,30 @@ def test_capability_abi_does_not_depend_on_the_registry() -> None:
     assert not any(module.endswith("registry") for module in imported)
 
 
-def test_no_other_subsystem_imports_the_registry_yet() -> None:
-    """A1.09 owns lookup only; nothing is wired to execute through it."""
+def test_capability_abi_does_not_depend_on_the_runtime_loop() -> None:
+    """The A1.08 contract stays independent of the A1.10 runtime path."""
+    imported = _imported_modules(_CAPABILITY_ABI)
+
+    assert not any(
+        module == "agentx.capabilities.runtime" or module.startswith("agentx.capabilities.runtime.")
+        for module in imported
+    )
+
+
+def test_only_the_canonical_runtime_module_imports_the_registry() -> None:
+    """Discovery is wired to execution by exactly one canonical A1.10 module.
+
+    A1.09 landed with a placeholder guardrail ("nothing imports the registry
+    yet"). A1.10 is the task that closes the loop through the registry, so the
+    guardrail narrows instead of vanishing: ``agentx.capabilities.runtime`` is
+    the single module in the codebase allowed to import the registry, and no
+    other module anywhere under ``src`` may wire execution through it.
+    """
+    canonical_runtime = _AGENTX_SRC / "capabilities" / "runtime.py"
     importers = [
         path.relative_to(_SRC_ROOT)
         for path in _AGENTX_SRC.rglob("*.py")
-        if path != _CAPABILITY_REGISTRY
+        if path not in (_CAPABILITY_REGISTRY, canonical_runtime)
         and "agentx.capabilities.registry" in _imported_modules(path)
     ]
 
