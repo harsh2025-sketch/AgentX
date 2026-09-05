@@ -100,6 +100,7 @@ def test_loop_result_cannot_be_used_as_authority_context() -> None:
             reason="state modification",
             modifies_state=True,
             reversible=True,
+            external_effect=False,
         ),
     )
 
