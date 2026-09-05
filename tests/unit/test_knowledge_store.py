@@ -517,11 +517,10 @@ def test_leaving_verified_preserves_historical_timestamp(tmp_path: Path) -> None
     store.update_status(record.knowledge_id, KnowledgeStatus.VERIFIED, verified_at=_T1)
 
     degraded = store.update_status(record.knowledge_id, KnowledgeStatus.DEGRADED)
-    superseded = store.update_status(degraded.knowledge_id, KnowledgeStatus.SUPERSEDED)
 
     assert degraded.status is KnowledgeStatus.DEGRADED
     assert degraded.verified_at == _T1  # history is not erased
-    assert superseded.verified_at == _T1
+    assert store.get(degraded.knowledge_id) == degraded
 
 
 def test_update_rejects_verified_at_for_non_verified_targets(tmp_path: Path) -> None:

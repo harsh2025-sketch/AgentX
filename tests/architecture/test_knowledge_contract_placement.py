@@ -88,6 +88,7 @@ def test_knowledge_store_depends_only_on_core_and_persistence() -> None:
     assert agentx_imports <= {
         "agentx.core.ids",
         "agentx.core.knowledge",
+        "agentx.core.knowledge_integrity",
         "agentx.infrastructure.persistence",
     }
 
