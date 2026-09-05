@@ -123,11 +123,22 @@ def test_existing_v2_only_database_migrates_forward(tmp_path: Path) -> None:
 
     # Simulate a database written when v2 was latest: remove every post-v2
     # table and migration row, then reopen through the current migration plan.
+    # The rollback is derived from the migration plan itself so later store
+    # migrations (C2.02 knowledge, C2.01 episodes, C2.03 procedures, ...) do
+    # not each have to edit this simulation.
     raw = sqlite3.connect(path, isolation_level=None)
     try:
-        raw.execute("DROP TABLE agentx_episodes")
-        raw.execute("DROP TABLE agentx_knowledge")
-        raw.execute("DELETE FROM agentx_schema_migrations WHERE version > 2")
+        for migration in _MIGRATIONS:
+            if migration.version <= 2:
+                continue
+            for statement in migration.statements:
+                stripped = statement.strip()
+                if stripped.upper().startswith("CREATE TABLE"):
+                    raw.execute(f"DROP TABLE IF EXISTS {stripped.split(maxsplit=3)[2].strip()}")
+            raw.execute(
+                "DELETE FROM agentx_schema_migrations WHERE version = ?",
+                (migration.version,),
+            )
     finally:
         raw.close()
 
