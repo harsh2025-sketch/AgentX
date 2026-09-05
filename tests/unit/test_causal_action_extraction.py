@@ -300,9 +300,7 @@ def test_extraction_contract_requires_complete_source_order() -> None:
 
 
 def test_extraction_contract_is_immutable() -> None:
-    extraction = extract_causal_action_candidates(
-        normalize_trajectory([_experience(offset=0)])
-    )
+    extraction = extract_causal_action_candidates(normalize_trajectory([_experience(offset=0)]))
 
     with pytest.raises(FrozenInstanceError):
         extraction.source_trajectory_id = UUID("22222222-3333-4444-8555-666666666666")  # type: ignore[misc]
