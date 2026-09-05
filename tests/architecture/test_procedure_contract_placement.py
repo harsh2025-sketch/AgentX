@@ -146,15 +146,20 @@ def test_procedures_package_owns_graph_ir_without_stealing_c2_03() -> None:
     responsibility.
     """
     # The package now contains exactly the initializer, the A3.01 graph IR
-    # module, the A3.02 ACTION/OBSERVE/VERIFY node-contract module, and the
-    # A3.03 typed node-family DATA contracts (BRANCH/TRANSFORM/WAIT).
+    # module, the A3.02 ACTION/OBSERVE/VERIFY node-contract module, the
+    # A3.03 typed node-family DATA contracts (BRANCH/TRANSFORM/WAIT), the
+    # A3.04 REASON/RESEARCH payload contracts, and the A3.05 ROLLBACK/
+    # SUBPROCEDURE/END payload contracts.
     files = _procedures_package_files()
     assert files == [
         Path("agentx/procedures/__init__.py"),
         Path("agentx/procedures/branch.py"),
+        Path("agentx/procedures/end.py"),
         Path("agentx/procedures/graph.py"),
         Path("agentx/procedures/nodes.py"),
         Path("agentx/procedures/reason_research.py"),
+        Path("agentx/procedures/rollback.py"),
+        Path("agentx/procedures/subprocedure.py"),
         Path("agentx/procedures/transform.py"),
         Path("agentx/procedures/wait.py"),
     ]
