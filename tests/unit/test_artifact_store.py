@@ -8,7 +8,7 @@ from dataclasses import FrozenInstanceError
 from datetime import UTC, datetime
 from pathlib import Path
 from threading import Barrier
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 import pytest
 
@@ -41,7 +41,7 @@ def _record(
     *,
     locator: str = r"C:\AgentX\artifacts\out.txt",
     task_id: TaskId | None = None,
-    correlation_id=None,
+    correlation_id: UUID | None = None,
     artifact_id: ArtifactId | None = None,
 ) -> ArtifactRecord:
     return ArtifactRecord(

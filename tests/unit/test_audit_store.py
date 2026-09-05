@@ -9,7 +9,7 @@ from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 from pathlib import Path
 from threading import Barrier
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 import pytest
 
@@ -60,7 +60,7 @@ def _store(tmp_path: Path) -> AuditStore:
 def _snapshot(
     *,
     task_id: TaskId | None = None,
-    correlation_id=None,
+    correlation_id: UUID | None = None,
     operation: str = "security.test",
 ) -> AuditRecordSnapshot:
     record = SecurityAuditRecord(
