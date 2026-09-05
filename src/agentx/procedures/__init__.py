@@ -43,6 +43,25 @@ reference with inert JSON bindings and never an implicit "latest" version;
 END is the smallest useful termination payload, structurally incapable of
 encoding success — reaching END is never verified task success.
 
+A3.06 adds the canonical preconditions/postconditions DATA contract here, in
+``agentx.procedures.conditions``. It is representation and validation only:
+it never executes, evaluates, or verifies a condition and never interprets a
+procedure. One reusable requirement (:class:`~agentx.procedures.conditions.
+ProcedureCondition`) covers both preconditions and postconditions; each
+declares, as explicit structured data, a requirement stated against the
+canonical core evidence vocabulary, with an explicit condition identity and
+an optional inert evidence reference. Conditions are scoped to the whole
+procedure or to individual graph nodes by canonical ``ProcedureNodeId``
+reference and are carried in a minimal companion document
+(:class:`~agentx.procedures.conditions.ProcedureConditions`) — a
+deterministic, strictly validated, immutable wrapper that adds no node kind,
+no edge, and no second graph schema, cross-checked against a graph only by
+structural node-id membership (``bind_to_graph``). A precondition does not
+mean satisfied; a postcondition does not mean verified, does not manufacture
+a VerificationResult, and does not mark a Task SUCCEEDED (I1 stays absolute).
+There is no condition DSL: statements and references are inert descriptive
+data, and nothing here is evaluated, compiled, or dispatched.
+
 The C2.03 durable storage contract remains inward in ``agentx.core.procedures`` and
 ``agentx.infrastructure.procedure_store``, which persist the graph opaquely as a
 ``CANONICAL_JSON`` :class:`agentx.core.procedures.ProcedurePayload`.
