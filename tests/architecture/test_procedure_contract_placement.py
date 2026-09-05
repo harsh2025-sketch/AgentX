@@ -146,12 +146,16 @@ def test_procedures_package_owns_graph_ir_without_stealing_c2_03() -> None:
     responsibility.
     """
     # The package now contains exactly the initializer, the A3.01 graph IR
-    # module, and the A3.02 ACTION/OBSERVE/VERIFY node-contract module.
+    # module, the A3.02 ACTION/OBSERVE/VERIFY node-contract module, and the
+    # A3.03 typed node-family DATA contracts (BRANCH/TRANSFORM/WAIT).
     files = _procedures_package_files()
     assert files == [
         Path("agentx/procedures/__init__.py"),
+        Path("agentx/procedures/branch.py"),
         Path("agentx/procedures/graph.py"),
         Path("agentx/procedures/nodes.py"),
+        Path("agentx/procedures/transform.py"),
+        Path("agentx/procedures/wait.py"),
     ]
 
     # C2.03 storage-contract classes remain uniquely owned by core/infrastructure.
@@ -180,8 +184,8 @@ def test_procedures_package_owns_graph_ir_without_stealing_c2_03() -> None:
     assert forbidden == []
 
     # Any agentx import must be the allowed inward edge to core, or an
-    # intra-package import within agentx.procedures itself (A3.02 reads the
-    # A3.01 IR rather than redefining it).
+    # intra-package import within agentx.procedures itself (A3.02/A3.03 read
+    # the A3.01 IR rather than redefining it).
     agentx_imports = [module for module in imported if module.startswith("agentx.")]
     assert all(
         module == "agentx.core" or module.startswith(("agentx.core.", "agentx.procedures."))
