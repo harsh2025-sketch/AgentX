@@ -17,8 +17,19 @@ DATA only — ACTION describes a requested capability action without executing i
 or holding authority, OBSERVE describes expected evidence without claiming it
 was obtained, and VERIFY encodes a verification requirement that structurally
 cannot express a verdict. The remaining node families
-(BRANCH/TRANSFORM/WAIT/REASON/RESEARCH/ROLLBACK/SUBPROCEDURE/END) are owned by
-later tasks (A3.03-A3.05).
+(REASON/RESEARCH/ROLLBACK/SUBPROCEDURE/END) are owned by later tasks
+(A3.04-A3.05).
+
+A3.03 adds the typed node-family DATA contracts for the BRANCH, TRANSFORM, and
+WAIT node families here, in ``agentx.procedures.branch``,
+``agentx.procedures.transform``, and ``agentx.procedures.wait``. Each contract
+is strictly validated, inert data with no interpreter, no execution, no
+waiting, and no authority; it embeds in the A3.01 graph through
+``ProcedureNode.params`` (the graph stays opaque and is not redesigned).
+BRANCH conditions are inert descriptors, TRANSFORM arguments are inert
+JSON-compatible data, and WAIT is a declarative requirement plus an optional
+canonical-duration timeout bound. ACTION/OBSERVE/VERIFY remain owned by A3.02
+in ``agentx.procedures.nodes``.
 
 The C2.03 durable storage contract remains inward in ``agentx.core.procedures`` and
 ``agentx.infrastructure.procedure_store``, which persist the graph opaquely as a
