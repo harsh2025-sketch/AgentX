@@ -29,4 +29,11 @@ platform facts/support evaluation, and contribution of already-constructed
 Windows-scoped capabilities into a caller-owned A1.09 registry). It implements
 no Windows automation and performs no import-time platform detection or
 registration; availability remains descriptive and never authority.
+
+C5.01 adds the provider-neutral browser-provider boundary in
+``agentx.capabilities.browser_provider``. C5.02 adds inert provider-associated
+browser connection/session and target references in
+``agentx.capabilities.browser_connection``. These are immutable identity/state
+snapshots only: they establish no network connection, browser liveness,
+execution authority, DOM access, navigation, or verification behavior.
 """
