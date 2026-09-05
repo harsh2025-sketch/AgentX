@@ -167,6 +167,52 @@ _MIGRATIONS: Final[tuple[_Migration, ...]] = (
             """,
         ),
     ),
+    _Migration(
+        version=6,
+        name="create_artifact_and_audit_stores",
+        statements=(
+            """
+            CREATE TABLE agentx_artifacts (
+                sequence INTEGER PRIMARY KEY AUTOINCREMENT,
+                artifact_id TEXT NOT NULL UNIQUE CHECK (length(artifact_id) > 0),
+                task_id TEXT CHECK (task_id IS NULL OR length(task_id) > 0),
+                correlation_id TEXT
+                    CHECK (correlation_id IS NULL OR length(correlation_id) > 0),
+                artifact_json TEXT NOT NULL CHECK (length(artifact_json) > 0),
+                recorded_at_utc TEXT NOT NULL
+                    DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+            )
+            """,
+            """
+            CREATE INDEX agentx_artifacts_task_sequence_idx
+            ON agentx_artifacts (task_id, sequence)
+            """,
+            """
+            CREATE INDEX agentx_artifacts_correlation_sequence_idx
+            ON agentx_artifacts (correlation_id, sequence)
+            """,
+            """
+            CREATE TABLE agentx_audit_records (
+                sequence INTEGER PRIMARY KEY AUTOINCREMENT,
+                audit_id TEXT NOT NULL UNIQUE CHECK (length(audit_id) > 0),
+                task_id TEXT CHECK (task_id IS NULL OR length(task_id) > 0),
+                correlation_id TEXT
+                    CHECK (correlation_id IS NULL OR length(correlation_id) > 0),
+                audit_json TEXT NOT NULL CHECK (length(audit_json) > 0),
+                recorded_at_utc TEXT NOT NULL
+                    DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+            )
+            """,
+            """
+            CREATE INDEX agentx_audit_records_task_sequence_idx
+            ON agentx_audit_records (task_id, sequence)
+            """,
+            """
+            CREATE INDEX agentx_audit_records_correlation_sequence_idx
+            ON agentx_audit_records (correlation_id, sequence)
+            """,
+        ),
+    ),
 )
 
 
