@@ -218,14 +218,27 @@ def test_windows_package_respects_the_canonical_subsystem_edges() -> None:
 
 
 def test_importing_the_provider_in_a_clean_interpreter_loads_nothing_native() -> None:
-    """Import safety, provable on any host: no native/automation module loads."""
+    """Import safety, provable on any host: no native/automation module loads.
+
+    The check is a *delta*: only modules loaded by importing the Windows
+    package itself count. Canonical dependencies are imported first, so
+    stdlib modules that legitimately load ``ctypes`` on Windows (e.g. ``uuid``)
+    are never misattributed to A5.01.
+    """
     probe = (
         "import sys\n"
+        "import agentx.capabilities.abi  # noqa: F401\n"
+        "import agentx.capabilities.registry  # noqa: F401\n"
+        "import agentx.core.errors  # noqa: F401\n"
+        "import agentx.core.result  # noqa: F401\n"
+        "before = set(sys.modules)\n"
         "import agentx.capabilities.windows.provider as provider\n"
-        "loaded = set(sys.modules)\n"
-        "forbidden = {'ctypes', 'win32api', 'win32gui', 'comtypes', 'pywinauto',\n"
-        "             'uiautomation', 'winreg', 'pythoncom', 'win32com'}\n"
-        "assert not (loaded & forbidden), sorted(loaded & forbidden)\n"
+        "added = set(sys.modules) - before\n"
+        "forbidden = {'ctypes', 'win32api', 'win32gui', 'win32con', 'comtypes',\n"
+        "             'pywinauto', 'uiautomation', 'winreg', 'pythoncom',\n"
+        "             'win32com', 'msvcrt', 'subprocess'}\n"
+        "roots = {name.split('.')[0] for name in added}\n"
+        "assert not (roots & forbidden), sorted(roots & forbidden)\n"
         "assert provider.WINDOWS_PROVIDER_NAME == 'windows'\n"
     )
     completed = subprocess.run(
@@ -244,7 +257,10 @@ def test_importing_the_provider_performs_no_platform_detection() -> None:
         # Import the canonical dependencies first so that stdlib modules which
         # legitimately read platform facts at their own import time (e.g. uuid)
         # cannot be misattributed to the provider.
+        "import agentx.capabilities.abi  # noqa: F401\n"
         "import agentx.capabilities.registry  # noqa: F401\n"
+        "import agentx.core.errors  # noqa: F401\n"
+        "import agentx.core.result  # noqa: F401\n"
         "import platform\n"
         "calls = []\n"
         "for name in ('system', 'release', 'version', 'machine'):\n"
