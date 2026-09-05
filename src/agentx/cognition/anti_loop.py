@@ -262,7 +262,10 @@ class LoopGuardResult:
                 field_name="distinct_progress_markers",
             ),
         )
-        if self.decision is LoopGuardDecision.CONTINUE and self.trigger is not LoopGuardTrigger.NONE:
+        if (
+            self.decision is LoopGuardDecision.CONTINUE
+            and self.trigger is not LoopGuardTrigger.NONE
+        ):
             raise ValueError("CONTINUE requires trigger NONE")
         if self.decision is LoopGuardDecision.STOP_LOOP and self.trigger is LoopGuardTrigger.NONE:
             raise ValueError("STOP_LOOP requires a terminal trigger")
