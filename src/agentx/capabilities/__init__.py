@@ -11,8 +11,11 @@ lookup only — discovery is never authority), and A1.10 adds the first
 closed-loop deterministic execution path in
 ``agentx.capabilities.runtime`` (one governed, verified capability execution
 per run: authority -> gate -> emergency stop -> budget -> execute ->
-observation -> verify -> Task state -> canonical events/audit). There is
-still no Executor subsystem, Verifier subsystem, or concrete production
+observation -> verify -> Task state -> canonical events/audit), and A2.04 adds
+the narrow Executor boundary in ``agentx.capabilities.executor`` (a typed
+``ExecutorRequest`` delegated to the canonical A1.10 loop — it adds no
+authority, no verification, no retry, and no routing). There is still no
+Verifier subsystem, Task Manager, Router, agent loop, or concrete production
 capability implementation in this package; demo capabilities live under
 ``tests/`` only.
 """
