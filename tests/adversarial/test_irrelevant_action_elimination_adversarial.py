@@ -89,9 +89,7 @@ def _decision(experience: CausalExperience) -> ActionEliminationDecision:
     ],
 )
 def test_hostile_action_name_never_overrides_structural_retention(hostile: str) -> None:
-    decision = _decision(
-        _experience(outcome=CausalOutcome.EXECUTION_FAILED, action_name=hostile)
-    )
+    decision = _decision(_experience(outcome=CausalOutcome.EXECUTION_FAILED, action_name=hostile))
 
     assert decision.disposition is ActionDisposition.RETAIN
     assert decision.reason is ActionDispositionReason.NO_SAFE_ELIMINATION_EVIDENCE
@@ -160,9 +158,7 @@ def test_identical_failure_duplicates_do_not_create_elimination_signal() -> None
     analysis = analyze_irrelevant_actions(extraction)
 
     assert len(analysis.decisions) == 2
-    assert all(
-        decision.disposition is ActionDisposition.RETAIN for decision in analysis.decisions
-    )
+    assert all(decision.disposition is ActionDisposition.RETAIN for decision in analysis.decisions)
     assert (
         analysis.decisions[0].source_experience_sha256
         == analysis.decisions[1].source_experience_sha256
