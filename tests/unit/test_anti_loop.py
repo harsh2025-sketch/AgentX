@@ -92,9 +92,7 @@ def test_exact_total_attempt_threshold_stops() -> None:
 
 
 def test_over_total_attempt_threshold_stays_stopped() -> None:
-    history = tuple(
-        _attempt(f"attempt:{index}", f"outcome:{index}") for index in range(5)
-    )
+    history = tuple(_attempt(f"attempt:{index}", f"outcome:{index}") for index in range(5))
 
     result = LoopGuard().evaluate(
         history=history,
