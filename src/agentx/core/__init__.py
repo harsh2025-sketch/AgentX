@@ -34,4 +34,9 @@ Status:
       the Procedure Graph IR is owned by A3.01 and candidate-skill lifecycle
       by C3.09; SQLite persistence lives in
       ``agentx.infrastructure.procedure_store``.
+    - ``causal_experience`` — canonical immutable C2.10 representation of one
+      observed execution transition: state-before, requested action,
+      observation, state-after, verification, and historical outcome. Records
+      only: no causal inference, authority, execution, learning, routing, or
+      persistence.
 """
