@@ -23,4 +23,9 @@ Status:
       cancellation, or persistence.
     - ``events`` — canonical immutable Event envelope, taxonomy, payloads,
       validation, and deterministic serialization (C1.02 / A1.02b).
+    - ``knowledge`` — canonical immutable KnowledgeRecord contract for
+      semantic/knowledge data: identity, type, status/trust vocabulary,
+      minimum provenance hook, and typed scope (C2.02). Records only: Hive
+      lifecycle policy and retrieval live in ``agentx.hive`` tasks; SQLite
+      persistence lives in ``agentx.infrastructure.knowledge_store``.
 """

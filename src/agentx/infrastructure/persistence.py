@@ -99,6 +99,23 @@ _MIGRATIONS: Final[tuple[_Migration, ...]] = (
             """,
         ),
     ),
+    # C2.02 knowledge store. Migration numbering above 2 is provisional while
+    # concurrent store tasks (e.g. C2.01 EpisodeStore) integrate: resequencing
+    # this entry's version at integration is a two-line, conflict-free change
+    # because every store migration is identified by name, not by number.
+    _Migration(
+        version=3,
+        name="create_knowledge_store",
+        statements=(
+            """
+            CREATE TABLE agentx_knowledge (
+                knowledge_id TEXT PRIMARY KEY CHECK (length(knowledge_id) > 0),
+                created_at_utc TEXT NOT NULL CHECK (length(created_at_utc) > 0),
+                record_json TEXT NOT NULL CHECK (length(record_json) > 0)
+            )
+            """,
+        ),
+    ),
 )
 
 

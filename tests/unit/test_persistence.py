@@ -47,10 +47,13 @@ def test_migration_metadata_created(tmp_path: Path) -> None:
             """
         ).fetchall()
 
-    assert [(row["version"], row["name"]) for row in rows] == [
+    assert [(row["version"], row["name"]) for row in rows][:2] == [
         (1, "create_persistence_metadata"),
         (2, "create_event_journal"),
     ]
+    # Later migrations may be appended (and resequenced at integration) by
+    # concurrent store tasks; only consecutiveness from 1 is structural.
+    assert [row["version"] for row in rows] == list(range(1, len(_MIGRATIONS) + 1))
     assert all(isinstance(row["applied_at_utc"], str) for row in rows)
     assert all(row["applied_at_utc"].endswith("Z") for row in rows)
 
@@ -295,10 +298,15 @@ def test_fresh_schema_contains_registered_migration_tables(tmp_path: Path) -> No
             """
         ).fetchall()
 
-    assert [row["name"] for row in rows] == [
-        "agentx_event_journal",
-        "agentx_schema_migrations",
-    ]
+    # Every migration's tables must exist; concurrent store tasks may append
+    # further migrations, so exact table lists are never pinned here.
+    expected_tables = {
+        statement.split(maxsplit=3)[2].strip()
+        for migration in _MIGRATIONS
+        for statement in migration.statements
+        if statement.strip().upper().startswith("CREATE TABLE")
+    }
+    assert {row["name"] for row in rows} >= expected_tables | {"agentx_schema_migrations"}
 
 
 def test_migration_plan_rejects_nonconsecutive_versions(tmp_path: Path) -> None:

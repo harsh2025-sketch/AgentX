@@ -19,6 +19,7 @@ subsystems.
 from __future__ import annotations
 
 import uuid as _uuid_mod
+from typing import Self
 from uuid import UUID
 
 __all__ = [
@@ -26,6 +27,7 @@ __all__ = [
     "CapabilityId",
     "DomainId",
     "EpisodeId",
+    "KnowledgeId",
     "ProcedureId",
     "TaskId",
 ]
@@ -72,12 +74,12 @@ class DomainId:
         object.__setattr__(self, "_value", value)
 
     @classmethod
-    def create(cls) -> DomainId:
+    def create(cls) -> Self:
         """Generate a new globally unique identifier for this domain."""
         return cls(_uuid_mod.uuid4())
 
     @classmethod
-    def parse(cls, raw: str) -> DomainId:
+    def parse(cls, raw: str) -> Self:
         """Parse a canonical UUID string into an identifier for this domain.
 
         Raises ``_IdConstructionError`` if *raw* is malformed or the nil UUID.
@@ -161,6 +163,10 @@ class ProcedureId(DomainId, domain="procedure"):
 
 class EpisodeId(DomainId, domain="episode"):
     """Identifier for a cognitive episode or reasoning session."""
+
+
+class KnowledgeId(DomainId, domain="knowledge"):
+    """Identifier for one persistent semantic/knowledge record (C2.02)."""
 
 
 class ArtifactId(DomainId, domain="artifact"):

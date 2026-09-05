@@ -7,5 +7,8 @@ authority boundary. Infrastructure may consume stable contracts from
 
 C1.03 implements the EventBus in ``agentx.infrastructure.event_bus`` while the
 canonical C1.02 Event contract lives inward in ``agentx.core.events``.
+C2.02 implements the durable KnowledgeStore in
+``agentx.infrastructure.knowledge_store`` while the canonical knowledge record
+contract lives inward in ``agentx.core.knowledge``.
 This package initializer deliberately remains declarative and side-effect free.
 """
