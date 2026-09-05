@@ -4,10 +4,13 @@ Canonical responsibility: Procedure Graph IR/runtime and skill lifecycle.
 Procedures represent scope/preconditions and are candidates until verified and
 gated; they must not bypass kernel policy.
 
-Status: not implemented. This package deliberately contains no code yet. The
-Procedure Graph canonical IR (ACTION/VERIFY/BRANCH/REASON node semantics and
-interpretation) remains owned by its Day-3 task (A3.01). C2.03's durable
-procedure-record storage lives inward, mirroring the C2.02 knowledge-record
-split: the canonical record contract is ``agentx.core.procedures`` and the
-SQLite store is ``agentx.infrastructure.procedure_store``.
+Day-3 A3.01 owns the canonical Procedure Graph IR surface here, in
+``agentx.procedures.graph``: the finite, directed (possibly cyclic) graph of
+typed nodes plus typed edges and a single entry point, with deterministic,
+versioned, strict serialization. The IR is DATA only — it performs no side
+effects and reaches no authority or runtime subsystem. Node-family semantics
+(ACTION/VERIFY/BRANCH/REASON/...) are owned by later tasks (A3.02-A3.05); the
+C2.03 durable storage contract remains inward in ``agentx.core.procedures`` and
+``agentx.infrastructure.procedure_store``, which persist the graph opaquely as a
+``CANONICAL_JSON`` :class:`agentx.core.procedures.ProcedurePayload`.
 """

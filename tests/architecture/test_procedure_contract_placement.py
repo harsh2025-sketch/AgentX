@@ -117,12 +117,114 @@ def test_procedure_modules_are_independent_of_other_stores() -> None:
         assert not any("knowledge" in module for module in imported), path
 
 
-def test_procedures_subsystem_package_remains_unimplemented() -> None:
-    """A3.01 owns the Procedure Graph IR in ``agentx.procedures``; C2.03 must
-    not have planted anything in that package."""
+def _procedures_package_files() -> list[Path]:
     package = _AGENTX_SRC / "procedures"
-    files = sorted(path.relative_to(_SRC_ROOT) for path in package.rglob("*.py") if path.is_file())
-    assert files == [Path("agentx/procedures/__init__.py")]
+    return sorted(path.relative_to(_SRC_ROOT) for path in package.rglob("*.py") if path.is_file())
+
+
+def _procedures_package_class_names() -> set[str]:
+    names: set[str] = set()
+    for path in (_AGENTX_SRC / "procedures").rglob("*.py"):
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+        names.update(node.name for node in tree.body if isinstance(node, ast.ClassDef))
+    return names
+
+
+def _procedures_package_imported_modules() -> tuple[str, ...]:
+    imported: list[str] = []
+    for path in (_AGENTX_SRC / "procedures").rglob("*.py"):
+        imported.extend(_imported_modules(path))
+    return tuple(dict.fromkeys(imported))
+
+
+def test_procedures_package_owns_graph_ir_without_stealing_c2_03() -> None:
+    """A3.01 legitimately owns the canonical Procedure Graph IR in
+    ``agentx.procedures`` (the graph IR surface), but C2.03's storage contract
+    stays put in ``agentx.core`` / ``agentx.infrastructure``: the procedures
+    package must not redefine ProcedureRecord/ProcedureStore/ProcedurePayload or
+    import the storage contract, and it must not gain any execution/runtime
+    responsibility.
+    """
+    # The package now contains exactly the initializer and the graph IR module.
+    files = _procedures_package_files()
+    assert files == [
+        Path("agentx/procedures/__init__.py"),
+        Path("agentx/procedures/graph.py"),
+    ]
+
+    # C2.03 storage-contract classes remain uniquely owned by core/infrastructure.
+    stolen = _procedures_package_class_names() & {
+        "ProcedureRecord",
+        "ProcedureStore",
+        "ProcedurePayload",
+        "ProcedureScope",
+        "ProcedureScopeDimension",
+        "ProcedurePayloadKind",
+        "ProcedureStatus",
+    }
+    assert stolen == set()
+
+    # The IR must not depend on the C2.03 storage contract or any runtime layer.
+    imported = _procedures_package_imported_modules()
+    forbidden = [
+        module
+        for module in imported
+        if module.startswith("agentx.")
+        and (
+            module in ("agentx.core.procedures", "agentx.infrastructure.procedure_store")
+            or module.startswith(("agentx.kernel", "agentx.capabilities", "agentx.cognition"))
+        )
+    ]
+    assert forbidden == []
+
+    # Any agentx import must be the allowed inward edge to core only (we
+    # currently import nothing; this guards the boundary regardless).
+    agentx_imports = [module for module in imported if module.startswith("agentx.")]
+    assert all(
+        module == "agentx.core" or module.startswith("agentx.core.") for module in agentx_imports
+    ), agentx_imports
+
+
+def test_procedure_graph_ir_module_is_pure_data() -> None:
+    """The graph IR module reaches no authority or runtime subsystem and exposes
+    no execution/interpretation/compilation surface."""
+    source = (_AGENTX_SRC / "procedures" / "graph.py").read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    imported: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            imported.update(alias.name for alias in node.names)
+        elif isinstance(node, ast.ImportFrom) and node.module is not None:
+            imported.add(node.module)
+
+    authority_or_runtime = {
+        module
+        for module in imported
+        if module.startswith("agentx.")
+        and (
+            module.startswith(
+                (
+                    "agentx.kernel",
+                    "agentx.capabilities",
+                    "agentx.cognition",
+                    "agentx.infrastructure",
+                )
+            )
+        )
+    }
+    assert authority_or_runtime == set()
+
+    for token in (
+        "Permission",
+        "RiskLevel",
+        "EmergencyStop",
+        "ActionGate",
+        "ModelProvider",
+        "CapabilityRegistry",
+        "CapabilityId",
+        "AuthorityContext",
+    ):
+        assert token not in source, f"graph IR must not reference authority type {token!r}"
 
 
 def test_contract_defines_no_procedure_graph_ir() -> None:
