@@ -26,9 +26,13 @@ demo capabilities live under ``tests/`` only.
 A5.01 adds the Windows provider boundary in
 ``agentx.capabilities.windows`` (deterministic provider identity, explicit
 platform facts/support evaluation, and contribution of already-constructed
-Windows-scoped capabilities into a caller-owned A1.09 registry). It implements
-no Windows automation and performs no import-time platform detection or
-registration; availability remains descriptive and never authority.
+Windows-scoped capabilities into a caller-owned A1.09 registry). A5.02 adds the
+first concrete Windows capability there: read-only process/application
+discovery with typed identities, explicit metadata-availability semantics,
+deterministic normalization, and an isolated lazy-``ctypes`` native seam. It
+performs no import-time platform detection or registration, keeps discovery
+strictly read-only, and treats discovered metadata as untrusted data that never
+becomes authority.
 
 C5.01 adds the provider-neutral browser-provider boundary in
 ``agentx.capabilities.browser_provider``. C5.02 adds inert provider-associated
