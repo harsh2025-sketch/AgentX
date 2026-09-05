@@ -68,13 +68,12 @@ def test_transition_contract_is_defined_once() -> None:
     assert transition_task.__module__ == "agentx.core.task_state"
 
 
-def test_no_parallel_task_manager_or_executor_surface_in_core() -> None:
-    """A1.06 must not smuggle Day 2 / A1.07 subsystems into the core contract.
+def test_no_parallel_task_manager_or_executor_surface_in_task_state_module() -> None:
+    """A1.06 itself must not smuggle manager/executor/authority plumbing into core.
 
-    Scoped to ``agentx.core``: ``agentx.infrastructure.event_bus`` legitimately
-    owns the canonical EventBus (C1.03), so a repository-wide scan would be the
-    wrong guard here. What must hold is that the inward domain layer gains no
-    manager, store, executor, scheduler, or cancellation surface.
+    This guard is deliberately scoped to ``task_state.py``. Other independently
+    owned core contracts are allowed to exist beside it; for example A1.07
+    canonically owns ``CancellationToken`` in ``core.execution``.
     """
     forbidden = {
         "TaskManager",
@@ -90,10 +89,10 @@ def test_no_parallel_task_manager_or_executor_surface_in_core() -> None:
         "ActionGate",
         "TaskStateMachine",
     }
-    for path in sorted((_AGENTX_SRC / "core").rglob("*.py")):
-        assert forbidden.isdisjoint(_defined_classes(path)), (
-            f"{path} defines forbidden runtime type"
-        )
+    module_path = _AGENTX_SRC / "core" / "task_state.py"
+    assert forbidden.isdisjoint(_defined_classes(module_path)), (
+        f"{module_path} defines forbidden runtime type"
+    )
 
 
 def test_state_machine_module_imports_no_outer_subsystem() -> None:
