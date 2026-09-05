@@ -28,6 +28,7 @@ __all__ = [
     "DomainId",
     "EpisodeId",
     "KnowledgeId",
+    "NegativeExperienceId",
     "ProcedureId",
     "TaskId",
 ]
@@ -167,6 +168,10 @@ class EpisodeId(DomainId, domain="episode"):
 
 class KnowledgeId(DomainId, domain="knowledge"):
     """Identifier for one persistent semantic/knowledge record (C2.02)."""
+
+
+class NegativeExperienceId(DomainId, domain="negative_experience"):
+    """Identifier for one recorded negative (failed-approach) experience (C2.06)."""
 
 
 class ArtifactId(DomainId, domain="artifact"):

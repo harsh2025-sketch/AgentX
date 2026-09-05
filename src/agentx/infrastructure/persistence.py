@@ -247,6 +247,37 @@ _MIGRATIONS: Final[tuple[_Migration, ...]] = (
             """,
         ),
     ),
+    # C2.06 owns v8. Episodic memory composes over the existing C2.01 episode
+    # table and adds no schema; only negative experience needs a durable record.
+    # reason_code remains opaque text with no CHECK-bounded vocabulary: the
+    # canonical failure taxonomy is owned by C4.01 and must be able to land
+    # without SQL surgery.
+    _Migration(
+        version=8,
+        name="create_negative_experience_store",
+        statements=(
+            """
+            CREATE TABLE agentx_negative_experiences (
+                sequence INTEGER PRIMARY KEY AUTOINCREMENT,
+                negative_experience_id TEXT NOT NULL UNIQUE
+                    CHECK (length(negative_experience_id) > 0),
+                episode_id TEXT CHECK (episode_id IS NULL OR length(episode_id) > 0),
+                task_id TEXT CHECK (task_id IS NULL OR length(task_id) > 0),
+                record_json TEXT NOT NULL CHECK (length(record_json) > 0),
+                recorded_at_utc TEXT NOT NULL
+                    DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+            )
+            """,
+            """
+            CREATE INDEX agentx_negative_experiences_episode_sequence_idx
+            ON agentx_negative_experiences (episode_id, sequence)
+            """,
+            """
+            CREATE INDEX agentx_negative_experiences_task_sequence_idx
+            ON agentx_negative_experiences (task_id, sequence)
+            """,
+        ),
+    ),
 )
 
 
