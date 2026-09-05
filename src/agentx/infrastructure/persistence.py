@@ -116,6 +116,32 @@ _MIGRATIONS: Final[tuple[_Migration, ...]] = (
             """,
         ),
     ),
+    _Migration(
+        version=4,
+        name="create_episode_store",
+        statements=(
+            """
+            CREATE TABLE agentx_episodes (
+                sequence INTEGER PRIMARY KEY AUTOINCREMENT,
+                episode_id TEXT NOT NULL UNIQUE CHECK (length(episode_id) > 0),
+                task_id TEXT CHECK (task_id IS NULL OR length(task_id) > 0),
+                correlation_id TEXT
+                    CHECK (correlation_id IS NULL OR length(correlation_id) > 0),
+                episode_json TEXT NOT NULL CHECK (length(episode_json) > 0),
+                recorded_at_utc TEXT NOT NULL
+                    DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+            )
+            """,
+            """
+            CREATE INDEX agentx_episodes_task_sequence_idx
+            ON agentx_episodes (task_id, sequence)
+            """,
+            """
+            CREATE INDEX agentx_episodes_correlation_sequence_idx
+            ON agentx_episodes (correlation_id, sequence)
+            """,
+        ),
+    ),
 )
 
 
