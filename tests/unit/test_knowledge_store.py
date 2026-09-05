@@ -121,12 +121,13 @@ def test_existing_v2_only_database_migrates_forward(tmp_path: Path) -> None:
     with SQLiteDatabase(path).connection() as connection:
         pass  # fully migrated
 
-    # Simulate a database written before the knowledge-store migration existed:
-    # drop its table and forget its migration row, then reopen.
+    # Simulate a database written when v2 was latest: remove every post-v2
+    # table and migration row, then reopen through the current migration plan.
     raw = sqlite3.connect(path, isolation_level=None)
     try:
+        raw.execute("DROP TABLE agentx_episodes")
         raw.execute("DROP TABLE agentx_knowledge")
-        raw.execute("DELETE FROM agentx_schema_migrations WHERE name = 'create_knowledge_store'")
+        raw.execute("DELETE FROM agentx_schema_migrations WHERE version > 2")
     finally:
         raw.close()
 

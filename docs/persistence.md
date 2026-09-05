@@ -2,8 +2,9 @@
 
 C1.05 provides the local SQLite substrate that AgentX storage owners build on. It owns connection,
 transaction, and ordered migration mechanics; higher-level stores own their APIs and schemas.
-C1.04 now extends the registered migration sequence with the event-journal table while keeping the
-C1.05 mechanics unchanged.
+C1.04 extends the registered migration sequence with the event-journal table, C2.02 adds the
+KnowledgeStore schema, and C2.01 adds the EpisodeStore schema while keeping the C1.05 mechanics and
+historical migrations unchanged.
 
 ## Database API
 
@@ -78,22 +79,26 @@ Migration rules:
 8. a database whose recorded version is newer than this code supports is rejected.
 
 Migration 1 creates `agentx_schema_migrations` and is unchanged from C1.05. Migration 2, owned by
-C1.04, creates `agentx_event_journal`. Existing version-1 databases therefore migrate forward
-without rewriting an already-applied migration.
+C1.04, creates `agentx_event_journal` and is unchanged. Migration 3, owned by C2.02, creates
+`agentx_knowledge` and is preserved unchanged. C2.01 appends migration 4,
+`create_episode_store`, which creates the EpisodeStore schema. C2.01 does not renumber or rewrite
+migrations 1-3.
 
 The mechanism remains intentionally private and small rather than becoming a generic migration
 framework.
 
 ## Registered schema
 
-The current registered AgentX tables are:
+The current registered AgentX tables include:
 
 - `agentx_schema_migrations` — migration version, name, and UTC application timestamp;
-- `agentx_event_journal` — C1.04 durable canonical Event history.
+- `agentx_event_journal` — C1.04 durable canonical Event history;
+- `agentx_knowledge` — C2.02 durable KnowledgeStore records;
+- `agentx_episodes` — C2.01 selected episodic-experience history.
 
-The event-journal API and semantics are documented in `docs/event_journal.md`. Hive, episode,
-procedure, audit, task, capability, user, and model schemas remain outside the persistence
-foundation and are not pre-created here.
+The event-journal API is documented in `docs/event_journal.md`; EpisodeStore is documented in
+`docs/episode_store.md`. Procedure, artifact, audit, task, capability, semantic-memory, vector,
+graph, and model schemas remain outside C2.01.
 
 ## Failures
 
