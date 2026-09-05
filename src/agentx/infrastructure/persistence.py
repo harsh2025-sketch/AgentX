@@ -167,6 +167,65 @@ _MIGRATIONS: Final[tuple[_Migration, ...]] = (
             """,
         ),
     ),
+    # C2.04 artifact store. Same name-identified resequencing convention as
+    # above: v1-v5 have landed and stay untouched, so C2.04 appends the next
+    # available version. The promoted columns mirror canonical ArtifactRecord
+    # fields the store must cross-check against record_json for fail-closed
+    # corruption detection, plus the two inert correlation identities; the
+    # opaque reference itself is stored only inside the canonical record JSON
+    # and is never dereferenced by storage. Indexes support deterministic
+    # correlated enumeration; there are deliberately no foreign keys because
+    # correlation IDs are labels, not constraints.
+    _Migration(
+        version=6,
+        name="create_artifact_store",
+        statements=(
+            """
+            CREATE TABLE agentx_artifacts (
+                artifact_id TEXT PRIMARY KEY CHECK (length(artifact_id) > 0),
+                kind TEXT NOT NULL CHECK (length(kind) > 0),
+                created_at_utc TEXT NOT NULL CHECK (length(created_at_utc) > 0),
+                task_id TEXT CHECK (task_id IS NULL OR length(task_id) > 0),
+                episode_id TEXT CHECK (episode_id IS NULL OR length(episode_id) > 0),
+                record_json TEXT NOT NULL CHECK (length(record_json) > 0)
+            )
+            """,
+            """
+            CREATE INDEX agentx_artifacts_task_idx
+            ON agentx_artifacts (task_id, artifact_id)
+            """,
+            """
+            CREATE INDEX agentx_artifacts_episode_idx
+            ON agentx_artifacts (episode_id, artifact_id)
+            """,
+        ),
+    ),
+    # C2.04 audit store. Append-only durable log for canonical C1.09
+    # SecurityAuditRecord values (persisted through the smallest persistence
+    # representation owned by agentx.infrastructure.audit_store). Sequence is
+    # assigned durably by SQLite; audit_id is the unique identity protecting
+    # against silent duplication; recorded_at_utc is insertion-time evidence
+    # for operational inspection. Historical rows are data, never authority.
+    _Migration(
+        version=7,
+        name="create_audit_store",
+        statements=(
+            """
+            CREATE TABLE agentx_audit_log (
+                sequence INTEGER PRIMARY KEY AUTOINCREMENT,
+                audit_id TEXT NOT NULL UNIQUE CHECK (length(audit_id) > 0),
+                task_id TEXT CHECK (task_id IS NULL OR length(task_id) > 0),
+                record_json TEXT NOT NULL CHECK (length(record_json) > 0),
+                recorded_at_utc TEXT NOT NULL
+                    DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+            )
+            """,
+            """
+            CREATE INDEX agentx_audit_log_task_sequence_idx
+            ON agentx_audit_log (task_id, sequence)
+            """,
+        ),
+    ),
 )
 
 

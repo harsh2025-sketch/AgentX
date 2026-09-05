@@ -13,5 +13,11 @@ contract lives inward in ``agentx.core.knowledge``.
 C2.03 implements the durable ProcedureStore in
 ``agentx.infrastructure.procedure_store`` while the canonical procedure-record
 contract lives inward in ``agentx.core.procedures``.
+C2.04 implements the durable ArtifactStore and AuditStore in
+``agentx.infrastructure.artifact_store`` and
+``agentx.infrastructure.audit_store`` while the canonical artifact-record
+contract lives inward in ``agentx.core.artifacts`` and the canonical
+audit-record contract remains defined in ``agentx.kernel.audit`` (consumed
+structurally by persistence, never redefined here).
 This package initializer deliberately remains declarative and side-effect free.
 """

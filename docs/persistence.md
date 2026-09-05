@@ -82,7 +82,10 @@ Migration 1 creates `agentx_schema_migrations` and is unchanged from C1.05. Migr
 C1.04, creates `agentx_event_journal` and is unchanged. Migration 3, owned by C2.02, creates
 `agentx_knowledge` and is preserved unchanged. C2.01 appends migration 4,
 `create_episode_store`, which creates the EpisodeStore schema. C2.01 does not renumber or rewrite
-migrations 1-3.
+migrations 1-3. C2.02/C2.03 continue the same name-identified convention: `create_procedure_store`
+landed as migration 5, and C2.04 appends migration 6 (`create_artifact_store`) and migration 7
+(`create_audit_store`) as the next available versions. No landed migration is ever renumbered or
+rewritten.
 
 The mechanism remains intentionally private and small rather than becoming a generic migration
 framework.
@@ -94,11 +97,17 @@ The current registered AgentX tables include:
 - `agentx_schema_migrations` — migration version, name, and UTC application timestamp;
 - `agentx_event_journal` — C1.04 durable canonical Event history;
 - `agentx_knowledge` — C2.02 durable KnowledgeStore records;
-- `agentx_episodes` — C2.01 selected episodic-experience history.
+- `agentx_episodes` — C2.01 selected episodic-experience history;
+- `agentx_procedures` — C2.03 durable procedure revisions;
+- `agentx_artifacts` — C2.04 durable inert artifact references (metadata only; contents stay
+  external and stored references are never dereferenced by storage);
+- `agentx_audit_log` — C2.04 durable append-only security-audit history for the canonical C1.09
+  `SecurityAuditRecord` contract (historical evidence, never authority; distinct from the
+  event journal by table, identity space, and semantics).
 
 The event-journal API is documented in `docs/event_journal.md`; EpisodeStore is documented in
-`docs/episode_store.md`. Procedure, artifact, audit, task, capability, semantic-memory, vector,
-graph, and model schemas remain outside C2.01.
+`docs/episode_store.md`. Task, capability, semantic-memory, vector, graph, and model schemas
+remain unimplemented.
 
 ## Failures
 
