@@ -39,4 +39,11 @@ Status:
       observation, state-after, verification, and historical outcome. Records
       only: no causal inference, authority, execution, learning, routing, or
       persistence.
+    - ``failure_taxonomy`` — canonical closed failure vocabulary
+      (``FailureCategory``) plus the minimal immutable ``FailureClassification``
+      record: category, inert summary/detail, optional canonical references to
+      already-existing failure evidence, and deterministic serialization
+      (C4.01). Vocabulary and representation only: no diagnosis, localization,
+      inference from text, repair, retry, fallback, escalation, suppression,
+      authority, or persistence.
 """
