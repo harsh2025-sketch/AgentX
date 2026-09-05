@@ -53,4 +53,13 @@ Status:
       classification, and deterministic serialization (C4.02). Localization
       only: no diagnosis, keyword/model inference, trajectory analysis, repair,
       retry, authority, or persistence. Category and location remain orthogonal.
+    - ``failure_diagnosis`` — canonical closed procedure-node diagnosis boundary
+      (C4.03): explicit structured ``DiagnosticEvidence`` (typed kinds bound to
+      canonical references), the closed ``DiagnosticConclusion`` vocabulary
+      (``UNKNOWN`` fail-closed default, explicit ``NODE_IMPLICATED``), and the
+      minimal immutable ``FailureDiagnosis`` record embedding a C4.01
+      classification and a C4.02 ``PROCEDURE_NODE`` localization by value.
+      Representation only: no inference, no keyword/stack/model diagnosis, no
+      root-cause proof, no repair/retry/execution/authority surface, no
+      persistence, and no mutation of the embedded C4.01/C4.02 records.
 """
