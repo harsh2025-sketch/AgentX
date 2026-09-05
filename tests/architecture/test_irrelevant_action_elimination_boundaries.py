@@ -64,8 +64,7 @@ def test_decision_preserves_source_candidate_and_normalized_step_reference() -> 
     }
     assert analysis_fields == {"source_trajectory_id", "decisions", "schema_version"}
     assert (
-        ActionEliminationDecision.__annotations__["source_candidate"]
-        == "ExtractedActionCandidate"
+        ActionEliminationDecision.__annotations__["source_candidate"] == "ExtractedActionCandidate"
     )
     assert ExtractedActionCandidate.__module__ == "agentx.learning.causal_actions"
     assert NormalizedTrajectoryStep.__module__ == "agentx.learning.trajectory"
