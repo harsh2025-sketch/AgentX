@@ -229,8 +229,7 @@ def extract_causal_action_candidates(trajectory: NormalizedTrajectory) -> Causal
     """
     if not isinstance(trajectory, NormalizedTrajectory):
         raise TypeError(
-            "trajectory must be a canonical NormalizedTrajectory, "
-            f"got {type(trajectory).__name__}"
+            f"trajectory must be a canonical NormalizedTrajectory, got {type(trajectory).__name__}"
         )
 
     candidates = tuple(
