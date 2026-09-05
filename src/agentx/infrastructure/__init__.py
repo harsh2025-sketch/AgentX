@@ -10,5 +10,8 @@ canonical C1.02 Event contract lives inward in ``agentx.core.events``.
 C2.02 implements the durable KnowledgeStore in
 ``agentx.infrastructure.knowledge_store`` while the canonical knowledge record
 contract lives inward in ``agentx.core.knowledge``.
+C2.03 implements the durable ProcedureStore in
+``agentx.infrastructure.procedure_store`` while the canonical procedure-record
+contract lives inward in ``agentx.core.procedures``.
 This package initializer deliberately remains declarative and side-effect free.
 """

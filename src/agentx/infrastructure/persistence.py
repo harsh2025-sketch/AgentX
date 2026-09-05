@@ -142,6 +142,31 @@ _MIGRATIONS: Final[tuple[_Migration, ...]] = (
             """,
         ),
     ),
+    # C2.03 procedure store. Concurrent store tasks share this migration plan:
+    # resequencing this entry's version at integration is a two-line,
+    # conflict-free change because every store migration is identified by name,
+    # not by number. (C2.02/C2.01 numbered theirs provisionally above v2; the
+    # episode store has since landed as the canonical v4, so the procedure
+    # store takes the next available version, 5.)
+    # The status column is deliberately opaque text (not a CHECK-bounded
+    # vocabulary): the canonical ProcedureStatus vocabulary is owned by
+    # agentx.core.procedures and must be extendable without SQL surgery.
+    _Migration(
+        version=5,
+        name="create_procedure_store",
+        statements=(
+            """
+            CREATE TABLE agentx_procedures (
+                procedure_id TEXT NOT NULL CHECK (length(procedure_id) > 0),
+                revision INTEGER NOT NULL CHECK (revision > 0),
+                created_at_utc TEXT NOT NULL CHECK (length(created_at_utc) > 0),
+                status TEXT NOT NULL CHECK (length(status) > 0),
+                record_json TEXT NOT NULL CHECK (length(record_json) > 0),
+                PRIMARY KEY (procedure_id, revision)
+            )
+            """,
+        ),
+    ),
 )
 
 

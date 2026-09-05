@@ -28,4 +28,10 @@ Status:
       minimum provenance hook, and typed scope (C2.02). Records only: Hive
       lifecycle policy and retrieval live in ``agentx.hive`` tasks; SQLite
       persistence lives in ``agentx.infrastructure.knowledge_store``.
+    - ``procedures`` — canonical immutable ProcedureRecord contract for stored
+      procedure revisions: identity plus explicit revision, storage-level
+      status, typed scope, and an opaque payload hook (C2.03). Records only:
+      the Procedure Graph IR is owned by A3.01 and candidate-skill lifecycle
+      by C3.09; SQLite persistence lives in
+      ``agentx.infrastructure.procedure_store``.
 """
