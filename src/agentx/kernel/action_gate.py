@@ -4,6 +4,11 @@ Every governed action must receive an explicit gate decision before any later
 execution layer may treat it as authorized. This module evaluates authority only:
 it never executes capabilities, callbacks, shell commands, network operations,
 file writes, persistence, or event publication.
+
+The gate uses ``RiskAssessment.effective_level`` so caller-selected descriptive
+severity can never lower the risk forced by canonical action characteristics.
+Risk classification remains separate from permission: neither one grants the
+other.
 """
 
 from __future__ import annotations
@@ -83,7 +88,7 @@ class ActionGate:
                 reason=f"DENY: {permission_check.reason}",
             )
 
-        level = request.risk_assessment.level
+        level = request.risk_assessment.effective_level
         if level in (RiskLevel.R0, RiskLevel.R1):
             return GateResult(
                 decision=GateDecision.ALLOW,

@@ -10,6 +10,14 @@ Classification is deterministic and operates only on explicitly supplied action
 characteristics. Conflicting characteristics are resolved conservatively: a
 higher-risk characteristic always dominates a lower-risk one, and R4 dominates
 all other levels.
+
+``RiskAssessment.level`` remains part of the stable descriptive contract, but
+it is never allowed to lower the risk implied by the assessment's canonical
+action characteristics. ``effective_level`` is therefore the greater of the
+stored level and the kernel-derived characteristic floor. This preserves
+compatibility with existing assessments while preventing caller-selected
+severity from downgrading explicit state-change, external-effect, critical, or
+destructive facts.
 """
 
 from __future__ import annotations
@@ -63,12 +71,60 @@ _RISK_SEVERITY: Final[dict[RiskLevel, int]] = {
 }
 
 
+def _validate_characteristic(name: str, value: bool) -> None:
+    if type(value) is not bool:
+        raise TypeError(f"{name} must be bool")
+
+
+def _characteristic_floor(
+    *,
+    read_only: bool,
+    modifies_state: bool,
+    reversible: bool,
+    external_effect: bool,
+    critical: bool,
+    destructive: bool,
+) -> RiskLevel:
+    """Return the minimum risk forced by explicit canonical characteristics.
+
+    A directly constructed historical/legacy ``RiskAssessment`` may not carry
+    every positive characteristic. Absence of a positive signal contributes no
+    additional floor; the stored level remains a conservative upper input. Any
+    explicit positive characteristic, however, can only raise the effective
+    level and can never be overridden by a lower caller-selected ``level``.
+    """
+    characteristics = {
+        "read_only": read_only,
+        "modifies_state": modifies_state,
+        "reversible": reversible,
+        "external_effect": external_effect,
+        "critical": critical,
+        "destructive": destructive,
+    }
+    for name, value in characteristics.items():
+        _validate_characteristic(name, value)
+
+    if critical or destructive:
+        return RiskLevel.R4
+    if external_effect:
+        return RiskLevel.R3
+    if modifies_state or reversible:
+        return RiskLevel.R1 if reversible else RiskLevel.R2
+    return RiskLevel.R0
+
+
 @dataclass(frozen=True, slots=True)
 class RiskAssessment:
     """Immutable description of one deterministic risk classification.
 
-    ``RiskAssessment`` is descriptive only. It contains no authority decision
-    and intentionally exposes no API for authorization, approval, execution, or
+    The complete canonical action-characteristic vocabulary is retained so a
+    later Trusted Kernel boundary can recompute a conservative effective risk
+    instead of blindly trusting the descriptive ``level`` field. The level may
+    conservatively overstate risk, but it can never reduce the floor implied by
+    the characteristics.
+
+    ``RiskAssessment`` remains descriptive only. It contains no authority
+    decision and exposes no API for authorization, approval, execution, or
     bypassing policy.
     """
 
@@ -76,6 +132,10 @@ class RiskAssessment:
     reason: str
     reversible: bool
     external_effect: bool
+    read_only: bool = False
+    modifies_state: bool = False
+    critical: bool = False
+    destructive: bool = False
 
     def __post_init__(self) -> None:
         if not isinstance(self.level, RiskLevel):
@@ -86,15 +146,36 @@ class RiskAssessment:
             raise ValueError("reason must not be empty")
         if self.reason != self.reason.strip():
             raise ValueError("reason must be trimmed")
-        if type(self.reversible) is not bool:
-            raise TypeError("reversible must be bool")
-        if type(self.external_effect) is not bool:
-            raise TypeError("external_effect must be bool")
+        _validate_characteristic("read_only", self.read_only)
+        _validate_characteristic("modifies_state", self.modifies_state)
+        _validate_characteristic("reversible", self.reversible)
+        _validate_characteristic("external_effect", self.external_effect)
+        _validate_characteristic("critical", self.critical)
+        _validate_characteristic("destructive", self.destructive)
 
+    @property
+    def characteristic_floor(self) -> RiskLevel:
+        """Return the minimum level forced solely by canonical characteristics."""
+        return _characteristic_floor(
+            read_only=self.read_only,
+            modifies_state=self.modifies_state,
+            reversible=self.reversible,
+            external_effect=self.external_effect,
+            critical=self.critical,
+            destructive=self.destructive,
+        )
 
-def _validate_characteristic(name: str, value: bool) -> None:
-    if type(value) is not bool:
-        raise TypeError(f"{name} must be bool")
+    @property
+    def effective_level(self) -> RiskLevel:
+        """Return the fail-safe level used by authority/resource boundaries.
+
+        A caller-declared level is permitted to be more conservative than the
+        characteristic floor, but never less conservative. Consequently a
+        forged R0 carrying an explicit external-effect fact evaluates as R3 and
+        a forged R0 carrying critical/destructive facts evaluates as R4.
+        """
+        floor = self.characteristic_floor
+        return floor if floor > self.level else self.level
 
 
 def assess_risk(
@@ -189,8 +270,12 @@ def assess_risk(
     return RiskAssessment(
         level=level,
         reason=reason,
+        read_only=read_only,
+        modifies_state=modifies_state,
         reversible=reversible,
         external_effect=external_effect,
+        critical=critical,
+        destructive=destructive,
     )
 
 
