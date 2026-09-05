@@ -22,4 +22,11 @@ manufactures a ``VerificationResult``, never rewrites a ``ClosedLoopOutcome``,
 and fails closed on missing evidence). There is still no Task Manager, Router,
 agent loop, or concrete production capability implementation in this package;
 demo capabilities live under ``tests/`` only.
+
+A5.01 adds the Windows provider boundary in
+``agentx.capabilities.windows`` (deterministic provider identity, explicit
+platform facts/support evaluation, and contribution of already-constructed
+Windows-scoped capabilities into a caller-owned A1.09 registry). It implements
+no Windows automation and performs no import-time platform detection or
+registration; availability remains descriptive and never authority.
 """
