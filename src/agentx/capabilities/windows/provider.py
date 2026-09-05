@@ -12,8 +12,13 @@ three questions and nothing else:
        (:class:`WindowsSupport`).
     3. *How do Windows capabilities reach the canonical execution path?* — a
        provider object (:class:`WindowsProvider`) that holds
-       already-constructed capabilities and can contribute them to a
-       caller-owned :class:`~agentx.capabilities.registry.CapabilityRegistry`.
+       already-constructed capabilities and hands them to the composition root
+       so that *it* can register them in the canonical A1.09
+       ``CapabilityRegistry``.
+
+The provider deliberately does not import or touch the registry itself. A1.09
+reserves registry wiring for the canonical runtime module, and registration is
+a composition-root decision, not a provider privilege.
 
 Deliberate non-scope
 --------------------
@@ -76,7 +81,7 @@ data: hostile metadata is stored and returned verbatim and authorizes nothing.
 The Trusted Kernel remains the authority boundary.
 
 Owner: A5.01. Belongs to ``agentx.capabilities``; imports only the standard
-library, ``agentx.core`` contracts, and the canonical capability ABI/registry.
+library, ``agentx.core`` contracts, and the canonical capability ABI.
 """
 
 from __future__ import annotations
@@ -94,8 +99,7 @@ from agentx.capabilities.abi import (
     CapabilityPlatform,
     CapabilityVersion,
 )
-from agentx.capabilities.registry import CapabilityRegistry
-from agentx.core.errors import AgentXError, ErrorCategory, Retryability
+from agentx.core.errors import AgentXError, AgentXException, ErrorCategory, Retryability
 from agentx.core.result import Result
 
 __all__ = [
@@ -330,14 +334,14 @@ class WindowsProvider:
 
     The provider is a *holder and contributor* of already-constructed Windows
     capabilities, plus the deterministic identity and support verdict that
-    describe it. It deliberately owns no registry of its own: registration
-    targets a caller-supplied A1.09
-    :class:`~agentx.capabilities.registry.CapabilityRegistry`, so there is no
-    singleton, no ambient state, and no import-time registration.
+    describe it. It deliberately owns no registry and imports none: the
+    composition root takes :meth:`capabilities` and registers them in the A1.09
+    registry *it* owns. There is therefore no singleton, no ambient state, and
+    no import-time registration.
 
-    Nothing here executes. ``contribute`` and ``register_into`` never call
-    ``execute`` or ``verify``, never consult the kernel, and never turn
-    availability into authority.
+    Nothing here executes. ``contribute``, ``contributions`` and
+    ``capabilities`` never call ``execute`` or ``verify``, never consult the
+    kernel, and never turn availability into authority.
     """
 
     __slots__ = ("_capabilities", "_support")
@@ -463,28 +467,26 @@ class WindowsProvider:
         ]
         return tuple(items)
 
-    def register_into(
-        self, registry: CapabilityRegistry
-    ) -> Result[tuple[CapabilityIdentity, ...], AgentXError]:
-        """Register every contributed capability into a caller-owned registry.
+    def capabilities(self) -> tuple[Capability[Any], ...]:
+        """Return the contributed capability objects in canonical order.
 
-        This is the provider's only interaction with the capability fabric: it
-        hands existing objects to the canonical A1.09 registry so that future
-        Windows capabilities can participate in the ordinary execution path.
-        It performs no discovery, no dynamic import, no plugin scan, and no
-        execution, and it is never triggered by importing anything.
+        This is how Windows capabilities reach the canonical execution path:
+        the composition root takes these already-constructed objects and
+        registers them in an A1.09 ``CapabilityRegistry`` it owns. The provider
+        deliberately performs no registration itself — it neither imports nor
+        touches the registry — so discovery wiring stays a composition-root
+        decision. Handing over an object is not permission to run it.
 
-        On an unsupported host it fails explicitly and registers nothing.
+        Raises:
+            AgentXException: if the host is unsupported. Availability is
+                checked explicitly rather than silently returning nothing.
         """
-        if not isinstance(registry, CapabilityRegistry):
-            raise TypeError(f"registry must be a CapabilityRegistry, got {type(registry).__name__}")
         if not self._support.is_supported:
-            return Result.failure(unsupported_platform_error(self._support))
-
-        registered: list[CapabilityIdentity] = []
-        for identity in sorted(self._capabilities, key=_identity_sort_key):
-            registered.append(registry.register(self._capabilities[identity]))
-        return Result.success(tuple(registered))
+            raise AgentXException(unsupported_platform_error(self._support))
+        return tuple(
+            self._capabilities[identity]
+            for identity in sorted(self._capabilities, key=_identity_sort_key)
+        )
 
     def __len__(self) -> int:
         """Return how many capabilities have been contributed."""

@@ -150,9 +150,14 @@ def test_windows_package_uses_only_stdlib_and_canonical_agentx(path: Path) -> No
 def test_provider_reuses_the_canonical_capability_contracts() -> None:
     imported = _imported_modules(_PROVIDER)
     assert "agentx.capabilities.abi" in imported
-    assert "agentx.capabilities.registry" in imported
     assert "agentx.core.errors" in imported
     assert "agentx.core.result" in imported
+
+
+def test_provider_does_not_take_over_registry_wiring() -> None:
+    """A1.09 reserves registry imports for the canonical runtime module."""
+    for path in _windows_sources():
+        assert "agentx.capabilities.registry" not in _imported_modules(path)
 
 
 def test_provider_does_not_duplicate_the_capability_abi_or_registry() -> None:
@@ -228,7 +233,6 @@ def test_importing_the_provider_in_a_clean_interpreter_loads_nothing_native() ->
     probe = (
         "import sys\n"
         "import agentx.capabilities.abi  # noqa: F401\n"
-        "import agentx.capabilities.registry  # noqa: F401\n"
         "import agentx.core.errors  # noqa: F401\n"
         "import agentx.core.result  # noqa: F401\n"
         "before = set(sys.modules)\n"
@@ -258,7 +262,6 @@ def test_importing_the_provider_performs_no_platform_detection() -> None:
         # legitimately read platform facts at their own import time (e.g. uuid)
         # cannot be misattributed to the provider.
         "import agentx.capabilities.abi  # noqa: F401\n"
-        "import agentx.capabilities.registry  # noqa: F401\n"
         "import agentx.core.errors  # noqa: F401\n"
         "import agentx.core.result  # noqa: F401\n"
         "import platform\n"
@@ -286,8 +289,8 @@ def test_importing_the_provider_performs_no_platform_detection() -> None:
 
 def test_importing_the_provider_registers_nothing() -> None:
     probe = (
-        "from agentx.capabilities.registry import CapabilityRegistry\n"
         "import agentx.capabilities.windows.provider  # noqa: F401\n"
+        "from agentx.capabilities.registry import CapabilityRegistry\n"
         "assert len(CapabilityRegistry()) == 0\n"
     )
     completed = subprocess.run(

@@ -62,7 +62,8 @@ def test_discovery_never_executes_a_capability() -> None:
     capability = InertWindowsCapability()
     assert provider.contribute(capability).is_success
     registry = CapabilityRegistry()
-    assert provider.register_into(registry).is_success
+    for item in provider.capabilities():
+        registry.register(item)
 
     provider.contributions()
     registry.identities()
@@ -99,7 +100,7 @@ def test_emergency_stop_is_untouched_by_provider_activity() -> None:
     stop.request_stop()
     provider = _provider()
     assert provider.contribute(InertWindowsCapability()).is_success
-    assert provider.register_into(CapabilityRegistry()).is_success
+    assert provider.capabilities()
     assert stop.stop_requested is True
 
 

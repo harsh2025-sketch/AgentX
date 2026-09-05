@@ -24,7 +24,7 @@ from agentx.capabilities.windows.provider import (
     evaluate_windows_support,
     unsupported_platform_error,
 )
-from agentx.core.errors import AgentXError, ErrorCategory, Retryability
+from agentx.core.errors import AgentXError, AgentXException, ErrorCategory, Retryability
 from tests.support.windows_capability import InertWindowsCapability
 
 WINDOWS_FACTS = PlatformFacts(
@@ -208,12 +208,12 @@ def test_unsupported_provider_refuses_contribution_predictably() -> None:
     assert len(provider) == 0
 
 
-def test_unsupported_provider_registers_nothing() -> None:
+def test_unsupported_provider_hands_out_no_capabilities() -> None:
     provider = _unsupported_provider()
-    registry = CapabilityRegistry()
-    result = provider.register_into(registry)
-    assert result.is_failure
-    assert len(registry) == 0
+    with pytest.raises(AgentXException) as excinfo:
+        provider.capabilities()
+    assert excinfo.value.error.code == WINDOWS_UNSUPPORTED_ERROR_CODE
+    assert len(CapabilityRegistry()) == 0
 
 
 def test_unsupported_provider_still_constructs_and_reports() -> None:
@@ -291,39 +291,41 @@ def test_versioned_capabilities_coexist_and_sort_by_version() -> None:
     assert versions == ["1.3.0", "2.0.0"]
 
 
-def test_register_into_uses_the_canonical_registry() -> None:
+def test_capabilities_are_registrable_by_the_composition_root() -> None:
+    """The provider hands objects over; the caller owns the registry."""
     provider = _supported_provider()
     capability = InertWindowsCapability()
     assert provider.contribute(capability).is_success
 
     registry = CapabilityRegistry()
-    result = provider.register_into(registry)
+    identities = [registry.register(item) for item in provider.capabilities()]
 
-    assert result.is_success
-    assert result.unwrap() == (capability.descriptor.identity,)
+    assert identities == [capability.descriptor.identity]
     assert registry.require(capability.descriptor.identity) is capability
     assert registry.describe(capability.descriptor.identity) == capability.descriptor
 
 
-def test_register_into_rejects_a_non_registry_target() -> None:
+def test_provider_exposes_no_registration_surface() -> None:
+    """A1.09 reserves registry wiring; the provider must not take it over."""
     provider = _supported_provider()
-    with pytest.raises(TypeError):
-        provider.register_into(object())  # type: ignore[arg-type]
+    for forbidden in ("register_into", "register", "registry"):
+        assert not hasattr(provider, forbidden)
 
 
-def test_register_into_does_not_own_or_create_a_registry() -> None:
+def test_capabilities_are_returned_in_deterministic_order() -> None:
     provider = _supported_provider()
-    assert provider.contribute(InertWindowsCapability()).is_success
-    first, second = CapabilityRegistry(), CapabilityRegistry()
-    assert provider.register_into(first).is_success
-    assert len(first) == 1
-    assert len(second) == 0
+    for name in ("windows.zeta", "windows.alpha"):
+        assert provider.contribute(InertWindowsCapability(name=name)).is_success
+    names = [str(item.descriptor.identity.name) for item in provider.capabilities()]
+    assert names == ["windows.alpha", "windows.zeta"]
 
 
-def test_registering_twice_into_the_same_registry_conflicts_canonically() -> None:
+def test_registering_the_same_capability_twice_conflicts_canonically() -> None:
     provider = _supported_provider()
     assert provider.contribute(InertWindowsCapability()).is_success
     registry = CapabilityRegistry()
-    assert provider.register_into(registry).is_success
+    for item in provider.capabilities():
+        registry.register(item)
     with pytest.raises(CapabilityAlreadyRegisteredError):
-        provider.register_into(registry)
+        for item in provider.capabilities():
+            registry.register(item)

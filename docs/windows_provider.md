@@ -17,7 +17,7 @@ questions:
 | -------- | -------- |
 | Who is the Windows provider? | `WindowsProviderIdentity` / `WINDOWS_PROVIDER_IDENTITY` |
 | Can it operate on this host? | `PlatformFacts` -> `evaluate_windows_support` -> `WindowsSupport` |
-| How do Windows capabilities reach the execution path? | `WindowsProvider.contribute` / `WindowsProvider.register_into` |
+| How do Windows capabilities reach the execution path? | `WindowsProvider.contribute` / `WindowsProvider.capabilities` |
 
 Everything else that a Windows adapter will eventually need — process/window
 discovery, the UIA tree, semantic controls, native invocation, keyboard/text,
@@ -34,8 +34,11 @@ and duplicates none of them:
 - Platform scope reuses the canonical `CapabilityScope` /
   `CapabilityPlatform.WINDOWS` vocabulary; the provider accepts only
   `windows`-scoped capabilities and rejects `any`.
-- Registration targets a **caller-owned** A1.09 `CapabilityRegistry`. The
-  provider owns no registry, is not a singleton, and holds no ambient state.
+- The provider owns **no** registry and imports none. A1.09 reserves registry
+  wiring for the canonical runtime module, so the composition root takes
+  `WindowsProvider.capabilities()` and registers those objects in the A1.09
+  `CapabilityRegistry` it owns. The provider is not a singleton and holds no
+  ambient state.
 - Failures are canonical `AgentXError` values carried in `Result`. A5.01 adds
   **no** Windows-specific exception type: `PRECONDITION` / `NON_RETRYABLE`
   already expresses "this host is not Windows", under the stable code
@@ -59,8 +62,9 @@ Detection is explicit, pure and testable:
 - `WindowsProvider(support)` requires the verdict to be supplied by the caller.
   `WindowsProvider.for_current_host()` exists for application wiring and is
   never invoked at import time.
-- An unsupported host fails **predictably**: `contribute` and `register_into`
-  return an explicit canonical failure and change nothing. There is no
+- An unsupported host fails **predictably**: `contribute` returns an explicit
+  canonical failure and `capabilities()` raises `AgentXException` carrying the
+  same canonical error; nothing changes either way. There is no
   `ImportError` from an eager native import and no silent no-op.
 
 ## Import-side-effect guarantees
