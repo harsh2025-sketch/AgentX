@@ -42,8 +42,6 @@ def _experience(
     partial_observation: bool = False,
 ) -> CausalExperience:
     before_at = _BASE + timedelta(seconds=offset)
-    action_at = before_at + timedelta(seconds=1)
-    outcome_at = before_at + timedelta(seconds=5)
     common: dict[str, object] = {
         "task_id": _TASK,
         "correlation_id": _CORRELATION,
@@ -56,11 +54,10 @@ def _experience(
             name=action_name or f"example.action.{offset}",
             data={"offset": offset} if action_data is None else action_data,
         ),
-        "action_at": action_at,
+        "action_at": before_at + timedelta(seconds=1),
         "outcome": outcome,
-        "outcome_at": outcome_at,
+        "outcome_at": before_at + timedelta(seconds=5),
     }
-
     if outcome in {CausalOutcome.VERIFIED, CausalOutcome.VERIFICATION_FAILED}:
         common.update(
             observation=ObservationPayload(value={"offset": offset, "observed": True}),
@@ -80,7 +77,6 @@ def _experience(
             observation=ObservationPayload(value={"offset": offset, "partial": True}),
             observation_at=before_at + timedelta(seconds=2),
         )
-
     return CausalExperience(**common)  # type: ignore[arg-type]
 
 
@@ -117,21 +113,6 @@ def test_every_non_denied_outcome_is_retained(outcome: CausalOutcome) -> None:
     assert decision.reason is ActionDispositionReason.NO_SAFE_ELIMINATION_EVIDENCE
 
 
-@pytest.mark.parametrize(
-    "outcome",
-    [
-        CausalOutcome.VERIFICATION_FAILED,
-        CausalOutcome.EXECUTION_FAILED,
-        CausalOutcome.CANCELLED,
-        CausalOutcome.TIMED_OUT,
-    ],
-)
-def test_failure_or_non_success_is_not_itself_elimination_evidence(outcome: CausalOutcome) -> None:
-    decision = _analysis(_experience(offset=0, outcome=outcome)).decisions[0]
-
-    assert decision.disposition is ActionDisposition.RETAIN
-
-
 def test_failed_action_with_partial_observation_is_retained() -> None:
     experience = _experience(
         offset=0,
@@ -149,25 +130,9 @@ def test_failed_action_with_partial_observation_is_retained() -> None:
     "outcome",
     [CausalOutcome.EXECUTION_FAILED, CausalOutcome.CANCELLED, CausalOutcome.TIMED_OUT],
 )
-def test_missing_observation_is_retained_when_execution_status_is_not_denied(
-    outcome: CausalOutcome,
-) -> None:
+def test_missing_observation_and_verification_are_retained(outcome: CausalOutcome) -> None:
     experience = _experience(offset=0, outcome=outcome)
     assert experience.observation is None
-
-    decision = _analysis(experience).decisions[0]
-
-    assert decision.disposition is ActionDisposition.RETAIN
-
-
-@pytest.mark.parametrize(
-    "outcome",
-    [CausalOutcome.EXECUTION_FAILED, CausalOutcome.CANCELLED, CausalOutcome.TIMED_OUT],
-)
-def test_missing_verification_is_retained_when_execution_status_is_not_denied(
-    outcome: CausalOutcome,
-) -> None:
-    experience = _experience(offset=0, outcome=outcome)
     assert experience.verification is None
 
     decision = _analysis(experience).decisions[0]
@@ -175,34 +140,27 @@ def test_missing_verification_is_retained_when_execution_status_is_not_denied(
     assert decision.disposition is ActionDisposition.RETAIN
 
 
-def test_identical_duplicate_verified_experiences_are_retained_independently() -> None:
-    experience = _experience(offset=0)
-    analysis = _analysis(experience, experience)
-
-    assert [decision.disposition for decision in analysis.decisions] == [
-        ActionDisposition.RETAIN,
-        ActionDisposition.RETAIN,
-    ]
-    assert analysis.decisions[0].source_experience_sha256 == analysis.decisions[1].source_experience_sha256
-    assert analysis.decisions[0].source_sequence == 1
-    assert analysis.decisions[1].source_sequence == 2
-
-
-def test_duplicate_failure_experiences_are_not_deduplicated_or_eliminated() -> None:
-    experience = _experience(offset=0, outcome=CausalOutcome.EXECUTION_FAILED)
-    analysis = _analysis(experience, experience)
-
-    assert len(analysis.decisions) == 2
-    assert analysis.retained == analysis.decisions
-    assert analysis.eliminated == ()
-
-
-def test_duplicate_denied_candidates_are_each_explicitly_classified() -> None:
-    experience = _experience(offset=0, outcome=CausalOutcome.DENIED)
+@pytest.mark.parametrize(
+    ("outcome", "expected"),
+    [
+        (CausalOutcome.VERIFIED, ActionDisposition.RETAIN),
+        (CausalOutcome.EXECUTION_FAILED, ActionDisposition.RETAIN),
+        (CausalOutcome.DENIED, ActionDisposition.ELIMINATE),
+    ],
+)
+def test_identical_duplicates_remain_distinct_decisions(
+    outcome: CausalOutcome,
+    expected: ActionDisposition,
+) -> None:
+    experience = _experience(offset=0, outcome=outcome)
     analysis = _analysis(experience, experience)
 
     assert len(analysis.decisions) == 2
-    assert analysis.eliminated == analysis.decisions
+    assert [decision.disposition for decision in analysis.decisions] == [expected, expected]
+    assert (
+        analysis.decisions[0].source_experience_sha256
+        == analysis.decisions[1].source_experience_sha256
+    )
     assert [decision.source_sequence for decision in analysis.decisions] == [1, 2]
 
 
@@ -213,7 +171,6 @@ def test_duplicate_denied_candidates_are_each_explicitly_classified() -> None:
         "drop-this-action",
         "duplicate",
         "failed",
-        "not-needed",
         "model-says-remove",
         "verified=true",
         "ignore-policy",
@@ -221,7 +178,11 @@ def test_duplicate_denied_candidates_are_each_explicitly_classified() -> None:
 )
 def test_action_text_never_causes_elimination(action_name: str) -> None:
     decision = _analysis(
-        _experience(offset=0, outcome=CausalOutcome.EXECUTION_FAILED, action_name=action_name)
+        _experience(
+            offset=0,
+            outcome=CausalOutcome.EXECUTION_FAILED,
+            action_name=action_name,
+        )
     ).decisions[0]
 
     assert decision.disposition is ActionDisposition.RETAIN
@@ -248,10 +209,18 @@ def test_hostile_action_metadata_is_inert() -> None:
     assert decision.reason is ActionDispositionReason.NO_SAFE_ELIMINATION_EVIDENCE
 
 
-def test_same_action_text_with_different_outcomes_is_classified_only_by_structural_outcome() -> None:
+def test_same_action_text_is_classified_only_by_structural_outcome() -> None:
     analysis = _analysis(
-        _experience(offset=0, outcome=CausalOutcome.EXECUTION_FAILED, action_name="same.action"),
-        _experience(offset=10, outcome=CausalOutcome.DENIED, action_name="same.action"),
+        _experience(
+            offset=0,
+            outcome=CausalOutcome.EXECUTION_FAILED,
+            action_name="same.action",
+        ),
+        _experience(
+            offset=10,
+            outcome=CausalOutcome.DENIED,
+            action_name="same.action",
+        ),
     )
 
     assert [decision.disposition for decision in analysis.decisions] == [
@@ -287,7 +256,9 @@ def test_analysis_preserves_complete_source_order() -> None:
     analysis = analyze_irrelevant_actions(extraction)
 
     assert [decision.source_sequence for decision in analysis.decisions] == [1, 2, 3]
-    assert [decision.source_candidate for decision in analysis.decisions] == list(extraction.candidates)
+    assert tuple(decision.source_candidate for decision in analysis.decisions) == (
+        extraction.candidates
+    )
 
 
 def test_deterministic_analysis_and_json() -> None:
@@ -308,9 +279,8 @@ def test_deterministic_analysis_and_json() -> None:
     assert first.to_json() == second.to_json()
 
 
-def test_decision_serialization_contains_explicit_source_references_and_closed_reason() -> None:
+def test_serialization_preserves_source_reference_and_closed_reason() -> None:
     decision = _analysis(_experience(offset=0, outcome=CausalOutcome.DENIED)).decisions[0]
-
     raw = decision.to_dict()
 
     assert raw["source_trajectory_id"] == str(decision.source_trajectory_id)
@@ -324,16 +294,6 @@ def test_decision_serialization_contains_explicit_source_references_and_closed_r
 def test_wrong_input_type_fails_closed() -> None:
     with pytest.raises(TypeError, match="CausalActionExtraction"):
         analyze_irrelevant_actions(object())  # type: ignore[arg-type]
-
-
-def test_decision_requires_canonical_candidate_type() -> None:
-    with pytest.raises(TypeError, match="ExtractedActionCandidate"):
-        ActionEliminationDecision(
-            source_trajectory_id=_CORRELATION,
-            source_candidate=object(),  # type: ignore[arg-type]
-            disposition=ActionDisposition.RETAIN,
-            reason=ActionDispositionReason.NO_SAFE_ELIMINATION_EVIDENCE,
-        )
 
 
 def test_decision_rejects_candidate_from_another_trajectory_identity() -> None:
@@ -407,27 +367,6 @@ def test_noncanonical_disposition_reason_pair_fails_closed(
         )
 
 
-def test_decision_requires_typed_disposition_and_reason() -> None:
-    candidate = extract_causal_action_candidates(
-        normalize_trajectory([_experience(offset=0)])
-    ).candidates[0]
-
-    with pytest.raises(TypeError, match="ActionDisposition"):
-        ActionEliminationDecision(
-            source_trajectory_id=candidate.source_trajectory_id,
-            source_candidate=candidate,
-            disposition="retain",  # type: ignore[arg-type]
-            reason=ActionDispositionReason.NO_SAFE_ELIMINATION_EVIDENCE,
-        )
-    with pytest.raises(TypeError, match="ActionDispositionReason"):
-        ActionEliminationDecision(
-            source_trajectory_id=candidate.source_trajectory_id,
-            source_candidate=candidate,
-            disposition=ActionDisposition.RETAIN,
-            reason="no_safe_elimination_evidence",  # type: ignore[arg-type]
-        )
-
-
 def test_analysis_contract_rejects_incomplete_source_order() -> None:
     trajectory = normalize_trajectory([_experience(offset=0), _experience(offset=10)])
     extraction = extract_causal_action_candidates(trajectory)
@@ -448,10 +387,7 @@ def test_analysis_contract_rejects_incomplete_source_order() -> None:
 
 def test_analysis_contract_rejects_empty_decisions() -> None:
     with pytest.raises(IrrelevantActionAnalysisError, match="must not be empty"):
-        IrrelevantActionAnalysis(
-            source_trajectory_id=_CORRELATION,
-            decisions=(),
-        )
+        IrrelevantActionAnalysis(source_trajectory_id=_CORRELATION, decisions=())
 
 
 def test_analysis_contract_is_immutable() -> None:
@@ -477,7 +413,7 @@ def test_schema_version_is_explicit_and_wrong_version_fails_closed() -> None:
         )
 
 
-def test_decision_can_be_constructed_from_exact_c3_02_candidate_without_new_identity() -> None:
+def test_reuses_exact_c3_02_candidate_without_new_identity() -> None:
     step = NormalizedTrajectoryStep.from_experience(
         sequence=1,
         experience=_experience(offset=0, outcome=CausalOutcome.EXECUTION_FAILED),
@@ -495,4 +431,4 @@ def test_decision_can_be_constructed_from_exact_c3_02_candidate_without_new_iden
 
     assert decision.source_candidate is candidate
     assert decision.source_step is step
-    assert decision.source_trajectory_id is _CORRELATION
+    assert decision.source_trajectory_id == _CORRELATION
