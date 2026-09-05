@@ -161,6 +161,5 @@ def test_c3_02_uses_only_standard_library_and_agentx_imports() -> None:
     standard_roots = {"__future__", "dataclasses", "json", "typing", "uuid"}
 
     assert all(
-        name.startswith("agentx.") or name.split(".", 1)[0] in standard_roots
-        for name in imports
+        name.startswith("agentx.") or name.split(".", 1)[0] in standard_roots for name in imports
     )
