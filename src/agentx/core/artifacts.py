@@ -177,12 +177,9 @@ class ArtifactRecord:
                 raise ArtifactValidationError("size_bytes must not be negative")
 
         if self.sha256 is not None and (
-            not isinstance(self.sha256, str)
-            or not _SHA256_PATTERN.fullmatch(self.sha256)
+            not isinstance(self.sha256, str) or not _SHA256_PATTERN.fullmatch(self.sha256)
         ):
-            raise ArtifactValidationError(
-                "sha256 must be 64 lowercase hexadecimal characters"
-            )
+            raise ArtifactValidationError("sha256 must be 64 lowercase hexadecimal characters")
 
     @classmethod
     def create(
@@ -231,9 +228,7 @@ class ArtifactRecord:
     def to_json(self) -> str:
         """Serialize deterministically without executable or dynamic types."""
 
-        return json.dumps(
-            self.to_dict(), ensure_ascii=True, separators=(",", ":"), sort_keys=True
-        )
+        return json.dumps(self.to_dict(), ensure_ascii=True, separators=(",", ":"), sort_keys=True)
 
     @classmethod
     def from_dict(cls, raw: Mapping[str, object]) -> ArtifactRecord:
@@ -274,12 +269,8 @@ class ArtifactRecord:
             created_at=_parse_timestamp(raw["created_at"]),
             locator=_validate_text(raw["locator"], field_name="locator"),
             task_id=_parse_task_id(raw["task_id"]),
-            correlation_id=_parse_uuid(
-                raw["correlation_id"], field_name="correlation_id"
-            ),
-            media_type=_validate_optional_text(
-                raw["media_type"], field_name="media_type"
-            ),
+            correlation_id=_parse_uuid(raw["correlation_id"], field_name="correlation_id"),
+            media_type=_validate_optional_text(raw["media_type"], field_name="media_type"),
             size_bytes=size_raw,
             sha256=_validate_optional_text(raw["sha256"], field_name="sha256"),
         )

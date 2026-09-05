@@ -131,10 +131,9 @@ def test_task_and_correlation_filters_are_exact(tmp_path: Path) -> None:
         first,
         second,
     ]
-    assert [
-        entry.record
-        for entry in store.read(task_id=task_a, correlation_id=correlation_a)
-    ] == [first]
+    assert [entry.record for entry in store.read(task_id=task_a, correlation_id=correlation_a)] == [
+        first
+    ]
 
 
 def test_restart_durability_preserves_history_and_next_sequence(tmp_path: Path) -> None:

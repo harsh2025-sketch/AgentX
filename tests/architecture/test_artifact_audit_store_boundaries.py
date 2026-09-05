@@ -90,9 +90,7 @@ def test_stores_have_no_cross_store_event_procedure_knowledge_or_model_coupling(
     for path in _MODULES:
         imports = _imports(path)
         assert not any(
-            fragment in imported
-            for imported in imports
-            for fragment in forbidden_fragments
+            fragment in imported for imported in imports for fragment in forbidden_fragments
         )
 
 

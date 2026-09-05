@@ -52,9 +52,7 @@ class CorruptAuditRecordError(AuditStoreError):
     def __init__(self, *, sequence: int, audit_id: str) -> None:
         self.sequence = sequence
         self.audit_id = audit_id
-        super().__init__(
-            f"Stored audit row sequence={sequence} audit_id={audit_id!r} is corrupt"
-        )
+        super().__init__(f"Stored audit row sequence={sequence} audit_id={audit_id!r} is corrupt")
 
 
 @dataclass(frozen=True, slots=True)
@@ -189,9 +187,7 @@ def _decode_row(row: sqlite3.Row) -> AuditEntry:
         raise CorruptAuditRecordError(sequence=sequence, audit_id=audit_id) from exc
 
     expected_task = record.task_id.to_str() if record.task_id is not None else None
-    expected_correlation = (
-        str(record.correlation_id) if record.correlation_id is not None else None
-    )
+    expected_correlation = str(record.correlation_id) if record.correlation_id is not None else None
     if str(record.audit_id) != audit_id:
         raise CorruptAuditRecordError(sequence=sequence, audit_id=audit_id)
     if row["task_id"] != expected_task:

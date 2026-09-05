@@ -130,10 +130,9 @@ def test_task_and_correlation_filters_are_exact(tmp_path: Path) -> None:
         first,
         second,
     ]
-    assert [
-        entry.record
-        for entry in store.read(task_id=task_a, correlation_id=correlation_a)
-    ] == [first]
+    assert [entry.record for entry in store.read(task_id=task_a, correlation_id=correlation_a)] == [
+        first
+    ]
 
 
 def test_restart_durability_preserves_history_and_next_sequence(tmp_path: Path) -> None:
@@ -336,9 +335,7 @@ def test_audit_store_does_not_append_or_replay_event_journal(tmp_path: Path) -> 
     store.read()
 
     with SQLiteDatabase(_path(tmp_path)).connection() as connection:
-        count = connection.execute(
-            "SELECT COUNT(*) AS count FROM agentx_event_journal"
-        ).fetchone()
+        count = connection.execute("SELECT COUNT(*) AS count FROM agentx_event_journal").fetchone()
 
     assert count is not None
     assert count["count"] == 0

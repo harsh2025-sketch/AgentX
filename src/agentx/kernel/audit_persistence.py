@@ -101,8 +101,7 @@ def restore_security_audit(snapshot: AuditRecordSnapshot) -> SecurityAuditRecord
 
     context: AuditContext | None = None
     if any(
-        value is not None
-        for value in (snapshot.actor, snapshot.target, permission, secret_ref)
+        value is not None for value in (snapshot.actor, snapshot.target, permission, secret_ref)
     ):
         context = AuditContext(
             actor=snapshot.actor,

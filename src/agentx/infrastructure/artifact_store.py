@@ -129,9 +129,7 @@ class ArtifactStore:
                     (artifact_id.to_str(),),
                 ).fetchone()
             except sqlite3.Error as exc:
-                raise ArtifactStoreStorageError(
-                    f"Unable to read artifact {artifact_id}"
-                ) from exc
+                raise ArtifactStoreStorageError(f"Unable to read artifact {artifact_id}") from exc
 
         if row is None:
             return None
@@ -215,14 +213,10 @@ def _decode_row(row: sqlite3.Row) -> ArtifactEntry:
     try:
         record = ArtifactRecord.from_json(str(row["artifact_json"]))
     except ArtifactValidationError as exc:
-        raise CorruptArtifactRecordError(
-            sequence=sequence, artifact_id=artifact_id
-        ) from exc
+        raise CorruptArtifactRecordError(sequence=sequence, artifact_id=artifact_id) from exc
 
     expected_task = record.task_id.to_str() if record.task_id is not None else None
-    expected_correlation = (
-        str(record.correlation_id) if record.correlation_id is not None else None
-    )
+    expected_correlation = str(record.correlation_id) if record.correlation_id is not None else None
     if record.artifact_id.to_str() != artifact_id:
         raise CorruptArtifactRecordError(sequence=sequence, artifact_id=artifact_id)
     if row["task_id"] != expected_task:
