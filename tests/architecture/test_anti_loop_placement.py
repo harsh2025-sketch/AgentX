@@ -182,9 +182,7 @@ def test_no_authority_risk_budget_or_verification_contract_is_imported() -> None
 def test_no_global_mutable_guard_state() -> None:
     tree = _tree()
     module_assignments = [
-        node
-        for node in tree.body
-        if isinstance(node, (ast.Assign, ast.AnnAssign))
+        node for node in tree.body if isinstance(node, (ast.Assign, ast.AnnAssign))
     ]
     # Only module constants/pattern configuration exist.  No history, counter,
     # cache, singleton guard, lock, or runtime state is retained globally.
