@@ -46,4 +46,11 @@ Status:
       (C4.01). Vocabulary and representation only: no diagnosis, localization,
       inference from text, repair, retry, fallback, escalation, suppression,
       authority, or persistence.
+    - ``failure_localization`` — canonical closed localization-target vocabulary
+      (``FailureLocationKind``) plus explicit ``LocalizationEvidence`` and the
+      minimal immutable ``FailureLocalization`` record: where structured
+      evidence points in the execution chain, optional linkage to a C4.01
+      classification, and deterministic serialization (C4.02). Localization
+      only: no diagnosis, keyword/model inference, trajectory analysis, repair,
+      retry, authority, or persistence. Category and location remain orthogonal.
 """
