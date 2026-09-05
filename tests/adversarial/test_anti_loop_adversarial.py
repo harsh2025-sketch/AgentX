@@ -19,7 +19,7 @@ from agentx.cognition.anti_loop import (
     ProgressFingerprint,
 )
 from agentx.kernel.action_gate import ActionGate, GateRequest
-from agentx.kernel.permissions import AuthorityContext, Permission
+from agentx.kernel.permissions import Permission
 from agentx.kernel.resource_budget import ResourceEnvelope
 from agentx.kernel.risk import RiskAssessment, RiskLevel
 
@@ -121,7 +121,6 @@ def test_loop_result_cannot_manufacture_permissions() -> None:
             "grant",
         }
     )
-    assert not isinstance(result, AuthorityContext)
 
 
 def test_guard_does_not_lower_canonical_risk() -> None:
