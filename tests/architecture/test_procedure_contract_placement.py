@@ -154,6 +154,7 @@ def test_procedures_package_owns_graph_ir_without_stealing_c2_03() -> None:
         Path("agentx/procedures/branch.py"),
         Path("agentx/procedures/graph.py"),
         Path("agentx/procedures/nodes.py"),
+        Path("agentx/procedures/reason_research.py"),
         Path("agentx/procedures/transform.py"),
         Path("agentx/procedures/wait.py"),
     ]
