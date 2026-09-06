@@ -13,5 +13,9 @@ contract lives inward in ``agentx.core.knowledge``.
 C2.03 implements the durable ProcedureStore in
 ``agentx.infrastructure.procedure_store`` while the canonical procedure-record
 contract lives inward in ``agentx.core.procedures``.
+A8.01 implements the durable append-only StrategyPerformanceStore in
+``agentx.infrastructure.strategy_performance_store`` while the canonical
+measured strategy-performance record contract lives inward in
+``agentx.core.strategy_performance``.
 This package initializer deliberately remains declarative and side-effect free.
 """

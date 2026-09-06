@@ -271,10 +271,11 @@ def test_c403_adds_no_persistence_or_migration_surface() -> None:
         int(match) for match in re.findall(r"^\s*version=(\d+),", persistence_source, re.MULTILINE)
     ]
 
-    # C4.03 is a pure core contract: the migration ladder is untouched and the
-    # highest landed migration remains the C2.06 negative-experience store (v8).
+    # C4.03 is a pure core contract: it adds no migration of its own. The
+    # ladder continues only through later append-only store tasks (A8.01 owns
+    # v9, create_strategy_performance_store); nothing here rewrites history.
     assert migration_versions == sorted(migration_versions)
-    assert max(migration_versions) == 8
+    assert max(migration_versions) >= 9
     assert "failure_diagnosis" not in persistence_source
     assert "agentx_failure_diagnosis" not in persistence_source
 

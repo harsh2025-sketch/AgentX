@@ -72,4 +72,14 @@ Status:
       verified; no inference from text, no ranking or scoring, no repair,
       patching, retry, execution, authority, persistence, or mutation of the
       embedded diagnosis.
+    - ``strategy_performance`` — canonical inert measured strategy-performance
+      history contract (A8.01): the execution-level identity vocabulary
+      (pinned to the canonical A2.07 levels), the immutable
+      ``StrategyPerformanceRecord`` of one executed strategy attempt (verified
+      outcome with canonical evidence, failure category, cost with unit,
+      latency, timestamps, scope/environment and provenance references), and
+      pure deterministic aggregation/grouping primitives. Records only: no
+      strategy selection, routing change, verification, bandits/RL, caching,
+      cost optimization, authority, or persistence; SQLite storage lives in
+      ``agentx.infrastructure.strategy_performance_store``.
 """

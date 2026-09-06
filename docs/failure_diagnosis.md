@@ -220,8 +220,8 @@ serialization:
 **None.** C4.03 is a pure `agentx.core` domain contract with no store, no SQLite access,
 and **no migration**. Nothing in the diagnosis vocabulary requires durable storage: the
 record is constructed, compared, and serialized in memory, and callers that already persist
-evidence keep owning their own storage. No migration number was consumed; the highest
-landed migration remains v8 (C2.06 negative-experience store).
+evidence keep owning their own storage. No migration number was consumed (later store tasks
+append after v8: A8.01 owns v9, `create_strategy_performance_store`).
 
 ## Boundary
 

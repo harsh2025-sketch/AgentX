@@ -278,6 +278,71 @@ _MIGRATIONS: Final[tuple[_Migration, ...]] = (
             """,
         ),
     ),
+    # A8.01 owns v9. Strategy-performance history denormalizes the canonical
+    # identity/evidence columns that deterministic queries filter on; the
+    # measured facts (cost with unit, latency, timestamps) live inside
+    # record_json and are summarized by the pure core aggregation primitives.
+    # Column values remain opaque text without CHECK-bounded vocabularies:
+    # the canonical vocabularies are owned by agentx.core and must be able to
+    # evolve without SQL surgery.
+    _Migration(
+        version=9,
+        name="create_strategy_performance_store",
+        statements=(
+            """
+            CREATE TABLE agentx_strategy_performance (
+                sequence INTEGER PRIMARY KEY AUTOINCREMENT,
+                record_id TEXT NOT NULL UNIQUE CHECK (length(record_id) > 0),
+                level TEXT NOT NULL CHECK (length(level) > 0),
+                outcome TEXT NOT NULL CHECK (length(outcome) > 0),
+                strategy_name TEXT CHECK (strategy_name IS NULL OR length(strategy_name) > 0),
+                procedure_id TEXT
+                    CHECK (procedure_id IS NULL OR length(procedure_id) > 0),
+                capability_id TEXT
+                    CHECK (capability_id IS NULL OR length(capability_id) > 0),
+                task_id TEXT CHECK (task_id IS NULL OR length(task_id) > 0),
+                episode_id TEXT CHECK (episode_id IS NULL OR length(episode_id) > 0),
+                correlation_id TEXT
+                    CHECK (correlation_id IS NULL OR length(correlation_id) > 0),
+                record_json TEXT NOT NULL CHECK (length(record_json) > 0),
+                recorded_at_utc TEXT NOT NULL
+                    DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+            )
+            """,
+            """
+            CREATE INDEX agentx_strategy_performance_level_sequence_idx
+            ON agentx_strategy_performance (level, sequence)
+            """,
+            """
+            CREATE INDEX agentx_strategy_performance_outcome_sequence_idx
+            ON agentx_strategy_performance (outcome, sequence)
+            """,
+            """
+            CREATE INDEX agentx_strategy_performance_strategy_name_sequence_idx
+            ON agentx_strategy_performance (strategy_name, sequence)
+            """,
+            """
+            CREATE INDEX agentx_strategy_performance_procedure_sequence_idx
+            ON agentx_strategy_performance (procedure_id, sequence)
+            """,
+            """
+            CREATE INDEX agentx_strategy_performance_capability_sequence_idx
+            ON agentx_strategy_performance (capability_id, sequence)
+            """,
+            """
+            CREATE INDEX agentx_strategy_performance_task_sequence_idx
+            ON agentx_strategy_performance (task_id, sequence)
+            """,
+            """
+            CREATE INDEX agentx_strategy_performance_episode_sequence_idx
+            ON agentx_strategy_performance (episode_id, sequence)
+            """,
+            """
+            CREATE INDEX agentx_strategy_performance_correlation_sequence_idx
+            ON agentx_strategy_performance (correlation_id, sequence)
+            """,
+        ),
+    ),
 )
 
 

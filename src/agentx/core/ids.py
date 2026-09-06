@@ -30,6 +30,7 @@ __all__ = [
     "KnowledgeId",
     "NegativeExperienceId",
     "ProcedureId",
+    "StrategyPerformanceId",
     "TaskId",
 ]
 
@@ -160,6 +161,10 @@ class CapabilityId(DomainId, domain="capability"):
 
 class ProcedureId(DomainId, domain="procedure"):
     """Identifier for a procedure graph definition."""
+
+
+class StrategyPerformanceId(DomainId, domain="strategy_performance"):
+    """Identifier for one measured execution-strategy performance record (A8.01)."""
 
 
 class EpisodeId(DomainId, domain="episode"):

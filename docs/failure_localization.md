@@ -142,7 +142,7 @@ C4.02 introduces **no** new domain identifier type and **no** competing error hi
 
 ## Persistence decision
 
-**None.** C4.02 is a pure `agentx.core` domain contract with no store, no SQLite access, and **no migration**. Nothing in the localization vocabulary itself requires durable storage. No migration number was consumed; the highest landed migration remains v8 (C2.06 negative-experience store).
+**None.** C4.02 is a pure `agentx.core` domain contract with no store, no SQLite access, and **no migration**. Nothing in the localization vocabulary itself requires durable storage. No migration number was consumed (later store tasks append after v8: A8.01 owns v9, `create_strategy_performance_store`).
 
 ## Boundary
 
