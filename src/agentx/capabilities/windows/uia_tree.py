@@ -790,9 +790,9 @@ class WindowsUIATreeInspection:
         if not isinstance(raw, Result):
             return Result.failure(_invalid_native_data("native UIA surface returned non-Result"))
         if raw.is_failure:
-            return Result.failure(raw.error)
+            return Result.failure(raw.unwrap_error())
         return _normalize_tree(
-            raw.value,
+            raw.unwrap(),
             root_window_handle=window_handle,
             captured_at=captured_at,
             limits=selected_limits,
