@@ -522,11 +522,14 @@ def test_procedure_storage_stays_opaque_to_the_conditions_contract() -> None:
 
 def test_a3_06_module_is_referenced_nowhere_but_by_tests_and_package_docs() -> None:
     """Nothing in ``src`` silently grows a dependency on the A3.06 module:
-    the only src-file mentions are the module itself and the package
-    initializer docstring."""
+    the only src-file mentions are the module itself, the package
+    initializer docstring, and the A3.07 evaluator — the one canonical
+    consumer of A3.06 condition DATA, which composes the contract instead
+    of duplicating it."""
     allowed = {
         _CONDITIONS_MODULE,
         _AGENTX_SRC / "procedures" / "__init__.py",
+        _AGENTX_SRC / "procedures" / "condition_evaluation.py",
     }
     needles = (
         "procedures.conditions",
