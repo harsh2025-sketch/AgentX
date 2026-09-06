@@ -7,10 +7,13 @@ from decimal import Decimal
 
 from agentx.capabilities.windows import _native
 from agentx.capabilities.windows.screen_capture import (
+    CaptureBounds,
+    ScreenCaptureResult,
     ScreenCaptureStatus,
     ScreenCaptureTarget,
     WindowsScreenCapture,
 )
+from agentx.core.errors import AgentXError
 from agentx.core.result import Result
 from agentx.kernel.action_gate import ActionGate, GateDecision, GateRequest
 from agentx.kernel.emergency_stop import EmergencyStop, EmergencyStopState
@@ -28,12 +31,13 @@ class FixedClock:
 
 
 class HostilePixelSurface:
-    def virtual_screen_bounds(self) -> Result[_native.RawCaptureBounds, object]:
+    def virtual_screen_bounds(self) -> Result[_native.RawCaptureBounds, AgentXError]:
         return Result.success(_native.RawCaptureBounds(x=0, y=0, width=6, height=4))
 
     def window_capture_info(
         self, window_handle: int
-    ) -> Result[_native.RawWindowCaptureInfo, object]:
+    ) -> Result[_native.RawWindowCaptureInfo, AgentXError]:
+        del window_handle
         return Result.success(
             _native.RawWindowCaptureInfo(
                 exists=True,
@@ -48,16 +52,16 @@ class HostilePixelSurface:
         bounds: _native.RawCaptureBounds,
         *,
         window_handle: int | None = None,
-    ) -> Result[bytes, object]:
+    ) -> Result[bytes, AgentXError]:
         del window_handle
         byte_count = bounds.width * bounds.height * 4
         return Result.success((_HOSTILE_PIXELS * 4)[:byte_count])
 
 
-def _capture() -> object:
+def _capture() -> ScreenCaptureResult:
     capture = WindowsScreenCapture(
         windows_support(),
-        native_surface=HostilePixelSurface(),  # type: ignore[arg-type]
+        native_surface=HostilePixelSurface(),
         clock=FixedClock(),
     )
     result = capture.capture(ScreenCaptureTarget.display())
@@ -176,7 +180,7 @@ def test_pixel_result_exposes_no_action_semantic_or_grounding_surface() -> None:
 
 def test_capture_does_not_fabricate_verification() -> None:
     result = _capture()
-    metadata = result.metadata_dict()  # type: ignore[union-attr]
+    metadata = result.metadata_dict()
 
     assert "verified" not in metadata
     assert "verification" not in metadata
@@ -186,10 +190,7 @@ def test_capture_does_not_fabricate_verification() -> None:
 def test_window_handle_and_region_coordinates_are_selectors_not_authority() -> None:
     window = ScreenCaptureTarget.window(0x7FFFFFFF)
     region = ScreenCaptureTarget.bounded_region(
-        __import__(
-            "agentx.capabilities.windows.screen_capture",
-            fromlist=["CaptureBounds"],
-        ).CaptureBounds(x=-100, y=20, width=10, height=10)
+        CaptureBounds(x=-100, y=20, width=10, height=10)
     )
 
     assert window.identity.startswith("window:")
