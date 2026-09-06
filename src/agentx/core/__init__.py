@@ -62,4 +62,14 @@ Status:
       Representation only: no inference, no keyword/stack/model diagnosis, no
       root-cause proof, no repair/retry/execution/authority surface, no
       persistence, and no mutation of the embedded C4.01/C4.02 records.
+    - ``repair_candidates`` — canonical closed repair-candidate boundary (C4.04):
+      the tiny ``RepairCandidateKind`` vocabulary (``UNKNOWN`` fail-closed
+      default, explicit ``NODE_DEFINITION_REVISION``) and the minimal immutable
+      ``RepairCandidate`` record embedding the exact C4.03 ``FailureDiagnosis``
+      by value with strict position links to its evidence, plus the pure
+      deterministic ``derive_repair_candidates`` packaging. Hypotheses only:
+      a candidate is never correct, safe, selected, authorized, executed, or
+      verified; no inference from text, no ranking or scoring, no repair,
+      patching, retry, execution, authority, persistence, or mutation of the
+      embedded diagnosis.
 """
