@@ -631,7 +631,9 @@ def _normalize_tree(
     if not isinstance(raw.elements, tuple) or not isinstance(raw.errors, tuple):
         return Result.failure(_invalid_native_data("native UIA tree collections are malformed"))
     if type(raw.truncated_by_depth) is not bool or type(raw.truncated_by_nodes) is not bool:
-        return Result.failure(_invalid_native_data("native UIA tree has malformed truncation flags"))
+        return Result.failure(
+            _invalid_native_data("native UIA tree has malformed truncation flags")
+        )
     if len(raw.elements) > limits.max_nodes:
         return Result.failure(_invalid_native_data("native UIA tree exceeded max_nodes"))
 
@@ -648,19 +650,29 @@ def _normalize_tree(
 
     for expected_sequence, element in enumerate(raw.elements):
         if not isinstance(element, _uia_native.RawUIAElement):
-            return Result.failure(_invalid_native_data("native UIA tree contains wrong element type"))
+            return Result.failure(
+                _invalid_native_data("native UIA tree contains wrong element type")
+            )
         if element.sequence != expected_sequence:
-            return Result.failure(_invalid_native_data("native UIA element sequence is not contiguous"))
+            return Result.failure(
+                _invalid_native_data("native UIA element sequence is not contiguous")
+            )
         if type(element.depth) is not int or not 0 <= element.depth <= limits.max_depth:
             return Result.failure(_invalid_native_data("native UIA element depth is invalid"))
         if type(element.child_index) is not int or element.child_index < 0:
             return Result.failure(_invalid_native_data("native UIA child index is invalid"))
-        if not isinstance(element.properties, tuple) or not isinstance(element.pattern_properties, tuple):
-            return Result.failure(_invalid_native_data("native UIA property collections are malformed"))
+        if not isinstance(element.properties, tuple) or not isinstance(
+            element.pattern_properties, tuple
+        ):
+            return Result.failure(
+                _invalid_native_data("native UIA property collections are malformed")
+            )
 
         if expected_sequence == 0:
             if element.parent_sequence is not None or element.depth != 0:
-                return Result.failure(_invalid_native_data("native UIA root relationship is invalid"))
+                return Result.failure(
+                    _invalid_native_data("native UIA root relationship is invalid")
+                )
             path: tuple[int, ...] = ()
             parent_path = None
         else:
@@ -670,11 +682,15 @@ def _normalize_tree(
             parent_path = paths_by_sequence[parent_sequence]
             path = (*parent_path, element.child_index)
             if len(path) != element.depth:
-                return Result.failure(_invalid_native_data("native UIA depth/path relationship is invalid"))
+                return Result.failure(
+                    _invalid_native_data("native UIA depth/path relationship is invalid")
+                )
             if path in paths_by_sequence.values():
                 return Result.failure(_invalid_native_data("native UIA element path is duplicated"))
 
-        properties = tuple(_normalize_property(name, element.properties) for name in UIAPropertyName)
+        properties = tuple(
+            _normalize_property(name, element.properties) for name in UIAPropertyName
+        )
         patterns = tuple(
             _normalize_pattern(name, element.pattern_properties) for name in UIAPatternName
         )
@@ -715,13 +731,21 @@ def _normalize_tree(
     errors: list[UIANativeError] = []
     for error in raw.errors:
         if not isinstance(error, _uia_native.RawUIAError):
-            return Result.failure(_invalid_native_data("native UIA tree contains wrong error type"))
-        if not isinstance(error.operation, str) or not error.operation or type(error.hresult) is not int:
+            return Result.failure(
+                _invalid_native_data("native UIA tree contains wrong error type")
+            )
+        if (
+            not isinstance(error.operation, str)
+            or not error.operation
+            or type(error.hresult) is not int
+        ):
             return Result.failure(_invalid_native_data("native UIA error is malformed"))
         path = None
         if error.sequence is not None:
             if type(error.sequence) is not int or error.sequence not in paths_by_sequence:
-                return Result.failure(_invalid_native_data("native UIA error references unknown element"))
+                return Result.failure(
+                    _invalid_native_data("native UIA error references unknown element")
+                )
             path = paths_by_sequence[error.sequence]
         errors.append(
             UIANativeError(operation=error.operation, hresult=error.hresult, element_path=path)
@@ -761,7 +785,11 @@ class WindowsUIATreeInspection:
             native_surface if native_surface is not None else UIAutomationNativeSurface(),
         )
         object.__setattr__(self, "_support", support)
-        object.__setattr__(self, "_clock", clock if clock is not None else lambda: datetime.now(UTC))
+        object.__setattr__(
+            self,
+            "_clock",
+            clock if clock is not None else lambda: datetime.now(UTC),
+        )
 
     def __setattr__(self, name: str, value: object) -> None:
         raise AttributeError(f"WindowsUIATreeInspection is immutable; cannot set {name!r}")
