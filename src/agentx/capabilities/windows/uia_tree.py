@@ -2,14 +2,14 @@
 
 A5.03 reads one bounded UIA control-view tree rooted at an existing top-level
 window handle. It produces immutable point-in-time observation data with
-explicit property availability/error states and complete snapshot-local
-parent/child provenance.
+explicit property availability/error states and snapshot-local parent/child
+provenance.
 
 Observed UI text is untrusted data. Names, values, automation IDs and pattern
 metadata authorize nothing and are never interpreted as instructions.
 
 This module performs no clicking, invocation, typing, value setting, focus
-change, input synthesis, visual fallback, semantic resolution, task success
+change, input synthesis, visual fallback, semantic resolution, task-success
 claim, state-transition verification, persistence, or authority mutation.
 Native UIA/COM knowledge is isolated in :mod:`agentx.capabilities.windows._uia_native`.
 """
@@ -31,6 +31,8 @@ from agentx.core.tasks import JsonValue
 
 __all__ = [
     "UIA_INVALID_NATIVE_DATA_ERROR_CODE",
+    "UIA_SURFACE_EXCEPTION_ERROR_CODE",
+    "NativeUIATreeSurface",
     "UIAElementReference",
     "UIAElementSnapshot",
     "UIAElementState",
@@ -43,12 +45,12 @@ __all__ = [
     "UIAPropertyObservation",
     "UIATreeLimits",
     "UIATreeSnapshot",
-    "NativeUIATreeSurface",
     "UIAutomationNativeSurface",
     "WindowsUIATreeInspection",
 ]
 
 UIA_INVALID_NATIVE_DATA_ERROR_CODE: Final[str] = "capabilities.windows.uia.invalid_native_data"
+UIA_SURFACE_EXCEPTION_ERROR_CODE: Final[str] = "capabilities.windows.uia.surface_exception"
 _MAX_TEXT_CHARS: Final[int] = 16_384
 _MAX_DEPTH: Final[int] = 64
 _MAX_NODES: Final[int] = 10_000
@@ -73,7 +75,7 @@ class UIAElementState(StrEnum):
 
 
 class UIAFreshness(StrEnum):
-    """Freshness semantics for A5.03 snapshots."""
+    """A5.03 records a point-in-time read, never a live element promise."""
 
     POINT_IN_TIME = "point_in_time"
 
@@ -94,6 +96,8 @@ class UIAPropertyName(StrEnum):
 
 
 class UIAPatternName(StrEnum):
+    """Pattern-availability metadata only; no pattern object is exposed."""
+
     DOCK = "dock"
     EXPAND_COLLAPSE = "expand_collapse"
     GRID_ITEM = "grid_item"
@@ -116,7 +120,7 @@ class UIAPatternName(StrEnum):
 
 @dataclass(frozen=True, slots=True)
 class UIATreeLimits:
-    """Mandatory finite traversal limits."""
+    """Mandatory finite traversal limits; no unlimited mode exists."""
 
     max_depth: int = 8
     max_nodes: int = 512
@@ -134,7 +138,7 @@ class UIATreeLimits:
 
 @dataclass(frozen=True, slots=True)
 class UIAPropertyObservation:
-    """One normalized property observation; value text remains inert."""
+    """One normalized property observation; text remains inert data."""
 
     name: UIAPropertyName
     status: UIAObservationStatus
@@ -147,18 +151,17 @@ class UIAPropertyObservation:
         if not isinstance(self.status, UIAObservationStatus):
             raise TypeError("status must be a UIAObservationStatus")
         if self.status is UIAObservationStatus.AVAILABLE:
-            if self.value is None and self.name is not UIAPropertyName.VALUE:
+            if self.value is None:
                 raise ValueError("available property must carry a value")
             if self.hresult is not None:
                 raise ValueError("available property cannot carry an HRESULT")
-        else:
-            if self.value is not None:
-                raise ValueError("non-available property cannot carry a value")
+        elif self.value is not None:
+            raise ValueError("non-available property cannot carry a value")
         if self.status in {UIAObservationStatus.NATIVE_ERROR, UIAObservationStatus.VANISHED}:
             if type(self.hresult) is not int:
                 raise TypeError("native-error/vanished property requires integer HRESULT")
         elif self.hresult is not None:
-            raise ValueError("HRESULT is only valid for native-error/vanished properties")
+            raise ValueError("HRESULT is valid only for native-error/vanished properties")
 
     def to_dict(self) -> dict[str, JsonValue]:
         return {
@@ -188,14 +191,13 @@ class UIAPatternObservation:
                 raise TypeError("available pattern observation requires bool supported")
             if self.hresult is not None:
                 raise ValueError("available pattern observation cannot carry HRESULT")
-        else:
-            if self.supported is not None:
-                raise ValueError("non-available pattern observation cannot claim support")
+        elif self.supported is not None:
+            raise ValueError("non-available pattern observation cannot claim support")
         if self.status in {UIAObservationStatus.NATIVE_ERROR, UIAObservationStatus.VANISHED}:
             if type(self.hresult) is not int:
                 raise TypeError("native-error/vanished pattern requires integer HRESULT")
         elif self.hresult is not None:
-            raise ValueError("HRESULT is only valid for native-error/vanished patterns")
+            raise ValueError("HRESULT is valid only for native-error/vanished patterns")
 
     def to_dict(self) -> dict[str, JsonValue]:
         return {
@@ -208,7 +210,7 @@ class UIAPatternObservation:
 
 @dataclass(frozen=True, slots=True)
 class UIAElementReference:
-    """Snapshot-local UIA element reference with optional native runtime ID."""
+    """Snapshot-local identity with optional native UIA runtime ID."""
 
     root_window_handle: int
     path: tuple[int, ...]
@@ -219,9 +221,8 @@ class UIAElementReference:
             raise ValueError("root_window_handle must be a positive int")
         if not isinstance(self.path, tuple):
             raise TypeError("path must be a tuple")
-        for index in self.path:
-            if type(index) is not int or index < 0:
-                raise ValueError("path entries must be non-negative ints")
+        if any(type(index) is not int or index < 0 for index in self.path):
+            raise ValueError("path entries must be non-negative ints")
         if self.runtime_id is not None:
             if not isinstance(self.runtime_id, tuple) or not self.runtime_id:
                 raise ValueError("runtime_id must be a non-empty tuple when present")
@@ -238,7 +239,7 @@ class UIAElementReference:
 
 @dataclass(frozen=True, slots=True)
 class UIANativeError:
-    """Native traversal error attached to the snapshot as inert diagnostics."""
+    """Traversal error preserved as inert snapshot diagnostics."""
 
     operation: str
     hresult: int
@@ -297,65 +298,71 @@ class UIAElementSnapshot:
         if tuple(item.name for item in self.patterns) != tuple(UIAPatternName):
             raise ValueError("patterns must contain every UIAPatternName exactly once in order")
 
-    def property(self, name: UIAPropertyName) -> UIAPropertyObservation:
+    def property_observation(self, name: UIAPropertyName) -> UIAPropertyObservation:
+        """Return one closed-vocabulary property observation without inference."""
         if not isinstance(name, UIAPropertyName):
             raise TypeError("name must be a UIAPropertyName")
         return self.properties[tuple(UIAPropertyName).index(name)]
 
     @property
     def process_id(self) -> int | None:
-        observation = self.property(UIAPropertyName.PROCESS_ID)
-        return observation.value if type(observation.value) is int else None
+        value = self.property_observation(UIAPropertyName.PROCESS_ID).value
+        return value if type(value) is int else None
 
     @property
     def control_type(self) -> int | None:
-        observation = self.property(UIAPropertyName.CONTROL_TYPE)
-        return observation.value if type(observation.value) is int else None
+        value = self.property_observation(UIAPropertyName.CONTROL_TYPE).value
+        return value if type(value) is int else None
 
     @property
     def automation_id(self) -> str | None:
-        observation = self.property(UIAPropertyName.AUTOMATION_ID)
-        return observation.value if isinstance(observation.value, str) else None
+        value = self.property_observation(UIAPropertyName.AUTOMATION_ID).value
+        return value if isinstance(value, str) else None
 
     @property
     def name(self) -> str | None:
-        observation = self.property(UIAPropertyName.NAME)
-        return observation.value if isinstance(observation.value, str) else None
+        value = self.property_observation(UIAPropertyName.NAME).value
+        return value if isinstance(value, str) else None
 
     @property
     def value(self) -> str | None:
-        observation = self.property(UIAPropertyName.VALUE)
-        return observation.value if isinstance(observation.value, str) else None
+        value = self.property_observation(UIAPropertyName.VALUE).value
+        return value if isinstance(value, str) else None
 
     @property
     def is_enabled(self) -> bool | None:
-        observation = self.property(UIAPropertyName.IS_ENABLED)
-        return observation.value if type(observation.value) is bool else None
+        value = self.property_observation(UIAPropertyName.IS_ENABLED).value
+        return value if type(value) is bool else None
 
     @property
     def is_offscreen(self) -> bool | None:
-        observation = self.property(UIAPropertyName.IS_OFFSCREEN)
-        return observation.value if type(observation.value) is bool else None
+        value = self.property_observation(UIAPropertyName.IS_OFFSCREEN).value
+        return value if type(value) is bool else None
 
     @property
     def is_visible(self) -> bool | None:
-        """UIA visibility approximation: logical inverse of IsOffscreen.
-
-        This is not a semantic claim that pixels are visible; it only exposes
-        the standard UIA offscreen observation in the convenient positive form.
-        """
+        """Positive form of UIA IsOffscreen, not a pixel-visibility claim."""
         offscreen = self.is_offscreen
         return None if offscreen is None else not offscreen
 
     @property
     def has_keyboard_focus(self) -> bool | None:
-        observation = self.property(UIAPropertyName.HAS_KEYBOARD_FOCUS)
-        return observation.value if type(observation.value) is bool else None
+        value = self.property_observation(UIAPropertyName.HAS_KEYBOARD_FOCUS).value
+        return value if type(value) is bool else None
+
+    @property
+    def is_keyboard_focusable(self) -> bool | None:
+        value = self.property_observation(UIAPropertyName.IS_KEYBOARD_FOCUSABLE).value
+        return value if type(value) is bool else None
+
+    @property
+    def native_window_handle(self) -> int | None:
+        value = self.property_observation(UIAPropertyName.NATIVE_WINDOW_HANDLE).value
+        return value if type(value) is int else None
 
     @property
     def bounding_rectangle(self) -> tuple[float, float, float, float] | None:
-        observation = self.property(UIAPropertyName.BOUNDING_RECTANGLE)
-        value = observation.value
+        value = self.property_observation(UIAPropertyName.BOUNDING_RECTANGLE).value
         if not isinstance(value, list) or len(value) != 4:
             return None
         return (float(value[0]), float(value[1]), float(value[2]), float(value[3]))
@@ -416,17 +423,17 @@ class UIATreeSnapshot:
         if len(paths) != len(set(paths)):
             raise ValueError("element paths must be unique")
         if self.elements and paths[0] != ():
-            raise ValueError("first element must be the root path")
+            raise ValueError("first element must be root path")
         path_set = set(paths)
         for element in self.elements:
             if element.reference.root_window_handle != self.root_window_handle:
-                raise ValueError("all element references must share root_window_handle")
+                raise ValueError("all references must share root_window_handle")
             if len(element.reference.path) > self.limits.max_depth:
                 raise ValueError("element path exceeds max_depth")
             if element.parent_path is not None and element.parent_path not in path_set:
-                raise ValueError("parent_path must reference an element in the snapshot")
+                raise ValueError("parent_path must reference an element in snapshot")
             if any(path not in path_set for path in element.child_paths):
-                raise ValueError("child_paths must reference elements in the snapshot")
+                raise ValueError("child_paths must reference elements in snapshot")
 
     @property
     def node_count(self) -> int:
@@ -486,11 +493,25 @@ def _invalid_native_data(message: str) -> AgentXError:
     )
 
 
+def _surface_exception(exc: Exception) -> AgentXError:
+    return AgentXError(
+        code=UIA_SURFACE_EXCEPTION_ERROR_CODE,
+        message="Windows UI Automation adapter raised while reading the tree",
+        category=ErrorCategory.EXECUTION,
+        retryability=Retryability.UNKNOWN,
+        details={"exception_type": type(exc).__name__},
+    )
+
+
 def _status_from_raw(raw: _uia_native.RawUIAProperty) -> UIAObservationStatus:
     if raw.hresult is not None:
+        if type(raw.hresult) is not int:
+            return UIAObservationStatus.INVALID
         if raw.hresult == _uia_native.UIA_ELEMENT_NOT_AVAILABLE_HRESULT:
             return UIAObservationStatus.VANISHED
         return UIAObservationStatus.NATIVE_ERROR
+    if type(raw.unavailable) is not bool:
+        return UIAObservationStatus.INVALID
     if raw.unavailable:
         return UIAObservationStatus.UNAVAILABLE
     return UIAObservationStatus.AVAILABLE
@@ -530,9 +551,7 @@ def _normalized_value(name: UIAPropertyName, value: object) -> JsonValue | None:
         UIAPropertyName.CONTROL_TYPE,
         UIAPropertyName.NATIVE_WINDOW_HANDLE,
     }:
-        if type(value) is not int or value < 0:
-            return None
-        return value
+        return value if type(value) is int and value >= 0 else None
     if name in {
         UIAPropertyName.HAS_KEYBOARD_FOCUS,
         UIAPropertyName.IS_KEYBOARD_FOCUSABLE,
@@ -557,14 +576,9 @@ def _normalize_property(
     raw = matches[0]
     status = _status_from_raw(raw)
     if status is not UIAObservationStatus.AVAILABLE:
-        return UIAPropertyObservation(
-            name=name,
-            status=status,
-            value=None,
-            hresult=raw.hresult,
-        )
+        return UIAPropertyObservation(name=name, status=status, value=None, hresult=raw.hresult)
     value = _normalized_value(name, raw.value)
-    if value is None and not (name is UIAPropertyName.VALUE and raw.value is None):
+    if value is None:
         return UIAPropertyObservation(name=name, status=UIAObservationStatus.INVALID, value=None)
     return UIAPropertyObservation(name=name, status=status, value=value)
 
@@ -575,11 +589,7 @@ def _normalize_pattern(
 ) -> UIAPatternObservation:
     matches = tuple(item for item in raw_patterns if item.name == name.value)
     if len(matches) != 1:
-        return UIAPatternObservation(
-            name=name,
-            status=UIAObservationStatus.INVALID,
-            supported=None,
-        )
+        return UIAPatternObservation(name=name, status=UIAObservationStatus.INVALID, supported=None)
     raw = matches[0]
     status = _status_from_raw(raw)
     if status is not UIAObservationStatus.AVAILABLE:
@@ -590,11 +600,7 @@ def _normalize_pattern(
             hresult=raw.hresult,
         )
     if type(raw.value) is not bool:
-        return UIAPatternObservation(
-            name=name,
-            status=UIAObservationStatus.INVALID,
-            supported=None,
-        )
+        return UIAPatternObservation(name=name, status=UIAObservationStatus.INVALID, supported=None)
     return UIAPatternObservation(name=name, status=status, supported=raw.value)
 
 
@@ -622,6 +628,8 @@ def _normalize_tree(
 ) -> Result[UIATreeSnapshot, AgentXError]:
     if not isinstance(raw, _uia_native.RawUIATree):
         return Result.failure(_invalid_native_data("native UIA surface returned wrong tree type"))
+    if not isinstance(raw.elements, tuple) or not isinstance(raw.errors, tuple):
+        return Result.failure(_invalid_native_data("native UIA tree collections are malformed"))
     if type(raw.truncated_by_depth) is not bool or type(raw.truncated_by_nodes) is not bool:
         return Result.failure(_invalid_native_data("native UIA tree has malformed truncation flags"))
     if len(raw.elements) > limits.max_nodes:
@@ -629,7 +637,7 @@ def _normalize_tree(
 
     paths_by_sequence: dict[int, tuple[int, ...]] = {}
     parent_by_sequence: dict[int, tuple[int, ...] | None] = {}
-    normalized_parts: list[
+    parts: list[
         tuple[
             UIAElementReference,
             tuple[int, ...] | None,
@@ -647,6 +655,8 @@ def _normalize_tree(
             return Result.failure(_invalid_native_data("native UIA element depth is invalid"))
         if type(element.child_index) is not int or element.child_index < 0:
             return Result.failure(_invalid_native_data("native UIA child index is invalid"))
+        if not isinstance(element.properties, tuple) or not isinstance(element.pattern_properties, tuple):
+            return Result.failure(_invalid_native_data("native UIA property collections are malformed"))
 
         if expected_sequence == 0:
             if element.parent_sequence is not None or element.depth != 0:
@@ -664,10 +674,10 @@ def _normalize_tree(
             if path in paths_by_sequence.values():
                 return Result.failure(_invalid_native_data("native UIA element path is duplicated"))
 
-        properties = tuple(
-            _normalize_property(name, element.properties) for name in UIAPropertyName
+        properties = tuple(_normalize_property(name, element.properties) for name in UIAPropertyName)
+        patterns = tuple(
+            _normalize_pattern(name, element.pattern_properties) for name in UIAPatternName
         )
-        patterns = tuple(_normalize_pattern(name, element.pattern_properties) for name in UIAPatternName)
         runtime_value = properties[tuple(UIAPropertyName).index(UIAPropertyName.RUNTIME_ID)].value
         runtime_id = (
             tuple(runtime_value)
@@ -681,7 +691,7 @@ def _normalize_tree(
         )
         paths_by_sequence[expected_sequence] = path
         parent_by_sequence[expected_sequence] = parent_path
-        normalized_parts.append((reference, parent_path, properties, patterns))
+        parts.append((reference, parent_path, properties, patterns))
 
     child_paths: dict[tuple[int, ...], list[tuple[int, ...]]] = {
         path: [] for path in paths_by_sequence.values()
@@ -699,7 +709,7 @@ def _normalize_tree(
             properties=properties,
             patterns=patterns,
         )
-        for reference, parent_path, properties, patterns in normalized_parts
+        for reference, parent_path, properties, patterns in parts
     )
 
     errors: list[UIANativeError] = []
@@ -713,7 +723,9 @@ def _normalize_tree(
             if type(error.sequence) is not int or error.sequence not in paths_by_sequence:
                 return Result.failure(_invalid_native_data("native UIA error references unknown element"))
             path = paths_by_sequence[error.sequence]
-        errors.append(UIANativeError(operation=error.operation, hresult=error.hresult, element_path=path))
+        errors.append(
+            UIANativeError(operation=error.operation, hresult=error.hresult, element_path=path)
+        )
 
     return Result.success(
         UIATreeSnapshot(
@@ -730,12 +742,7 @@ def _normalize_tree(
 
 
 class WindowsUIATreeInspection:
-    """Read-only bounded UI Automation inspection operation.
-
-    Construction is side-effect free. :meth:`inspect` performs one fresh read
-    through the injected native seam and stores nothing. The operation exposes
-    no action method beyond inspection.
-    """
+    """Read one fresh bounded UIA tree; expose no action-capable surface."""
 
     __slots__ = ("_clock", "_native_surface", "_support")
 
@@ -776,7 +783,12 @@ class WindowsUIATreeInspection:
         captured_at = self._clock()
         if not isinstance(captured_at, datetime) or captured_at.tzinfo is None:
             raise ValueError("clock must return a timezone-aware datetime")
-        raw = self._native_surface.inspect_window(window_handle, selected_limits)
+        try:
+            raw = self._native_surface.inspect_window(window_handle, selected_limits)
+        except Exception as exc:  # native/adapter failures never escape this boundary
+            return Result.failure(_surface_exception(exc))
+        if not isinstance(raw, Result):
+            return Result.failure(_invalid_native_data("native UIA surface returned non-Result"))
         if raw.is_failure:
             return Result.failure(raw.error)
         return _normalize_tree(
