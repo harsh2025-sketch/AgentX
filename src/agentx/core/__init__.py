@@ -82,4 +82,16 @@ Status:
       strategy selection, routing change, verification, bandits/RL, caching,
       cost optimization, authority, or persistence; SQLite storage lives in
       ``agentx.infrastructure.strategy_performance_store``.
+=======
+    - ``ui_state`` — canonical read-oriented runtime-to-UI state protocol
+      (C7.01): versioned, deterministic ``UiStateSnapshot`` observations of
+      one task's runtime state (task identity/state, execution level,
+      operation, plan reference, verification status, pending approval/risk
+      state, structured error, progress, timestamp) plus the pure
+      deterministic ``project_state_event`` conversion of the canonical event
+      stream onto snapshots. Read-only by construction: no transport, no
+      UI, no authority, no execution, no persistence, no mutation.
+>>>>>>> 3fdd1ee (C7.01: canonical runtime-to-UI state protocol)
+>>>>>>> 3fdd1ee (C7.01: canonical runtime-to-UI state protocol)
+
 """
