@@ -420,10 +420,12 @@ def test_c404_adds_no_persistence_or_migration_surface() -> None:
         int(match) for match in re.findall(r"^\s*version=(\d+),", persistence_source, re.MULTILINE)
     ]
 
-    # C4.04 is a pure core contract: the migration ladder is untouched and the
-    # highest landed migration remains the C2.06 negative-experience store (v8).
+    # C4.04 is a pure core contract: it adds no migration of its own. The
+    # highest landed migration at integration is the C7.07 event-watcher state
+    # store (v10); A8.01 owns v9 (strategy-performance store) and v8 remains
+    # the C2.06 negative-experience store.
     assert migration_versions == sorted(migration_versions)
-    assert max(migration_versions) == 8
+    assert max(migration_versions) == 10
     assert "environment_change" not in persistence_source
     assert "agentx_environment_change" not in persistence_source
 
