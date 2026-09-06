@@ -77,4 +77,22 @@ state, performs no pairing, Android-companion/accessibility, remote capability
 execution, cross-device routing, shared Hive, cross-device verification, or
 network transport, and treats device metadata strictly as data: a remote device
 claiming ``ADMIN`` never grants itself any permission.
+
+A8.07 adds the verified-result reuse boundary in
+``agentx.capabilities.verified_result_cache``: a bounded in-memory record of
+results a canonical A1.10 run already VERIFIED. A key carries every canonical
+fact reuse depends on — capability identity and version, normalized
+JSON-compatible input, scope, explicit environment identity, optional
+procedure revision, and explicit preconditions — and digests to a stable
+SHA-256 fingerprint, so keying never depends on Python's randomized string
+hash. Lookup distinguishes MISS, VERIFIED_HIT, STALE, INVALIDATED, and
+INCOMPATIBLE and returns the original typed evidence instead of a
+reconstruction of it; only VERIFIED_HIT yields a reusable outcome. Storage
+accepts canonical verified evidence exclusively: unverified, failed, denied,
+expired, replayed, tampered, or hostile-text evidence is refused and can never
+become a reusable success. The cache executes and verifies nothing, mutates no
+Task, Router, permission, risk, budget, or stop state, imports no kernel
+collaborator, and persists nothing — a fresh instance observes nothing. It
+ships as an unwired boundary: no production module imports it yet, and
+retention/decay remains A8.08.
 """
