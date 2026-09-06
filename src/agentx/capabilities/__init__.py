@@ -52,4 +52,14 @@ snapshot data in ``agentx.capabilities.browser_selection``. Selection exposes
 only explicit no-match, unique, or ambiguous cardinality results and never
 performs browser access, tie-breaking policy, fuzzy/model matching, authority,
 verification, persistence, or browser action.
+
+C5.06 adds the provider-neutral screen/perception representation boundary in
+``agentx.capabilities.screen_perception``: the canonical inert data model for
+visual/perception observations (observation/source/candidate identities,
+declared coordinate space, validated canvas geometry and bounding boxes,
+bounded confidence, untrusted labels/text, provenance to an optional captured
+C2.04 artifact, explicit unknown/unsupported and state/freshness semantics,
+and strict deterministic serialization). It performs no capture, no OCR, no
+vision/model calls, no DOM/UIA fusion, no grounding, no browser or machine
+action, and grants no authority; read/capture requests belong to later tasks.
 """
