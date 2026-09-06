@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import FrozenInstanceError
 from datetime import UTC, datetime
 
@@ -14,6 +15,7 @@ from agentx.capabilities.windows.provider import (
     evaluate_windows_support,
 )
 from agentx.capabilities.windows.uia_tree import (
+    UIA_SURFACE_EXCEPTION_ERROR_CODE,
     NativeUIATreeSurface,
     UIAElementState,
     UIAFreshness,
@@ -40,7 +42,13 @@ def _support(*, windows: bool = True) -> WindowsSupport:
     )
 
 
-def _property(name: str, value: object | None, *, unavailable: bool = False, hresult: int | None = None) -> _uia_native.RawUIAProperty:
+def _property(
+    name: str,
+    value: object | None,
+    *,
+    unavailable: bool = False,
+    hresult: int | None = None,
+) -> _uia_native.RawUIAProperty:
     return _uia_native.RawUIAProperty(
         name=name,
         value=value,
@@ -92,10 +100,7 @@ def _raw_element(
         values[property_override.name] = property_override
     properties = tuple(values[item.value] for item in UIAPropertyName)
     patterns = tuple(
-        _property(
-            pattern.value,
-            pattern is UIAPatternName.VALUE and value_available,
-        )
+        _property(pattern.value, pattern is UIAPatternName.VALUE and value_available)
         for pattern in UIAPatternName
     )
     return _uia_native.RawUIAElement(
@@ -136,6 +141,16 @@ class FakeSurface(NativeUIATreeSurface):
         return self.result
 
 
+class RaisingSurface(NativeUIATreeSurface):
+    def inspect_window(
+        self,
+        window_handle: int,
+        limits: UIATreeLimits,
+    ) -> Result[_uia_native.RawUIATree, AgentXError]:
+        del window_handle, limits
+        raise OSError("hostile native exception text must not escape")
+
+
 def _inspection(surface: NativeUIATreeSurface) -> WindowsUIATreeInspection:
     return WindowsUIATreeInspection(
         _support(),
@@ -169,11 +184,13 @@ def test_tree_snapshot_preserves_root_and_structured_properties() -> None:
     assert element.reference.path == ()
     assert element.reference.runtime_id == (42, 1)
     assert element.process_id == 123
+    assert element.native_window_handle == 9001
     assert element.control_type == 50000
     assert element.automation_id == "explicit-id"
     assert element.name == "Calculator"
     assert element.value == "42"
     assert element.is_enabled is True
+    assert element.is_keyboard_focusable is True
     assert element.is_offscreen is False
     assert element.is_visible is True
     assert element.has_keyboard_focus is False
@@ -201,7 +218,6 @@ def test_nested_children_preserve_parent_child_relationships_and_order() -> None
 
 def test_empty_tree_is_explicit_zero_node_snapshot() -> None:
     snapshot = _inspection(FakeSurface(Result.success(_tree()))).inspect(100).value
-
     assert snapshot.elements == ()
     assert snapshot.node_count == 0
     assert snapshot.to_dict()["elements"] == []
@@ -218,9 +234,7 @@ def test_depth_bound_is_finite_forwarded_and_reported() -> None:
             )
         )
     )
-
     snapshot = _inspection(surface).inspect(100, limits=limits).value
-
     assert surface.calls == [(100, limits)]
     assert snapshot.limits == limits
     assert snapshot.truncated_by_depth is True
@@ -238,16 +252,14 @@ def test_node_count_bound_is_finite_forwarded_and_enforced() -> None:
             )
         )
     )
-
     snapshot = _inspection(surface).inspect(100, limits=limits).value
-
     assert snapshot.node_count == 2
     assert snapshot.truncated_by_nodes is True
     assert surface.calls == [(100, limits)]
 
 
 @pytest.mark.parametrize(
-    ("limits", "exception"),
+    ("factory", "exception"),
     [
         (lambda: UIATreeLimits(max_depth=-1), ValueError),
         (lambda: UIATreeLimits(max_depth=65), ValueError),
@@ -256,9 +268,12 @@ def test_node_count_bound_is_finite_forwarded_and_enforced() -> None:
         (lambda: UIATreeLimits(max_nodes=True), TypeError),
     ],
 )
-def test_bounds_reject_unbounded_or_malformed_values(limits: object, exception: type[Exception]) -> None:
+def test_bounds_reject_unbounded_or_malformed_values(
+    factory: Callable[[], UIATreeLimits],
+    exception: type[Exception],
+) -> None:
     with pytest.raises(exception):
-        limits()  # type: ignore[operator]
+        factory()
 
 
 def test_disappearing_element_is_preserved_with_vanished_state() -> None:
@@ -273,11 +288,9 @@ def test_disappearing_element_is_preserved_with_vanished_state() -> None:
             hresult=_uia_native.UIA_ELEMENT_NOT_AVAILABLE_HRESULT,
         ),
     )
-
     element = _inspection(FakeSurface(Result.success(_tree(root)))).inspect(100).value.elements[0]
-
     assert element.state is UIAElementState.VANISHED
-    name = element.property(UIAPropertyName.NAME)
+    name = element.property_observation(UIAPropertyName.NAME)
     assert name.status is UIAObservationStatus.VANISHED
     assert name.value is None
     assert name.hresult == _uia_native.UIA_ELEMENT_NOT_AVAILABLE_HRESULT
@@ -288,9 +301,7 @@ def test_native_navigation_error_is_explicit_snapshot_data() -> None:
         _raw_element(0, parent_sequence=None, depth=0, child_index=0),
         errors=(_uia_native.RawUIAError(operation="first_child", hresult=-7, sequence=0),),
     )
-
     snapshot = _inspection(FakeSurface(Result.success(raw))).inspect(100).value
-
     assert snapshot.errors[0].operation == "first_child"
     assert snapshot.errors[0].hresult == -7
     assert snapshot.errors[0].element_path == ()
@@ -305,9 +316,16 @@ def test_native_operation_failure_is_propagated_without_fabricated_snapshot() ->
         details={},
     )
     outcome = _inspection(FakeSurface(Result.failure(error))).inspect(100)
-
     assert outcome.is_failure
     assert outcome.error == error
+
+
+def test_native_adapter_exception_becomes_explicit_failure() -> None:
+    outcome = _inspection(RaisingSurface()).inspect(100)
+    assert outcome.is_failure
+    assert outcome.error.code == UIA_SURFACE_EXCEPTION_ERROR_CODE
+    assert outcome.error.details == {"exception_type": "OSError"}
+    assert "hostile native exception text" not in outcome.error.message
 
 
 def test_unsupported_platform_never_touches_native_surface() -> None:
@@ -317,9 +335,7 @@ def test_unsupported_platform_never_touches_native_surface() -> None:
         native_surface=surface,
         clock=lambda: _CAPTURED,
     )
-
     outcome = inspection.inspect(100)
-
     assert outcome.is_failure
     assert outcome.error.code == "capabilities.windows.unsupported_platform"
     assert surface.calls == []
@@ -336,7 +352,10 @@ def test_unsupported_platform_never_touches_native_surface() -> None:
         ("automation_id", object()),
     ],
 )
-def test_malformed_property_is_fail_closed_as_invalid(property_name: str, bad_value: object) -> None:
+def test_malformed_property_is_fail_closed_as_invalid(
+    property_name: str,
+    bad_value: object,
+) -> None:
     root = _raw_element(
         0,
         parent_sequence=None,
@@ -345,8 +364,7 @@ def test_malformed_property_is_fail_closed_as_invalid(property_name: str, bad_va
         property_override=_property(property_name, bad_value),
     )
     element = _inspection(FakeSurface(Result.success(_tree(root)))).inspect(100).value.elements[0]
-
-    observation = element.property(UIAPropertyName(property_name))
+    observation = element.property_observation(UIAPropertyName(property_name))
     assert observation.status is UIAObservationStatus.INVALID
     assert observation.value is None
     assert element.state is UIAElementState.PARTIAL
@@ -364,9 +382,7 @@ def test_hostile_ui_text_is_preserved_verbatim_as_untrusted_data() -> None:
         value_available=True,
         automation_id=hostile,
     )
-
     element = _inspection(FakeSurface(Result.success(_tree(root)))).inspect(100).value.elements[0]
-
     assert element.name == hostile
     assert element.value == hostile
     assert element.automation_id == hostile
@@ -376,10 +392,8 @@ def test_hostile_ui_text_is_preserved_verbatim_as_untrusted_data() -> None:
 def test_serialization_is_stable_json_compatible_structure() -> None:
     raw = _tree(_raw_element(0, parent_sequence=None, depth=0, child_index=0))
     inspection = _inspection(FakeSurface(Result.success(raw)))
-
     first = inspection.inspect(100).value.to_dict()
     second = inspection.inspect(100).value.to_dict()
-
     assert first == second
     assert first["captured_at"] == _CAPTURED.isoformat()
     assert first["freshness"] == "point_in_time"
@@ -392,7 +406,6 @@ def test_result_objects_are_immutable() -> None:
             Result.success(_tree(_raw_element(0, parent_sequence=None, depth=0, child_index=0)))
         )
     ).inspect(100).value
-
     with pytest.raises(FrozenInstanceError):
         snapshot.truncated_by_nodes = True  # type: ignore[misc]
     with pytest.raises(FrozenInstanceError):
