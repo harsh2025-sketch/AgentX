@@ -52,4 +52,18 @@ snapshot data in ``agentx.capabilities.browser_selection``. Selection exposes
 only explicit no-match, unique, or ambiguous cardinality results and never
 performs browser access, tie-breaking policy, fuzzy/model matching, authority,
 verification, persistence, or browser action.
+
+C8.01 adds the provider-neutral device abstraction/protocol boundary in
+``agentx.capabilities.device``. It represents a device as inert, immutable,
+provider-neutral data: identity (``DeviceId``), type/form factor and host
+platform (``DeviceKind``/``DevicePlatform``), explicit device-protocol version
+(``DeviceProtocolVersion``), environment/device scope (``DeviceScope``),
+capability references (``DeviceCapabilityRef`` over canonical ABI identities),
+observation metadata (``DeviceObservation``) with availability/connectivity,
+last-seen and derived freshness (``evaluate_device_freshness``), and an explicit
+offline/unavailable state. It validates every identifier, version, and closed
+state, performs no pairing, Android-companion/accessibility, remote capability
+execution, cross-device routing, shared Hive, cross-device verification, or
+network transport, and treats device metadata strictly as data: a remote device
+claiming ``ADMIN`` never grants itself any permission.
 """
