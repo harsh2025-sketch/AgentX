@@ -175,7 +175,7 @@ def test_tree_snapshot_preserves_root_and_structured_properties() -> None:
     outcome = _inspection(surface).inspect(9001)
 
     assert outcome.is_success
-    snapshot = outcome.value
+    snapshot = outcome.unwrap()
     assert snapshot.root_window_handle == 9001
     assert snapshot.captured_at == _CAPTURED
     assert snapshot.freshness is UIAFreshness.POINT_IN_TIME
@@ -206,7 +206,7 @@ def test_nested_children_preserve_parent_child_relationships_and_order() -> None
         _raw_element(3, parent_sequence=0, depth=1, child_index=1, name="second"),
     )
 
-    snapshot = _inspection(FakeSurface(Result.success(raw))).inspect(100).value
+    snapshot = _inspection(FakeSurface(Result.success(raw))).inspect(100).unwrap()
 
     assert [element.reference.path for element in snapshot.elements] == [(), (0,), (0, 0), (1,)]
     assert snapshot.elements[0].child_paths == ((0,), (1,))
@@ -217,7 +217,7 @@ def test_nested_children_preserve_parent_child_relationships_and_order() -> None
 
 
 def test_empty_tree_is_explicit_zero_node_snapshot() -> None:
-    snapshot = _inspection(FakeSurface(Result.success(_tree()))).inspect(100).value
+    snapshot = _inspection(FakeSurface(Result.success(_tree()))).inspect(100).unwrap()
     assert snapshot.elements == ()
     assert snapshot.node_count == 0
     assert snapshot.to_dict()["elements"] == []
@@ -234,7 +234,7 @@ def test_depth_bound_is_finite_forwarded_and_reported() -> None:
             )
         )
     )
-    snapshot = _inspection(surface).inspect(100, limits=limits).value
+    snapshot = _inspection(surface).inspect(100, limits=limits).unwrap()
     assert surface.calls == [(100, limits)]
     assert snapshot.limits == limits
     assert snapshot.truncated_by_depth is True
@@ -252,7 +252,7 @@ def test_node_count_bound_is_finite_forwarded_and_enforced() -> None:
             )
         )
     )
-    snapshot = _inspection(surface).inspect(100, limits=limits).value
+    snapshot = _inspection(surface).inspect(100, limits=limits).unwrap()
     assert snapshot.node_count == 2
     assert snapshot.truncated_by_nodes is True
     assert surface.calls == [(100, limits)]
@@ -288,7 +288,9 @@ def test_disappearing_element_is_preserved_with_vanished_state() -> None:
             hresult=_uia_native.UIA_ELEMENT_NOT_AVAILABLE_HRESULT,
         ),
     )
-    element = _inspection(FakeSurface(Result.success(_tree(root)))).inspect(100).value.elements[0]
+    element = (
+        _inspection(FakeSurface(Result.success(_tree(root)))).inspect(100).unwrap().elements[0]
+    )
     assert element.state is UIAElementState.VANISHED
     name = element.property_observation(UIAPropertyName.NAME)
     assert name.status is UIAObservationStatus.VANISHED
@@ -301,7 +303,7 @@ def test_native_navigation_error_is_explicit_snapshot_data() -> None:
         _raw_element(0, parent_sequence=None, depth=0, child_index=0),
         errors=(_uia_native.RawUIAError(operation="first_child", hresult=-7, sequence=0),),
     )
-    snapshot = _inspection(FakeSurface(Result.success(raw))).inspect(100).value
+    snapshot = _inspection(FakeSurface(Result.success(raw))).inspect(100).unwrap()
     assert snapshot.errors[0].operation == "first_child"
     assert snapshot.errors[0].hresult == -7
     assert snapshot.errors[0].element_path == ()
@@ -317,15 +319,16 @@ def test_native_operation_failure_is_propagated_without_fabricated_snapshot() ->
     )
     outcome = _inspection(FakeSurface(Result.failure(error))).inspect(100)
     assert outcome.is_failure
-    assert outcome.error == error
+    assert outcome.unwrap_error() == error
 
 
 def test_native_adapter_exception_becomes_explicit_failure() -> None:
     outcome = _inspection(RaisingSurface()).inspect(100)
     assert outcome.is_failure
-    assert outcome.error.code == UIA_SURFACE_EXCEPTION_ERROR_CODE
-    assert outcome.error.details == {"exception_type": "OSError"}
-    assert "hostile native exception text" not in outcome.error.message
+    error = outcome.unwrap_error()
+    assert error.code == UIA_SURFACE_EXCEPTION_ERROR_CODE
+    assert error.details == {"exception_type": "OSError"}
+    assert "hostile native exception text" not in error.message
 
 
 def test_unsupported_platform_never_touches_native_surface() -> None:
@@ -337,7 +340,7 @@ def test_unsupported_platform_never_touches_native_surface() -> None:
     )
     outcome = inspection.inspect(100)
     assert outcome.is_failure
-    assert outcome.error.code == "capabilities.windows.unsupported_platform"
+    assert outcome.unwrap_error().code == "capabilities.windows.unsupported_platform"
     assert surface.calls == []
 
 
@@ -363,7 +366,9 @@ def test_malformed_property_is_fail_closed_as_invalid(
         child_index=0,
         property_override=_property(property_name, bad_value),
     )
-    element = _inspection(FakeSurface(Result.success(_tree(root)))).inspect(100).value.elements[0]
+    element = (
+        _inspection(FakeSurface(Result.success(_tree(root)))).inspect(100).unwrap().elements[0]
+    )
     observation = element.property_observation(UIAPropertyName(property_name))
     assert observation.status is UIAObservationStatus.INVALID
     assert observation.value is None
@@ -382,7 +387,9 @@ def test_hostile_ui_text_is_preserved_verbatim_as_untrusted_data() -> None:
         value_available=True,
         automation_id=hostile,
     )
-    element = _inspection(FakeSurface(Result.success(_tree(root)))).inspect(100).value.elements[0]
+    element = (
+        _inspection(FakeSurface(Result.success(_tree(root)))).inspect(100).unwrap().elements[0]
+    )
     assert element.name == hostile
     assert element.value == hostile
     assert element.automation_id == hostile
@@ -392,8 +399,8 @@ def test_hostile_ui_text_is_preserved_verbatim_as_untrusted_data() -> None:
 def test_serialization_is_stable_json_compatible_structure() -> None:
     raw = _tree(_raw_element(0, parent_sequence=None, depth=0, child_index=0))
     inspection = _inspection(FakeSurface(Result.success(raw)))
-    first = inspection.inspect(100).value.to_dict()
-    second = inspection.inspect(100).value.to_dict()
+    first = inspection.inspect(100).unwrap().to_dict()
+    second = inspection.inspect(100).unwrap().to_dict()
     assert first == second
     assert first["captured_at"] == _CAPTURED.isoformat()
     assert first["freshness"] == "point_in_time"
@@ -405,7 +412,7 @@ def test_result_objects_are_immutable() -> None:
         FakeSurface(
             Result.success(_tree(_raw_element(0, parent_sequence=None, depth=0, child_index=0)))
         )
-    ).inspect(100).value
+    ).inspect(100).unwrap()
     with pytest.raises(FrozenInstanceError):
         snapshot.truncated_by_nodes = True  # type: ignore[misc]
     with pytest.raises(FrozenInstanceError):
