@@ -25,6 +25,7 @@ from uuid import UUID
 __all__ = [
     "ArtifactId",
     "CapabilityId",
+    "DecompositionId",
     "DomainId",
     "EpisodeId",
     "KnowledgeId",
@@ -160,6 +161,10 @@ class CapabilityId(DomainId, domain="capability"):
 
 class ProcedureId(DomainId, domain="procedure"):
     """Identifier for a procedure graph definition."""
+
+
+class DecompositionId(DomainId, domain="decomposition"):
+    """Identifier for one hierarchical task decomposition (A6.01)."""
 
 
 class EpisodeId(DomainId, domain="episode"):
