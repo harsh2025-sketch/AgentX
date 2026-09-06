@@ -18,4 +18,14 @@ Status:
       necessary, relevant, useful, successful, trusted, or executable; there is
       no text heuristic, model inference, filtering, persistence, procedure
       synthesis, Hive mutation, execution, routing, retry, repair, or authority.
+    - ``irrelevant_actions`` — conservative C3.03 structural elimination of
+      irrelevant historical action candidates. Eliminates only structural DENIED
+      outcomes; preserves all other actions as inert retained decisions.
+    - ``parameter_extraction`` — deterministic C3.04 extraction of explicit
+      top-level action-data fields from retained C3.03 decisions.
+    - ``parameter_generalization`` — conservative C3.05 variation evidence over
+      canonical C3.04 parameter observations.
+    - ``region_classification`` — evidence-driven C3.06 determinism and reasoning
+      region classifier identifying deterministic, reasoning-required, and
+      insufficient-evidence procedure regions from normalized compiler evidence.
 """
