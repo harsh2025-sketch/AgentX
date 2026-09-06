@@ -150,8 +150,9 @@ def test_procedures_package_owns_graph_ir_without_stealing_c2_03() -> None:
     # A3.03 typed node-family DATA contracts (BRANCH/TRANSFORM/WAIT), the
     # A3.04 REASON/RESEARCH payload contracts, the A3.05 ROLLBACK/
     # SUBPROCEDURE/END payload contracts, the A3.06 preconditions/
-    # postconditions DATA contract, and the A3.07 deterministic
-    # single-condition evaluator.
+    # postconditions DATA contract, the deterministic single-condition
+    # evaluator (historically merged under the A3.07 identifier), and the
+    # canonical A3.07 error/recovery control-flow edge contract.
     files = _procedures_package_files()
     assert files == [
         Path("agentx/procedures/__init__.py"),
@@ -162,6 +163,7 @@ def test_procedures_package_owns_graph_ir_without_stealing_c2_03() -> None:
         Path("agentx/procedures/graph.py"),
         Path("agentx/procedures/nodes.py"),
         Path("agentx/procedures/reason_research.py"),
+        Path("agentx/procedures/recovery.py"),
         Path("agentx/procedures/rollback.py"),
         Path("agentx/procedures/subprocedure.py"),
         Path("agentx/procedures/transform.py"),

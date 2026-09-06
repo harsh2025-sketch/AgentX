@@ -62,8 +62,15 @@ a VerificationResult, and does not mark a Task SUCCEEDED (I1 stays absolute).
 There is no condition DSL: statements and references are inert descriptive
 data, and nothing here is evaluated, compiled, or dispatched.
 
-A3.07 adds the deterministic single-condition evaluator here, in
-``agentx.procedures.condition_evaluation``. It answers exactly one question:
+The deterministic single-condition evaluator below was merged under the
+identifier ``A3.07`` before the canonical ledger task of that number (error
+and recovery edges) landed. It is legitimate, separately owned supporting
+code and it stays exactly as it is: it is not renamed, moved, or renumbered
+here. Both modules coexist, and the canonical A3.07 contract is
+``agentx.procedures.recovery``.
+
+The single-condition evaluator, in
+``agentx.procedures.condition_evaluation``, answers exactly one question:
 given ONE canonical A3.06 :class:`~agentx.procedures.conditions.
 ProcedureCondition` and an explicit, caller-supplied, frozen set of typed
 evidence assertions (:class:`~agentx.procedures.condition_evaluation.
@@ -83,6 +90,34 @@ precondition ``SATISFIED`` is not authorization, and a postcondition
 I1 stays absolute (NO ACTION == SUCCESS WITHOUT CANONICAL VERIFICATION).
 Results are immutable, deterministic, and inert: they grant no Permission,
 touch no authority or runtime subsystem, and persist nothing.
+
+Canonical A3.07 adds explicit error/recovery control-flow semantics here, in
+``agentx.procedures.recovery``. It is representation and validation only:
+it says where execution belongs after a DEFINED failure and never executes
+recovery. A :class:`~agentx.procedures.recovery.RecoveryEdge` names a source
+node, a recovery target node, and exactly one applicable failure condition
+taken from the canonical closed
+:class:`agentx.core.failure_taxonomy.FailureCategory` vocabulary (composed,
+never duplicated), plus an optional inert label. Routes are carried in a
+minimal companion document
+(:class:`~agentx.procedures.recovery.ProcedureRecoveryEdges`) — a
+deterministic, strictly validated, immutable wrapper that adds no node kind,
+no second edge schema, and no interpreter, keyed only by canonical
+``ProcedureNodeId`` references and cross-checked against a graph by
+``bind_to_graph``. Recovery connectivity itself stays where A3.01 put it: in
+the graph's typed edges under the canonical
+:attr:`~agentx.procedures.graph.ProcedureEdgeKind.RECOVERY` member, which
+stays distinct from normal ``NEXT`` progression and is what
+``to_graph_edges`` renders. Semantics are closed and fail-safe: there is no
+catch-all category, ``UNKNOWN`` matches only itself, a failure with no
+declared route has no route, one ``(source, failure category)`` pair has at
+most one target, a self-loop is rejected as an unbounded retry, END stays
+terminal (recoverable INTO, never a recovery source), and an undeclared
+``RECOVERY`` edge stays inert. A recovery edge executes no capability,
+invokes no rollback, retries nothing, grants no Permission, changes no risk,
+creates no verification evidence, and declares no Task or Procedure success
+(I1 stays absolute); it calls no model, conducts no research, mutates no
+Trusted Kernel, and persists nothing.
 
 The C2.03 durable storage contract remains inward in ``agentx.core.procedures`` and
 ``agentx.infrastructure.procedure_store``, which persist the graph opaquely as a
