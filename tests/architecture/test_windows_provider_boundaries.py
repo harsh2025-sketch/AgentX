@@ -5,11 +5,11 @@ Linux and macOS and they never touch a native API. They are architecture
 guardrails, not security enforcement: authority remains owned by the Trusted
 Kernel.
 
-A5.02 note: the first read-only native surface (the isolated ``_native``
-module) now exists. The guardrails below therefore distinguish between the
-native seam module — which may import :mod:`ctypes` lazily and use exactly
-the approved read-only Win32 discovery APIs — and every other module in the
-Windows package, where the original A5.01 rules still hold unchanged.
+A5.02 introduced the isolated ``_native`` module for approved read-only Win32
+discovery. A5.06 extends that same seam with the governed keyboard/text and
+clipboard primitives it owns. The guardrails therefore allow only the
+explicit native-seam exceptions required by those tasks while every other
+Windows-package module remains free of direct native/automation APIs.
 """
 
 from __future__ import annotations
@@ -61,23 +61,20 @@ _FORBIDDEN_IMPORTS = (
     "playwright",
 )
 
-# A5.02: ``ctypes`` is legal ONLY inside the isolated native seam module, and
-# even there only as a lazy, call-time import (never at module level, so
-# importing the package loads nothing native on any host).
+# ``ctypes`` is legal ONLY inside the isolated native seam module, and even
+# there only as a lazy, call-time import (never at module level, so importing
+# the package loads nothing native on any host).
 _NATIVE_SEAM_ALLOWED_IMPORTS = frozenset({"ctypes"})
 
-# Automation/discovery surfaces that must not appear anywhere except the
-# native seam, where exactly the approved A5.02 read-only window walk lives.
-_NATIVE_SEAM_ALLOWED_SYMBOLS = frozenset({"EnumWindows"})
+# Direct automation/discovery symbols remain forbidden everywhere except for
+# the task-owned APIs in the isolated native seam: A5.02's EnumWindows read
+# and A5.06's SendInput injection. Clipboard calls are not generic automation
+# surface and are constrained separately by A5.06 architecture/adversarial tests.
+_NATIVE_SEAM_ALLOWED_SYMBOLS = frozenset({"EnumWindows", "SendInput"})
 
-# Automation verbs no Windows-package module may implement. The first group
-# is UIA/input/manipulation (owned by A5.03+ or forbidden outright); the
-# second group is process-lifecycle and window-mutation Win32 APIs: they are
-# banned everywhere, including inside the native seam, because A5.02 is a
-# read-only discovery task.
+# Automation verbs no Windows-package module may implement except an explicit
+# native-seam carve-out above. UIA/focus/capture/legacy input remain forbidden.
 _FORBIDDEN_SYMBOLS = (
-    # EnumWindows stays in this list: it is banned everywhere except the
-    # native seam, whose carve-out above permits exactly this one symbol.
     "EnumWindows",
     "FindWindow",
     "GetForegroundWindow",
@@ -92,8 +89,8 @@ _FORBIDDEN_SYMBOLS = (
     "ocr",
 )
 
-# Mutating Win32 APIs that must never appear anywhere in the Windows package,
-# not even as a name, attribute, or string (discovery is read-only).
+# Win32 mutations outside the currently owned Windows capabilities remain
+# forbidden everywhere, including inside the native seam.
 _FORBIDDEN_WIN32_MUTATIONS = (
     "TerminateProcess",
     "CreateProcess",
@@ -193,14 +190,14 @@ def test_windows_package_imports_no_native_or_automation_module(path: Path) -> N
 
 @pytest.mark.parametrize("path", _windows_sources(), ids=lambda p: p.name)
 def test_ctypes_is_never_imported_at_module_level(path: Path) -> None:
-    """A5.02 rule: the native seam may use ctypes, but never at import time."""
+    """The native seam may use ctypes, but never at import time."""
     for module in _top_level_imports(path):
         root = module.split(".")[0]
         assert root != "ctypes", f"{path.name} imports {module} at module level"
 
 
 @pytest.mark.parametrize("path", _windows_sources(), ids=lambda p: p.name)
-def test_windows_package_defines_no_automation_surface(path: Path) -> None:
+def test_windows_package_defines_no_unowned_automation_surface(path: Path) -> None:
     native_seam = path == _NATIVE
     source = path.read_text(encoding="utf-8")
     tree = ast.parse(source)
@@ -218,8 +215,7 @@ def test_windows_package_defines_no_automation_surface(path: Path) -> None:
 
 
 @pytest.mark.parametrize("path", _windows_sources(), ids=lambda p: p.name)
-def test_windows_package_mentions_no_mutating_win32_api(path: Path) -> None:
-    """A5.02 is read-only: mutating Win32 APIs may not appear anywhere."""
+def test_windows_package_mentions_no_unowned_mutating_win32_api(path: Path) -> None:
     source = path.read_text(encoding="utf-8")
     for symbol in _FORBIDDEN_WIN32_MUTATIONS:
         assert symbol not in source, f"{path.name} mentions forbidden Win32 API {symbol}"
