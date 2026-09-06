@@ -1,62 +1,14 @@
-"""Isolated read-only Win32 surface for Windows discovery (A5.02).
+"""Isolated stdlib Win32 surface for AgentX Windows capabilities.
 
-This module is the **only** module in the AgentX package that is allowed to
-know about ``ctypes`` or any Win32 API. A5.02 needs exactly one native
-mechanism — enumerating what is already running — and it keeps that mechanism
-behind this deliberately boring boundary so that every other module stays pure
-Python and testable on any host:
+A5.02 uses this module for read-only process/window discovery. A5.06 extends
+this same seam with explicit keyboard/text injection and bounded Unicode-text
+clipboard operations. Keeping both behind one module preserves the repository
+rule that no other AgentX source imports ``ctypes`` or knows Win32 call details.
 
-* :func:`enumerate_processes_raw` — one Toolhelp32 process snapshot
-  (``CreateToolhelp32Snapshot`` + ``Process32FirstW`` / ``Process32NextW``),
-  the smallest reliable, stdlib-only, read-only Windows process enumeration.
-* :func:`query_executable_path_raw` — best-effort full image path for one PID
-  (``OpenProcess`` with ``PROCESS_QUERY_LIMITED_INFORMATION`` +
-  ``QueryFullProcessImageNameW``). Best effort means the outcome may be an OS
-  error code; it is reported as data, never as an exception.
-* :func:`enumerate_windows_raw` — top-level windows with their owning PID,
-  visibility, title and class name (``EnumWindows``, ``GetWindowThreadProcessId``,
-  ``IsWindowVisible``, ``GetWindowTextLengthW`` / ``GetWindowTextW``,
-  ``GetClassNameW``). These are currently available, stable, read-only
-  desktop APIs; they are how discovery associates *applications* (windows a
-  user can see) with the processes that own them.
-
-Everything here is a **read**. This module performs no UI Automation
-traversal, no control discovery, no input synthesis, no window manipulation,
-no focus change, no capture, and no process lifecycle operation of any kind.
-
-Import safety
--------------
-
-Importing this module performs **no machine action on any host**:
-
-* it imports only :mod:`sys`, stdlib value typing, and canonical
-  :mod:`agentx.core` error/result contracts;
-* :mod:`ctypes` is imported lazily **inside** each native function, so even on
-  Windows the import of this module loads no native library, and on
-  Linux/macOS nothing native is ever touched;
-* every function first checks :func:`is_native_surface_available` and returns
-  an explicit canonical failure when the host is not Windows, so calling this
-  module on a non-Windows host never raises ``ImportError``/``AttributeError``.
-
-Failure semantics
------------------
-
-Expected operational failures are returned as canonical
-:class:`~agentx.core.errors.AgentXError` values inside
-:class:`~agentx.core.result.Result`, never raised. Per-item metadata failures
-(a title or image path that could not be read) are *data*: the raw entry
-carries the Win32 error code (``0`` means success) and the caller —
-:mod:`agentx.capabilities.windows.process_discovery` — translates it into
-explicit availability semantics. Raw entries are untrusted OS data and are
-returned verbatim; interpretation and validation live entirely in the
-discovery layer.
-
-Raw results are returned in whatever order the OS produced. Deterministic
-normalization (ordering, deduplication, validation) is the discovery layer's
-job, not the native layer's.
-
-Owner: A5.02. Belongs to ``agentx.capabilities.windows``; imports only the
-standard library and ``agentx.core`` contracts.
+Importing this module is inert on every host. ``ctypes`` and native libraries
+are loaded lazily inside explicit functions only. A5.06 registers no global
+hotkeys, installs no keyboard hooks, captures no keystrokes, resolves no UIA
+targets, changes no focus, and retains no clipboard history.
 """
 
 from __future__ import annotations
@@ -69,42 +21,50 @@ from agentx.core.errors import AgentXError, ErrorCategory, Retryability
 from agentx.core.result import Result
 
 __all__ = [
+    "CLIPBOARD_CLEAR_FAILED_ERROR_CODE",
+    "CLIPBOARD_OPEN_FAILED_ERROR_CODE",
+    "CLIPBOARD_READ_FAILED_ERROR_CODE",
+    "CLIPBOARD_TEXT_TOO_LARGE_ERROR_CODE",
+    "CLIPBOARD_WRITE_FAILED_ERROR_CODE",
+    "INPUT_NATIVE_UNAVAILABLE_ERROR_CODE",
+    "KEY_INPUT_FAILED_ERROR_CODE",
     "NATIVE_UNAVAILABLE_ERROR_CODE",
     "PROCESS_ENUMERATION_FAILED_ERROR_CODE",
+    "TEXT_INPUT_FAILED_ERROR_CODE",
+    "WINDOW_ENUMERATION_FAILED_ERROR_CODE",
     "WIN32_ERROR_ACCESS_DENIED",
     "WIN32_ERROR_FILE_NOT_FOUND",
     "WIN32_ERROR_INSUFFICIENT_BUFFER",
     "WIN32_ERROR_INVALID_PARAMETER",
     "WIN32_ERROR_NO_MORE_FILES",
     "WIN32_ERROR_PATH_NOT_FOUND",
-    "WINDOW_ENUMERATION_FAILED_ERROR_CODE",
+    "RawClipboardRead",
+    "RawInputReceipt",
     "RawPathQuery",
     "RawProcessEntry",
     "RawWindowEntry",
+    "clear_clipboard_raw",
     "enumerate_processes_raw",
     "enumerate_windows_raw",
     "is_native_surface_available",
     "query_executable_path_raw",
+    "read_clipboard_text_raw",
+    "send_key_raw",
+    "send_text_raw",
+    "write_clipboard_text_raw",
 ]
 
-#: Canonical error code for "the Win32 surface cannot be used on this host".
+# A5.02 discovery error vocabulary. These values are compatibility contracts.
 NATIVE_UNAVAILABLE_ERROR_CODE: Final[str] = (
     "capabilities.windows.process_discovery.native_unavailable"
 )
-
-#: Canonical error code for a failed process snapshot.
 PROCESS_ENUMERATION_FAILED_ERROR_CODE: Final[str] = (
     "capabilities.windows.process_discovery.process_enumeration_failed"
 )
-
-#: Canonical error code for a failed top-level window walk.
 WINDOW_ENUMERATION_FAILED_ERROR_CODE: Final[str] = (
     "capabilities.windows.process_discovery.window_enumeration_failed"
 )
 
-# Win32 error codes (``winerror.h``) that the discovery layer translates into
-# explicit per-item availability semantics. They are plain ints so tests can
-# construct them without any native library.
 WIN32_ERROR_ACCESS_DENIED: Final[int] = 5
 WIN32_ERROR_FILE_NOT_FOUND: Final[int] = 2
 WIN32_ERROR_PATH_NOT_FOUND: Final[int] = 3
@@ -113,37 +73,20 @@ WIN32_ERROR_NO_MORE_FILES: Final[int] = 18
 WIN32_ERROR_INVALID_PARAMETER: Final[int] = 87
 
 _WIN32_PLATFORM: Final[str] = "win32"
-
-# Toolhelp32 snapshot flag: include the process list (and nothing else).
 _TH32CS_SNAPPROCESS: Final[int] = 0x2
-
-# QueryFullProcessImageNameW name format: the Win32 path form.
 _PROCESS_NAME_WIN32: Final[int] = 0
-
-# OpenProcess access right: the least-privileged right that still allows
-# querying the full image name. This is a read-only query right; no process
-# memory, termination, suspension, or creation right is ever requested.
 _PROCESS_QUERY_LIMITED_INFORMATION: Final[int] = 0x1000
-
-# Buffer bounds. These bound untrusted OS strings defensively; the discovery
-# layer applies its own, stricter value validation on top.
 _MAX_PATH_CHARS: Final[int] = 1024
 _MAX_CLASS_NAME_CHARS: Final[int] = 256
 _MAX_TITLE_CHARS: Final[int] = 512
 
 
 def is_native_surface_available() -> bool:
-    """Report whether the read-only Win32 surface can be used on this host.
-
-    This reads only ``sys.platform``; it imports nothing native and performs
-    no machine action. It is the sole availability check used by every native
-    function below.
-    """
+    """Return whether this process can call the Win32 seam."""
     return sys.platform == _WIN32_PLATFORM
 
 
 def _native_unavailable_error(operation: str) -> AgentXError:
-    """Build the canonical failure for using the native surface off-Windows."""
     return AgentXError(
         code=NATIVE_UNAVAILABLE_ERROR_CODE,
         message=(
@@ -157,7 +100,6 @@ def _native_unavailable_error(operation: str) -> AgentXError:
 
 
 def _enumeration_error(code: str, operation: str, win32_error: int) -> AgentXError:
-    """Build the canonical failure for an OS-level enumeration error."""
     return AgentXError(
         code=code,
         message=f"Windows {operation} failed with Win32 error {win32_error}",
@@ -167,21 +109,8 @@ def _enumeration_error(code: str, operation: str, win32_error: int) -> AgentXErr
     )
 
 
-# --------------------------------------------------------------------------
-# Raw value types (untrusted OS data, verbatim).
-# --------------------------------------------------------------------------
-
-
 @dataclass(frozen=True, slots=True)
 class RawProcessEntry:
-    """One verbatim Toolhelp32 process entry.
-
-    ``executable_name`` is the basename (e.g. ``"chrome.exe"``) exactly as the
-    OS reported it, possibly empty; it is untrusted data and is never
-    interpreted here. ``parent_process_id`` is ``None`` only if the OS did not
-    report one, which the real snapshot never does (fakes may).
-    """
-
     process_id: int
     parent_process_id: int | None
     executable_name: str
@@ -189,26 +118,12 @@ class RawProcessEntry:
 
 @dataclass(frozen=True, slots=True)
 class RawPathQuery:
-    """Outcome of one best-effort full-image-path query.
-
-    ``error_code`` is the Win32 error code; ``0`` means ``value`` was read.
-    When ``error_code`` is non-zero, ``value`` is ``None``.
-    """
-
     value: str | None
     error_code: int
 
 
 @dataclass(frozen=True, slots=True)
 class RawWindowEntry:
-    """One verbatim top-level window entry.
-
-    ``title``/``class_name`` are ``None`` when that individual read failed, in
-    which case the matching ``*_error_code`` carries the Win32 error. A
-    successfully read empty title is the empty string. All fields are
-    untrusted data stored verbatim.
-    """
-
     handle: int
     process_id: int
     title: str | None
@@ -218,20 +133,8 @@ class RawWindowEntry:
     is_visible: bool
 
 
-# --------------------------------------------------------------------------
-# Toolhelp32 process snapshot.
-# --------------------------------------------------------------------------
-
-
 def enumerate_processes_raw() -> Result[tuple[RawProcessEntry, ...], AgentXError]:
-    """Take one read-only Toolhelp32 snapshot of the process list.
-
-    Returns the entries in OS order; the discovery layer normalizes. Fails
-    with an explicit canonical error when the host is not Windows, when the
-    snapshot cannot be taken, or when the walk terminates abnormally. The
-    snapshot handle is always closed; no process is opened, changed, or
-    started.
-    """
+    """Take one read-only Toolhelp32 process snapshot."""
     if not is_native_surface_available():
         return Result.failure(_native_unavailable_error("process enumeration"))
 
@@ -239,8 +142,6 @@ def enumerate_processes_raw() -> Result[tuple[RawProcessEntry, ...], AgentXError
     from ctypes import wintypes
 
     class PROCESSENTRY32W(ctypes.Structure):
-        """Layout of the wide Toolhelp32 process entry."""
-
         _fields_ = [
             ("dwSize", wintypes.DWORD),
             ("cntUsage", wintypes.DWORD),
@@ -302,21 +203,8 @@ def enumerate_processes_raw() -> Result[tuple[RawProcessEntry, ...], AgentXError
         kernel32.CloseHandle(snapshot)
 
 
-# --------------------------------------------------------------------------
-# Best-effort full image path for one process.
-# --------------------------------------------------------------------------
-
-
 def query_executable_path_raw(process_id: int) -> Result[RawPathQuery, AgentXError]:
-    """Query the full image path of one process, best effort.
-
-    Opens the process with ``PROCESS_QUERY_LIMITED_INFORMATION`` only — the
-    least-privileged read-only query right — and asks for its image name. The
-    handle is always closed. Per-query failures (including access denial for
-    elevated processes and "process already gone") are **data**:
-    :class:`RawPathQuery` with the Win32 error code. Only a non-Windows host
-    fails the ``Result`` itself.
-    """
+    """Best-effort read-only full image-path query for one process."""
     if not is_native_surface_available():
         return Result.failure(_native_unavailable_error("image path query"))
 
@@ -351,20 +239,7 @@ def query_executable_path_raw(process_id: int) -> Result[RawPathQuery, AgentXErr
         kernel32.CloseHandle(handle)
 
 
-# --------------------------------------------------------------------------
-# Top-level window walk.
-# --------------------------------------------------------------------------
-
-
 def _read_window_title(user32: Any, handle: int) -> tuple[str | None, int]:
-    """Read one window title verbatim; ``None`` plus a Win32 error on failure.
-
-    A reported length of zero is treated as "no title" (the empty string,
-    error ``0``): Win32 does not reliably update the last error on success,
-    so consulting it there would read a stale value. Only a failed copy yields
-    ``None``. Titles longer than the bounded buffer are reported as
-    ``WIN32_ERROR_INSUFFICIENT_BUFFER`` rather than silently truncated.
-    """
     import ctypes
 
     length = user32.GetWindowTextLengthW(handle)
@@ -380,7 +255,6 @@ def _read_window_title(user32: Any, handle: int) -> tuple[str | None, int]:
 
 
 def _read_window_class(user32: Any, handle: int) -> tuple[str | None, int]:
-    """Read one window class name; ``None`` plus a Win32 error on failure."""
     import ctypes
 
     buffer = ctypes.create_unicode_buffer(_MAX_CLASS_NAME_CHARS)
@@ -391,14 +265,7 @@ def _read_window_class(user32: Any, handle: int) -> tuple[str | None, int]:
 
 
 def enumerate_windows_raw() -> Result[tuple[RawWindowEntry, ...], AgentXError]:
-    """Walk the current top-level windows, read-only.
-
-    For each window the owning PID, visibility, title and class name are read
-    with read-only desktop APIs. Windows are **not** activated, focused,
-    moved, closed, or queried through UI Automation. Entries are returned in
-    OS order; per-window read failures stay on the entry as Win32 error
-    codes. Only a non-Windows host or a failed walk fails the ``Result``.
-    """
+    """Read the current top-level Windows window set without changing it."""
     if not is_native_surface_available():
         return Result.failure(_native_unavailable_error("window enumeration"))
 
@@ -423,7 +290,6 @@ def enumerate_windows_raw() -> Result[tuple[RawWindowEntry, ...], AgentXError]:
     entries: list[RawWindowEntry] = []
 
     def record(handle: int | None, _lparam: int) -> bool:
-        """Record one window; never fails so the walk always continues."""
         if not handle:
             return True
         owner = wintypes.DWORD(0)
@@ -444,7 +310,6 @@ def enumerate_windows_raw() -> Result[tuple[RawWindowEntry, ...], AgentXError]:
         return True
 
     collect: Any = callback_type(record)
-
     if not user32.EnumWindows(collect, 0):
         return Result.failure(
             _enumeration_error(
@@ -454,3 +319,503 @@ def enumerate_windows_raw() -> Result[tuple[RawWindowEntry, ...], AgentXError]:
             )
         )
     return Result.success(tuple(entries))
+
+
+# A5.06 keyboard/text/clipboard error vocabulary.
+INPUT_NATIVE_UNAVAILABLE_ERROR_CODE: Final[str] = (
+    "capabilities.windows.keyboard_clipboard.native_unavailable"
+)
+TEXT_INPUT_FAILED_ERROR_CODE: Final[str] = "capabilities.windows.text.enter.native_failed"
+KEY_INPUT_FAILED_ERROR_CODE: Final[str] = "capabilities.windows.keyboard.press.native_failed"
+CLIPBOARD_OPEN_FAILED_ERROR_CODE: Final[str] = "capabilities.windows.clipboard.open_failed"
+CLIPBOARD_READ_FAILED_ERROR_CODE: Final[str] = (
+    "capabilities.windows.clipboard.read_text.native_failed"
+)
+CLIPBOARD_WRITE_FAILED_ERROR_CODE: Final[str] = (
+    "capabilities.windows.clipboard.write_text.native_failed"
+)
+CLIPBOARD_CLEAR_FAILED_ERROR_CODE: Final[str] = "capabilities.windows.clipboard.clear.native_failed"
+CLIPBOARD_TEXT_TOO_LARGE_ERROR_CODE: Final[str] = (
+    "capabilities.windows.clipboard.read_text.too_large"
+)
+
+_CF_UNICODETEXT: Final[int] = 13
+_GMEM_MOVEABLE: Final[int] = 0x0002
+_INPUT_KEYBOARD: Final[int] = 1
+_KEYEVENTF_EXTENDEDKEY: Final[int] = 0x0001
+_KEYEVENTF_KEYUP: Final[int] = 0x0002
+_KEYEVENTF_UNICODE: Final[int] = 0x0004
+_MAX_CLIPBOARD_TEXT_BYTES: Final[int] = (262_144 + 1) * 2
+_MAX_RAW_KEY_REPEAT: Final[int] = 20
+
+_SPECIAL_VIRTUAL_KEYS: Final[dict[str, int]] = {
+    "backspace": 0x08,
+    "tab": 0x09,
+    "enter": 0x0D,
+    "escape": 0x1B,
+    "space": 0x20,
+    "page_up": 0x21,
+    "page_down": 0x22,
+    "end": 0x23,
+    "home": 0x24,
+    "left": 0x25,
+    "up": 0x26,
+    "right": 0x27,
+    "down": 0x28,
+    "insert": 0x2D,
+    "delete": 0x2E,
+}
+_MODIFIER_VIRTUAL_KEYS: Final[dict[str, int]] = {
+    "control": 0x11,
+    "alt": 0x12,
+    "shift": 0x10,
+    "windows": 0x5B,
+}
+_EXTENDED_KEYS: Final[frozenset[str]] = frozenset(
+    {
+        "page_up",
+        "page_down",
+        "end",
+        "home",
+        "left",
+        "up",
+        "right",
+        "down",
+        "insert",
+        "delete",
+    }
+)
+_EXTENDED_MODIFIERS: Final[frozenset[str]] = frozenset({"windows"})
+
+
+@dataclass(frozen=True, slots=True)
+class RawInputReceipt:
+    """Exact SendInput acceptance count; not state verification."""
+
+    events_requested: int
+    events_inserted: int
+
+
+@dataclass(frozen=True, slots=True)
+class RawClipboardRead:
+    """One raw CF_UNICODETEXT read; text remains untrusted data."""
+
+    has_text: bool
+    text: str | None
+
+
+def _a506_unavailable_error(operation: str) -> AgentXError:
+    return AgentXError(
+        code=INPUT_NATIVE_UNAVAILABLE_ERROR_CODE,
+        message=(
+            f"Windows keyboard/clipboard native surface is unavailable for {operation}: "
+            f"host platform is {sys.platform!r}, not Windows"
+        ),
+        category=ErrorCategory.PRECONDITION,
+        retryability=Retryability.NON_RETRYABLE,
+        details={"operation": operation, "sys_platform": sys.platform},
+    )
+
+
+def _a506_native_error(
+    *,
+    code: str,
+    operation: str,
+    win32_error: int,
+    retryability: Retryability = Retryability.UNKNOWN,
+    details: dict[str, Any] | None = None,
+) -> AgentXError:
+    merged: dict[str, Any] = {"operation": operation, "win32_error": win32_error}
+    if details is not None:
+        merged.update(details)
+    return AgentXError(
+        code=code,
+        message=f"Windows {operation} failed with Win32 error {win32_error}",
+        category=ErrorCategory.EXECUTION,
+        retryability=retryability,
+        details=merged,
+    )
+
+
+def _virtual_key(key: str) -> int | None:
+    if len(key) == 1 and "a" <= key <= "z":
+        return ord(key.upper())
+    if len(key) == 1 and "0" <= key <= "9":
+        return ord(key)
+    if key.startswith("f") and key[1:].isdigit():
+        number = int(key[1:])
+        if 1 <= number <= 24:
+            return 0x70 + number - 1
+    return _SPECIAL_VIRTUAL_KEYS.get(key)
+
+
+def _send_keyboard_inputs(
+    events: list[tuple[int, int, int]],
+    *,
+    operation: str,
+) -> Result[RawInputReceipt, AgentXError]:
+    if not is_native_surface_available():
+        return Result.failure(_a506_unavailable_error(operation))
+
+    import ctypes
+    from ctypes import wintypes
+
+    class MOUSEINPUT(ctypes.Structure):
+        _fields_ = [
+            ("dx", wintypes.LONG),
+            ("dy", wintypes.LONG),
+            ("mouseData", wintypes.DWORD),
+            ("dwFlags", wintypes.DWORD),
+            ("time", wintypes.DWORD),
+            ("dwExtraInfo", ctypes.c_size_t),
+        ]
+
+    class KEYBDINPUT(ctypes.Structure):
+        _fields_ = [
+            ("wVk", wintypes.WORD),
+            ("wScan", wintypes.WORD),
+            ("dwFlags", wintypes.DWORD),
+            ("time", wintypes.DWORD),
+            ("dwExtraInfo", ctypes.c_size_t),
+        ]
+
+    class HARDWAREINPUT(ctypes.Structure):
+        _fields_ = [
+            ("uMsg", wintypes.DWORD),
+            ("wParamL", wintypes.WORD),
+            ("wParamH", wintypes.WORD),
+        ]
+
+    class INPUTUNION(ctypes.Union):
+        _fields_ = [("mi", MOUSEINPUT), ("ki", KEYBDINPUT), ("hi", HARDWAREINPUT)]
+
+    class INPUT(ctypes.Structure):
+        _fields_ = [("type", wintypes.DWORD), ("value", INPUTUNION)]
+
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    user32.SendInput.restype = wintypes.UINT
+    user32.SendInput.argtypes = (wintypes.UINT, ctypes.POINTER(INPUT), ctypes.c_int)
+
+    array_type = INPUT * len(events)
+    inputs = array_type()
+    for index, (virtual_key, scan_code, flags) in enumerate(events):
+        inputs[index].type = _INPUT_KEYBOARD
+        inputs[index].value.ki = KEYBDINPUT(
+            wVk=virtual_key,
+            wScan=scan_code,
+            dwFlags=flags,
+            time=0,
+            dwExtraInfo=0,
+        )
+
+    ctypes.set_last_error(0)
+    inserted = int(user32.SendInput(len(events), inputs, ctypes.sizeof(INPUT)))
+    if inserted != len(events):
+        return Result.failure(
+            _a506_native_error(
+                code=(
+                    TEXT_INPUT_FAILED_ERROR_CODE
+                    if operation == "text entry"
+                    else KEY_INPUT_FAILED_ERROR_CODE
+                ),
+                operation=operation,
+                win32_error=ctypes.get_last_error(),
+                details={"events_requested": len(events), "events_inserted": inserted},
+            )
+        )
+    return Result.success(RawInputReceipt(events_requested=len(events), events_inserted=inserted))
+
+
+def send_text_raw(text: str) -> Result[RawInputReceipt, AgentXError]:
+    """Inject Unicode text using KEYEVENTF_UNICODE without changing focus."""
+    if not isinstance(text, str):
+        raise TypeError(f"text must be a string, got {type(text).__name__}")
+    if not text:
+        raise ValueError("text must not be empty")
+    if "\x00" in text:
+        raise ValueError("text must not contain NUL characters")
+    try:
+        encoded = text.encode("utf-16-le")
+    except UnicodeEncodeError as exc:
+        raise ValueError("text must contain valid Unicode scalar values") from exc
+    events: list[tuple[int, int, int]] = []
+    for offset in range(0, len(encoded), 2):
+        unit = int.from_bytes(encoded[offset : offset + 2], "little")
+        events.append((0, unit, _KEYEVENTF_UNICODE))
+        events.append((0, unit, _KEYEVENTF_UNICODE | _KEYEVENTF_KEYUP))
+    return _send_keyboard_inputs(events, operation="text entry")
+
+
+def send_key_raw(
+    key: str,
+    modifiers: tuple[str, ...],
+    repeat: int,
+) -> Result[RawInputReceipt, AgentXError]:
+    """Inject one validated virtual key/chord without hotkey registration."""
+    if not isinstance(key, str):
+        raise TypeError(f"key must be a string, got {type(key).__name__}")
+    if not isinstance(modifiers, tuple) or not all(isinstance(item, str) for item in modifiers):
+        raise TypeError("modifiers must be a tuple of strings")
+    if len(set(modifiers)) != len(modifiers):
+        raise ValueError("modifiers must not contain duplicates")
+    if any(item not in _MODIFIER_VIRTUAL_KEYS for item in modifiers):
+        raise ValueError("modifiers contain an unsupported value")
+    if type(repeat) is not int or not 1 <= repeat <= _MAX_RAW_KEY_REPEAT:
+        raise ValueError(f"repeat must be an int between 1 and {_MAX_RAW_KEY_REPEAT}")
+    virtual_key = _virtual_key(key)
+    if virtual_key is None:
+        raise ValueError(f"unsupported key: {key!r}")
+
+    modifier_order = ("control", "alt", "shift", "windows")
+    normalized = tuple(item for item in modifier_order if item in modifiers)
+    events: list[tuple[int, int, int]] = []
+    for modifier in normalized:
+        flags = _KEYEVENTF_EXTENDEDKEY if modifier in _EXTENDED_MODIFIERS else 0
+        events.append((_MODIFIER_VIRTUAL_KEYS[modifier], 0, flags))
+    key_flags = _KEYEVENTF_EXTENDEDKEY if key in _EXTENDED_KEYS else 0
+    for _ in range(repeat):
+        events.append((virtual_key, 0, key_flags))
+        events.append((virtual_key, 0, key_flags | _KEYEVENTF_KEYUP))
+    for modifier in reversed(normalized):
+        flags = _KEYEVENTF_KEYUP
+        if modifier in _EXTENDED_MODIFIERS:
+            flags |= _KEYEVENTF_EXTENDEDKEY
+        events.append((_MODIFIER_VIRTUAL_KEYS[modifier], 0, flags))
+    return _send_keyboard_inputs(events, operation="key input")
+
+
+def _open_clipboard(user32: Any, ctypes_module: Any, *, operation: str) -> AgentXError | None:
+    ctypes_module.set_last_error(0)
+    if user32.OpenClipboard(None):
+        return None
+    return _a506_native_error(
+        code=CLIPBOARD_OPEN_FAILED_ERROR_CODE,
+        operation=operation,
+        win32_error=ctypes_module.get_last_error(),
+        retryability=Retryability.RETRYABLE,
+    )
+
+
+def _find_utf16_terminator(raw: bytes) -> int | None:
+    for offset in range(0, len(raw) - 1, 2):
+        if raw[offset : offset + 2] == b"\x00\x00":
+            return offset
+    return None
+
+
+def read_clipboard_text_raw() -> Result[RawClipboardRead, AgentXError]:
+    """Read bounded CF_UNICODETEXT once; returned text remains untrusted."""
+    if not is_native_surface_available():
+        return Result.failure(_a506_unavailable_error("clipboard text read"))
+
+    import ctypes
+    from ctypes import wintypes
+
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    user32.OpenClipboard.restype = wintypes.BOOL
+    user32.OpenClipboard.argtypes = (wintypes.HWND,)
+    user32.CloseClipboard.restype = wintypes.BOOL
+    user32.CloseClipboard.argtypes = ()
+    user32.IsClipboardFormatAvailable.restype = wintypes.BOOL
+    user32.IsClipboardFormatAvailable.argtypes = (wintypes.UINT,)
+    user32.GetClipboardData.restype = wintypes.HANDLE
+    user32.GetClipboardData.argtypes = (wintypes.UINT,)
+    kernel32.GlobalSize.restype = ctypes.c_size_t
+    kernel32.GlobalSize.argtypes = (wintypes.HGLOBAL,)
+    kernel32.GlobalLock.restype = ctypes.c_void_p
+    kernel32.GlobalLock.argtypes = (wintypes.HGLOBAL,)
+    kernel32.GlobalUnlock.restype = wintypes.BOOL
+    kernel32.GlobalUnlock.argtypes = (wintypes.HGLOBAL,)
+
+    open_error = _open_clipboard(user32, ctypes, operation="clipboard text read")
+    if open_error is not None:
+        return Result.failure(open_error)
+    try:
+        if not user32.IsClipboardFormatAvailable(_CF_UNICODETEXT):
+            return Result.success(RawClipboardRead(has_text=False, text=None))
+        handle = user32.GetClipboardData(_CF_UNICODETEXT)
+        if not handle:
+            return Result.failure(
+                _a506_native_error(
+                    code=CLIPBOARD_READ_FAILED_ERROR_CODE,
+                    operation="clipboard text handle read",
+                    win32_error=ctypes.get_last_error(),
+                )
+            )
+        size = int(kernel32.GlobalSize(handle))
+        if size <= 0:
+            return Result.failure(
+                _a506_native_error(
+                    code=CLIPBOARD_READ_FAILED_ERROR_CODE,
+                    operation="clipboard text size read",
+                    win32_error=ctypes.get_last_error(),
+                )
+            )
+        if size > _MAX_CLIPBOARD_TEXT_BYTES:
+            return Result.failure(
+                AgentXError(
+                    code=CLIPBOARD_TEXT_TOO_LARGE_ERROR_CODE,
+                    message="Windows clipboard Unicode text exceeds the bounded A5.06 read limit",
+                    category=ErrorCategory.RESOURCE,
+                    retryability=Retryability.NON_RETRYABLE,
+                    details={"clipboard_bytes": size, "max_bytes": _MAX_CLIPBOARD_TEXT_BYTES},
+                )
+            )
+        pointer = kernel32.GlobalLock(handle)
+        if not pointer:
+            return Result.failure(
+                _a506_native_error(
+                    code=CLIPBOARD_READ_FAILED_ERROR_CODE,
+                    operation="clipboard text memory lock",
+                    win32_error=ctypes.get_last_error(),
+                )
+            )
+        try:
+            raw = ctypes.string_at(pointer, size)
+        finally:
+            kernel32.GlobalUnlock(handle)
+        terminator = _find_utf16_terminator(raw)
+        if terminator is None:
+            return Result.failure(
+                AgentXError(
+                    code=CLIPBOARD_READ_FAILED_ERROR_CODE,
+                    message=(
+                        "Windows clipboard Unicode text was not NUL terminated within its "
+                        "allocation"
+                    ),
+                    category=ErrorCategory.EXECUTION,
+                    retryability=Retryability.NON_RETRYABLE,
+                )
+            )
+        text = raw[:terminator].decode("utf-16-le", errors="surrogatepass")
+        return Result.success(RawClipboardRead(has_text=True, text=text))
+    finally:
+        user32.CloseClipboard()
+
+
+def write_clipboard_text_raw(text: str) -> Result[None, AgentXError]:
+    """Replace the clipboard with bounded CF_UNICODETEXT without history."""
+    if not isinstance(text, str):
+        raise TypeError(f"text must be a string, got {type(text).__name__}")
+    if "\x00" in text:
+        raise ValueError("clipboard text must not contain NUL characters")
+    try:
+        payload = text.encode("utf-16-le") + b"\x00\x00"
+    except UnicodeEncodeError as exc:
+        raise ValueError("clipboard text must contain valid Unicode scalar values") from exc
+    if len(payload) > _MAX_CLIPBOARD_TEXT_BYTES:
+        raise ValueError("clipboard text exceeds the bounded native write limit")
+    if not is_native_surface_available():
+        return Result.failure(_a506_unavailable_error("clipboard text write"))
+
+    import ctypes
+    from ctypes import wintypes
+
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    user32.OpenClipboard.restype = wintypes.BOOL
+    user32.OpenClipboard.argtypes = (wintypes.HWND,)
+    user32.CloseClipboard.restype = wintypes.BOOL
+    user32.CloseClipboard.argtypes = ()
+    user32.EmptyClipboard.restype = wintypes.BOOL
+    user32.EmptyClipboard.argtypes = ()
+    user32.SetClipboardData.restype = wintypes.HANDLE
+    user32.SetClipboardData.argtypes = (wintypes.UINT, wintypes.HANDLE)
+    kernel32.GlobalAlloc.restype = wintypes.HGLOBAL
+    kernel32.GlobalAlloc.argtypes = (wintypes.UINT, ctypes.c_size_t)
+    kernel32.GlobalLock.restype = ctypes.c_void_p
+    kernel32.GlobalLock.argtypes = (wintypes.HGLOBAL,)
+    kernel32.GlobalUnlock.restype = wintypes.BOOL
+    kernel32.GlobalUnlock.argtypes = (wintypes.HGLOBAL,)
+    kernel32.GlobalFree.restype = wintypes.HGLOBAL
+    kernel32.GlobalFree.argtypes = (wintypes.HGLOBAL,)
+
+    handle = kernel32.GlobalAlloc(_GMEM_MOVEABLE, len(payload))
+    if not handle:
+        return Result.failure(
+            _a506_native_error(
+                code=CLIPBOARD_WRITE_FAILED_ERROR_CODE,
+                operation="clipboard text memory allocation",
+                win32_error=ctypes.get_last_error(),
+            )
+        )
+    transferred = False
+    try:
+        pointer = kernel32.GlobalLock(handle)
+        if not pointer:
+            return Result.failure(
+                _a506_native_error(
+                    code=CLIPBOARD_WRITE_FAILED_ERROR_CODE,
+                    operation="clipboard text memory lock",
+                    win32_error=ctypes.get_last_error(),
+                )
+            )
+        try:
+            ctypes.memmove(pointer, payload, len(payload))
+        finally:
+            kernel32.GlobalUnlock(handle)
+
+        open_error = _open_clipboard(user32, ctypes, operation="clipboard text write")
+        if open_error is not None:
+            return Result.failure(open_error)
+        try:
+            ctypes.set_last_error(0)
+            if not user32.EmptyClipboard():
+                return Result.failure(
+                    _a506_native_error(
+                        code=CLIPBOARD_WRITE_FAILED_ERROR_CODE,
+                        operation="clipboard empty before text write",
+                        win32_error=ctypes.get_last_error(),
+                    )
+                )
+            ctypes.set_last_error(0)
+            if not user32.SetClipboardData(_CF_UNICODETEXT, handle):
+                return Result.failure(
+                    _a506_native_error(
+                        code=CLIPBOARD_WRITE_FAILED_ERROR_CODE,
+                        operation="clipboard Unicode text write",
+                        win32_error=ctypes.get_last_error(),
+                    )
+                )
+            transferred = True
+            return Result.success(None)
+        finally:
+            user32.CloseClipboard()
+    finally:
+        if not transferred:
+            kernel32.GlobalFree(handle)
+
+
+def clear_clipboard_raw() -> Result[None, AgentXError]:
+    """Clear the clipboard once without reading or retaining prior content."""
+    if not is_native_surface_available():
+        return Result.failure(_a506_unavailable_error("clipboard clear"))
+
+    import ctypes
+    from ctypes import wintypes
+
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    user32.OpenClipboard.restype = wintypes.BOOL
+    user32.OpenClipboard.argtypes = (wintypes.HWND,)
+    user32.CloseClipboard.restype = wintypes.BOOL
+    user32.CloseClipboard.argtypes = ()
+    user32.EmptyClipboard.restype = wintypes.BOOL
+    user32.EmptyClipboard.argtypes = ()
+
+    open_error = _open_clipboard(user32, ctypes, operation="clipboard clear")
+    if open_error is not None:
+        return Result.failure(open_error)
+    try:
+        ctypes.set_last_error(0)
+        if not user32.EmptyClipboard():
+            return Result.failure(
+                _a506_native_error(
+                    code=CLIPBOARD_CLEAR_FAILED_ERROR_CODE,
+                    operation="clipboard clear",
+                    win32_error=ctypes.get_last_error(),
+                )
+            )
+        return Result.success(None)
+    finally:
+        user32.CloseClipboard()
