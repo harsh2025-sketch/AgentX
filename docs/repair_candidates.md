@@ -1,5 +1,12 @@
 # C4.04 — Repair Candidate Contract
 
+> **Historical label collision (no action required here).** This task landed under the identifier
+> **C4.04**. The canonical C4.04 is *environment-change detection*
+> ([`environment_change.md`](environment_change.md), `agentx.core.environment_change`). This
+> contract is **preserved untouched** — module, docs, tests, and its C4.04 label all remain exactly
+> as they landed — and it remains valid support code; nothing was removed, renamed, or rewritten.
+> The two contracts coexist and neither imports the other.
+
 C4.04 defines the smallest deterministic **data boundary** for representing conservative
 repair candidates derived from an explicit canonical failure diagnosis, and the immutable
 record that carries one.
