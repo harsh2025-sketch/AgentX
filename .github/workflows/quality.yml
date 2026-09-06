@@ -43,6 +43,19 @@ jobs:
       - name: Run pytest
         run: python -m pytest
 
+      - name: Report pytest failures
+        if: failure()
+        shell: pwsh
+        run: |
+          $lines = python -m pytest --tb=no -q 2>&1
+          $failed = @($lines | Where-Object { $_ -match '^FAILED' })
+          if ($failed.Count -gt 0) {
+            $failed | ForEach-Object { Write-Output "::error file=tests::$_" }
+          } else {
+            $tail = @($lines | Select-Object -Last 20) -join ' | '
+            Write-Output "::error file=tests::$tail"
+          }
+
       - name: Run Ruff lint
         run: python -m ruff check .
 
