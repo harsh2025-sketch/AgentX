@@ -46,4 +46,10 @@ boundary in ``agentx.capabilities.browser_dom``. DOM observations and node
 references are immutable target-scoped snapshots of untrusted webpage data;
 they add no browser mutation surface, liveness authority, permission,
 verification, persistence, or execution path.
+
+C5.04 adds deterministic exact-fact selection over already-observed C5.03 DOM
+snapshot data in ``agentx.capabilities.browser_selection``. Selection exposes
+only explicit no-match, unique, or ambiguous cardinality results and never
+performs browser access, tie-breaking policy, fuzzy/model matching, authority,
+verification, persistence, or browser action.
 """
