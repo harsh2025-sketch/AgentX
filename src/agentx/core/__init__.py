@@ -72,4 +72,15 @@ Status:
       verified; no inference from text, no ranking or scoring, no repair,
       patching, retry, execution, authority, persistence, or mutation of the
       embedded diagnosis.
+    - ``audio`` — provider-neutral real-time audio contracts (A7.01): format and
+      endpoint vocabulary with validated sample-rate, channel-count, payload-size,
+      buffer, and latency windows; immutable frames carrying stream identity,
+      sequence, timestamp, and digest; explicit sequence/timestamp ordering checks;
+      stream lifecycle transition legality; bounded-buffer admission and
+      backpressure decisions; an ``audio.*`` failure taxonomy carried by the shared
+      error and result models; and the provider/capture/playback protocols a real
+      adapter implements. Contracts only: no vendor, device, file, socket,
+      thread, codec, streaming STT, transcription, synthesis, wake word, speaker
+      identification, voice command, or model call. Audio payload bytes are data,
+      never authority.
 """

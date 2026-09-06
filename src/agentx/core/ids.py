@@ -24,6 +24,7 @@ from uuid import UUID
 
 __all__ = [
     "ArtifactId",
+    "AudioStreamId",
     "CapabilityId",
     "DomainId",
     "EpisodeId",
@@ -176,3 +177,12 @@ class NegativeExperienceId(DomainId, domain="negative_experience"):
 
 class ArtifactId(DomainId, domain="artifact"):
     """Identifier for an artifact produced or consumed by the runtime."""
+
+
+class AudioStreamId(DomainId, domain="audio_stream"):
+    """Identifier for one audio stream (A7.01).
+
+    AgentX owns stream identity: a provider may restart, rename, or reuse its own
+    session handle, but the stream a caller opened keeps this id for its whole
+    life, which is what makes sequence numbers and timestamps comparable.
+    """
