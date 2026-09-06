@@ -454,3 +454,416 @@ def enumerate_windows_raw() -> Result[tuple[RawWindowEntry, ...], AgentXError]:
             )
         )
     return Result.success(tuple(entries))
+
+
+# --------------------------------------------------------------------------
+# A5.08 read-only screen/window pixel capture extension.
+# --------------------------------------------------------------------------
+
+# A5.08 deliberately reuses this existing isolated native module so no second
+# Win32/ctypes authority surface is introduced. All imports below remain lazy
+# and every operation is a bounded read.
+
+SCREEN_CAPTURE_NATIVE_UNAVAILABLE_ERROR_CODE: Final[str] = (
+    "capabilities.windows.screen_capture.native_unavailable"
+)
+SCREEN_CAPTURE_FAILED_ERROR_CODE: Final[str] = "capabilities.windows.screen_capture.native_failed"
+SCREEN_CAPTURE_WINDOW_UNAVAILABLE_ERROR_CODE: Final[str] = (
+    "capabilities.windows.screen_capture.window_unavailable"
+)
+SCREEN_CAPTURE_WINDOW_MINIMIZED_ERROR_CODE: Final[str] = (
+    "capabilities.windows.screen_capture.window_minimized"
+)
+
+_SM_XVIRTUALSCREEN: Final[int] = 76
+_SM_YVIRTUALSCREEN: Final[int] = 77
+_SM_CXVIRTUALSCREEN: Final[int] = 78
+_SM_CYVIRTUALSCREEN: Final[int] = 79
+_SRCCOPY: Final[int] = 0x00CC0020
+_CAPTUREBLT: Final[int] = 0x40000000
+_DIB_RGB_COLORS: Final[int] = 0
+_BI_RGB: Final[int] = 0
+_NATIVE_MAX_CAPTURE_WIDTH: Final[int] = 8192
+_NATIVE_MAX_CAPTURE_HEIGHT: Final[int] = 8192
+_NATIVE_MAX_CAPTURE_PIXELS: Final[int] = 8_388_608
+
+
+@dataclass(frozen=True, slots=True)
+class RawCaptureBounds:
+    """Raw rectangle exchanged only across the A5.08 native seam."""
+
+    x: int
+    y: int
+    width: int
+    height: int
+
+
+@dataclass(frozen=True, slots=True)
+class RawWindowCaptureInfo:
+    """Best-effort read of one HWND's current capture-relevant state."""
+
+    exists: bool
+    minimized: bool
+    bounds: RawCaptureBounds | None
+    error_code: int
+
+
+def _screen_capture_error(
+    *,
+    code: str,
+    message: str,
+    operation: str,
+    win32_error: int = 0,
+    category: ErrorCategory = ErrorCategory.EXECUTION,
+    retryability: Retryability = Retryability.UNKNOWN,
+) -> AgentXError:
+    details: dict[str, Any] = {"operation": operation}
+    if win32_error:
+        details["win32_error"] = win32_error
+    return AgentXError(
+        code=code,
+        message=message,
+        category=category,
+        retryability=retryability,
+        details=details,
+    )
+
+
+def _screen_capture_unavailable(operation: str) -> AgentXError:
+    return _screen_capture_error(
+        code=SCREEN_CAPTURE_NATIVE_UNAVAILABLE_ERROR_CODE,
+        message=(
+            f"Windows native screen capture is unavailable for {operation}: "
+            f"host platform is {sys.platform!r}, not Windows"
+        ),
+        operation=operation,
+        category=ErrorCategory.PRECONDITION,
+        retryability=Retryability.NON_RETRYABLE,
+    )
+
+
+def query_virtual_screen_bounds_raw() -> Result[RawCaptureBounds, AgentXError]:
+    """Read current virtual-desktop bounds without changing desktop state."""
+    if not is_native_surface_available():
+        return Result.failure(_screen_capture_unavailable("virtual screen bounds"))
+
+    import ctypes
+
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    user32.GetSystemMetrics.restype = ctypes.c_int
+    user32.GetSystemMetrics.argtypes = (ctypes.c_int,)
+    x = int(user32.GetSystemMetrics(_SM_XVIRTUALSCREEN))
+    y = int(user32.GetSystemMetrics(_SM_YVIRTUALSCREEN))
+    width = int(user32.GetSystemMetrics(_SM_CXVIRTUALSCREEN))
+    height = int(user32.GetSystemMetrics(_SM_CYVIRTUALSCREEN))
+    if width <= 0 or height <= 0:
+        return Result.failure(
+            _screen_capture_error(
+                code=SCREEN_CAPTURE_FAILED_ERROR_CODE,
+                message="Windows virtual desktop reported non-positive capture dimensions",
+                operation="virtual screen bounds",
+                win32_error=ctypes.get_last_error(),
+            )
+        )
+    return Result.success(RawCaptureBounds(x=x, y=y, width=width, height=height))
+
+
+def query_window_capture_info_raw(window_handle: int) -> Result[RawWindowCaptureInfo, AgentXError]:
+    """Read existence, minimized state and outer bounds for one HWND."""
+    if not is_native_surface_available():
+        return Result.failure(_screen_capture_unavailable("window capture state"))
+
+    import ctypes
+    from ctypes import wintypes
+
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    user32.IsWindow.restype = wintypes.BOOL
+    user32.IsWindow.argtypes = (wintypes.HWND,)
+    user32.IsIconic.restype = wintypes.BOOL
+    user32.IsIconic.argtypes = (wintypes.HWND,)
+    user32.GetWindowRect.restype = wintypes.BOOL
+    user32.GetWindowRect.argtypes = (wintypes.HWND, ctypes.POINTER(wintypes.RECT))
+
+    if not user32.IsWindow(window_handle):
+        return Result.success(
+            RawWindowCaptureInfo(exists=False, minimized=False, bounds=None, error_code=0)
+        )
+    if user32.IsIconic(window_handle):
+        return Result.success(
+            RawWindowCaptureInfo(exists=True, minimized=True, bounds=None, error_code=0)
+        )
+
+    rect = wintypes.RECT()
+    if not user32.GetWindowRect(window_handle, ctypes.byref(rect)):
+        error_code = ctypes.get_last_error()
+        if not user32.IsWindow(window_handle):
+            return Result.success(
+                RawWindowCaptureInfo(
+                    exists=False,
+                    minimized=False,
+                    bounds=None,
+                    error_code=error_code,
+                )
+            )
+        return Result.success(
+            RawWindowCaptureInfo(
+                exists=True,
+                minimized=False,
+                bounds=None,
+                error_code=error_code,
+            )
+        )
+    return Result.success(
+        RawWindowCaptureInfo(
+            exists=True,
+            minimized=False,
+            bounds=RawCaptureBounds(
+                x=int(rect.left),
+                y=int(rect.top),
+                width=int(rect.right - rect.left),
+                height=int(rect.bottom - rect.top),
+            ),
+            error_code=0,
+        )
+    )
+
+
+def capture_bgra_raw(
+    bounds: RawCaptureBounds,
+    *,
+    window_handle: int | None = None,
+) -> Result[bytes, AgentXError]:
+    """Capture one bounded rectangle as top-down 32-bit BGRA bytes."""
+    if not is_native_surface_available():
+        return Result.failure(_screen_capture_unavailable("pixel capture"))
+    if not isinstance(bounds, RawCaptureBounds):
+        raise TypeError("bounds must be a RawCaptureBounds")
+    if type(bounds.width) is not int or type(bounds.height) is not int:
+        raise TypeError("capture dimensions must be integers")
+    if bounds.width <= 0 or bounds.height <= 0:
+        raise ValueError("capture bounds must have positive dimensions")
+    if (
+        bounds.width > _NATIVE_MAX_CAPTURE_WIDTH
+        or bounds.height > _NATIVE_MAX_CAPTURE_HEIGHT
+        or bounds.width * bounds.height > _NATIVE_MAX_CAPTURE_PIXELS
+    ):
+        return Result.failure(
+            _screen_capture_error(
+                code=SCREEN_CAPTURE_FAILED_ERROR_CODE,
+                message="Windows native capture dimensions exceed the bounded allocation limit",
+                operation="pixel capture",
+                category=ErrorCategory.RESOURCE,
+                retryability=Retryability.NON_RETRYABLE,
+            )
+        )
+    if window_handle is not None and (type(window_handle) is not int or window_handle <= 0):
+        raise ValueError("window_handle must be a positive int or None")
+
+    import ctypes
+    from ctypes import wintypes
+
+    class BITMAPINFOHEADER(ctypes.Structure):
+        _fields_ = [
+            ("biSize", wintypes.DWORD),
+            ("biWidth", wintypes.LONG),
+            ("biHeight", wintypes.LONG),
+            ("biPlanes", wintypes.WORD),
+            ("biBitCount", wintypes.WORD),
+            ("biCompression", wintypes.DWORD),
+            ("biSizeImage", wintypes.DWORD),
+            ("biXPelsPerMeter", wintypes.LONG),
+            ("biYPelsPerMeter", wintypes.LONG),
+            ("biClrUsed", wintypes.DWORD),
+            ("biClrImportant", wintypes.DWORD),
+        ]
+
+    class BITMAPINFO(ctypes.Structure):
+        _fields_ = [("bmiHeader", BITMAPINFOHEADER), ("bmiColors", wintypes.DWORD * 3)]
+
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    gdi32 = ctypes.WinDLL("gdi32", use_last_error=True)
+    user32.IsWindow.restype = wintypes.BOOL
+    user32.IsWindow.argtypes = (wintypes.HWND,)
+    user32.IsIconic.restype = wintypes.BOOL
+    user32.IsIconic.argtypes = (wintypes.HWND,)
+    user32.GetDC.restype = wintypes.HDC
+    user32.GetDC.argtypes = (wintypes.HWND,)
+    user32.GetWindowDC.restype = wintypes.HDC
+    user32.GetWindowDC.argtypes = (wintypes.HWND,)
+    user32.ReleaseDC.restype = ctypes.c_int
+    user32.ReleaseDC.argtypes = (wintypes.HWND, wintypes.HDC)
+    gdi32.CreateCompatibleDC.restype = wintypes.HDC
+    gdi32.CreateCompatibleDC.argtypes = (wintypes.HDC,)
+    gdi32.CreateCompatibleBitmap.restype = wintypes.HBITMAP
+    gdi32.CreateCompatibleBitmap.argtypes = (wintypes.HDC, ctypes.c_int, ctypes.c_int)
+    gdi32.SelectObject.restype = ctypes.c_void_p
+    gdi32.SelectObject.argtypes = (wintypes.HDC, ctypes.c_void_p)
+    gdi32.BitBlt.restype = wintypes.BOOL
+    gdi32.BitBlt.argtypes = (
+        wintypes.HDC,
+        ctypes.c_int,
+        ctypes.c_int,
+        ctypes.c_int,
+        ctypes.c_int,
+        wintypes.HDC,
+        ctypes.c_int,
+        ctypes.c_int,
+        wintypes.DWORD,
+    )
+    gdi32.GetDIBits.restype = ctypes.c_int
+    gdi32.GetDIBits.argtypes = (
+        wintypes.HDC,
+        wintypes.HBITMAP,
+        wintypes.UINT,
+        wintypes.UINT,
+        ctypes.c_void_p,
+        ctypes.c_void_p,
+        wintypes.UINT,
+    )
+    gdi32.DeleteObject.restype = wintypes.BOOL
+    gdi32.DeleteObject.argtypes = (ctypes.c_void_p,)
+    gdi32.DeleteDC.restype = wintypes.BOOL
+    gdi32.DeleteDC.argtypes = (wintypes.HDC,)
+
+    source_hwnd = 0 if window_handle is None else window_handle
+    if window_handle is not None:
+        if not user32.IsWindow(window_handle):
+            return Result.failure(
+                _screen_capture_error(
+                    code=SCREEN_CAPTURE_WINDOW_UNAVAILABLE_ERROR_CODE,
+                    message="Windows capture target disappeared before pixel acquisition",
+                    operation="window pixel capture",
+                    category=ErrorCategory.NOT_FOUND,
+                    retryability=Retryability.NON_RETRYABLE,
+                )
+            )
+        if user32.IsIconic(window_handle):
+            return Result.failure(
+                _screen_capture_error(
+                    code=SCREEN_CAPTURE_WINDOW_MINIMIZED_ERROR_CODE,
+                    message="Windows capture target became minimized before pixel acquisition",
+                    operation="window pixel capture",
+                    category=ErrorCategory.PRECONDITION,
+                    retryability=Retryability.NON_RETRYABLE,
+                )
+            )
+        source_dc = user32.GetWindowDC(window_handle)
+        source_x = 0
+        source_y = 0
+    else:
+        source_dc = user32.GetDC(0)
+        source_x = bounds.x
+        source_y = bounds.y
+
+    if not source_dc:
+        error_code = ctypes.get_last_error()
+        if window_handle is not None and not user32.IsWindow(window_handle):
+            return Result.failure(
+                _screen_capture_error(
+                    code=SCREEN_CAPTURE_WINDOW_UNAVAILABLE_ERROR_CODE,
+                    message="Windows capture target disappeared before device-context acquisition",
+                    operation="window pixel capture",
+                    win32_error=error_code,
+                    category=ErrorCategory.NOT_FOUND,
+                    retryability=Retryability.NON_RETRYABLE,
+                )
+            )
+        return Result.failure(
+            _screen_capture_error(
+                code=SCREEN_CAPTURE_FAILED_ERROR_CODE,
+                message="Windows capture could not acquire a source device context",
+                operation="pixel capture",
+                win32_error=error_code,
+            )
+        )
+
+    memory_dc: Any = None
+    bitmap: Any = None
+    previous_object: Any = None
+    try:
+        memory_dc = gdi32.CreateCompatibleDC(source_dc)
+        if not memory_dc:
+            return Result.failure(
+                _screen_capture_error(
+                    code=SCREEN_CAPTURE_FAILED_ERROR_CODE,
+                    message="Windows capture could not create a compatible device context",
+                    operation="pixel capture",
+                    win32_error=ctypes.get_last_error(),
+                )
+            )
+        bitmap = gdi32.CreateCompatibleBitmap(source_dc, bounds.width, bounds.height)
+        if not bitmap:
+            return Result.failure(
+                _screen_capture_error(
+                    code=SCREEN_CAPTURE_FAILED_ERROR_CODE,
+                    message="Windows capture could not allocate a compatible bitmap",
+                    operation="pixel capture",
+                    win32_error=ctypes.get_last_error(),
+                )
+            )
+        previous_object = gdi32.SelectObject(memory_dc, bitmap)
+        if not previous_object:
+            return Result.failure(
+                _screen_capture_error(
+                    code=SCREEN_CAPTURE_FAILED_ERROR_CODE,
+                    message="Windows capture could not select its bitmap",
+                    operation="pixel capture",
+                    win32_error=ctypes.get_last_error(),
+                )
+            )
+        if not gdi32.BitBlt(
+            memory_dc,
+            0,
+            0,
+            bounds.width,
+            bounds.height,
+            source_dc,
+            source_x,
+            source_y,
+            _SRCCOPY | _CAPTUREBLT,
+        ):
+            return Result.failure(
+                _screen_capture_error(
+                    code=SCREEN_CAPTURE_FAILED_ERROR_CODE,
+                    message="Windows capture BitBlt read failed",
+                    operation="pixel capture",
+                    win32_error=ctypes.get_last_error(),
+                )
+            )
+
+        byte_count = bounds.width * bounds.height * 4
+        pixel_buffer = (ctypes.c_ubyte * byte_count)()
+        info = BITMAPINFO()
+        info.bmiHeader.biSize = ctypes.sizeof(BITMAPINFOHEADER)
+        info.bmiHeader.biWidth = bounds.width
+        info.bmiHeader.biHeight = -bounds.height
+        info.bmiHeader.biPlanes = 1
+        info.bmiHeader.biBitCount = 32
+        info.bmiHeader.biCompression = _BI_RGB
+        rows = gdi32.GetDIBits(
+            memory_dc,
+            bitmap,
+            0,
+            bounds.height,
+            pixel_buffer,
+            ctypes.byref(info),
+            _DIB_RGB_COLORS,
+        )
+        if rows != bounds.height:
+            return Result.failure(
+                _screen_capture_error(
+                    code=SCREEN_CAPTURE_FAILED_ERROR_CODE,
+                    message="Windows capture could not read the complete bitmap",
+                    operation="pixel capture",
+                    win32_error=ctypes.get_last_error(),
+                )
+            )
+        return Result.success(bytes(pixel_buffer))
+    finally:
+        if previous_object and memory_dc:
+            gdi32.SelectObject(memory_dc, previous_object)
+        if bitmap:
+            gdi32.DeleteObject(bitmap)
+        if memory_dc:
+            gdi32.DeleteDC(memory_dc)
+        user32.ReleaseDC(source_hwnd, source_dc)
