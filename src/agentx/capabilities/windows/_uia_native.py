@@ -20,7 +20,6 @@ from __future__ import annotations
 
 # C/COM ABI type and constant spellings are intentionally preserved locally.
 # ruff: noqa: N801, N806
-
 import math
 import sys
 from dataclasses import dataclass
