@@ -408,11 +408,15 @@ def test_serialization_is_stable_json_compatible_structure() -> None:
 
 
 def test_result_objects_are_immutable() -> None:
-    snapshot = _inspection(
-        FakeSurface(
-            Result.success(_tree(_raw_element(0, parent_sequence=None, depth=0, child_index=0)))
+    snapshot = (
+        _inspection(
+            FakeSurface(
+                Result.success(_tree(_raw_element(0, parent_sequence=None, depth=0, child_index=0)))
+            )
         )
-    ).inspect(100).unwrap()
+        .inspect(100)
+        .unwrap()
+    )
     with pytest.raises(FrozenInstanceError):
         snapshot.truncated_by_nodes = True  # type: ignore[misc]
     with pytest.raises(FrozenInstanceError):

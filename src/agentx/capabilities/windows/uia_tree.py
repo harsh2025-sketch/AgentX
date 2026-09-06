@@ -731,9 +731,7 @@ def _normalize_tree(
     errors: list[UIANativeError] = []
     for error in raw.errors:
         if not isinstance(error, _uia_native.RawUIAError):
-            return Result.failure(
-                _invalid_native_data("native UIA tree contains wrong error type")
-            )
+            return Result.failure(_invalid_native_data("native UIA tree contains wrong error type"))
         if (
             not isinstance(error.operation, str)
             or not error.operation

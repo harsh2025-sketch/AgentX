@@ -139,9 +139,7 @@ def test_traversal_is_iterative_and_has_two_explicit_bounds() -> None:
     assert "max_nodes" in source
     assert "stack" in source
     functions = {
-        node.name: node
-        for node in ast.walk(_tree(_NATIVE))
-        if isinstance(node, ast.FunctionDef)
+        node.name: node for node in ast.walk(_tree(_NATIVE)) if isinstance(node, ast.FunctionDef)
     }
     for name, function in functions.items():
         recursive_calls = [

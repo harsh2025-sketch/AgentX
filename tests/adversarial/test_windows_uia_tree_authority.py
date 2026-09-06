@@ -112,8 +112,7 @@ def test_hostile_text_is_verbatim_but_inert() -> None:
     assert element.value == _HOSTILE
     assert element.automation_id == _HOSTILE
     assert (
-        element.property_observation(UIAPropertyName.NAME).status
-        is UIAObservationStatus.AVAILABLE
+        element.property_observation(UIAPropertyName.NAME).status is UIAObservationStatus.AVAILABLE
     )
     assert element.supported_patterns == (UIAPatternName.INVOKE, UIAPatternName.VALUE)
 
