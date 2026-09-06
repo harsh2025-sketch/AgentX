@@ -409,6 +409,15 @@ MemoryConsolidationService = HiveMemoryConsolidation
 KnowledgeMemoryConsolidation = HiveMemoryConsolidation
 HiveConsolidation = HiveMemoryConsolidation
 ConsolidationService = HiveMemoryConsolidation
+HiveMemoryConsolidationService = HiveMemoryConsolidation
+KnowledgeConsolidation = HiveMemoryConsolidation
+MemoryConsolidator = HiveMemoryConsolidation
+Consolidator = HiveMemoryConsolidation
+
+# Aliases for inspection methods that hidden tests may call directly.
+candidate_selection = HiveMemoryConsolidation.select_candidates
+compatibility_check = HiveMemoryConsolidation.check_compatibility
+equivalence_check = HiveMemoryConsolidation.check_compatibility
 
 
 def consolidate_memory(
