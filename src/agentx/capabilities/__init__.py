@@ -52,4 +52,15 @@ snapshot data in ``agentx.capabilities.browser_selection``. Selection exposes
 only explicit no-match, unique, or ambiguous cardinality results and never
 performs browser access, tie-breaking policy, fuzzy/model matching, authority,
 verification, persistence, or browser action.
+
+A9.01 adds deterministic missing-capability detection in
+``agentx.capabilities.capability_gap``. It classifies explicit structured task
+requirements against explicitly supplied capability descriptors, procedure
+alternatives, and environment facts as AVAILABLE / MISSING / INCOMPATIBLE /
+UNAVAILABLE / INSUFFICIENT_INFORMATION. It detects gaps only: it never searches,
+discovers an SDK, generates an adapter or code, installs a dependency, registers
+a capability, mutates a registry, or touches the Trusted Kernel. Crucially,
+DENIED != MISSING - permission denial, risk restriction, emergency stop, and
+budget exhaustion are governance restrictions that can never be reported as a
+missing capability, so self-extension can never route around policy.
 """
