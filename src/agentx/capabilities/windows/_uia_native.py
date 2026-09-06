@@ -18,6 +18,9 @@ verbatim as untrusted data.
 
 from __future__ import annotations
 
+# C/COM ABI type and constant spellings are intentionally preserved locally.
+# ruff: noqa: N801, N806
+
 import math
 import sys
 from dataclasses import dataclass
@@ -410,7 +413,11 @@ def _inspect_uia_tree_windows(
         properties = [read_property(element, name, prop_id) for name, prop_id in _PROPERTY_SPECS]
         patterns = [read_property(element, name, prop_id) for name, prop_id in _PATTERN_SPECS]
         value_support = next((item for item in patterns if item.name == "value"), None)
-        if value_support is not None and value_support.hresult is None and value_support.value is True:
+        if (
+            value_support is not None
+            and value_support.hresult is None
+            and value_support.value is True
+        ):
             properties.append(read_property(element, "value", _UIA_VALUE_VALUE_PROPERTY_ID))
         else:
             properties.append(RawUIAProperty(name="value", value=None, unavailable=True))
@@ -446,7 +453,12 @@ def _inspect_uia_tree_windows(
             )
         )
         if failed(create_hr) or not automation:
-            return Result.failure(_native_error(operation="UIAutomation client creation", hresult=create_hr))
+            return Result.failure(
+                _native_error(
+                    operation="UIAutomation client creation",
+                    hresult=create_hr,
+                )
+            )
 
         element_from_handle = method(
             automation,
@@ -462,7 +474,12 @@ def _inspect_uia_tree_windows(
             )
         )
         if failed(root_hr) or not root:
-            return Result.failure(_native_error(operation="element from window handle", hresult=root_hr))
+            return Result.failure(
+                _native_error(
+                    operation="element from window handle",
+                    hresult=root_hr,
+                )
+            )
 
         get_control_walker = method(
             automation,
@@ -471,7 +488,12 @@ def _inspect_uia_tree_windows(
         )
         walker_hr = int(get_control_walker(automation, ctypes.byref(walker)))
         if failed(walker_hr) or not walker:
-            return Result.failure(_native_error(operation="control-view walker creation", hresult=walker_hr))
+            return Result.failure(
+                _native_error(
+                    operation="control-view walker creation",
+                    hresult=walker_hr,
+                )
+            )
 
         first_child = method(
             walker,
