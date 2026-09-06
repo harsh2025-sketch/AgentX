@@ -62,4 +62,15 @@ C2.04 artifact, explicit unknown/unsupported and state/freshness semantics,
 and strict deterministic serialization). It performs no capture, no OCR, no
 vision/model calls, no DOM/UIA fusion, no grounding, no browser or machine
 action, and grants no authority; read/capture requests belong to later tasks.
+
+C5.09 adds the bounded lazy world-state observation cache in
+``agentx.capabilities.world_state_cache``. Reusing the C2.09 environmental
+TTL/freshness contract (explicit ``observed_at + ttl`` boundary, fail-closed
+boundary instant, lazy expiry, injected clock, in-memory only), it caches
+observational world state by deterministic structured identity (scope, target,
+kind, optional environment) and answers lookups with explicit MISSING, FRESH,
+STALE, or INVALIDATED outcomes. Values are inert observation data, growth is
+hard-bounded, invalidation is explicit, and cache presence never proves
+success, grants permission, makes UI state live, or authorizes action. It is
+an observation cache, not the A8.07 verified-result cache.
 """
