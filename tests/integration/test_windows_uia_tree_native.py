@@ -25,7 +25,7 @@ def test_default_native_seam_is_explicitly_unavailable_off_windows() -> None:
     outcome = _uia_native.inspect_uia_tree_raw(1, max_depth=0, max_nodes=1)
 
     assert outcome.is_failure
-    assert outcome.error.code == _uia_native.UIA_NATIVE_UNAVAILABLE_ERROR_CODE
+    assert outcome.unwrap_error().code == _uia_native.UIA_NATIVE_UNAVAILABLE_ERROR_CODE
 
 
 @pytest.mark.skipif(sys.platform != "win32", reason="real Windows UI Automation integration")
@@ -44,11 +44,13 @@ def test_real_windows_uia_can_read_one_bounded_desktop_root() -> None:
     )
     outcome = inspection.inspect(handle, limits=UIATreeLimits(max_depth=0, max_nodes=1))
 
-    if outcome.is_failure and outcome.error.code == _uia_native.UIA_NATIVE_FAILURE_ERROR_CODE:
-        pytest.skip(f"runner has no usable interactive UIA desktop: {outcome.error.message}")
+    if outcome.is_failure:
+        error = outcome.unwrap_error()
+        if error.code == _uia_native.UIA_NATIVE_FAILURE_ERROR_CODE:
+            pytest.skip(f"runner has no usable interactive UIA desktop: {error.message}")
 
     assert outcome.is_success
-    snapshot = outcome.value
+    snapshot = outcome.unwrap()
     assert snapshot.root_window_handle == handle
     assert snapshot.node_count <= 1
     assert snapshot.limits == UIATreeLimits(max_depth=0, max_nodes=1)
