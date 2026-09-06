@@ -163,9 +163,13 @@ def test_level_vocabulary_is_pinned_to_the_a207_router() -> None:
 
 
 def test_schema_migration_is_registered_as_next_append_only_migration() -> None:
-    migration = _MIGRATIONS[-1]
+    # Identified by name, not by ladder position: later append-only tasks
+    # (C7.07 owns v10, create_event_watcher_state) may extend the ladder above
+    # this entry without changing its ownership.
+    migration = next(
+        entry for entry in _MIGRATIONS if entry.name == "create_strategy_performance_store"
+    )
     assert migration.version == 9
-    assert migration.name == "create_strategy_performance_store"
     # The migration itself is strictly additive: it creates one new table and
     # its indexes and never rewrites historical schema or data.
     combined = " ".join(statement.upper() for statement in migration.statements)
@@ -175,7 +179,9 @@ def test_schema_migration_is_registered_as_next_append_only_migration() -> None:
 
 
 def test_migration_creates_only_the_strategy_performance_table() -> None:
-    migration = _MIGRATIONS[-1]
+    migration = next(
+        entry for entry in _MIGRATIONS if entry.name == "create_strategy_performance_store"
+    )
     statements = " ".join(migration.statements)
     assert "CREATE TABLE agentx_strategy_performance" in statements
     assert "CREATE INDEX agentx_strategy_performance_" in statements

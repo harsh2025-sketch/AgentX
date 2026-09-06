@@ -299,9 +299,13 @@ def test_c404_adds_no_persistence_or_migration_surface() -> None:
     ]
 
     # C4.04 is a pure core contract: it adds no migration of its own. The
-    # ladder continues only through later append-only store tasks (A8.01 owns
-    # v9, create_strategy_performance_store); nothing here rewrites history.
+    # ladder stays sorted and consecutive; the landed v1-v8 ladder stays
+    # immutable. Later append-only store tasks may extend it (A8.01 owns v9,
+    # create_strategy_performance_store; C7.07 owns v10,
+    # create_event_watcher_state); nothing here rewrites history.
     assert migration_versions == sorted(migration_versions)
+    assert migration_versions == list(range(1, len(migration_versions) + 1))
+    assert migration_versions[:8] == list(range(1, 9))
     assert max(migration_versions) >= 9
     assert "repair_candidate" not in persistence_source
     assert "agentx_repair_candidates" not in persistence_source

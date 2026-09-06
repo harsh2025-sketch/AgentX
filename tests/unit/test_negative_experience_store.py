@@ -47,8 +47,9 @@ def _record(
 
 def test_migration_ownership_is_v8_after_immutable_v1_through_v7() -> None:
     # C2.06 owns v8 and the v1-v7 ladder that precedes it is immutable. Later
-    # append-only store tasks (A8.01 owns v9, create_strategy_performance_store)
-    # add entries only after v8; they never rewrite this ownership.
+    # append-only store tasks (A8.01 owns v9, create_strategy_performance_store;
+    # C7.07 owns v10, create_event_watcher_state) add entries only after v8;
+    # they never renumber, replace, or duplicate the landed ladder.
     migrations = tuple((migration.version, migration.name) for migration in _MIGRATIONS)
     assert migrations[:8] == (
         (1, "create_persistence_metadata"),
@@ -62,6 +63,8 @@ def test_migration_ownership_is_v8_after_immutable_v1_through_v7() -> None:
     )
     assert migrations[8][0] == 9
     assert all(version > 8 for version, _name in migrations[8:])
+    assert [version for version, _name in migrations] == list(range(1, len(migrations) + 1))
+    assert len({name for _version, name in migrations}) == len(migrations)
 
 
 def test_append_and_get_round_trip(tmp_path: Path) -> None:

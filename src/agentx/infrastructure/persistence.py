@@ -343,6 +343,28 @@ _MIGRATIONS: Final[tuple[_Migration, ...]] = (
             """,
         ),
     ),
+    # C7.07 event watcher state. Provisional version numbering per the same
+    # integration rule as the stores above (A8.01 owns v9, so this entry takes
+    # the next available version, 10): resequencing at integration is a
+    # two-line, conflict-free change because every migration is identified by
+    # name, not by number. The watcher state document (watcher_json) is
+    # canonical; the columns are identity, duplicate protection, and stable
+    # registration ordering only.
+    _Migration(
+        version=10,
+        name="create_event_watcher_state",
+        statements=(
+            """
+            CREATE TABLE agentx_event_watchers (
+                registration_sequence INTEGER PRIMARY KEY AUTOINCREMENT,
+                watcher_id TEXT NOT NULL UNIQUE CHECK (length(watcher_id) > 0),
+                watcher_json TEXT NOT NULL CHECK (length(watcher_json) > 0),
+                updated_at_utc TEXT NOT NULL
+                    DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+            )
+            """,
+        ),
+    ),
 )
 
 

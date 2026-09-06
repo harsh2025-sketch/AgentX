@@ -17,5 +17,8 @@ A8.01 implements the durable append-only StrategyPerformanceStore in
 ``agentx.infrastructure.strategy_performance_store`` while the canonical
 measured strategy-performance record contract lives inward in
 ``agentx.core.strategy_performance``.
+C7.07 implements the generic bounded event-watcher framework in
+``agentx.infrastructure.event_watcher`` over the canonical Event contract, the
+EventBus, and the persistent EventJournal. A watcher match is data only.
 This package initializer deliberately remains declarative and side-effect free.
 """

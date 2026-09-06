@@ -4,7 +4,9 @@ C1.05 provides the local SQLite substrate that AgentX storage owners build on. I
 transaction, and ordered migration mechanics; higher-level stores own their APIs and schemas.
 C1.04 extends the registered migration sequence with the event-journal table, C2.02 adds the
 KnowledgeStore schema, and C2.01 adds the EpisodeStore schema while keeping the C1.05 mechanics and
-historical migrations unchanged.
+historical migrations unchanged. A8.01 appends the strategy-performance store (v9) and
+C7.07 appends the event-watcher state table (v10) for the generic
+bounded event-watcher framework.
 
 ## Database API
 
