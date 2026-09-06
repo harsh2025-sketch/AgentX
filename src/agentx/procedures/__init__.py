@@ -62,6 +62,28 @@ a VerificationResult, and does not mark a Task SUCCEEDED (I1 stays absolute).
 There is no condition DSL: statements and references are inert descriptive
 data, and nothing here is evaluated, compiled, or dispatched.
 
+A3.07 adds the deterministic single-condition evaluator here, in
+``agentx.procedures.condition_evaluation``. It answers exactly one question:
+given ONE canonical A3.06 :class:`~agentx.procedures.conditions.
+ProcedureCondition` and an explicit, caller-supplied, frozen set of typed
+evidence assertions (:class:`~agentx.procedures.condition_evaluation.
+EvidenceFacts`), what result can be established deterministically? The
+vocabulary is exactly three inert values — ``SATISFIED``, ``UNSATISFIED``,
+``UNKNOWN`` — where ``UNKNOWN`` is first-class: missing evidence is never
+silently converted to ``UNSATISFIED`` (absence of evidence is not evidence
+of absence), and contradictory evidence also establishes nothing. A fact
+addresses a condition only by exact typed equality on the canonical
+evidence coordinates (same :class:`~agentx.core.provenance.EvidenceKind`
+member and equal opaque reference); the condition's ``statement`` text is
+never interpreted, and there is no expression engine of any kind. The
+evaluator is not a Procedure interpreter: it never walks a conditions
+document or graph and never aggregates conditions into a decision. A
+precondition ``SATISFIED`` is not authorization, and a postcondition
+``SATISFIED`` is not a VerificationResult and not Task success — invariant
+I1 stays absolute (NO ACTION == SUCCESS WITHOUT CANONICAL VERIFICATION).
+Results are immutable, deterministic, and inert: they grant no Permission,
+touch no authority or runtime subsystem, and persist nothing.
+
 The C2.03 durable storage contract remains inward in ``agentx.core.procedures`` and
 ``agentx.infrastructure.procedure_store``, which persist the graph opaquely as a
 ``CANONICAL_JSON`` :class:`agentx.core.procedures.ProcedurePayload`.
