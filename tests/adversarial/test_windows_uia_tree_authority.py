@@ -5,14 +5,20 @@ from __future__ import annotations
 from datetime import UTC, datetime
 
 from agentx.capabilities.windows import _uia_native
-from agentx.capabilities.windows.provider import PlatformFacts, evaluate_windows_support
+from agentx.capabilities.windows.provider import (
+    PlatformFacts,
+    WindowsSupport,
+    evaluate_windows_support,
+)
 from agentx.capabilities.windows.uia_tree import (
     UIAObservationStatus,
     UIAPatternName,
     UIAPropertyName,
     UIATreeLimits,
+    UIATreeSnapshot,
     WindowsUIATreeInspection,
 )
+from agentx.core.errors import AgentXError
 from agentx.core.result import Result
 from agentx.kernel.action_gate import ActionGate, GateDecision, GateRequest
 from agentx.kernel.emergency_stop import EmergencyStop
@@ -26,13 +32,18 @@ _HOSTILE = (
 _NOW = datetime(2026, 9, 6, 11, 0, tzinfo=UTC)
 
 
-def _support():  # type: ignore[no-untyped-def]
+def _support() -> WindowsSupport:
     return evaluate_windows_support(
         PlatformFacts(system="Windows", release="11", version="test", machine="AMD64")
     )
 
 
-def _raw_property(name: str, value: object | None, *, unavailable: bool = False) -> _uia_native.RawUIAProperty:
+def _raw_property(
+    name: str,
+    value: object | None,
+    *,
+    unavailable: bool = False,
+) -> _uia_native.RawUIAProperty:
     return _uia_native.RawUIAProperty(name=name, value=value, unavailable=unavailable)
 
 
@@ -79,17 +90,17 @@ class HostileSurface:
         self,
         window_handle: int,
         limits: UIATreeLimits,
-    ) -> Result[_uia_native.RawUIATree, object]:  # type: ignore[type-var]
+    ) -> Result[_uia_native.RawUIATree, AgentXError]:
         del window_handle, limits
         self.calls += 1
         return Result.success(_hostile_tree())
 
 
-def _snapshot():  # type: ignore[no-untyped-def]
+def _snapshot() -> UIATreeSnapshot:
     surface = HostileSurface()
     inspection = WindowsUIATreeInspection(
         _support(),
-        native_surface=surface,  # type: ignore[arg-type]
+        native_surface=surface,
         clock=lambda: _NOW,
     )
     return inspection.inspect(100).unwrap()
@@ -97,17 +108,18 @@ def _snapshot():  # type: ignore[no-untyped-def]
 
 def test_hostile_text_is_verbatim_but_inert() -> None:
     element = _snapshot().elements[0]
-
     assert element.name == _HOSTILE
     assert element.value == _HOSTILE
     assert element.automation_id == _HOSTILE
-    assert element.property(UIAPropertyName.NAME).status is UIAObservationStatus.AVAILABLE
+    assert (
+        element.property_observation(UIAPropertyName.NAME).status
+        is UIAObservationStatus.AVAILABLE
+    )
     assert element.supported_patterns == (UIAPatternName.INVOKE, UIAPatternName.VALUE)
 
 
 def test_pattern_metadata_does_not_create_action_methods() -> None:
     element = _snapshot().elements[0]
-
     for forbidden in ("invoke", "click", "set_value", "type_text", "set_focus", "execute"):
         assert not hasattr(element, forbidden)
         assert not hasattr(element.reference, forbidden)
@@ -125,7 +137,6 @@ def test_snapshot_never_claims_success_or_verification() -> None:
 def test_snapshot_cannot_grant_permission_or_be_authority() -> None:
     snapshot = _snapshot()
     authority = AuthorityContext(permissions=frozenset())
-
     assert not isinstance(snapshot, AuthorityContext | RiskAssessment)
     assert not isinstance(snapshot.elements[0], AuthorityContext | RiskAssessment)
     assert PermissionEngine().check(Permission.READ, authority).present is False
@@ -147,22 +158,18 @@ def test_hostile_ui_data_cannot_change_action_gate_decision() -> None:
     before = gate.evaluate(request, None)
     _snapshot()
     after = gate.evaluate(request, None)
-
     assert before.decision is after.decision is GateDecision.DENY
 
 
 def test_emergency_stop_cannot_be_cleared_by_observed_text() -> None:
     stop = EmergencyStop()
     stop.request_stop()
-
     _snapshot()
-
     assert stop.stop_requested is True
 
 
 def test_serialized_hostile_text_is_still_only_data() -> None:
     payload = _snapshot().to_dict()
-
     assert _HOSTILE in str(payload)
     assert "authority_context" not in payload
     assert "permission" not in payload
