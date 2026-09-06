@@ -69,6 +69,20 @@ only. An empty/global scope means "this claim is not restricted to a named
 application, OS, environment, project, or context"; it never means permission
 everywhere and never grants machine authority.
 
+Cross-scope retrieval protection (C6.08): when composed with a
+:class:`~agentx.core.retrieval_scope.RetrievalScopeGuard` — the protected
+composition being
+``SemanticMemory(store, RetrievalScopeGuard(request_scope))`` — every read path
+(``recall``, ``recall_all``, ``provenance_of``) additionally enforces the
+guard's request scope, and denied records never enter a result. Point lookup
+``recall`` denies silently as ``None`` — a denied record is indistinguishable
+from an absent one, so a crafted or guessed ``KnowledgeId`` can neither pull a
+foreign-scope record out of the store nor confirm that such a record exists.
+Scope enforcement consults only the canonical ``scope`` field; no text inside
+``content`` can override it, the guard has no detach/override knob on the
+protected path, and write paths are unaffected (filtering is retrieval policy,
+not ingestion policy).
+
 This module depends only on ``agentx.core`` contracts plus the structural
 :class:`KnowledgeStorePort`, so the canonical boundary model
 (``agentx.hive`` -> ``agentx.core``) is preserved: concrete persistence is
@@ -90,6 +104,7 @@ from agentx.core.knowledge import (
     ProvenanceKind,
 )
 from agentx.core.provenance import ProvenanceRecord
+from agentx.core.retrieval_scope import RetrievalScopeGuard
 
 __all__ = [
     "SEMANTIC_KNOWLEDGE_TYPES",
@@ -246,13 +261,21 @@ class SemanticMemory:
     :class:`KnowledgeStorePort`. It holds no cache and no second copy of any
     record: every read goes to the canonical store, so durability across
     process restarts is exactly the store's durability.
+
+    With a ``scope_guard`` attached — the protected composition is
+    ``SemanticMemory(store, RetrievalScopeGuard(request_scope))`` — all reads
+    additionally pass C6.08 cross-scope protection; without one, C2.05
+    semantics are unchanged.
     """
 
     store: KnowledgeStorePort
+    scope_guard: RetrievalScopeGuard | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.store, KnowledgeStorePort):
             raise TypeError("store must satisfy the KnowledgeStorePort protocol")
+        if self.scope_guard is not None and not isinstance(self.scope_guard, RetrievalScopeGuard):
+            raise TypeError("scope_guard must be a RetrievalScopeGuard or None")
 
     # -- write ------------------------------------------------------------
 
@@ -317,10 +340,16 @@ class SemanticMemory:
         A stored record whose knowledge type is not semantic belongs to
         another memory class and is simply not part of this view, so ``None``
         is returned rather than another subsystem's data.
+
+        Under a scope guard, a record whose scope the request context cannot
+        prove is likewise reported as absent: denial never leaks content,
+        metadata, or even the existence of the foreign-scope record.
         """
         _require_knowledge_id(knowledge_id)
         record = self.store.get(knowledge_id)
         if record is None or record.knowledge_type not in SEMANTIC_KNOWLEDGE_TYPES:
+            return None
+        if self.scope_guard is not None and not self.scope_guard.evaluate(record).allowed:
             return None
         return record
 
@@ -332,15 +361,23 @@ class SemanticMemory:
         so enumeration is stable across calls, processes, restarts, and
         insertion order. Filtering only removes records; it never reorders,
         ranks, or scores them.
+
+        Under a scope guard, every record that survives the query filter is
+        additionally evaluated against the bound request scope, and denied
+        records — including records with malformed scope metadata, which
+        never raise mid-batch — are removed before the result is returned.
         """
         if query is not None and not isinstance(query, SemanticMemoryQuery):
             raise TypeError("query must be a SemanticMemoryQuery or None")
-        return tuple(
+        matches = tuple(
             record
             for record in self.store.list_records()
             if record.knowledge_type in SEMANTIC_KNOWLEDGE_TYPES
             and (query is None or query.matches(record))
         )
+        if self.scope_guard is None:
+            return matches
+        return self.scope_guard.filter(matches)
 
     def provenance_of(self, knowledge_id: KnowledgeId) -> ProvenanceRecord | None:
         """Return the stored origin of a semantic record as a C2.07 record.

@@ -32,6 +32,17 @@ no authority whatsoever; authority is owned exclusively by ``agentx.kernel``.
 Past success does not authorize a future action, and past failure does not
 prohibit one. Whether remembered experience is *applicable* to a current
 decision is decided later, elsewhere.
+
+CROSS-SCOPE PROTECTION (C6.08). ``NegativeExperienceRecord`` is the one record
+class served here that carries a canonical ``KnowledgeScope``. When the service
+is constructed with ``scope_guard=RetrievalScopeGuard(request_scope)`` (from
+``agentx.core.retrieval_scope``), both negative-experience read paths
+enforce the guard's request scope: a record whose restrictions the caller cannot
+prove — or whose scope metadata is malformed — never enters the result, and
+``get_negative_experience`` reports a denied record as absent (``None``) so a
+crafted id leaks neither content nor existence. Canonical episodes carry no
+scope dimension in the current architecture; episode history therefore has no
+scope rule to enforce, and none is invented here.
 """
 
 from __future__ import annotations
@@ -42,6 +53,7 @@ from uuid import UUID
 from agentx.core.episodes import EpisodeOutcome, EpisodeRecord
 from agentx.core.ids import EpisodeId, NegativeExperienceId, TaskId
 from agentx.core.negative_experience import NegativeExperienceRecord
+from agentx.core.retrieval_scope import RetrievalScopeGuard
 
 __all__ = [
     "EpisodeEntryLike",
@@ -116,18 +128,26 @@ class ExperienceMemory:
     Construction takes the two canonical stores. This class adds no storage of
     its own, no caching, and no hidden state: every call is a deterministic
     pass-through with canonical filtering semantics.
+
+    An optional :class:`RetrievalScopeGuard` attaches C6.08 cross-scope
+    protection to the scoped negative-experience reads; unconstructed
+    behaviour is exactly the previous C2.06 contract.
     """
 
-    __slots__ = ("_episodes", "_negatives")
+    __slots__ = ("_episodes", "_negatives", "_scope_guard")
 
     def __init__(
         self,
         *,
         episode_store: EpisodeStoreLike,
         negative_experience_store: NegativeExperienceStoreLike,
+        scope_guard: RetrievalScopeGuard | None = None,
     ) -> None:
+        if scope_guard is not None and not isinstance(scope_guard, RetrievalScopeGuard):
+            raise TypeError("scope_guard must be a RetrievalScopeGuard or None")
         self._episodes = episode_store
         self._negatives = negative_experience_store
+        self._scope_guard = scope_guard
 
     # -- Episodic memory ----------------------------------------------------
 
@@ -229,10 +249,19 @@ class ExperienceMemory:
     def get_negative_experience(
         self, negative_experience_id: NegativeExperienceId
     ) -> NegativeExperienceRecord | None:
-        """Return one remembered negative experience by identity, or None."""
+        """Return one remembered negative experience by identity, or None.
+
+        Under a scope guard a denied record is indistinguishable from an
+        absent one: no content, metadata, or existence signal leaks.
+        """
         if not isinstance(negative_experience_id, NegativeExperienceId):
             raise TypeError("negative_experience_id must be a NegativeExperienceId")
-        return self._negatives.get(negative_experience_id)
+        record = self._negatives.get(negative_experience_id)
+        if record is None:
+            return None
+        if self._scope_guard is not None and not self._scope_guard.evaluate(record).allowed:
+            return None
+        return record
 
     def negative_history(
         self,
@@ -242,11 +271,19 @@ class ExperienceMemory:
         episode_id: EpisodeId | None = None,
         task_id: TaskId | None = None,
     ) -> tuple[NegativeExperienceRecord, ...]:
-        """Remembered negative experiences in deterministic sequence order."""
+        """Remembered negative experiences in deterministic sequence order.
+
+        Under a scope guard the surviving sequence order is preserved exactly;
+        denied records — including malformed-scope records, which deny
+        themselves without aborting the batch — never enter the result.
+        """
         entries = self._negatives.read(
             after_sequence=after_sequence,
             limit=limit,
             episode_id=episode_id,
             task_id=task_id,
         )
-        return tuple(entry.record for entry in entries)
+        records = tuple(entry.record for entry in entries)
+        if self._scope_guard is None:
+            return records
+        return self._scope_guard.filter(records)

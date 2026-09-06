@@ -40,6 +40,19 @@ verification, or activate a procedure.
 
 This module belongs to ``agentx.infrastructure``: it reads through the durable
 store (never around it) and imports nothing from the Trusted Kernel.
+
+Cross-scope retrieval protection (C6.08):
+``KnowledgeRetrieval`` optionally composes a :class:`RetrievalScopeGuard` from
+``agentx.core.retrieval_scope``. When a guard is attached — the protected
+composition being ``KnowledgeRetrieval(store, RetrievalScopeGuard(scope))`` —
+EVERY read path, including exact ``knowledge_id`` point lookups, passes
+through the guard, and
+denied records never enter the returned tuple. A guard cannot be detached or
+overridden per query: no query field disables it, retrieved content cannot
+override the canonical ``scope`` field it evaluates, and a malformed scope
+fails closed with a reason code. With no guard attached the C2.09 applicability
+semantics are unchanged (an unguarded retrieval is an audit/composition tool,
+never the protected path).
 """
 
 from __future__ import annotations
@@ -56,6 +69,7 @@ from agentx.core.knowledge import (
     KnowledgeValidationError,
     ProvenanceKind,
 )
+from agentx.core.retrieval_scope import RetrievalScopeGuard
 from agentx.infrastructure.knowledge_store import KnowledgeStore
 
 __all__ = [
@@ -209,13 +223,24 @@ class KnowledgeRetrieval:
     Results are deterministic: records are returned in the store's canonical
     order (``created_at`` ascending, then ``knowledge_id`` ascending), and the
     same store state plus the same query always yields the same tuple.
+
+    When a ``scope_guard`` is attached — the protected composition is
+    ``KnowledgeRetrieval(store, RetrievalScopeGuard(request_scope))`` — every
+    candidate that survived the C2.09 applicability filters is additionally
+    evaluated by the C6.08 cross-scope protection, and denied records are
+    removed before the result is returned — including for ``knowledge_id``
+    point lookups, so a crafted or guessed id cannot pull a foreign-scope
+    record out of the store.
     """
 
     store: KnowledgeStore
+    scope_guard: RetrievalScopeGuard | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.store, KnowledgeStore):
             raise TypeError("store must be a canonical KnowledgeStore")
+        if self.scope_guard is not None and not isinstance(self.scope_guard, RetrievalScopeGuard):
+            raise TypeError("scope_guard must be a RetrievalScopeGuard or None")
 
     def retrieve(self, query: KnowledgeRetrievalQuery | None = None) -> tuple[KnowledgeRecord, ...]:
         """Return all records matching ``query`` in canonical order.
@@ -223,6 +248,9 @@ class KnowledgeRetrieval:
         ``query=None`` is the unfiltered default: every current (non-``SUPERSEDED``)
         record. Each returned record is the canonical immutable record with its
         lifecycle state preserved verbatim; retrieving grants zero authority.
+        With a scope guard attached, a record whose restrictions the guard
+        cannot prove — or whose scope metadata is malformed — is dropped:
+        denials never appear in the result and never replace it with an error.
         """
         if query is not None and not isinstance(query, KnowledgeRetrievalQuery):
             raise TypeError("query must be a KnowledgeRetrievalQuery or None")
@@ -235,4 +263,7 @@ class KnowledgeRetrieval:
         else:
             candidates = self.store.list_records()
 
-        return tuple(record for record in candidates if _matches(record, effective, statuses))
+        matched = tuple(record for record in candidates if _matches(record, effective, statuses))
+        if self.scope_guard is None:
+            return matched
+        return self.scope_guard.filter(matched)

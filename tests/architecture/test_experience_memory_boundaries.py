@@ -81,6 +81,7 @@ def test_experience_memory_depends_only_on_canonical_core_contracts() -> None:
             "agentx.core.episodes",
             "agentx.core.ids",
             "agentx.core.negative_experience",
+            "agentx.core.retrieval_scope",
         }
         for module in imports
     )

@@ -95,6 +95,7 @@ def test_retrieval_depends_only_on_core_contracts_and_the_store() -> None:
     assert agentx_imports <= {
         "agentx.core.ids",
         "agentx.core.knowledge",
+        "agentx.core.retrieval_scope",
         "agentx.infrastructure.knowledge_store",
     }
 

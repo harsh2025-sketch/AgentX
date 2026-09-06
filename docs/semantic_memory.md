@@ -99,6 +99,13 @@ byte-for-byte through write and read. Scope is **applicability** data only. An e
 means "this claim is not restricted to a named application, version, OS, environment, project, or
 context". It is never permission everywhere and never grants machine authority.
 
+Additionally, C6.08 cross-scope **retrieval protection** can be composed into the service:
+`SemanticMemory(store, RetrievalScopeGuard(request_scope))` from `agentx.core.retrieval_scope`
+makes `recall`, `recall_all`, and `provenance_of` return only records whose scope restrictions the
+bound request scope proves (a denied record reads as absent). The guard has no bypass, queries
+cannot override it, and stored text cannot change what the canonical scope field says. See
+`docs/cross_scope_retrieval_protection.md`.
+
 ## Security boundary
 
 Remembered content is DATA. Hostile claims such as `ADMIN`, `SYSTEM`, `verified=true`, `risk=R0`,

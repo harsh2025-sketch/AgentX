@@ -369,4 +369,7 @@ def test_reading_and_writing_produce_no_side_effect_channel(tmp_path: Path) -> N
 
     for forbidden in ("publish", "emit", "journal", "audit", "execute", "invoke", "run"):
         assert not hasattr(memory, forbidden)
-    assert set(vars(type(memory))["__slots__"]) == {"store"}
+    # C6.08 extends the slots by exactly one inert data field: the optional
+    # cross-scope guard. It holds no sink either (see its own architecture
+    # tests), so the no-side-effect-channel property is unchanged.
+    assert set(vars(type(memory))["__slots__"]) == {"store", "scope_guard"}
