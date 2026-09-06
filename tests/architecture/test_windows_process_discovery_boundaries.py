@@ -3,7 +3,7 @@
 Static and subprocess-probe checks that run identically on Windows, Linux and
 macOS and never depend on a real desktop. They pin the A5.02 invariants:
 
-* the only Win32/``ctypes`` knowledge lives in the isolated ``_native`` seam;
+* Win32/``ctypes`` knowledge lives only in isolated Windows native seam modules;
 * discovery reuses the A5.01 provider verdicts and the canonical capability
   ABI, duplicates none of them, and performs no registry wiring;
 * importing the modules performs no native load, no platform detection, no
@@ -29,8 +29,10 @@ _SRC_ROOT = _REPO_ROOT / "src"
 _WINDOWS_PKG = _SRC_ROOT / "agentx" / "capabilities" / "windows"
 _DISCOVERY = _WINDOWS_PKG / "process_discovery.py"
 _NATIVE = _WINDOWS_PKG / "_native.py"
+_UIA_NATIVE = _WINDOWS_PKG / "_uia_native.py"
+_NATIVE_SEAMS = frozenset({_NATIVE, _UIA_NATIVE})
 
-# Native markers that may appear ONLY inside the isolated seam module.
+# Native markers that may appear ONLY inside isolated seam modules.
 _NATIVE_ONLY_MARKERS = ("windll", "WinDLL", "WINFUNCTYPE", "kernel32", "user32")
 
 # Classes A5.02 is allowed to define in the discovery module.
@@ -69,12 +71,13 @@ def _windows_sources() -> tuple[Path, ...]:
 def test_process_discovery_lives_in_the_capabilities_subsystem() -> None:
     assert _DISCOVERY.is_file()
     assert _NATIVE.is_file()
+    assert _UIA_NATIVE.is_file()
     assert _DISCOVERY.parent.parent.name == "capabilities"
 
 
-def test_the_native_seam_is_the_only_win32_knowledge_site() -> None:
+def test_native_seams_are_the_only_win32_knowledge_sites() -> None:
     for path in _windows_sources():
-        if path == _NATIVE:
+        if path in _NATIVE_SEAMS:
             continue
         source = path.read_text(encoding="utf-8")
         for marker in _NATIVE_ONLY_MARKERS:
@@ -226,7 +229,7 @@ def test_importing_discovery_registers_nothing() -> None:
 
 
 def test_windows_discovery_keeps_the_runtime_dependency_set_empty() -> None:
-    """A5.02 adds no dependency: the native seam is stdlib ``ctypes`` only."""
+    """A5.02 adds no dependency: native seams remain stdlib-only."""
     pyproject = (_REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
     assert "dependencies = []" in pyproject
     for banned in ("pywin32", "pywinauto", "comtypes", "uiautomation", "psutil"):
