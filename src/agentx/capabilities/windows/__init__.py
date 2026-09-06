@@ -1,31 +1,30 @@
 """Ownership boundary: ``agentx.capabilities.windows``.
 
 Canonical responsibility: the Windows provider/adapter boundary through which
-future Windows-specific capabilities (A5.02+) participate in the canonical
-Capability ABI (A1.08) and Capability Registry (A1.09).
+Windows-specific capabilities participate in the canonical Capability ABI
+(A1.08) and Capability Registry (A1.09).
 
-A5.01 defined *only* that boundary in
-:mod:`agentx.capabilities.windows.provider`: deterministic provider identity,
-explicit and testable platform facts, an explicit support verdict, and a
-provider object that can contribute already-constructed capabilities to a
-caller-owned registry. A5.01 implemented no Windows automation: no Win32, COM,
-UI Automation, pywinauto, input injection, clipboard, screenshots, OCR, or app
-launching. A5.02 added the first read-only native surface (process snapshot,
-image-path query, top-level window walk); everything else — UI Automation
-traversal, controls, input, capture, dialogs, app launching — still belongs to
-later tasks.
+A5.01 defined the provider boundary: deterministic provider identity, explicit
+and testable platform facts, an explicit support verdict, and a provider object
+that can contribute already-constructed capabilities to a caller-owned
+registry. A5.02 added read-only process/application discovery in
+``process_discovery``.
 
-A5.02 adds read-only process/application discovery in
-``agentx.capabilities.windows.process_discovery`` (typed process/window
-identities with explicit metadata-availability semantics, deterministic
-normalization, and the operation wrapped as an ordinary canonical Capability).
-The only Win32 knowledge lives in the isolated ``_native`` module, whose
-``ctypes`` imports are lazy and call-time only, so package import still
-performs no platform detection, no registration, no native import, and no
-machine action on any host. It has zero third-party dependencies.
+A5.08 adds read-only display/window/region pixel observation in
+``screen_capture``. Pixels are untrusted data only. Capture does not grant
+authority, prove success, identify semantic controls, authorize clicking, or
+interpret instructions visible in an image. A5.08 adds no OCR, visual-model
+calls, grounding, UIA fusion, mouse/keyboard input, persistence, or
+state-transition verification.
 
-The provider is not authority. Availability is descriptive: the Trusted Kernel
+All Win32 knowledge remains isolated in ``_native``. Its ``ctypes`` imports are
+lazy and call-time only, so importing this package performs no platform
+probing, native loading, registration, or machine action on any host. The
+higher-level Windows capability modules remain pure Python and use mockable
+seams around the native reads. No third-party runtime dependency is required.
+
+The provider and every observation are non-authoritative. The Trusted Kernel
 (``agentx.kernel``) remains the only layer that grants permission, gates
 actions, assesses risk, budgets resources, and clears emergency stops.
-Discovered process/window metadata is untrusted data and grants nothing.
+Discovered metadata and captured pixels are untrusted data and grant nothing.
 """
