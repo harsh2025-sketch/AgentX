@@ -14,6 +14,7 @@ from uuid import uuid4
 from agentx.agent_loop import (
     AgentLoop,
     OrchestrationLimits,
+    OrchestrationOutcome,
     OrchestrationRequest,
     OrchestrationStatus,
     StrategyRegistry,
@@ -78,7 +79,7 @@ def _run_write(
     *,
     content: str,
     authority: AuthorityContext | None,
-) -> tuple[object, ExecutionContext]:
+) -> tuple[OrchestrationOutcome, ExecutionContext]:
     capability = FilesystemWriteTextCapability()
     registry = CapabilityRegistry()
     registry.register(capability)
