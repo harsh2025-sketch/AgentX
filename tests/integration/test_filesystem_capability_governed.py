@@ -109,7 +109,7 @@ def test_authorized_write_runs_through_real_governed_loop(tmp_path: Path) -> Non
 
 def test_authorized_read_runs_through_real_governed_loop(tmp_path: Path) -> None:
     target = tmp_path / "governed-read.txt"
-    target.write_bytes("नमस्ते".encode("utf-8"))
+    target.write_bytes("नमस्ते".encode())
     loop, _, _ = _loop(
         FilesystemReadTextCapability(),
         permissions=frozenset({Permission.READ}),
