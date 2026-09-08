@@ -50,7 +50,7 @@ def _execution_error_code(observation: CapabilityObservation) -> str:
 
 def test_valid_read_and_exact_verification(tmp_path: Path) -> None:
     target = tmp_path / "read.txt"
-    target.write_bytes("hello\nworld".encode())
+    target.write_bytes(b"hello\nworld")
     capability = FilesystemReadTextCapability()
     request = read_text_request(str(target), max_bytes=64)
 
