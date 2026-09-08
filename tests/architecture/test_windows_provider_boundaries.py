@@ -5,11 +5,12 @@ Linux and macOS and they never touch a native API. They are architecture
 guardrails, not security enforcement: authority remains owned by the Trusted
 Kernel.
 
-A5.02 note: the first read-only native surface (the isolated ``_native``
-module) now exists. The guardrails below therefore distinguish between the
-native seam module — which may import :mod:`ctypes` lazily and use exactly
-the approved read-only Win32 discovery APIs — and every other module in the
-Windows package, where the original A5.01 rules still hold unchanged.
+A5.02 introduced the isolated ``_native`` read-only Win32 discovery seam.
+A5.03 adds the isolated ``_uia_native`` read-only UI Automation seam. Exactly
+those native seam modules may import :mod:`ctypes` lazily; every Windows
+module still inherits the same no-third-party, no-module-level-native-load,
+no-mutation constraints. The A5.02 ``EnumWindows`` exception remains limited
+to ``_native`` only.
 """
 
 from __future__ import annotations
@@ -29,9 +30,11 @@ _AGENTX_SRC = _SRC_ROOT / "agentx"
 _WINDOWS_PKG = _AGENTX_SRC / "capabilities" / "windows"
 _PROVIDER = _WINDOWS_PKG / "provider.py"
 _NATIVE = _WINDOWS_PKG / "_native.py"
+_UIA_NATIVE = _WINDOWS_PKG / "_uia_native.py"
+_NATIVE_SEAMS = frozenset({_NATIVE, _UIA_NATIVE})
 
 # Native/automation imports banned in every Windows-package module except the
-# explicit carve-out below (which still bans everything but ``ctypes``).
+# explicit native seams below (which still permit only stdlib ``ctypes``).
 _FORBIDDEN_IMPORTS = (
     "ctypes",
     "win32api",
@@ -61,23 +64,16 @@ _FORBIDDEN_IMPORTS = (
     "playwright",
 )
 
-# A5.02: ``ctypes`` is legal ONLY inside the isolated native seam module, and
-# even there only as a lazy, call-time import (never at module level, so
-# importing the package loads nothing native on any host).
+# Native seams may use ctypes only as a lazy, call-time import. Module-level
+# ctypes remains forbidden, so importing the package loads nothing native.
 _NATIVE_SEAM_ALLOWED_IMPORTS = frozenset({"ctypes"})
 
-# Automation/discovery surfaces that must not appear anywhere except the
-# native seam, where exactly the approved A5.02 read-only window walk lives.
+# Exactly the A5.02 Win32 seam may expose the approved read-only window walk.
 _NATIVE_SEAM_ALLOWED_SYMBOLS = frozenset({"EnumWindows"})
 
-# Automation verbs no Windows-package module may implement. The first group
-# is UIA/input/manipulation (owned by A5.03+ or forbidden outright); the
-# second group is process-lifecycle and window-mutation Win32 APIs: they are
-# banned everywhere, including inside the native seam, because A5.02 is a
-# read-only discovery task.
+# Automation verbs no Windows-package module may implement. EnumWindows is
+# retained here because it is allowed only in the A5.02 _native carve-out.
 _FORBIDDEN_SYMBOLS = (
-    # EnumWindows stays in this list: it is banned everywhere except the
-    # native seam, whose carve-out above permits exactly this one symbol.
     "EnumWindows",
     "FindWindow",
     "GetForegroundWindow",
@@ -92,8 +88,7 @@ _FORBIDDEN_SYMBOLS = (
     "ocr",
 )
 
-# Mutating Win32 APIs that must never appear anywhere in the Windows package,
-# not even as a name, attribute, or string (discovery is read-only).
+# Mutating Win32 APIs remain banned everywhere, including both native seams.
 _FORBIDDEN_WIN32_MUTATIONS = (
     "TerminateProcess",
     "CreateProcess",
@@ -183,7 +178,7 @@ def test_windows_provider_lives_in_the_capabilities_subsystem() -> None:
 
 @pytest.mark.parametrize("path", _windows_sources(), ids=lambda p: p.name)
 def test_windows_package_imports_no_native_or_automation_module(path: Path) -> None:
-    native_seam = path == _NATIVE
+    native_seam = path in _NATIVE_SEAMS
     for module in _imported_modules(path):
         root = module.split(".")[0]
         if native_seam and root in _NATIVE_SEAM_ALLOWED_IMPORTS:
@@ -193,7 +188,7 @@ def test_windows_package_imports_no_native_or_automation_module(path: Path) -> N
 
 @pytest.mark.parametrize("path", _windows_sources(), ids=lambda p: p.name)
 def test_ctypes_is_never_imported_at_module_level(path: Path) -> None:
-    """A5.02 rule: the native seam may use ctypes, but never at import time."""
+    """Native seams may use ctypes, but never at import time."""
     for module in _top_level_imports(path):
         root = module.split(".")[0]
         assert root != "ctypes", f"{path.name} imports {module} at module level"
@@ -201,7 +196,6 @@ def test_ctypes_is_never_imported_at_module_level(path: Path) -> None:
 
 @pytest.mark.parametrize("path", _windows_sources(), ids=lambda p: p.name)
 def test_windows_package_defines_no_automation_surface(path: Path) -> None:
-    native_seam = path == _NATIVE
     source = path.read_text(encoding="utf-8")
     tree = ast.parse(source)
     names = {
@@ -211,7 +205,7 @@ def test_windows_package_defines_no_automation_surface(path: Path) -> None:
     }
     attributes = {node.attr for node in ast.walk(tree) if isinstance(node, ast.Attribute)}
     for symbol in _FORBIDDEN_SYMBOLS:
-        if native_seam and symbol in _NATIVE_SEAM_ALLOWED_SYMBOLS:
+        if path == _NATIVE and symbol in _NATIVE_SEAM_ALLOWED_SYMBOLS:
             continue
         assert symbol not in names
         assert symbol not in attributes
@@ -219,7 +213,7 @@ def test_windows_package_defines_no_automation_surface(path: Path) -> None:
 
 @pytest.mark.parametrize("path", _windows_sources(), ids=lambda p: p.name)
 def test_windows_package_mentions_no_mutating_win32_api(path: Path) -> None:
-    """A5.02 is read-only: mutating Win32 APIs may not appear anywhere."""
+    """Windows discovery/inspection remains read-only."""
     source = path.read_text(encoding="utf-8")
     for symbol in _FORBIDDEN_WIN32_MUTATIONS:
         assert symbol not in source, f"{path.name} mentions forbidden Win32 API {symbol}"
@@ -320,10 +314,10 @@ def test_windows_package_respects_the_canonical_subsystem_edges() -> None:
 def test_importing_the_provider_in_a_clean_interpreter_loads_nothing_native() -> None:
     """Import safety, provable on any host: no native/automation module loads.
 
-    The check is a *delta*: only modules loaded by importing the Windows
-    package itself count. Canonical dependencies are imported first, so
-    stdlib modules that legitimately load ``ctypes`` on Windows (e.g. ``uuid``)
-    are never misattributed to A5.01.
+    The check is a delta: only modules loaded by importing the Windows package
+    itself count. Canonical dependencies are imported first, so stdlib modules
+    that legitimately load ctypes on Windows (for example uuid) are never
+    misattributed to A5.01.
     """
     probe = (
         "import sys\n"
@@ -353,9 +347,6 @@ def test_importing_the_provider_in_a_clean_interpreter_loads_nothing_native() ->
 def test_importing_the_provider_performs_no_platform_detection() -> None:
     """``platform``/``sys`` reads happen only inside explicit function calls."""
     probe = (
-        # Import the canonical dependencies first so that stdlib modules which
-        # legitimately read platform facts at their own import time (e.g. uuid)
-        # cannot be misattributed to the provider.
         "import agentx.capabilities.abi  # noqa: F401\n"
         "import agentx.core.errors  # noqa: F401\n"
         "import agentx.core.result  # noqa: F401\n"
@@ -399,7 +390,7 @@ def test_importing_the_provider_registers_nothing() -> None:
 
 
 def test_runtime_dependency_set_is_unchanged() -> None:
-    """A5.01 adds no runtime dependency (in particular no pywin32)."""
+    """Windows capability stages add no runtime dependency, especially pywin32."""
     pyproject = (_REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
     assert "dependencies = []" in pyproject
     assert "pywin32" not in pyproject
