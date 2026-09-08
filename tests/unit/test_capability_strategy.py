@@ -9,7 +9,7 @@ import pytest
 
 from agentx.agent_loop import StrategyResult
 from agentx.capabilities.abi import CapabilityName, CapabilityRequest, CapabilityVersion
-from agentx.capabilities.runtime import LoopOutcome
+from agentx.capabilities.runtime import ClosedLoopOutcome, LoopOutcome
 from agentx.capability_strategy import (
     CAPABILITY_STRATEGY_LEVEL,
     CapabilityStrategyBinding,
@@ -53,7 +53,7 @@ def _adapter(
     )
 
 
-def _executed_outcome(result: StrategyResult):
+def _executed_outcome(result: StrategyResult) -> ClosedLoopOutcome:
     assert result.unavailable_reason is None
     assert result.outcome is not None
     assert result.outcome.is_success, result.outcome.unwrap_error()
@@ -68,9 +68,9 @@ def test_binding_is_explicit_l1_and_immutable() -> None:
     assert binding.level is ExecutionLevel.L1_DIRECT
     assert binding.request is request
     with pytest.raises(FrozenInstanceError):
-        binding.level = ExecutionLevel.L2_COMPILED  # type: ignore[misc]
+        setattr(binding, "level", ExecutionLevel.L2_COMPILED)
     with pytest.raises(FrozenInstanceError):
-        binding.request = request  # type: ignore[misc]
+        setattr(binding, "request", request)
 
 
 def test_binding_rejects_missing_or_malformed_request_and_non_l1_level() -> None:
