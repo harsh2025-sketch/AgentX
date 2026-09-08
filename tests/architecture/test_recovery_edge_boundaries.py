@@ -642,11 +642,14 @@ def test_procedure_storage_stays_opaque_to_the_recovery_contract() -> None:
 
 def test_a3_07_module_is_referenced_nowhere_but_by_tests_and_package_docs() -> None:
     """Nothing in ``src`` silently grows a dependency on the A3.07 recovery
-    module: the only src-file mentions are the module itself and the package
-    initializer docstring."""
+    module: the only src-file mentions are the module itself, the package
+    initializer docstring, and the M3.01 control-flow interpreter — the one
+    deterministic consumer that reads declared recovery routes (via
+    ``declared_target``/``bind_to_graph``) without executing recovery."""
     allowed = {
         _RECOVERY_MODULE,
         _AGENTX_SRC / "procedures" / "__init__.py",
+        _AGENTX_SRC / "procedures" / "interpreter.py",
     }
     needles = (
         "procedures.recovery",

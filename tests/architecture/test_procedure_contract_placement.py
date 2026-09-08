@@ -151,8 +151,10 @@ def test_procedures_package_owns_graph_ir_without_stealing_c2_03() -> None:
     # A3.04 REASON/RESEARCH payload contracts, the A3.05 ROLLBACK/
     # SUBPROCEDURE/END payload contracts, the A3.06 preconditions/
     # postconditions DATA contract, the deterministic single-condition
-    # evaluator (historically merged under the A3.07 identifier), and the
-    # canonical A3.07 error/recovery control-flow edge contract.
+    # evaluator (historically merged under the A3.07 identifier), the
+    # canonical A3.07 error/recovery control-flow edge contract, and the
+    # M3.01 deterministic control-flow interpreter (which walks the canonical
+    # graph as inert data and executes nothing).
     files = _procedures_package_files()
     assert files == [
         Path("agentx/procedures/__init__.py"),
@@ -161,6 +163,7 @@ def test_procedures_package_owns_graph_ir_without_stealing_c2_03() -> None:
         Path("agentx/procedures/conditions.py"),
         Path("agentx/procedures/end.py"),
         Path("agentx/procedures/graph.py"),
+        Path("agentx/procedures/interpreter.py"),
         Path("agentx/procedures/nodes.py"),
         Path("agentx/procedures/reason_research.py"),
         Path("agentx/procedures/recovery.py"),
