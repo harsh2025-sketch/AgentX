@@ -47,9 +47,9 @@ Normal L2 execution is accepted only when all of the following are true:
 3. The canonical M4.04 `ProcedureApplicabilityMatcher` reports the selected
    candidate structurally applicable to the caller-supplied
    `ProcedureRequirement` (`EXACT_MATCH` or `COMPATIBLE`).
-4. The graph is reasoning-free for this adapter: its nodes are canonical
-   ACTION/END nodes with valid A3 node-family contracts, and canonical
-   interpreter traversal of the successful path reaches END.
+4. The graph is reasoning-free for this adapter: only ACTION/END kinds are
+   accepted, every ACTION satisfies the canonical ACTION node contract, and
+   canonical interpreter traversal of the successful path reaches END.
 5. Every ACTION node has exactly one caller-supplied canonical
    `CapabilityRequest`, and the request's capability name/version exactly match
    the inert ACTION description.
@@ -59,6 +59,12 @@ execution authority: M4.04 remains a structural applicability assessment only.
 An artifact-reference payload is not dereferenced by this strategy and fails
 closed; resolving an artifact is separate integration work, not an excuse to
 add persistence or dynamic loading here.
+
+The existing A3.05 architecture guardrail deliberately forbids production
+consumers from importing the terminal-node helper module. N2.04 therefore does
+not reinterpret END parameters. END is recognized only through the canonical
+graph/interpreter control contract; any extra hostile terminal data is inert
+and cannot become task-success evidence.
 
 ## Why ACTION params are not executable
 
@@ -141,14 +147,15 @@ satisfied.
 The N2.04 owned tests pin:
 
 - ACTIVE/applicable selection and lifecycle rejection;
-- wrong-level and malformed-procedure fail-closed behavior;
+- wrong-level and malformed graph/ACTION fail-closed behavior;
 - canonical M4.04 applicability mismatch;
 - top-level ACTION_REQUIRED dispatch through the real Executor/runtime;
 - ActionGate denial and capability verification failure;
 - explicit END without original-task success;
 - successful capability execution with failed original-task verification;
 - successful independent A2.10 task verification;
-- hostile procedure strings remaining inert against authority, stop and budget;
+- hostile ACTION/END strings remaining inert against authority, stop, budget,
+  verification and task success;
 - absence of direct Procedure-to-Capability imports, duplicate execution or
   verification engines, model calls, escalation, and architecture-manifest
   shortcuts.
