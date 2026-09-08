@@ -249,7 +249,7 @@ def test_procedure_reuse_requires_exact_positive_revision_binding() -> None:
     with pytest.raises(ReuseEfficiencyValidationError):
         ProcedureRevisionRef(procedure_id=procedure_id, revision=0)
     with pytest.raises(TypeError):
-        ProcedureRevisionRef(procedure_id=procedure_id, revision=True)  # type: ignore[arg-type]
+        ProcedureRevisionRef(procedure_id=procedure_id, revision=True)
 
 
 def test_negative_count_is_rejected() -> None:
@@ -262,7 +262,7 @@ def test_bool_count_and_overflow_count_are_rejected() -> None:
         _run(
             task_id=TaskId.create(),
             mode=ReuseMode.NOVEL_PLAN,
-            model_calls=True,  # type: ignore[arg-type]
+            model_calls=True,
         )
     with pytest.raises(OverflowError):
         _run(task_id=TaskId.create(), mode=ReuseMode.NOVEL_PLAN, model_calls=1 << 63)
