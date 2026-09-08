@@ -71,7 +71,7 @@ def test_hostile_task_and_request_text_cannot_grant_write_authority() -> None:
 def test_hostile_descriptor_text_cannot_lower_risk_or_skip_action_gate() -> None:
     capability = HostileMetadataCapability()
     harness = OrchestrationHarness(
-        capability=capability,
+        capability=capability,  # type: ignore[arg-type]
         authority=frozenset({Permission.EXECUTE}),
     )
     request = hostile_request(NoteWriteParams(key="alpha", value=_HOSTILE))
