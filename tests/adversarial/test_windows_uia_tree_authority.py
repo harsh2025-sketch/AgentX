@@ -135,9 +135,11 @@ def test_snapshot_never_claims_success_or_verification() -> None:
 
 def test_snapshot_cannot_grant_permission_or_be_authority() -> None:
     snapshot = _snapshot()
+    snapshot_object: object = snapshot
+    element_object: object = snapshot.elements[0]
     authority = AuthorityContext(permissions=frozenset())
-    assert not isinstance(snapshot, AuthorityContext | RiskAssessment)
-    assert not isinstance(snapshot.elements[0], AuthorityContext | RiskAssessment)
+    assert not isinstance(snapshot_object, AuthorityContext | RiskAssessment)
+    assert not isinstance(element_object, AuthorityContext | RiskAssessment)
     assert PermissionEngine().check(Permission.READ, authority).present is False
     assert authority.permissions == frozenset()
 
