@@ -265,9 +265,7 @@ def test_inconsistent_success_evidence_and_task_state_is_rejected() -> None:
 
 def test_non_success_causal_outcome_cannot_package_succeeded_task() -> None:
     with pytest.raises(ExecutionEpisodeCaptureError, match="Task status is inconsistent"):
-        package_execution_episode(
-            _request(CausalOutcome.EXECUTION_FAILED, TaskStatus.SUCCEEDED)
-        )
+        package_execution_episode(_request(CausalOutcome.EXECUTION_FAILED, TaskStatus.SUCCEEDED))
 
 
 def test_packaging_is_deterministic_for_identical_canonical_inputs() -> None:
