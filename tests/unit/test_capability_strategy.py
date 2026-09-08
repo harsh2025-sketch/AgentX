@@ -45,9 +45,7 @@ def _adapter(
     request: CapabilityRequest[NoteWriteParams] | None = None,
 ) -> GovernedCapabilityStrategy:
     actual_request = (
-        request
-        if request is not None
-        else write_request(NoteWriteParams(key="alpha", value="v1"))
+        request if request is not None else write_request(NoteWriteParams(key="alpha", value="v1"))
     )
     return GovernedCapabilityStrategy(
         executor=harness.executor,
@@ -238,14 +236,10 @@ def test_identical_explicit_inputs_produce_the_same_typed_result_classification(
     task_b, context_b = _task_context("same objective")
 
     outcome_a = _executed_outcome(
-        _adapter(harness_a, request=request_a).attempt(
-            task_a, context_a, ExecutionLevel.L1_DIRECT
-        )
+        _adapter(harness_a, request=request_a).attempt(task_a, context_a, ExecutionLevel.L1_DIRECT)
     )
     outcome_b = _executed_outcome(
-        _adapter(harness_b, request=request_b).attempt(
-            task_b, context_b, ExecutionLevel.L1_DIRECT
-        )
+        _adapter(harness_b, request=request_b).attempt(task_b, context_b, ExecutionLevel.L1_DIRECT)
     )
 
     assert outcome_a.kind is outcome_b.kind is LoopOutcome.VERIFIED
