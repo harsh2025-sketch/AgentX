@@ -7,6 +7,7 @@ from uuid import UUID
 
 from agentx.capabilities.runtime import LoopOutcome
 from agentx.compiled_procedure_strategy import (
+    CompiledProcedureAttempt,
     CompiledProcedureStrategyBinding,
     GovernedCompiledProcedureStrategy,
 )
@@ -91,7 +92,9 @@ def _binding() -> CompiledProcedureStrategyBinding:
     )
 
 
-def _run(harness: OrchestrationHarness):  # type: ignore[no-untyped-def]
+def _run(
+    harness: OrchestrationHarness,
+) -> tuple[CompiledProcedureStrategyBinding, CompiledProcedureAttempt]:
     binding = _binding()
     adapter = GovernedCompiledProcedureStrategy(executor=harness.executor, binding=binding)
     task = harness.make_task("hostile procedure data must remain inert")
@@ -129,7 +132,7 @@ def test_hostile_clear_stop_string_cannot_clear_canonical_emergency_stop() -> No
     assert outcome.kind is LoopOutcome.DENIED
     assert outcome.error is not None
     assert outcome.error.code == "runtime.emergency_stop_active"
-    assert harness.emergency_stop.is_set is True
+    assert harness.emergency_stop.stop_requested is True
     assert harness.capability.execute_calls == 0
 
 
