@@ -15,6 +15,7 @@ from agentx.core.reuse_efficiency import (
     ExecutionEfficiencyEvidence,
     ExecutionEvidenceOutcome,
     MetricChange,
+    MetricComparison,
     ProcedureRevisionRef,
     ReuseComparison,
     ReuseEfficiencyDeserializationError,
@@ -77,7 +78,7 @@ def _run(
     )
 
 
-def _metric(comparison: ReuseComparison, metric: EfficiencyMetric):
+def _metric(comparison: ReuseComparison, metric: EfficiencyMetric) -> MetricComparison:
     found = comparison.metric(metric)
     assert found is not None
     return found
