@@ -27,7 +27,9 @@ from tests.support.demo_capability import (
 from tests.support.orchestration_harness import OrchestrationHarness
 
 
-def _task_context(objective: str = "write the explicitly bound note") -> tuple[Task, ExecutionContext]:
+def _task_context(
+    objective: str = "write the explicitly bound note",
+) -> tuple[Task, ExecutionContext]:
     task = Task.create(objective=objective)
     context = ExecutionContext(
         correlation_id=uuid4(),
