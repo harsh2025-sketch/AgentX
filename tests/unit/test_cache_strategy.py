@@ -20,18 +20,10 @@ from agentx.cache_strategy import (
     CacheReuseCandidate,
     VerifiedCacheStrategy,
 )
-from agentx.capabilities.abi import (
-    CapabilityObservation,
-    ExecutionResult,
-    VerificationResult,
-)
+from agentx.capabilities.abi import CapabilityObservation, ExecutionResult, VerificationResult
 from agentx.capabilities.runtime import ClosedLoopOutcome, LoopOutcome
 from agentx.capabilities.verifier import RequirementEvaluation
-from agentx.cognition.anti_loop import (
-    LoopGuardDecision,
-    LoopGuardResult,
-    LoopGuardTrigger,
-)
+from agentx.cognition.anti_loop import LoopGuardDecision, LoopGuardResult, LoopGuardTrigger
 from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.core.environment_change import (
     EnvironmentFactKey,
@@ -85,7 +77,11 @@ def _loop_guard() -> LoopGuardResult:
     )
 
 
-def _prior(*, verification_passed: bool = True, hostile_text: str = "cached fingerprint") -> OrchestrationOutcome:
+def _prior(
+    *,
+    verification_passed: bool = True,
+    hostile_text: str = "cached fingerprint",
+) -> OrchestrationOutcome:
     source_task = Task.create(
         _OBJECTIVE,
         status=TaskStatus.SUCCEEDED,
@@ -111,10 +107,7 @@ def _prior(*, verification_passed: bool = True, hostile_text: str = "cached fing
             observation=observation,
         ),
         observation=observation,
-        verification=VerificationResult(
-            passed=verification_passed,
-            detail=hostile_text,
-        ),
+        verification=VerificationResult(passed=verification_passed, detail=hostile_text),
         budget_usage=ResourceUsage.zero(),
     )
     attempt = AttemptRecord(
@@ -138,7 +131,11 @@ def _prior(*, verification_passed: bool = True, hostile_text: str = "cached fing
     )
 
 
-def _efficiency(prior: OrchestrationOutcome, *, verified: bool = True) -> ExecutionEfficiencyEvidence:
+def _efficiency(
+    prior: OrchestrationOutcome,
+    *,
+    verified: bool = True,
+) -> ExecutionEfficiencyEvidence:
     return ExecutionEfficiencyEvidence(
         task_id=prior.task.task_id,
         episode_id=EpisodeId(uuid4()),
@@ -179,9 +176,9 @@ def _snapshot(
     *,
     scope: KnowledgeScope,
     observed_at: datetime,
+    reference: str,
     ttl: timedelta = timedelta(minutes=10),
     value: str = "windows-2025",
-    reference: str,
 ) -> EnvironmentSnapshot:
     provenance = ProvenanceReference(
         kind=ProvenanceKind.SYSTEM,
@@ -192,10 +189,7 @@ def _snapshot(
             kind=EnvironmentFactKind.PLATFORM_IDENTITY,
             subject="host-os",
         ),
-        value=EnvironmentFactValue(
-            kind=EnvironmentFactValueKind.TEXT,
-            text=value,
-        ),
+        value=EnvironmentFactValue(kind=EnvironmentFactValueKind.TEXT, text=value),
         observed_at=observed_at,
         ttl=ttl,
         provenance=provenance,
@@ -236,9 +230,9 @@ def _candidate(
         current_environment=_snapshot(
             scope=baseline_scope if current_scope is None else current_scope,
             observed_at=_T0 + timedelta(seconds=3),
+            reference="current",
             ttl=current_ttl,
             value=current_value,
-            reference="current",
         ),
         applicability_at=applicability_at,
     )
@@ -248,10 +242,10 @@ def _current_task(prior: OrchestrationOutcome | None = None) -> Task:
     source = _prior() if prior is None else prior
     return Task.create(
         source.task.objective,
-        metadata=dict(source.task.metadata),
         priority=source.task.priority,
         parent_task_id=source.task.parent_task_id,
         created_at=_T0 + timedelta(seconds=3),
+        metadata=dict(source.task.metadata),
     )
 
 
@@ -263,21 +257,29 @@ def _context(task: Task) -> ExecutionContext:
     )
 
 
-def test_strategy_declares_exact_l0_cache_level() -> None:
-    lookup = _StaticLookup(None)
-    strategy = VerifiedCacheStrategy(lookup=lookup)
+def _attempt(candidate: CacheReuseCandidate) -> tuple[object, Task]:
+    task = _current_task(candidate.prior)
+    result = VerifiedCacheStrategy(lookup=_StaticLookup(candidate)).attempt(
+        task,
+        _context(task),
+        ExecutionLevel.L0_CACHE,
+    )
+    return result, task
 
+
+def test_strategy_declares_exact_l0_cache_level() -> None:
+    strategy = VerifiedCacheStrategy(lookup=_StaticLookup(None))
     assert CACHE_STRATEGY_LEVEL is ExecutionLevel.L0_CACHE
     assert strategy.level is ExecutionLevel.L0_CACHE
 
 
-def test_verified_exact_applicable_cache_hit_returns_original_canonical_outcome() -> None:
+def test_verified_exact_applicable_hit_returns_original_outcome() -> None:
     candidate = _candidate()
     task = _current_task(candidate.prior)
     lookup = _StaticLookup(candidate)
-    strategy = VerifiedCacheStrategy(lookup=lookup)
-
-    result = strategy.attempt(task, _context(task), ExecutionLevel.L0_CACHE)
+    result = VerifiedCacheStrategy(lookup=lookup).attempt(
+        task, _context(task), ExecutionLevel.L0_CACHE
+    )
 
     assert result.unavailable_reason is None
     assert result.outcome is not None
@@ -292,21 +294,18 @@ def test_cache_miss_is_unavailable() -> None:
     result = VerifiedCacheStrategy(lookup=_StaticLookup(None)).attempt(
         task, _context(task), ExecutionLevel.L0_CACHE
     )
-
     assert result.outcome is None
     assert result.unavailable_reason is not None
 
 
-def test_wrong_request_binding_fails_closed_before_lookup() -> None:
+def test_wrong_request_binding_fails_before_lookup() -> None:
     candidate = _candidate()
     task = _current_task(candidate.prior)
     other = Task.create(_OBJECTIVE)
     lookup = _StaticLookup(candidate)
-
     result = VerifiedCacheStrategy(lookup=lookup).attempt(
         task, _context(other), ExecutionLevel.L0_CACHE
     )
-
     assert result.outcome is None
     assert lookup.calls == 0
 
@@ -314,90 +313,53 @@ def test_wrong_request_binding_fails_closed_before_lookup() -> None:
 def test_wrong_task_semantics_fail_closed() -> None:
     candidate = _candidate()
     task = Task.create("different request semantics", created_at=_T0 + timedelta(seconds=3))
-
     result = VerifiedCacheStrategy(lookup=_StaticLookup(candidate)).attempt(
         task, _context(task), ExecutionLevel.L0_CACHE
     )
-
     assert result.outcome is None
 
 
-def test_missing_canonical_reuse_routing_evidence_fails_closed() -> None:
-    candidate = _candidate(routing_reuse=False)
-    task = _current_task(candidate.prior)
-
-    result = VerifiedCacheStrategy(lookup=_StaticLookup(candidate)).attempt(
-        task, _context(task), ExecutionLevel.L0_CACHE
-    )
-
-    assert result.outcome is None
+def test_missing_reuse_routing_evidence_fails_closed() -> None:
+    result, _ = _attempt(_candidate(routing_reuse=False))
+    assert result.outcome is None  # type: ignore[attr-defined]
 
 
 def test_insufficient_m8_verification_fails_closed() -> None:
-    candidate = _candidate(efficiency_verified=False)
-    task = _current_task(candidate.prior)
-
-    result = VerifiedCacheStrategy(lookup=_StaticLookup(candidate)).attempt(
-        task, _context(task), ExecutionLevel.L0_CACHE
-    )
-
-    assert result.outcome is None
+    result, _ = _attempt(_candidate(efficiency_verified=False))
+    assert result.outcome is None  # type: ignore[attr-defined]
 
 
 def test_failed_prior_a110_verification_fails_closed() -> None:
     prior = _prior(verification_passed=False)
-    candidate = _candidate(prior=prior)
-    task = _current_task(prior)
+    result, _ = _attempt(_candidate(prior=prior))
+    assert result.outcome is None  # type: ignore[attr-defined]
 
-    result = VerifiedCacheStrategy(lookup=_StaticLookup(candidate)).attempt(
-        task, _context(task), ExecutionLevel.L0_CACHE
+
+def test_stale_current_environment_fails_closed_at_expiry_boundary() -> None:
+    result, _ = _attempt(
+        _candidate(
+            current_ttl=timedelta(seconds=1),
+            applicability_at=_T0 + timedelta(seconds=4),
+        )
     )
-
-    assert result.outcome is None
-
-
-def test_stale_current_environment_fails_closed_at_exact_expiry_boundary() -> None:
-    candidate = _candidate(
-        current_ttl=timedelta(seconds=1),
-        applicability_at=_T0 + timedelta(seconds=4),
-    )
-    task = _current_task(candidate.prior)
-
-    result = VerifiedCacheStrategy(lookup=_StaticLookup(candidate)).attempt(
-        task, _context(task), ExecutionLevel.L0_CACHE
-    )
-
-    assert result.outcome is None
+    assert result.outcome is None  # type: ignore[attr-defined]
 
 
-def test_scope_mismatch_fails_closed() -> None:
-    candidate = _candidate(current_scope=_scope("production"))
-    task = _current_task(candidate.prior)
-
-    result = VerifiedCacheStrategy(lookup=_StaticLookup(candidate)).attempt(
-        task, _context(task), ExecutionLevel.L0_CACHE
-    )
-
-    assert result.outcome is None
+def test_scope_and_environment_value_mismatches_fail_closed() -> None:
+    scope_result, _ = _attempt(_candidate(current_scope=_scope("production")))
+    value_result, _ = _attempt(_candidate(current_value="windows-2030"))
+    assert scope_result.outcome is None  # type: ignore[attr-defined]
+    assert value_result.outcome is None  # type: ignore[attr-defined]
 
 
-def test_environment_value_mismatch_fails_closed() -> None:
-    candidate = _candidate(current_value="windows-2030")
-    task = _current_task(candidate.prior)
-
-    result = VerifiedCacheStrategy(lookup=_StaticLookup(candidate)).attempt(
-        task, _context(task), ExecutionLevel.L0_CACHE
-    )
-
-    assert result.outcome is None
-
-
-def test_repeated_attempts_are_deterministic_and_do_not_mutate_candidate() -> None:
+def test_repeated_behavior_is_deterministic_without_candidate_mutation() -> None:
     candidate = _candidate()
     task = _current_task(candidate.prior)
     lookup = _StaticLookup(candidate)
     strategy = VerifiedCacheStrategy(lookup=lookup)
     context = _context(task)
+    prior_before = candidate.prior
+    environment_before = candidate.current_environment
 
     first = strategy.attempt(task, context, ExecutionLevel.L0_CACHE)
     second = strategy.attempt(task, context, ExecutionLevel.L0_CACHE)
@@ -405,7 +367,8 @@ def test_repeated_attempts_are_deterministic_and_do_not_mutate_candidate() -> No
     assert first == second
     assert first.outcome is not None
     assert first.outcome.unwrap() is second.outcome.unwrap()
-    assert candidate == _candidate(prior=candidate.prior)
+    assert candidate.prior is prior_before
+    assert candidate.current_environment is environment_before
     assert lookup.calls == 2
 
 
@@ -413,16 +376,14 @@ def test_non_l0_call_is_unavailable_without_lookup() -> None:
     candidate = _candidate()
     task = _current_task(candidate.prior)
     lookup = _StaticLookup(candidate)
-
     result = VerifiedCacheStrategy(lookup=lookup).attempt(
         task, _context(task), ExecutionLevel.L1_DIRECT
     )
-
     assert result.outcome is None
     assert lookup.calls == 0
 
 
-def test_candidate_requires_explicit_timezone_aware_applicability_instant() -> None:
+def test_candidate_requires_timezone_aware_applicability_instant() -> None:
     candidate = _candidate()
     with pytest.raises(ValueError, match="timezone-aware"):
         replace(candidate, applicability_at=datetime(2026, 1, 1, 12, 0))
