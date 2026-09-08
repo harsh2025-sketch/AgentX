@@ -104,9 +104,7 @@ def test_verified_novel_to_procedure_reuse_improves_all_primary_metrics() -> Non
     assert comparison.disposition is ReuseEfficiencyDisposition.IMPROVED
     assert _metric(comparison, EfficiencyMetric.MODEL_CALLS).delta == Decimal("-3")
     assert _metric(comparison, EfficiencyMetric.MODEL_TOKENS).delta == Decimal("-800")
-    assert _metric(comparison, EfficiencyMetric.DURATION_MICROSECONDS).delta == Decimal(
-        "-8000000"
-    )
+    assert _metric(comparison, EfficiencyMetric.DURATION_MICROSECONDS).delta == Decimal("-8000000")
     assert _metric(comparison, EfficiencyMetric.EXTERNAL_COST).delta == Decimal("-1.05")
     assert _metric(comparison, EfficiencyMetric.RESEARCH_QUERIES).change is MetricChange.IMPROVED
     assert _metric(comparison, EfficiencyMetric.MACHINE_ACTIONS).change is MetricChange.IMPROVED
@@ -357,9 +355,7 @@ def test_records_are_immutable_and_serialization_round_trips_deterministically()
     with pytest.raises(FrozenInstanceError):
         run.model_calls = 0  # type: ignore[misc]
     assert ExecutionEfficiencyEvidence.from_json(run.to_json()) == run
-    comparison = compare_execution_efficiency(
-        _run(task_id=task_id, mode=ReuseMode.NOVEL_PLAN), run
-    )
+    comparison = compare_execution_efficiency(_run(task_id=task_id, mode=ReuseMode.NOVEL_PLAN), run)
     assert ReuseComparison.from_json(comparison.to_json()) == comparison
     assert comparison.to_json() == ReuseComparison.from_json(comparison.to_json()).to_json()
 
