@@ -70,9 +70,9 @@ def test_binding_is_explicit_l1_and_immutable() -> None:
     assert binding.level is ExecutionLevel.L1_DIRECT
     assert binding.request is request
     with pytest.raises(FrozenInstanceError):
-        setattr(binding, "level", ExecutionLevel.L2_COMPILED)
+        binding.level = ExecutionLevel.L2_COMPILED  # type: ignore[misc]
     with pytest.raises(FrozenInstanceError):
-        setattr(binding, "request", request)
+        binding.request = request  # type: ignore[misc]
 
 
 def test_binding_rejects_missing_or_malformed_request_and_non_l1_level() -> None:
