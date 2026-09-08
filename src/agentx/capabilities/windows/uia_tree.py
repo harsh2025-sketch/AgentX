@@ -21,7 +21,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from enum import StrEnum
-from typing import Final, Protocol
+from typing import Final, Protocol, assert_never
 
 from agentx.capabilities.windows import _uia_native
 from agentx.capabilities.windows.provider import WindowsSupport, unsupported_platform_error
@@ -365,7 +365,15 @@ class UIAElementSnapshot:
         value = self.property_observation(UIAPropertyName.BOUNDING_RECTANGLE).value
         if not isinstance(value, list) or len(value) != 4:
             return None
-        return (float(value[0]), float(value[1]), float(value[2]), float(value[3]))
+        numbers: list[float] = []
+        for item in value:
+            if isinstance(item, bool) or not isinstance(item, (int, float)):
+                return None
+            number = float(item)
+            if not math.isfinite(number):
+                return None
+            numbers.append(number)
+        return (numbers[0], numbers[1], numbers[2], numbers[3])
 
     @property
     def supported_patterns(self) -> tuple[UIAPatternName, ...]:
@@ -504,33 +512,38 @@ def _surface_exception(exc: Exception) -> AgentXError:
 
 
 def _status_from_raw(raw: _uia_native.RawUIAProperty) -> UIAObservationStatus:
-    if raw.hresult is not None:
-        if type(raw.hresult) is not int:
+    hresult: object = raw.hresult
+    unavailable: object = raw.unavailable
+    if hresult is not None:
+        if type(hresult) is not int:
             return UIAObservationStatus.INVALID
-        if raw.hresult == _uia_native.UIA_ELEMENT_NOT_AVAILABLE_HRESULT:
+        if hresult == _uia_native.UIA_ELEMENT_NOT_AVAILABLE_HRESULT:
             return UIAObservationStatus.VANISHED
         return UIAObservationStatus.NATIVE_ERROR
-    if type(raw.unavailable) is not bool:
+    if type(unavailable) is not bool:
         return UIAObservationStatus.INVALID
-    if raw.unavailable:
+    if unavailable:
         return UIAObservationStatus.UNAVAILABLE
     return UIAObservationStatus.AVAILABLE
 
 
-def _valid_runtime_id(value: object) -> list[int] | None:
+def _valid_runtime_id(value: object) -> list[JsonValue] | None:
     if not isinstance(value, tuple) or not value:
         return None
-    if any(type(item) is not int for item in value):
-        return None
-    return list(value)
+    runtime_id: list[JsonValue] = []
+    for item in value:
+        if isinstance(item, bool) or not isinstance(item, int):
+            return None
+        runtime_id.append(item)
+    return runtime_id
 
 
-def _valid_rectangle(value: object) -> list[float] | None:
+def _valid_rectangle(value: object) -> list[JsonValue] | None:
     if not isinstance(value, tuple) or len(value) != 4:
         return None
-    numbers: list[float] = []
+    numbers: list[JsonValue] = []
     for item in value:
-        if type(item) not in {int, float}:
+        if isinstance(item, bool) or not isinstance(item, (int, float)):
             return None
         number = float(item)
         if not math.isfinite(number):
@@ -563,7 +576,7 @@ def _normalized_value(name: UIAPropertyName, value: object) -> JsonValue | None:
         if not isinstance(value, str) or len(value) > _MAX_TEXT_CHARS:
             return None
         return value
-    return None
+    assert_never(name)
 
 
 def _normalize_property(
@@ -576,7 +589,10 @@ def _normalize_property(
     raw = matches[0]
     status = _status_from_raw(raw)
     if status is not UIAObservationStatus.AVAILABLE:
-        return UIAPropertyObservation(name=name, status=status, value=None, hresult=raw.hresult)
+        hresult = raw.hresult if type(raw.hresult) is int else None
+        if status not in {UIAObservationStatus.NATIVE_ERROR, UIAObservationStatus.VANISHED}:
+            hresult = None
+        return UIAPropertyObservation(name=name, status=status, value=None, hresult=hresult)
     value = _normalized_value(name, raw.value)
     if value is None:
         return UIAPropertyObservation(name=name, status=UIAObservationStatus.INVALID, value=None)
@@ -593,11 +609,14 @@ def _normalize_pattern(
     raw = matches[0]
     status = _status_from_raw(raw)
     if status is not UIAObservationStatus.AVAILABLE:
+        hresult = raw.hresult if type(raw.hresult) is int else None
+        if status not in {UIAObservationStatus.NATIVE_ERROR, UIAObservationStatus.VANISHED}:
+            hresult = None
         return UIAPatternObservation(
             name=name,
             status=status,
             supported=None,
-            hresult=raw.hresult,
+            hresult=hresult,
         )
     if type(raw.value) is not bool:
         return UIAPatternObservation(name=name, status=UIAObservationStatus.INVALID, supported=None)
@@ -619,8 +638,37 @@ def _element_state(
     return UIAElementState.AVAILABLE
 
 
+def _object_tuple(value: object) -> tuple[object, ...] | None:
+    if not isinstance(value, tuple):
+        return None
+    return value
+
+
+def _raw_property_tuple(value: object) -> tuple[_uia_native.RawUIAProperty, ...] | None:
+    items = _object_tuple(value)
+    if items is None:
+        return None
+    properties: list[_uia_native.RawUIAProperty] = []
+    for item in items:
+        if not isinstance(item, _uia_native.RawUIAProperty):
+            return None
+        properties.append(item)
+    return tuple(properties)
+
+
+def _runtime_id_tuple(value: object) -> tuple[int, ...] | None:
+    if not isinstance(value, list) or not value:
+        return None
+    runtime_id: list[int] = []
+    for item in value:
+        if isinstance(item, bool) or not isinstance(item, int):
+            return None
+        runtime_id.append(item)
+    return tuple(runtime_id)
+
+
 def _normalize_tree(
-    raw: _uia_native.RawUIATree,
+    raw: object,
     *,
     root_window_handle: int,
     captured_at: datetime,
@@ -628,13 +676,21 @@ def _normalize_tree(
 ) -> Result[UIATreeSnapshot, AgentXError]:
     if not isinstance(raw, _uia_native.RawUIATree):
         return Result.failure(_invalid_native_data("native UIA surface returned wrong tree type"))
-    if not isinstance(raw.elements, tuple) or not isinstance(raw.errors, tuple):
+
+    raw_elements = _object_tuple(raw.elements)
+    raw_errors = _object_tuple(raw.errors)
+    if raw_elements is None or raw_errors is None:
         return Result.failure(_invalid_native_data("native UIA tree collections are malformed"))
-    if type(raw.truncated_by_depth) is not bool or type(raw.truncated_by_nodes) is not bool:
+
+    truncated_by_depth_value: object = raw.truncated_by_depth
+    truncated_by_nodes_value: object = raw.truncated_by_nodes
+    if type(truncated_by_depth_value) is not bool or type(truncated_by_nodes_value) is not bool:
         return Result.failure(
             _invalid_native_data("native UIA tree has malformed truncation flags")
         )
-    if len(raw.elements) > limits.max_nodes:
+    truncated_by_depth = truncated_by_depth_value
+    truncated_by_nodes = truncated_by_nodes_value
+    if len(raw_elements) > limits.max_nodes:
         return Result.failure(_invalid_native_data("native UIA tree exceeded max_nodes"))
 
     paths_by_sequence: dict[int, tuple[int, ...]] = {}
@@ -648,58 +704,68 @@ def _normalize_tree(
         ]
     ] = []
 
-    for expected_sequence, element in enumerate(raw.elements):
-        if not isinstance(element, _uia_native.RawUIAElement):
+    for expected_sequence, element_value in enumerate(raw_elements):
+        if not isinstance(element_value, _uia_native.RawUIAElement):
             return Result.failure(
                 _invalid_native_data("native UIA tree contains wrong element type")
             )
-        if element.sequence != expected_sequence:
+        element = element_value
+
+        sequence_value: object = element.sequence
+        if type(sequence_value) is not int or sequence_value != expected_sequence:
             return Result.failure(
                 _invalid_native_data("native UIA element sequence is not contiguous")
             )
-        if type(element.depth) is not int or not 0 <= element.depth <= limits.max_depth:
+        depth_value: object = element.depth
+        if type(depth_value) is not int or not 0 <= depth_value <= limits.max_depth:
             return Result.failure(_invalid_native_data("native UIA element depth is invalid"))
-        if type(element.child_index) is not int or element.child_index < 0:
+        depth = depth_value
+        child_index_value: object = element.child_index
+        if type(child_index_value) is not int or child_index_value < 0:
             return Result.failure(_invalid_native_data("native UIA child index is invalid"))
-        if not isinstance(element.properties, tuple) or not isinstance(
-            element.pattern_properties, tuple
-        ):
+        child_index = child_index_value
+
+        properties = _raw_property_tuple(element.properties)
+        patterns_raw = _raw_property_tuple(element.pattern_properties)
+        if properties is None or patterns_raw is None:
             return Result.failure(
                 _invalid_native_data("native UIA property collections are malformed")
             )
 
+        parent_sequence_value: object = element.parent_sequence
         if expected_sequence == 0:
-            if element.parent_sequence is not None or element.depth != 0:
+            if parent_sequence_value is not None or depth != 0:
                 return Result.failure(
                     _invalid_native_data("native UIA root relationship is invalid")
                 )
             path: tuple[int, ...] = ()
-            parent_path = None
+            parent_path: tuple[int, ...] | None = None
         else:
-            parent_sequence = element.parent_sequence
-            if type(parent_sequence) is not int or parent_sequence not in paths_by_sequence:
+            if (
+                type(parent_sequence_value) is not int
+                or parent_sequence_value not in paths_by_sequence
+            ):
                 return Result.failure(_invalid_native_data("native UIA parent sequence is invalid"))
+            parent_sequence = parent_sequence_value
             parent_path = paths_by_sequence[parent_sequence]
-            path = (*parent_path, element.child_index)
-            if len(path) != element.depth:
+            path = (*parent_path, child_index)
+            if len(path) != depth:
                 return Result.failure(
                     _invalid_native_data("native UIA depth/path relationship is invalid")
                 )
             if path in paths_by_sequence.values():
                 return Result.failure(_invalid_native_data("native UIA element path is duplicated"))
 
-        properties = tuple(
-            _normalize_property(name, element.properties) for name in UIAPropertyName
+        normalized_properties = tuple(
+            _normalize_property(name, properties) for name in UIAPropertyName
         )
-        patterns = tuple(
-            _normalize_pattern(name, element.pattern_properties) for name in UIAPatternName
+        normalized_patterns = tuple(
+            _normalize_pattern(name, patterns_raw) for name in UIAPatternName
         )
-        runtime_value = properties[tuple(UIAPropertyName).index(UIAPropertyName.RUNTIME_ID)].value
-        runtime_id = (
-            tuple(runtime_value)
-            if isinstance(runtime_value, list) and all(type(item) is int for item in runtime_value)
-            else None
-        )
+        runtime_value = normalized_properties[
+            tuple(UIAPropertyName).index(UIAPropertyName.RUNTIME_ID)
+        ].value
+        runtime_id = _runtime_id_tuple(runtime_value)
         reference = UIAElementReference(
             root_window_handle=root_window_handle,
             path=path,
@@ -707,7 +773,7 @@ def _normalize_tree(
         )
         paths_by_sequence[expected_sequence] = path
         parent_by_sequence[expected_sequence] = parent_path
-        parts.append((reference, parent_path, properties, patterns))
+        parts.append((reference, parent_path, normalized_properties, normalized_patterns))
 
     child_paths: dict[tuple[int, ...], list[tuple[int, ...]]] = {
         path: [] for path in paths_by_sequence.values()
@@ -729,24 +795,30 @@ def _normalize_tree(
     )
 
     errors: list[UIANativeError] = []
-    for error in raw.errors:
-        if not isinstance(error, _uia_native.RawUIAError):
+    for error_value in raw_errors:
+        if not isinstance(error_value, _uia_native.RawUIAError):
             return Result.failure(_invalid_native_data("native UIA tree contains wrong error type"))
+        error = error_value
+        operation_value: object = error.operation
+        hresult_value: object = error.hresult
         if (
-            not isinstance(error.operation, str)
-            or not error.operation
-            or type(error.hresult) is not int
+            not isinstance(operation_value, str)
+            or not operation_value
+            or type(hresult_value) is not int
         ):
             return Result.failure(_invalid_native_data("native UIA error is malformed"))
-        path = None
-        if error.sequence is not None:
-            if type(error.sequence) is not int or error.sequence not in paths_by_sequence:
+        operation = operation_value
+        hresult = hresult_value
+        error_path: tuple[int, ...] | None = None
+        sequence_value: object = error.sequence
+        if sequence_value is not None:
+            if type(sequence_value) is not int or sequence_value not in paths_by_sequence:
                 return Result.failure(
                     _invalid_native_data("native UIA error references unknown element")
                 )
-            path = paths_by_sequence[error.sequence]
+            error_path = paths_by_sequence[sequence_value]
         errors.append(
-            UIANativeError(operation=error.operation, hresult=error.hresult, element_path=path)
+            UIANativeError(operation=operation, hresult=hresult, element_path=error_path)
         )
 
     return Result.success(
@@ -757,8 +829,8 @@ def _normalize_tree(
             limits=limits,
             elements=elements,
             errors=tuple(errors),
-            truncated_by_depth=raw.truncated_by_depth,
-            truncated_by_nodes=raw.truncated_by_nodes,
+            truncated_by_depth=truncated_by_depth,
+            truncated_by_nodes=truncated_by_nodes,
         )
     )
 
@@ -767,6 +839,10 @@ class WindowsUIATreeInspection:
     """Read one fresh bounded UIA tree; expose no action-capable surface."""
 
     __slots__ = ("_clock", "_native_surface", "_support")
+
+    _clock: Callable[[], datetime]
+    _native_surface: NativeUIATreeSurface
+    _support: WindowsSupport
 
     def __init__(
         self,
