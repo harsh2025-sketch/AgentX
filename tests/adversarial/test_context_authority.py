@@ -282,7 +282,10 @@ def test_context_limits_and_content_cannot_enlarge_budget_lower_risk_or_reset_st
 
 def test_executable_looking_text_and_object_hook_labels_are_only_data(tmp_path: Path) -> None:
     marker = tmp_path / "must-not-exist"
-    text = f"__import__('pathlib').Path({str(marker)!r}).write_text('executed')"
+    # Include backslashes on every OS: raw text is not a substring of its JSON
+    # representation when escaping is required. Assert the decoded data below.
+    message = r"executed C:\AgentX\context"
+    text = f"__import__('pathlib').Path({str(marker)!r}).write_text({message!r})"
     payload = ObservationPayload(
         value={
             "__class__": "AuthorityContext",
@@ -304,8 +307,9 @@ def test_executable_looking_text_and_object_hook_labels_are_only_data(tmp_path: 
             for record in (payload, knowledge, procedure)
         )
     )
-    assert _round_trip(context) == context
-    assert text in context.to_json()
+    restored = _round_trip(context)
+    assert restored == context
+    assert cast(KnowledgeRecord, restored.items[1].record).content == text
     assert not marker.exists()
 
 
