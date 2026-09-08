@@ -541,7 +541,7 @@ def _valid_runtime_id(value: object) -> list[JsonValue] | None:
 def _valid_rectangle(value: object) -> list[JsonValue] | None:
     if not isinstance(value, tuple) or len(value) != 4:
         return None
-    numbers: list[JsonValue] = []
+    numbers: list[float] = []
     for item in value:
         if isinstance(item, bool) or not isinstance(item, (int, float)):
             return None
@@ -551,7 +551,8 @@ def _valid_rectangle(value: object) -> list[JsonValue] | None:
         numbers.append(number)
     if numbers[2] < 0 or numbers[3] < 0:
         return None
-    return numbers
+    normalized_numbers: list[JsonValue] = [*numbers]
+    return normalized_numbers
 
 
 def _normalized_value(name: UIAPropertyName, value: object) -> JsonValue | None:
@@ -810,13 +811,13 @@ def _normalize_tree(
         operation = operation_value
         hresult = hresult_value
         error_path: tuple[int, ...] | None = None
-        sequence_value: object = error.sequence
-        if sequence_value is not None:
-            if type(sequence_value) is not int or sequence_value not in paths_by_sequence:
+        error_sequence_value: object = error.sequence
+        if error_sequence_value is not None:
+            if type(error_sequence_value) is not int or error_sequence_value not in paths_by_sequence:
                 return Result.failure(
                     _invalid_native_data("native UIA error references unknown element")
                 )
-            error_path = paths_by_sequence[sequence_value]
+            error_path = paths_by_sequence[error_sequence_value]
         errors.append(UIANativeError(operation=operation, hresult=hresult, element_path=error_path))
 
     return Result.success(
@@ -884,15 +885,23 @@ class WindowsUIATreeInspection:
         if not isinstance(captured_at, datetime) or captured_at.tzinfo is None:
             raise ValueError("clock must return a timezone-aware datetime")
         try:
-            raw = self._native_surface.inspect_window(window_handle, selected_limits)
+            raw_result_object: object = self._native_surface.inspect_window(
+                window_handle, selected_limits
+            )
         except Exception as exc:  # native/adapter failures never escape this boundary
             return Result.failure(_surface_exception(exc))
-        if not isinstance(raw, Result):
+        if not isinstance(raw_result_object, Result):
             return Result.failure(_invalid_native_data("native UIA surface returned non-Result"))
-        if raw.is_failure:
-            return Result.failure(raw.unwrap_error())
+        if raw_result_object.is_failure:
+            error_object: object = raw_result_object.unwrap_error()
+            if not isinstance(error_object, AgentXError):
+                return Result.failure(
+                    _invalid_native_data("native UIA surface returned invalid failure data")
+                )
+            return Result.failure(error_object)
+        raw_tree_object: object = raw_result_object.unwrap()
         return _normalize_tree(
-            raw.unwrap(),
+            raw_tree_object,
             root_window_handle=window_handle,
             captured_at=captured_at,
             limits=selected_limits,
