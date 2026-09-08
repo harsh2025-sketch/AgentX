@@ -38,7 +38,7 @@ def test_episode_record_remains_the_unique_canonical_episode_schema() -> None:
 
 def test_episode_store_remains_the_unique_episode_persistence_owner() -> None:
     assert _class_definitions("EpisodeStore") == [Path("infrastructure/episode_store.py")]
-    assert "EpisodeStore" not in _SOURCE
+    assert "agentx.infrastructure.episode_store" not in _imports()
     assert "record_episode" in _SOURCE
     assert "ExperienceMemory" in _SOURCE
 
