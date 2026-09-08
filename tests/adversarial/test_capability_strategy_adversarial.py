@@ -90,8 +90,7 @@ def test_hostile_descriptor_text_cannot_lower_risk_or_skip_action_gate() -> None
     assert capability.verify_calls == 0
     assert capability.descriptor.risk_assessment is before_risk
     assert any(
-        audit.operation == "runtime.action_gate"
-        and audit.outcome.value == "REQUIRE_CONFIRMATION"
+        audit.operation == "runtime.action_gate" and audit.outcome.value == "REQUIRE_CONFIRMATION"
         for audit in harness.audit_records
     )
 
