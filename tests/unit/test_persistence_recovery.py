@@ -231,8 +231,6 @@ def test_restart_reassessment_stays_healthy(tmp_path: Path) -> None:
     first = _inspector(database).assess()
     assert first.disposition is RecoveryDisposition.HEALTHY
 
-    # Simulate a process restart: a brand-new SQLiteDatabase handle over the
-    # same file, then another write, then another assessment.
     restarted = SQLiteDatabase(_database_path(tmp_path))
     KnowledgeStore(restarted).insert(_knowledge_record(content="second run"))
     second = _inspector(restarted).assess()
@@ -368,8 +366,6 @@ def test_older_schema_version_is_reported_with_deferred_probes(tmp_path: Path) -
     _migrate(database)
     EpisodeStore(database).append(_episode_record(1))
     with _raw_connection(database) as connection:
-        # Simulate a database created by an older build (schema v5): remove
-        # the v6-v8 migration records and their tables.
         connection.execute("DROP TABLE agentx_artifacts")
         connection.execute("DROP TABLE agentx_audit_records")
         connection.execute("DROP TABLE agentx_knowledge_contradictions")
@@ -410,7 +406,6 @@ def test_missing_expected_table_blocks_and_is_not_probed(tmp_path: Path) -> None
     ]
     assert len(missing) == 1
     assert missing[0].store == "knowledge_store"
-    # The missing table's store is not probed; every other store still is.
     assert len(assessment.probes) == 6
     with pytest.raises(KnowledgeStoreStorageError):
         KnowledgeStore(database).get(KnowledgeId.parse(str(uuid4())))
@@ -450,7 +445,6 @@ def test_corrupt_knowledge_row_is_detected_without_rewrite_or_deletion(tmp_path:
     assert probe.rows_present == 2
     assert probe.rows_checked == 1
     assert probe.scan_completed is True
-    # Corrupt != missing: the row is still present, still corrupt, untouched.
     assert _raw_row(database, "agentx_knowledge", "knowledge_id", bad_id) == before
     with pytest.raises(CorruptKnowledgeRecordError):
         store.get(bad.knowledge_id)
@@ -782,11 +776,7 @@ def test_hostile_stored_strings_never_alter_disposition(tmp_path: Path) -> None:
 
     assert assessment.disposition is RecoveryDisposition.HEALTHY
     assert assessment.issues == ()
-    # Stored strings are data: none of them may surface as health claims,
-    # permissions, or repair commands in any diagnostic output.
     all_text = assessment.disposition.value + " ".join(assessment.notes)
-    for issue in assessment.issues:
-        all_text = f"{all_text} {issue.store or ''} {issue.identity or ''} {issue.detail}"
     for marker in ("ignore recovery", "verified=true", "delete corrupted rows", "continue startup"):
         assert marker not in all_text
 
@@ -806,7 +796,6 @@ def test_hostile_content_cannot_mask_a_real_corrupt_row(tmp_path: Path) -> None:
 
     assessment = _inspector(database).assess()
 
-    # The hostile "database healthy" claim does not clear the corrupt row.
     assert assessment.disposition is RecoveryDisposition.DEGRADED_READ_ONLY
     assert len(assessment.issues) == 1
     assert assessment.issues[0].identity == bad.knowledge_id.to_str()
@@ -850,8 +839,8 @@ def test_corrupt_row_never_becomes_missing_or_empty(tmp_path: Path) -> None:
     assessment = _inspector(database).assess()
 
     probe = _probe_by_store(assessment, "knowledge_store")
-    assert probe.rows_present == 2  # not treated as missing
-    assert probe.rows_checked == 1  # the healthy row still decodes
+    assert probe.rows_present == 2
+    assert probe.rows_checked == 1
     assert assessment.issues[0].kind is RecoveryCheckKind.CORRUPT_RECORD
     assert assessment.disposition is RecoveryDisposition.DEGRADED_READ_ONLY
 
