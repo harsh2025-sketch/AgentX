@@ -82,13 +82,10 @@ class CapabilityStrategyBinding:
     def __post_init__(self) -> None:
         if not isinstance(self.request, CapabilityRequest):
             raise TypeError(
-                "request must be a CapabilityRequest, got "
-                f"{type(self.request).__name__}"
+                f"request must be a CapabilityRequest, got {type(self.request).__name__}"
             )
         if not isinstance(self.level, ExecutionLevel):
-            raise TypeError(
-                f"level must be an ExecutionLevel, got {type(self.level).__name__}"
-            )
+            raise TypeError(f"level must be an ExecutionLevel, got {type(self.level).__name__}")
         if self.level is not CAPABILITY_STRATEGY_LEVEL:
             raise CapabilityStrategyBindingError(
                 "governed capability strategy bindings must use L1_DIRECT"
@@ -116,8 +113,7 @@ class GovernedCapabilityStrategy:
             raise TypeError(f"executor must be an Executor, got {type(executor).__name__}")
         if not isinstance(binding, CapabilityStrategyBinding):
             raise TypeError(
-                "binding must be a CapabilityStrategyBinding, got "
-                f"{type(binding).__name__}"
+                f"binding must be a CapabilityStrategyBinding, got {type(binding).__name__}"
             )
         self._executor = executor
         self._binding = binding
@@ -148,9 +144,7 @@ class GovernedCapabilityStrategy:
         if not isinstance(task, Task):
             raise TypeError(f"task must be a Task, got {type(task).__name__}")
         if not isinstance(context, ExecutionContext):
-            raise TypeError(
-                f"context must be an ExecutionContext, got {type(context).__name__}"
-            )
+            raise TypeError(f"context must be an ExecutionContext, got {type(context).__name__}")
         if not isinstance(level, ExecutionLevel):
             raise TypeError(f"level must be an ExecutionLevel, got {type(level).__name__}")
 
