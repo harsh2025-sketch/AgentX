@@ -56,9 +56,7 @@ def _ready_decomposition(
     execution: dict[str, object] | None = None,
 ) -> TaskDecomposition:
     metadata = {} if node_metadata is None else dict(node_metadata)
-    metadata[EXECUTION_METADATA_KEY] = (
-        {"kind": "higher_level"} if execution is None else execution
-    )
+    metadata[EXECUTION_METADATA_KEY] = {"kind": "higher_level"} if execution is None else execution
     root = DecompositionNode(
         task_id=_task_id("root"),
         objective=objective,
