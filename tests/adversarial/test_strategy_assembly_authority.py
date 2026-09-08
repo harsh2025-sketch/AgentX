@@ -59,9 +59,7 @@ class HostileStrategy:
 
 
 def _assemble(strategy: HostileStrategy) -> RuntimeStrategyAssembly:
-    return RuntimeStrategyAssembly(
-        (StrategyBinding(ExecutionLevel.L4_PLANNED, strategy),)
-    )
+    return RuntimeStrategyAssembly((StrategyBinding(ExecutionLevel.L4_PLANNED, strategy),))
 
 
 def _envelope() -> ResourceEnvelope:
