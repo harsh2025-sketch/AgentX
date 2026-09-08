@@ -817,9 +817,7 @@ def _normalize_tree(
                     _invalid_native_data("native UIA error references unknown element")
                 )
             error_path = paths_by_sequence[sequence_value]
-        errors.append(
-            UIANativeError(operation=operation, hresult=hresult, element_path=error_path)
-        )
+        errors.append(UIANativeError(operation=operation, hresult=hresult, element_path=error_path))
 
     return Result.success(
         UIATreeSnapshot(
