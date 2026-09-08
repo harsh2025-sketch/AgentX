@@ -21,6 +21,17 @@ Status:
       pure/stateless helpers to ask, validate, and derive a transitioned
       Task. Transitions only: no Task Manager, execution, scheduling,
       cancellation, or persistence.
+    - ``task_decomposition`` — canonical hierarchical task decomposition
+      contract (A6.01): immutable ``DecompositionNode`` /
+      ``TaskDecomposition`` records representing a high-level Task broken
+      into smaller task units (root/subtask identity, single-parent
+      tree, objectives, declarative success criteria, ordering
+      constraints, bounded node count and depth, deterministic
+      serialization) plus the inert ``accept_model_proposal`` boundary
+      that validates untrusted model/reasoner output into those typed
+      structures. Plan/decomposition data only: no dependency planning
+      (A6.02), no full plan validation (A6.04), no execution, no
+      authority, and no success claims.
     - ``events`` — canonical immutable Event envelope, taxonomy, payloads,
       validation, and deterministic serialization (C1.02 / A1.02b).
     - ``knowledge`` — canonical immutable KnowledgeRecord contract for

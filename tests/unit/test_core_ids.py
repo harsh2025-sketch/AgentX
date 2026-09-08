@@ -20,6 +20,7 @@ import pytest
 from agentx.core.ids import (
     ArtifactId,
     CapabilityId,
+    DecompositionId,
     DomainId,
     EpisodeId,
     KnowledgeId,
@@ -28,7 +29,15 @@ from agentx.core.ids import (
     _IdConstructionError,
 )
 
-ALL_ID_TYPES = (TaskId, CapabilityId, ProcedureId, EpisodeId, KnowledgeId, ArtifactId)
+ALL_ID_TYPES = (
+    TaskId,
+    CapabilityId,
+    ProcedureId,
+    EpisodeId,
+    KnowledgeId,
+    ArtifactId,
+    DecompositionId,
+)
 
 
 # ---------------------------------------------------------------------------
