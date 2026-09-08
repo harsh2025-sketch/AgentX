@@ -100,7 +100,7 @@ def _build_diagnosis(
         procedure_node_id=node_id,
         classification=classification,
     )
-    evidence = ()
+    evidence: tuple[DiagnosticEvidence, ...] = ()
     if conclusion is DiagnosticConclusion.NODE_IMPLICATED:
         evidence = (
             DiagnosticEvidence(

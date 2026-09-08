@@ -492,12 +492,11 @@ def test_assessment_never_touches_authority_modules(monkeypatch: pytest.MonkeyPa
         "agentx.learning.trajectory",
         "agentx.procedures.graph",
     )
+    import sys
+
     for name in forbidden_modules:
-        monkeypatch.setitem(  # type: ignore[arg-type]
-            __import__("sys").modules,
-            name,
-            ForbiddenAuthorityProxy(name, touched),  # type: ignore[arg-type]
-        )
+        proxy: object = ForbiddenAuthorityProxy(name, touched)
+        monkeypatch.setitem(sys.modules, name, proxy)
 
     pid = ProcedureId.create()
     assess_procedure_degradation(
