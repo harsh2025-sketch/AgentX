@@ -520,7 +520,7 @@ def _descriptor_for(operation: BrowserActionOperation) -> CapabilityDescriptor:
             read_only=False,
             modifies_state=True,
             reversible=False,
-            external_effect=False,
+            external_effect=operation is BrowserActionOperation.CLICK_SELECTED,
         ),
         preconditions=(
             CapabilityPrecondition(
@@ -645,8 +645,6 @@ class BrowserActionsCapability:
                     f"({code or 'missing execution evidence'}); nothing is verified"
                 ),
             )
-        # Hostile observation claims such as verified=true are inert: verification
-        # never reads them. Independent driver observation is the only source.
         params = request.params
         if params.operation is BrowserActionOperation.NAVIGATE:
             return self._verify_navigate(params)
