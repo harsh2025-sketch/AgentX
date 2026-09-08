@@ -96,7 +96,6 @@ def test_contract_uses_only_inert_standard_library_modules() -> None:
 def test_preferences_define_data_contracts_not_subsystems() -> None:
     classes = _classes()
     forbidden = {
-        # Authority / execution / routing must never live here.
         "ActionGate",
         "AuthorityContext",
         "Permission",
@@ -112,13 +111,11 @@ def test_preferences_define_data_contracts_not_subsystems() -> None:
         "TaskManager",
         "Reasoner",
         "Verifier",
-        # Storage / persistence must never live here.
         "UserPreferenceStore",
         "PreferenceStore",
         "UserModel",
         "UserModelStore",
         "Migration",
-        # Inference / learning / ranking must never live here.
         "PreferenceLearner",
         "PreferenceInference",
         "PreferenceRanker",
@@ -127,7 +124,6 @@ def test_preferences_define_data_contracts_not_subsystems() -> None:
         "PreferenceService",
         "PreferenceManager",
         "EmbeddingModel",
-        # Competing contracts must never be redefined here.
         "KnowledgeRecord",
         "KnowledgeScope",
         "KnowledgeStatus",
@@ -155,14 +151,11 @@ def test_preferences_define_data_contracts_not_subsystems() -> None:
 
 
 def test_vocabulary_stays_minimal_no_strength_or_status() -> None:
-    # Strength would imply ranking/inference; status would imply lifecycle.
-    # Both are explicit non-goals, so neither concept may exist here.
     classes = _classes()
     referenced = _referenced_names()
     for absent in ("PreferenceStrength", "PreferenceStatus", "PreferenceRank", "Confidence"):
         assert absent not in classes
         assert absent not in referenced
-    # The docstring records WHY strength/status are absent; no code may define them.
     assert "class PreferenceStrength" not in _SOURCE
     assert "class PreferenceStatus" not in _SOURCE
 
@@ -248,7 +241,6 @@ def test_no_store_migration_model_or_network_surface() -> None:
         assert foreign not in called
     lowered = _SOURCE.lower()
     assert "sqlite" not in lowered
-    # No executable decoding or dynamic construction.
     assert "object_hook" not in _SOURCE
     assert "pickle" not in _SOURCE
     assert "__import__" not in _SOURCE
@@ -257,8 +249,6 @@ def test_no_store_migration_model_or_network_surface() -> None:
 
 
 def test_no_keyword_or_model_inference() -> None:
-    # Checked against code identifiers/calls, not prose: the docstring names
-    # these non-goals on purpose to record what the contract never does.
     referenced = {name.lower() for name in _referenced_names()}
     called = {name.lower() for name in _called_names()}
     for token in ("infer", "predict", "embedding", "cosine", "similarity", "rank", "score"):
@@ -275,7 +265,6 @@ def test_no_keyword_or_model_inference() -> None:
 
 
 def test_clock_is_used_only_by_the_create_factory() -> None:
-    # Deterministic construction is the default; only create() may stamp now.
     tree = _tree()
     for node in ast.walk(tree):
         if not isinstance(node, ast.ClassDef):
@@ -288,7 +277,7 @@ def test_clock_is_used_only_by_the_create_factory() -> None:
                 continue
             assert "datetime.now" not in segment
             assert "datetime.utcnow" not in segment
-    assert "datetime.now(UTC)" in _SOURCE  # the single canonical factory default
+    assert "datetime.now(UTC)" in _SOURCE
 
 
 def test_core_knowledge_contract_is_untouched() -> None:
@@ -305,16 +294,12 @@ def test_user_preference_has_exactly_one_canonical_definition() -> None:
         try:
             tree = ast.parse(path.read_text(encoding="utf-8"))
         except SyntaxError:
-            # Newer-syntax modules (3.12+) cannot be parsed by older
-            # interpreters; CI on the supported toolchain parses everything.
-            # This guard still proves the contract lives exactly once among
-            # all parseable modules and never in the files it must not touch.
             continue
         if any(
             isinstance(node, ast.ClassDef) and node.name == "UserPreference"
             for node in ast.walk(tree)
         ):
-            definitions.append(str(path.relative_to(_REPO_ROOT / "src")))
+            definitions.append(path.relative_to(_REPO_ROOT / "src").as_posix())
     assert definitions == ["agentx/core/user_preferences.py"]
 
 
