@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from uuid import uuid4
 
-from agentx.capabilities.runtime import LoopOutcome
+from agentx.capabilities.runtime import ClosedLoopOutcome, LoopOutcome
 from agentx.capability_strategy import CapabilityStrategyBinding, GovernedCapabilityStrategy
 from agentx.cognition.router import ExecutionLevel
 from agentx.core.execution import CancellationSource, ExecutionContext
@@ -34,7 +34,11 @@ def _context(task: Task, source: CancellationSource | None = None) -> ExecutionC
     )
 
 
-def _outcome(adapter: GovernedCapabilityStrategy, task: Task, context: ExecutionContext):
+def _outcome(
+    adapter: GovernedCapabilityStrategy,
+    task: Task,
+    context: ExecutionContext,
+) -> ClosedLoopOutcome:
     result = adapter.attempt(task, context, ExecutionLevel.L1_DIRECT)
     assert result.outcome is not None and result.outcome.is_success
     return result.outcome.unwrap()
