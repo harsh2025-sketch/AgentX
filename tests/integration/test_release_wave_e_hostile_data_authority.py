@@ -26,7 +26,12 @@ from agentx.core.capability_health import (
     assess_capability_health,
 )
 from agentx.core.ids import CapabilityId
-from agentx.core.knowledge import KnowledgeRecord, KnowledgeType, ProvenanceKind, ProvenanceReference
+from agentx.core.knowledge import (
+    KnowledgeRecord,
+    KnowledgeType,
+    ProvenanceKind,
+    ProvenanceReference,
+)
 from agentx.core.procedures import (
     ProcedurePayload,
     ProcedurePayloadKind,
