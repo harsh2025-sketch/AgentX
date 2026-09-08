@@ -24,7 +24,6 @@ from agentx.core.ids import EpisodeId, ProcedureId, TaskId
 REUSE_EFFICIENCY_SCHEMA_VERSION: Final[int] = 1
 _MAX_COUNTER: Final[int] = (1 << 63) - 1
 _MAX_TEXT_LENGTH: Final[int] = 1_024
-_PROCEDURE_MODES: Final[frozenset[ReuseMode]]
 
 
 class ReuseEfficiencyValidationError(ValueError):
@@ -54,7 +53,9 @@ class ReuseMode(StrEnum):
     EXPLORATORY = "exploratory"
 
 
-_PROCEDURE_MODES = frozenset({ReuseMode.PROCEDURE_REUSE, ReuseMode.GUIDED_PROCEDURE})
+_PROCEDURE_MODES: Final[frozenset[ReuseMode]] = frozenset(
+    {ReuseMode.PROCEDURE_REUSE, ReuseMode.GUIDED_PROCEDURE}
+)
 
 
 class ExecutionEvidenceOutcome(StrEnum):
