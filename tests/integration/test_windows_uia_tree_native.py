@@ -8,7 +8,11 @@ from datetime import UTC, datetime
 import pytest
 
 from agentx.capabilities.windows import _uia_native
-from agentx.capabilities.windows.provider import PlatformFacts, WindowsSupport, evaluate_windows_support
+from agentx.capabilities.windows.provider import (
+    PlatformFacts,
+    WindowsSupport,
+    evaluate_windows_support,
+)
 from agentx.capabilities.windows.uia_tree import UIATreeLimits, WindowsUIATreeInspection
 
 
