@@ -6,7 +6,9 @@ and environmental knowledge. Hive records where each item came from
 
 Implemented so far: ``agentx.hive.semantic_memory`` (C2.05 semantic memory
 read/write service), ``agentx.hive.experience_memory`` (C2.06 episodic and
-negative experience memory semantics), and ``agentx.hive.environmental_cache``
-(C2.09 in-memory environmental observation TTL cache). Everything stored or
-returned by Hive is inert data and grants no authority.
+negative experience memory semantics), ``agentx.hive.environmental_cache``
+(C2.09 in-memory environmental observation TTL cache), and
+``agentx.hive.salience_policy`` (C6.05 deterministic salience/archive-tier
+policy; archive is not delete). Everything stored, returned, or decided by
+Hive is inert data and grants no authority.
 """
