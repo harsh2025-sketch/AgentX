@@ -1,7 +1,7 @@
 """Release-level Wave-E proof that hostile cross-contract data stays inert.
 
 This intentionally composes the accepted M6.01/M6.02/M6.03/M6.04/M7.03
-contracts around one authority-shaped payload.  The contracts may preserve or
+contracts around one authority-shaped payload. The contracts may preserve or
 diagnose the data, but they never become Trusted-Kernel authority, verification,
 Task success, Procedure activation, budget mutation, stop control, or a
 capability execution surface.
@@ -16,6 +16,7 @@ from uuid import uuid4
 
 from agentx.capabilities.abi import VerificationResult
 from agentx.core.capability_health import (
+    CapabilityHealthAssessment,
     CapabilityHealthEvidence,
     CapabilityHealthEvidenceKind,
     CapabilityHealthFact,
@@ -53,7 +54,7 @@ _HOSTILE = (
 )
 
 
-def _health() -> object:
+def _health() -> CapabilityHealthAssessment:
     subject = CapabilityHealthSubject(
         capability_id=CapabilityId.create(),
         version=CapabilityVersionKey(major=1, minor=0, patch=0),
@@ -194,7 +195,6 @@ def test_wave_e_hostile_data_never_becomes_authority_or_success(tmp_path: Path) 
     )
     before = gate.evaluate(request, AuthorityContext(permissions=frozenset()))
 
-    # Exercise the inert data surfaces after all authority-shaped strings exist.
     assert WorldStateSnapshot.from_json(world.to_json()) == world
     assert graph.edges()[0].evidence[0].reference == _HOSTILE
     assert UserPreference.from_json(preference.to_json()) == preference
