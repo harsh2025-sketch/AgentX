@@ -51,7 +51,6 @@ from agentx.core.procedure_matching import (
 )
 from agentx.core.procedures import ProcedurePayloadKind, ProcedureStatus
 from agentx.core.tasks import Task
-from agentx.procedures.end import EndNodeSpec
 from agentx.procedures.graph import ProcedureGraph, ProcedureNodeKind
 from agentx.procedures.interpreter import (
     InterpreterStatus,
@@ -96,6 +95,14 @@ def _require_run_id(value: object) -> UUID:
 
 
 def _parse_active_graph(candidate: ProcedureCandidate) -> ProcedureGraph:
+    """Decode the canonical graph and enforce normal L2 structural eligibility.
+
+    END is intentionally left to the canonical graph/interpreter boundary. The
+    A3.05 architecture contract forbids production consumers from importing
+    the terminal-node helper module; terminal node data is therefore never
+    interpreted here and cannot confer task-success authority.
+    """
+
     record = candidate.record
     if record.status is not ProcedureStatus.ACTIVE:
         raise CompiledProcedureStrategyBindingError(
@@ -120,14 +127,7 @@ def _parse_active_graph(candidate: ProcedureCandidate) -> ProcedureGraph:
                 raise CompiledProcedureStrategyBindingError(
                     f"ACTION node {node.id.to_str()!r} is malformed"
                 ) from exc
-        elif node.kind is ProcedureNodeKind.END:
-            try:
-                EndNodeSpec.from_node(node)
-            except ValueError as exc:
-                raise CompiledProcedureStrategyBindingError(
-                    f"END node {node.id.to_str()!r} is malformed"
-                ) from exc
-        else:
+        elif node.kind is not ProcedureNodeKind.END:
             raise CompiledProcedureStrategyBindingError(
                 "L2_COMPILED accepts reasoning-free ACTION/END graphs only; "
                 f"found {node.kind.value!r}"
