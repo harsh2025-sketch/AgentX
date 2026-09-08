@@ -175,10 +175,7 @@ def package_execution_episode(request: ExecutionEpisodeRequest) -> EpisodeRecord
     record can be handed to persistence.
     """
     if not isinstance(request, ExecutionEpisodeRequest):
-        raise TypeError(
-            "request must be an ExecutionEpisodeRequest, "
-            f"got {type(request).__name__}"
-        )
+        raise TypeError(f"request must be an ExecutionEpisodeRequest, got {type(request).__name__}")
 
     _validate_identity_and_truth(request)
     episode = EpisodeRecord(
@@ -206,9 +203,7 @@ class ExecutionEpisodeCapture:
 
     def __init__(self, *, memory: ExperienceMemory) -> None:
         if not isinstance(memory, ExperienceMemory):
-            raise TypeError(
-                f"memory must be an ExperienceMemory, got {type(memory).__name__}"
-            )
+            raise TypeError(f"memory must be an ExperienceMemory, got {type(memory).__name__}")
         self._memory = memory
 
     def record(self, request: ExecutionEpisodeRequest) -> RecordedExecutionEpisode:
