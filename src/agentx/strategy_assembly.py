@@ -74,9 +74,7 @@ class RuntimeStrategyAssembly:
             if not isinstance(binding, StrategyBinding):
                 raise TypeError("bindings must contain only StrategyBinding values")
             if binding.level in by_level:
-                raise StrategyAssemblyError(
-                    f"duplicate strategy binding for {binding.level.value}"
-                )
+                raise StrategyAssemblyError(f"duplicate strategy binding for {binding.level.value}")
 
             strategy_identity = id(binding.strategy)
             previous_level = strategy_levels.get(strategy_identity)
@@ -89,13 +87,9 @@ class RuntimeStrategyAssembly:
             strategy_levels[strategy_identity] = binding.level
 
         ordered = tuple(
-            by_level[level]
-            for level in CANONICAL_EXECUTION_LEVELS
-            if level in by_level
+            by_level[level] for level in CANONICAL_EXECUTION_LEVELS if level in by_level
         )
-        registry = StrategyRegistry(
-            {binding.level: binding.strategy for binding in ordered}
-        )
+        registry = StrategyRegistry({binding.level: binding.strategy for binding in ordered})
 
         object.__setattr__(self, "_bindings", ordered)
         object.__setattr__(self, "_registry", registry)
