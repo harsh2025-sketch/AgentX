@@ -4,9 +4,12 @@ The store persists and returns :class:`agentx.core.procedures.ProcedureRecord`
 revisions over the canonical :class:`agentx.infrastructure.persistence.SQLiteDatabase`
 foundation. It owns no procedure semantics: no Procedure Graph IR, no
 interpreter, no compiler, no candidate promotion, and no lifecycle policy.
-Insert/get/history/list are data-only, and the only mutation is the explicit
+Insert/get/history/list are data-only, and the mutation surface is the explicit
 ``update_status`` call, which records a caller-chosen canonical status
-verbatim.
+verbatim, plus its compare-and-set variant ``update_status_if_current`` — the
+narrow seam through which the explicit promotion transaction (N2.10) commits a
+status change only while the stored revision is still exactly the record the
+caller validated.
 
 Reading or writing procedure records never grants Permission, changes
 RiskLevel, enlarges a ResourceEnvelope, bypasses the Action Gate, clears an
@@ -74,6 +77,24 @@ class ProcedureRevisionSequenceError(ProcedureStoreError):
 
 class ProcedureNotFoundError(ProcedureStoreError):
     """Raised when an explicit update targets a revision that is not stored."""
+
+
+class ProcedureStaleRecordError(ProcedureStoreError):
+    """Raised when a compare-and-set update no longer matches the stored revision.
+
+    The stored ``(procedure_id, revision)`` row changed after the caller read
+    the ``expected_current`` record (a concurrent status transition, for
+    example), so the conditional write is refused and nothing is persisted.
+    The caller must re-read the current record and re-derive its decision.
+    """
+
+    def __init__(self, *, procedure_id: str, revision: int) -> None:
+        self.procedure_id = procedure_id
+        self.revision = revision
+        super().__init__(
+            f"Procedure {procedure_id!r} revision {revision} changed since the caller "
+            "read it; the conditional status update was refused and nothing was written"
+        )
 
 
 class ProcedureStoreStorageError(ProcedureStoreError):
@@ -261,6 +282,89 @@ class ProcedureStore:
                             f"No stored procedure {procedure_id} revision {revision} to update"
                         )
                     current = _decode_row(row)
+                    updated = replace(
+                        current,
+                        status=status,
+                        updated_at=datetime.now(UTC) if updated_at is None else updated_at,
+                    )
+                    connection.execute(
+                        f"UPDATE {_PROCEDURE_TABLE} SET status = ?, record_json = ? "
+                        "WHERE procedure_id = ? AND revision = ?",
+                        (
+                            updated.status.value,
+                            updated.to_json(),
+                            procedure_id.to_str(),
+                            revision,
+                        ),
+                    )
+            except sqlite3.Error as exc:
+                raise ProcedureStoreStorageError(
+                    f"Unable to update status for procedure {procedure_id} revision {revision}"
+                ) from exc
+
+        return updated
+
+    def update_status_if_current(
+        self,
+        procedure_id: ProcedureId,
+        revision: int,
+        status: ProcedureStatus,
+        *,
+        expected_current: ProcedureRecord,
+        updated_at: datetime | None = None,
+    ) -> ProcedureRecord:
+        """Compare-and-set: set ``status`` only while the stored record is still
+        exactly ``expected_current``, and return the updated record.
+
+        This is the race-free mutation seam for explicit lifecycle transactions
+        (the promotion transaction, N2.10). It exists because a check-then-write
+        split across two store calls has a race window: another writer could
+        retire or re-status the revision between the caller's read and an
+        unconditional ``update_status``, and the stale decision would then
+        overwrite newer state.
+
+        Semantics:
+
+            - The stored row is re-read and canonically compared with
+              ``expected_current`` INSIDE the same ``BEGIN IMMEDIATE``
+              transaction that performs the write, so no concurrent writer
+              (thread or process) can change the row between the comparison
+              and the commit. Equality is full canonical record equality:
+              identity, revision, payload, status, scope, and timestamps must
+              all still match what the caller validated.
+            - On any mismatch the transaction is rolled back, nothing is
+              written, and :class:`ProcedureStaleRecordError` is raised; the
+              caller must re-read and re-derive its decision. An absent
+              ``(procedure_id, revision)`` pair raises
+              :class:`ProcedureNotFoundError`.
+            - Like ``update_status``, the store performs no lifecycle-rule
+              validation: recording a caller-chosen status verbatim is
+              storage, never policy and never authority. The new status is
+              still inert data.
+
+        The returned record is the newly persisted value; previously returned
+        record objects remain immutable snapshots of history.
+        """
+        _require_procedure_id(procedure_id)
+        _require_revision(revision)
+        if not isinstance(status, ProcedureStatus):
+            raise ProcedureValidationError("status must be a ProcedureStatus")
+        if not isinstance(expected_current, ProcedureRecord):
+            raise TypeError("expected_current must be a canonical ProcedureRecord")
+
+        with self.database.connection() as connection:
+            try:
+                with _write_transaction(connection):
+                    row = _select_revision(connection, procedure_id, revision)
+                    if row is None:
+                        raise ProcedureNotFoundError(
+                            f"No stored procedure {procedure_id} revision {revision} to update"
+                        )
+                    current = _decode_row(row)
+                    if current != expected_current:
+                        raise ProcedureStaleRecordError(
+                            procedure_id=procedure_id.to_str(), revision=revision
+                        )
                     updated = replace(
                         current,
                         status=status,
