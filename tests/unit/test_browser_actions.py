@@ -355,8 +355,6 @@ def test_stale_selected_node_never_reaches_driver() -> None:
     connection = _connection(BrowserConnectionState.CONNECTED)
     target = _target(connection=connection)
     stale_target = _target(state=BrowserTargetState.STALE, connection=connection)
-    # Available target with a stale node: node construction requires non-available
-    # node state when target is available? Stale node on available target is legal.
     stale_node = _node_ref(target, state=BrowserDomNodeState.STALE)
     result = capability.execute(click_selected_request(target, stale_node), _context())
 
@@ -449,12 +447,23 @@ def test_permission_and_risk_descriptor_per_operation() -> None:
         {Permission.WRITE, Permission.EXTERNAL_EFFECT}
     )
     assert fill.descriptor.required_permissions == frozenset({Permission.WRITE})
-    for capability in (navigate, click, fill):
-        assessment = capability.descriptor.risk_assessment
+
+    navigate_risk = navigate.descriptor.risk_assessment
+    fill_risk = fill.descriptor.risk_assessment
+    click_risk = click.descriptor.risk_assessment
+
+    for assessment in (navigate_risk, fill_risk):
         assert assessment.effective_level is RiskLevel.R2
+        assert assessment.external_effect is False
         assert assessment.read_only is False
         assert assessment.modifies_state is True
         assert assessment.reversible is False
+
+    assert click_risk.effective_level is RiskLevel.R3
+    assert click_risk.external_effect is True
+    assert click_risk.read_only is False
+    assert click_risk.modifies_state is True
+    assert click_risk.reversible is False
 
 
 def test_resource_estimate_is_exactly_one_machine_action() -> None:
@@ -662,7 +671,6 @@ def test_verification_ignores_spoofed_observation_flags() -> None:
             "error": None,
         },
     )
-    # Driver still has the original start URL; spoofed observation must not pass.
     verified = capability.verify(request, spoofed, _context())
 
     assert verified.passed is False
@@ -760,7 +768,6 @@ def test_driver_protocol_is_implemented_by_the_fake() -> None:
 def test_hostile_page_title_does_not_authorize_navigation() -> None:
     capability, fake = _capability(BrowserActionOperation.NAVIGATE)
     target = _target()
-    # Title/url on the snapshot are untrusted metadata and must not change risk.
     hostile_target = BrowserTargetRef(
         connection=target.connection,
         target_id=target.target_id,
