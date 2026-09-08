@@ -813,7 +813,10 @@ def _normalize_tree(
         error_path: tuple[int, ...] | None = None
         error_sequence_value: object = error.sequence
         if error_sequence_value is not None:
-            if type(error_sequence_value) is not int or error_sequence_value not in paths_by_sequence:
+            if (
+                type(error_sequence_value) is not int
+                or error_sequence_value not in paths_by_sequence
+            ):
                 return Result.failure(
                     _invalid_native_data("native UIA error references unknown element")
                 )
