@@ -25,7 +25,7 @@ no implicit multi-action chain.
 | Operation | Identity | Required permission | Risk |
 | --------- | -------- | ------------------- | ---- |
 | `navigate` | `browser.actions.navigate@1.0.0` | `WRITE` | R2 `MODIFY` (state-changing, not reversible) |
-| `click_selected` | `browser.actions.click_selected@1.0.0` | `WRITE` + `EXTERNAL_EFFECT` | R2 `MODIFY` (click is not universally low-risk) |
+| `click_selected` | `browser.actions.click_selected@1.0.0` | `WRITE` + `EXTERNAL_EFFECT` | R3 `EXTERNAL_EFFECT` (click may have externally consequential effects) |
 | `fill_selected` | `browser.actions.fill_selected@1.0.0` | `WRITE` | R2 `MODIFY` (fill text never lowers risk) |
 
 `submit_selected` is **not** implemented. Baseline provider/DOM contracts do
