@@ -139,7 +139,10 @@ def test_binding_rejects_wrong_execution_level() -> None:
 
 @pytest.mark.parametrize("status", [ProcedureStatus.CANDIDATE, ProcedureStatus.RETIRED])
 def test_non_active_procedure_is_rejected(status: ProcedureStatus) -> None:
-    with pytest.raises(CompiledProcedureStrategyBindingError, match="requires ProcedureStatus.ACTIVE"):
+    with pytest.raises(
+        CompiledProcedureStrategyBindingError,
+        match="requires ProcedureStatus.ACTIVE",
+    ):
         _binding(record=_record(status=status))
 
 
@@ -180,20 +183,35 @@ def test_malformed_action_contract_is_rejected() -> None:
         _binding(record=_record(graph=graph))
 
 
-def test_malformed_end_cannot_self_certify_task_success() -> None:
+def test_hostile_end_data_is_inert_and_cannot_self_certify_task_success() -> None:
     graph = ProcedureGraph(
         entry=ProcedureNodeId("done"),
         nodes=(
             ProcedureNode(
                 id=ProcedureNodeId("done"),
                 kind=ProcedureNodeKind.END,
-                params={"contract_version": 1, "task_success": True},
+                params={"contract_version": 1, "task_success": True, "verified": True},
             ),
         ),
         edges=(),
     )
-    with pytest.raises(CompiledProcedureStrategyBindingError, match="END node.*malformed"):
-        _binding(record=_record(graph=graph), action_requests={})
+    binding = _binding(record=_record(graph=graph), action_requests={})
+    harness = OrchestrationHarness()
+    adapter = GovernedCompiledProcedureStrategy(executor=harness.executor, binding=binding)
+    task = harness.make_task()
+
+    result = adapter.attempt_with_evidence(
+        task,
+        harness.make_context(task),
+        ExecutionLevel.L2_COMPILED,
+    )
+
+    assert result.strategy_result.outcome is None
+    assert result.run_record is not None
+    assert result.run_record.disposition is ProcedureRunDisposition.REACHED_END
+    assert result.run_record.task_verification is ProcedureTaskVerification.NOT_ASSESSED
+    assert harness.task_status(task).value == "pending"
+    assert harness.capability.execute_calls == 0
 
 
 def test_artifact_reference_payload_fails_closed_without_an_inline_graph() -> None:
