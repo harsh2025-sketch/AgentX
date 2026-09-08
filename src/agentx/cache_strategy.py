@@ -1,45 +1,20 @@
 """Conservative top-level L0 verified-result cache strategy adapter (N2.03).
 
-The adapter is composition only. It consumes one caller-supplied read boundary
-that may return a bundle of already-existing canonical evidence and exposes it
-through A2.10's ``ExecutionStrategy`` shape at exactly
-:class:`~agentx.cognition.router.ExecutionLevel.L0_CACHE`.
-
-A cache hit is never interpreted as success. Reuse is available only when all
-of the following independently agree:
-
-* the current request is bound to the current canonical ``Task``;
-* the caller supplies canonical A2.07 routing evidence that a verified reusable
-  result exists;
-* the cached source is a canonically successful A2.10 ``OrchestrationOutcome``;
-* its final A1.10 ``ClosedLoopOutcome`` still contains the original canonical
-  passing ``VerificationResult`` and satisfied A2.05 evaluation;
-* M8.01 ``ExecutionEfficiencyEvidence`` independently records typed
-  ``VERIFIED_SUCCESS`` evidence for the same source Task;
-* current Task semantics exactly match the source Task semantics available in
-  the canonical Task contract; and
-* explicit baseline/current C4.04 environment snapshots have the same canonical
-  scope, the same typed fact set and values, and are fresh at their respective
-  evidence instants.
-
-On a hit the original ``ClosedLoopOutcome`` object is returned unchanged. No
-``VerificationResult`` or ``ClosedLoopOutcome`` is created here. A2.10 still
-runs its canonical A2.05 verifier against the *current* caller-supplied
+A cache hit is not Task success. This adapter only offers a prior canonical
+``ClosedLoopOutcome`` back to A2.10 when explicit canonical reuse, verification,
+Task-applicability, scope, and freshness evidence all agree. The original
+outcome is returned unchanged; A2.10 still applies its current A2.05
 ``VerificationRequirement`` before the current Task can become ``SUCCEEDED``.
 
-The adapter executes no capability or procedure, invokes no model, performs no
-research, mutates no persistence, owns no cache database, and imports no kernel
-authority surface. Historical evidence cannot create permissions, lower risk,
-increase budgets, clear EmergencyStop, or transition a Task.
-
-Owner: N2.03. Top-level composition only.
+The adapter owns no cache store, persistence, executor, procedure, model,
+research client, Task manager, or kernel authority object.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import UTC, datetime
-from typing import Final, Protocol
+from typing import Final, Protocol, cast
 
 from agentx.agent_loop import (
     AttemptDisposition,
@@ -81,34 +56,23 @@ CACHE_STRATEGY_LEVEL: Final[ExecutionLevel] = ExecutionLevel.L0_CACHE
 
 
 class ReusableResultLookup(Protocol):
-    """Read-only lookup seam for one explicitly reusable-result candidate.
-
-    Implementations may read an existing canonical retrieval/cache layer, but
-    this protocol exposes no write, delete, update, refresh, or persistence
-    operation. ``None`` is the canonical miss at this composition boundary.
-    """
+    """Read-only lookup seam for one explicit reusable-result candidate."""
 
     def lookup(
         self,
         task: Task,
         context: ExecutionContext,
     ) -> CacheReuseCandidate | None:
-        """Return the explicit candidate for this request, or ``None``."""
+        """Return one candidate for this request, or ``None`` on a miss."""
         ...
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CacheReuseCandidate:
-    """Inert bundle of caller-supplied canonical reuse evidence.
+    """Inert bundle of existing canonical evidence needed for L0 reuse.
 
-    This record adds no verification field, confidence score, permission,
-    policy decision, cache schema, or persistence identity. It merely carries
-    already-existing canonical values needed by the adapter to decide whether a
-    source result can be *offered back* to A2.10 for current verification.
-
-    ``applicability_at`` is an explicit caller-supplied wall-clock instant used
-    only for deterministic C4.04 freshness checks. The strategy never reads a
-    wall clock itself.
+    ``applicability_at`` is supplied explicitly so freshness checks are
+    deterministic and this module never reads a wall clock.
     """
 
     prior: OrchestrationOutcome
@@ -154,13 +118,7 @@ class CacheReuseCandidate:
 
 
 def _task_semantics_match(current: Task, source: Task) -> bool:
-    """Compare exactly the reusable request semantics exposed by ``Task``.
-
-    Run identity, lifecycle status, and creation time necessarily differ across
-    runs and are excluded. Everything else in the current Task data contract is
-    exact: objective, scheduling priority, parent binding, and immutable
-    metadata. There is no fuzzy text matching or model interpretation.
-    """
+    """Compare all reusable request semantics exposed by canonical ``Task``."""
 
     return (
         current.objective == source.objective
@@ -171,7 +129,7 @@ def _task_semantics_match(current: Task, source: Task) -> bool:
 
 
 def _verified_prior_outcome(candidate: CacheReuseCandidate) -> ClosedLoopOutcome | None:
-    """Return the unchanged final A1.10 outcome only for canonical prior success."""
+    """Return the original final A1.10 outcome only for typed prior success."""
 
     prior = candidate.prior
     if prior.status is not OrchestrationStatus.SUCCEEDED:
@@ -216,7 +174,7 @@ def _verified_prior_outcome(candidate: CacheReuseCandidate) -> ClosedLoopOutcome
 
 
 def _efficiency_supports_prior(candidate: CacheReuseCandidate) -> bool:
-    """Require independent M8.01 typed verified-success evidence for the source Task."""
+    """Require independent M8.01 typed verified-success evidence."""
 
     evidence = candidate.efficiency
     if evidence.task_id != candidate.prior.task.task_id:
@@ -228,21 +186,19 @@ def _efficiency_supports_prior(candidate: CacheReuseCandidate) -> bool:
     if evidence.verification is None or evidence.verification.passed is not True:
         return False
 
-    ended_at = evidence.ended_at
     started_at = evidence.started_at
+    ended_at = evidence.ended_at
     if started_at is None or ended_at is None:
         return False
     if started_at < candidate.prior.task.created_at:
         return False
-    if ended_at > candidate.applicability_at:
-        return False
-    return True
+    return ended_at <= candidate.applicability_at
 
 
 def _observation_map(
     snapshot: EnvironmentSnapshot,
 ) -> dict[EnvironmentFactKey, EnvironmentObservation] | None:
-    """Index typed facts, rejecting duplicate fact identities fail-closed."""
+    """Index typed facts and reject duplicate fact identities."""
 
     indexed: dict[EnvironmentFactKey, EnvironmentObservation] = {}
     for observation in snapshot.observations:
@@ -253,7 +209,7 @@ def _observation_map(
 
 
 def _environment_still_applies(candidate: CacheReuseCandidate) -> bool:
-    """Require exact typed scope/fact equality plus canonical freshness."""
+    """Require exact typed scope/facts/values plus canonical freshness."""
 
     baseline = candidate.baseline_environment
     current = candidate.current_environment
@@ -275,7 +231,6 @@ def _environment_still_applies(candidate: CacheReuseCandidate) -> bool:
 
     for fact, prior_observation in baseline_by_fact.items():
         current_observation = current_by_fact[fact]
-
         if prior_observation.observed_at > prior_at:
             return False
         if current_observation.observed_at > candidate.applicability_at:
@@ -313,20 +268,14 @@ def _candidate_applies(
 
 
 class VerifiedCacheStrategy:
-    """A2.10-compatible adapter for exact, canonically evidenced L0 reuse.
-
-    The strategy owns only the injected lookup object. It has no cache storage,
-    clock, executor, capability, procedure, model, research client, task
-    manager, permission engine, risk engine, resource budget, or EmergencyStop
-    handle.
-    """
+    """A2.10-compatible adapter serving exactly conservative ``L0_CACHE``."""
 
     __slots__ = ("_lookup",)
 
-    def __init__(self, *, lookup: ReusableResultLookup) -> None:
+    def __init__(self, *, lookup: object) -> None:
         if not callable(getattr(lookup, "lookup", None)):
             raise TypeError("lookup must provide callable lookup(task, context)")
-        self._lookup = lookup
+        self._lookup = cast(ReusableResultLookup, lookup)
 
     @property
     def level(self) -> ExecutionLevel:
@@ -346,13 +295,7 @@ class VerifiedCacheStrategy:
         context: ExecutionContext,
         level: ExecutionLevel,
     ) -> StrategyResult:
-        """Offer an applicable historical verified result back to A2.10.
-
-        No Task transition occurs here. Returning a canonical outcome merely
-        gives A2.10 evidence to classify; A2.10's verifier still evaluates the
-        current verification requirement before it may transition the current
-        Task to ``SUCCEEDED``.
-        """
+        """Offer an applicable prior outcome to A2.10 without executing."""
 
         if not isinstance(task, Task):
             raise TypeError(f"task must be a Task, got {type(task).__name__}")
@@ -385,7 +328,6 @@ class VerifiedCacheStrategy:
             return StrategyResult.unavailable(
                 "cache candidate does not prove current verified reuse applicability"
             )
-
         return StrategyResult.executed(
             Result[ClosedLoopOutcome, AgentXError].success(outcome)
         )
