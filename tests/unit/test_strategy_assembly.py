@@ -103,9 +103,7 @@ def test_same_strategy_object_cannot_be_mapped_to_multiple_levels() -> None:
 
 
 def test_registry_composition_is_stable_in_canonical_order() -> None:
-    reverse_bindings = tuple(
-        _binding(level) for level in reversed(CANONICAL_EXECUTION_LEVELS)
-    )
+    reverse_bindings = tuple(_binding(level) for level in reversed(CANONICAL_EXECUTION_LEVELS))
 
     first = RuntimeStrategyAssembly(reverse_bindings)
     second = RuntimeStrategyAssembly(reversed(reverse_bindings))
@@ -195,9 +193,7 @@ def test_assembly_and_bindings_are_immutable_after_construction() -> None:
 
 def test_real_canonical_strategy_registry_is_the_composition_product() -> None:
     strategy = NeverCalledStrategy()
-    assembly = RuntimeStrategyAssembly(
-        (StrategyBinding(ExecutionLevel.L3_GUIDED, strategy),)
-    )
+    assembly = RuntimeStrategyAssembly((StrategyBinding(ExecutionLevel.L3_GUIDED, strategy),))
 
     registry = assembly.registry
 
