@@ -15,7 +15,7 @@ from datetime import UTC, datetime, timedelta
 from decimal import Decimal, InvalidOperation
 from enum import StrEnum
 from fractions import Fraction
-from typing import Final, TypeVar
+from typing import Final
 from uuid import UUID
 
 from agentx.core.events import EventValidationError, VerificationPayload
@@ -24,7 +24,7 @@ from agentx.core.ids import EpisodeId, ProcedureId, TaskId
 REUSE_EFFICIENCY_SCHEMA_VERSION: Final[int] = 1
 _MAX_COUNTER: Final[int] = (1 << 63) - 1
 _MAX_TEXT_LENGTH: Final[int] = 1_024
-_PROCEDURE_MODES: Final[frozenset["ReuseMode"]]
+_PROCEDURE_MODES: Final[frozenset[ReuseMode]]
 
 
 class ReuseEfficiencyValidationError(ValueError):
@@ -270,10 +270,9 @@ def _require_exact_fields(
         )
 
 
-_EnumT = TypeVar("_EnumT", bound=StrEnum)
-
-
-def _parse_enum(enum_type: type[_EnumT], value: object, *, field_name: str) -> _EnumT:
+def _parse_enum[_EnumT: StrEnum](
+    enum_type: type[_EnumT], value: object, *, field_name: str
+) -> _EnumT:
     if not isinstance(value, str):
         raise ReuseEfficiencyDeserializationError(f"{field_name} must be a string")
     try:
@@ -636,7 +635,9 @@ class ExecutionEfficiencyEvidence:
             raise ReuseEfficiencyDeserializationError("verification must be an object or null")
         try:
             verification = (
-                None if verification_raw is None else VerificationPayload.from_dict(verification_raw)
+                None
+                if verification_raw is None
+                else VerificationPayload.from_dict(verification_raw)
             )
         except EventValidationError as exc:
             raise ReuseEfficiencyDeserializationError("verification payload is invalid") from exc
@@ -1081,9 +1082,12 @@ def _comparison_components(
             )
         reasons.append("typed relationship evidence establishes related-task reuse")
 
-    if baseline.external_cost is not None and reuse.external_cost is not None:
-        if baseline.cost_unit != reuse.cost_unit:
-            reasons.append("external_cost omitted because accounting units differ")
+    if (
+        baseline.external_cost is not None
+        and reuse.external_cost is not None
+        and baseline.cost_unit != reuse.cost_unit
+    ):
+        reasons.append("external_cost omitted because accounting units differ")
 
     if baseline.verified_success and not reuse.verified_success:
         reasons.append("reuse lost verified success; cheaper execution cannot be an efficiency win")
