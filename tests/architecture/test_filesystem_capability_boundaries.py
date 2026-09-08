@@ -3,13 +3,7 @@ from __future__ import annotations
 import ast
 from pathlib import Path
 
-_SOURCE = (
-    Path(__file__).resolve().parents[2]
-    / "src"
-    / "agentx"
-    / "capabilities"
-    / "filesystem.py"
-)
+_SOURCE = Path(__file__).resolve().parents[2] / "src" / "agentx" / "capabilities" / "filesystem.py"
 _FORBIDDEN_AGENTX_PREFIXES = (
     "agentx.cognition",
     "agentx.hive",
