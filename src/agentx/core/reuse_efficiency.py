@@ -270,9 +270,9 @@ def _require_exact_fields(
         )
 
 
-def _parse_enum[_EnumT: StrEnum](
-    enum_type: type[_EnumT], value: object, *, field_name: str
-) -> _EnumT:
+def _parse_enum[EnumT: StrEnum](
+    enum_type: type[EnumT], value: object, *, field_name: str
+) -> EnumT:
     if not isinstance(value, str):
         raise ReuseEfficiencyDeserializationError(f"{field_name} must be a string")
     try:
