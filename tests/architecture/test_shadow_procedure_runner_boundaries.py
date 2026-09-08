@@ -42,9 +42,9 @@ def _call_names() -> set[str]:
     for node in ast.walk(tree):
         if not isinstance(node, ast.Call):
             continue
-        if isinstance(node, ast.Name):
+        if isinstance(node.func, ast.Name):
             names.add(node.func.id)
-        elif isinstance(node, ast.Attribute):
+        elif isinstance(node.func, ast.Attribute):
             names.add(node.func.attr)
     return names
 

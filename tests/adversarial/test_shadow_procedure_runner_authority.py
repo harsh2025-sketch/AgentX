@@ -40,6 +40,7 @@ from agentx.shadow_procedure_runner import (
     ShadowHarnessTrial,
     ShadowProcedureCandidate,
     ShadowValidationCase,
+    ShadowValidationRun,
     run_shadow_validation,
 )
 
@@ -82,7 +83,7 @@ def _record(procedure_id: ProcedureId, revision: int, content: str) -> Procedure
     )
 
 
-def _store_with_hostile_candidate(tmp_path) -> tuple[ProcedureStore, ProcedureId]:
+def _store_with_hostile_candidate(tmp_path: Path) -> tuple[ProcedureStore, ProcedureId]:
     procedure_id = ProcedureId.create()
     store = ProcedureStore(SQLiteDatabase(tmp_path / "authority.sqlite3"))
     store.insert(_record(procedure_id, 1, "source procedure"))
@@ -109,7 +110,13 @@ def _honest_passing_handler(request: ShadowCaseRequest) -> ShadowHarnessTrial:
     )
 
 
-def _run(store, procedure_id, *, handler, revision: int = 2):
+def _run(
+    store: ProcedureStore,
+    procedure_id: ProcedureId,
+    *,
+    handler: Callable[[ShadowCaseRequest], ShadowHarnessTrial],
+    revision: int = 2,
+) -> ShadowValidationRun:
     return run_shadow_validation(
         procedure_id=procedure_id,
         source_revision=1,
@@ -127,7 +134,7 @@ def _run(store, procedure_id, *, handler, revision: int = 2):
 # ---------------------------------------------------------------------------
 
 
-def test_hostile_candidate_cannot_activate_replace_or_rollback(tmp_path) -> None:
+def test_hostile_candidate_cannot_activate_replace_or_rollback(tmp_path: Path) -> None:
     store, procedure_id = _store_with_hostile_candidate(tmp_path)
     before = store.list_records()
     source = store.get(procedure_id, 1)
@@ -151,7 +158,7 @@ def test_hostile_candidate_cannot_activate_replace_or_rollback(tmp_path) -> None
     assert after_candidate is not None and after_candidate.status is ProcedureStatus.CANDIDATE
 
 
-def test_passed_shadow_run_still_never_promotes_stored_candidate(tmp_path) -> None:
+def test_passed_shadow_run_still_never_promotes_stored_candidate(tmp_path: Path) -> None:
     # Even a genuinely PASSED shadow run is only evidence.
     store, procedure_id = _store_with_hostile_candidate(tmp_path)
     before = store.list_records()
@@ -171,7 +178,7 @@ def test_passed_shadow_run_still_never_promotes_stored_candidate(tmp_path) -> No
 # ---------------------------------------------------------------------------
 
 
-def test_shadow_run_never_clears_emergency_stop_or_grants_permission(tmp_path) -> None:
+def test_shadow_run_never_clears_emergency_stop_or_grants_permission(tmp_path: Path) -> None:
     store, procedure_id = _store_with_hostile_candidate(tmp_path)
     stop = EmergencyStop()
     stop.request_stop()
@@ -188,7 +195,7 @@ def test_shadow_run_never_clears_emergency_stop_or_grants_permission(tmp_path) -
     assert engine.check(Permission.DESTRUCTIVE, None).present is False
 
 
-def test_run_and_trials_expose_no_authority_mutators(tmp_path) -> None:
+def test_run_and_trials_expose_no_authority_mutators(tmp_path: Path) -> None:
     store, procedure_id = _store_with_hostile_candidate(tmp_path)
     run = _run(store, procedure_id, handler=_honest_passing_handler)
     for obj in (run, *run.trials):

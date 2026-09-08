@@ -13,6 +13,7 @@ from __future__ import annotations
 import uuid
 from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
 
 from agentx.core.events import VerificationPayload
 from agentx.core.ids import ProcedureId, TaskId
@@ -71,7 +72,7 @@ def _case(task_id: TaskId | None = None) -> ShadowValidationCase:
     return ShadowValidationCase(task_id=task_id, target_node_id="n.act")
 
 
-def _store_with_active_source(tmp_path) -> tuple[ProcedureStore, ProcedureId]:
+def _store_with_active_source(tmp_path: Path) -> tuple[ProcedureStore, ProcedureId]:
     """Create a store holding source revision 1 (ACTIVE) and candidate rev 2."""
     procedure_id = ProcedureId.create()
     store = ProcedureStore(SQLiteDatabase(tmp_path / "shadow-runner.sqlite3"))
@@ -103,7 +104,7 @@ def _passing_handler(request: ShadowCaseRequest) -> ShadowHarnessTrial:
     )
 
 
-def test_shadow_run_emits_canonical_evidence_and_never_mutates_store(tmp_path) -> None:
+def test_shadow_run_emits_canonical_evidence_and_never_mutates_store(tmp_path: Path) -> None:
     store, procedure_id = _store_with_active_source(tmp_path)
     before = store.list_records()
     before_active = store.get(procedure_id, 1)
@@ -150,7 +151,7 @@ def test_shadow_run_emits_canonical_evidence_and_never_mutates_store(tmp_path) -
     assert after_candidate is not None and after_candidate.status is ProcedureStatus.CANDIDATE
 
 
-def test_shadow_failure_is_preserved_and_store_still_untouched(tmp_path) -> None:
+def test_shadow_failure_is_preserved_and_store_still_untouched(tmp_path: Path) -> None:
     store, procedure_id = _store_with_active_source(tmp_path)
     before = store.list_records()
 
