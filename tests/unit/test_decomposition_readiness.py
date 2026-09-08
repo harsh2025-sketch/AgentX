@@ -143,9 +143,7 @@ def test_leaf_missing_success_criteria_is_not_ready() -> None:
     result = DecompositionReadinessValidator().assess(decomposition)
 
     assert result.disposition is DecompositionReadinessDisposition.NOT_READY
-    assert _codes(result) == (
-        DecompositionReadinessReasonCode.MISSING_TERMINAL_SUCCESS_CRITERIA,
-    )
+    assert _codes(result) == (DecompositionReadinessReasonCode.MISSING_TERMINAL_SUCCESS_CRITERIA,)
     assert result.reasons[0].task_id == decomposition.root_task_id
 
 
@@ -206,9 +204,7 @@ def test_non_terminal_execution_metadata_is_invalid_terminal_structure() -> None
 
     result = DecompositionReadinessValidator().assess(decomposition)
 
-    assert _codes(result) == (
-        DecompositionReadinessReasonCode.NON_TERMINAL_EXECUTION_REQUIREMENT,
-    )
+    assert _codes(result) == (DecompositionReadinessReasonCode.NON_TERMINAL_EXECUTION_REQUIREMENT,)
     assert result.reasons[0].task_id == root_id
 
 
