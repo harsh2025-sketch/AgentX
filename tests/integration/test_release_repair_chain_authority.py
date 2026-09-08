@@ -17,6 +17,7 @@ from agentx.core.failure_diagnosis import (
     DiagnosticConclusion,
     DiagnosticEvidence,
     DiagnosticEvidenceKind,
+    FailureDiagnosis,
     package_diagnosis,
 )
 from agentx.core.failure_localization import FailureLocalization, FailureLocationKind
@@ -87,7 +88,7 @@ _HOSTILE = (
 )
 
 
-def _diagnosis(procedure_id: ProcedureId, at: datetime):
+def _diagnosis(procedure_id: ProcedureId, at: datetime) -> FailureDiagnosis:
     classification = FailureClassification(
         category=FailureCategory.PROCEDURE,
         summary=f"procedure failure; {_HOSTILE}",
@@ -303,8 +304,12 @@ def test_full_repair_chain_never_grants_hidden_authority_or_mutates_store(tmp_pa
     )
     assert replacement.outcome is ProcedureReplacementOutcome.ELIGIBLE
     assert store.list_records() == before
-    assert store.get(procedure_id, 1).status is ProcedureStatus.ACTIVE
-    assert store.get(procedure_id, 2).status is ProcedureStatus.CANDIDATE
+    stored_active = store.get(procedure_id, 1)
+    stored_candidate = store.get(procedure_id, 2)
+    assert stored_active is not None
+    assert stored_candidate is not None
+    assert stored_active.status is ProcedureStatus.ACTIVE
+    assert stored_candidate.status is ProcedureStatus.CANDIDATE
 
     # Positive repair evidence still cannot create authority. With no explicit
     # AuthorityContext, the canonical ActionGate denies the hypothetical live
