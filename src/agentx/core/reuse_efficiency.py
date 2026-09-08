@@ -270,9 +270,7 @@ def _require_exact_fields(
         )
 
 
-def _parse_enum[EnumT: StrEnum](
-    enum_type: type[EnumT], value: object, *, field_name: str
-) -> EnumT:
+def _parse_enum[EnumT: StrEnum](enum_type: type[EnumT], value: object, *, field_name: str) -> EnumT:
     if not isinstance(value, str):
         raise ReuseEfficiencyDeserializationError(f"{field_name} must be a string")
     try:
@@ -319,9 +317,7 @@ class ProcedureRevisionRef:
         return cls(procedure_id=procedure_id, revision=revision)
 
 
-_RELATIONSHIP_FIELDS: Final[frozenset[str]] = frozenset(
-    {"relationship", "source", "reference"}
-)
+_RELATIONSHIP_FIELDS: Final[frozenset[str]] = frozenset({"relationship", "source", "reference"})
 
 
 @dataclass(frozen=True, slots=True)
@@ -626,9 +622,7 @@ class ExecutionEfficiencyEvidence:
         procedure_raw = raw["procedure"]
         if procedure_raw is not None and not isinstance(procedure_raw, Mapping):
             raise ReuseEfficiencyDeserializationError("procedure must be an object or null")
-        procedure = (
-            None if procedure_raw is None else ProcedureRevisionRef.from_dict(procedure_raw)
-        )
+        procedure = None if procedure_raw is None else ProcedureRevisionRef.from_dict(procedure_raw)
 
         verification_raw = raw["verification"]
         if verification_raw is not None and not isinstance(verification_raw, Mapping):
@@ -662,9 +656,7 @@ class ExecutionEfficiencyEvidence:
             episode_id=_parse_episode_id(raw["episode_id"]),
             correlation_id=_parse_uuid(raw["correlation_id"], field_name="correlation_id"),
             mode=_parse_enum(ReuseMode, raw["mode"], field_name="mode"),
-            outcome=_parse_enum(
-                ExecutionEvidenceOutcome, raw["outcome"], field_name="outcome"
-            ),
+            outcome=_parse_enum(ExecutionEvidenceOutcome, raw["outcome"], field_name="outcome"),
             evidence_source=_validate_text(raw["evidence_source"], field_name="evidence_source"),
             evidence_reference=_parse_uuid(
                 raw["evidence_reference"], field_name="evidence_reference"
@@ -683,12 +675,8 @@ class ExecutionEfficiencyEvidence:
             research_queries=_validate_counter(
                 raw["research_queries"], field_name="research_queries"
             ),
-            machine_actions=_validate_counter(
-                raw["machine_actions"], field_name="machine_actions"
-            ),
-            repair_attempts=_validate_counter(
-                raw["repair_attempts"], field_name="repair_attempts"
-            ),
+            machine_actions=_validate_counter(raw["machine_actions"], field_name="machine_actions"),
+            repair_attempts=_validate_counter(raw["repair_attempts"], field_name="repair_attempts"),
             external_cost=_parse_decimal(raw["external_cost"], field_name="external_cost"),
             cost_unit=cost_unit,
             procedure=procedure,
