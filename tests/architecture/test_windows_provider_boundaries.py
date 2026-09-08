@@ -6,11 +6,12 @@ guardrails, not security enforcement: authority remains owned by the Trusted
 Kernel.
 
 A5.02 introduced the isolated ``_native`` read-only Win32 discovery seam.
-A5.03 adds the isolated ``_uia_native`` read-only UI Automation seam. Exactly
+A5.03 adds the isolated ``_uia_native`` read-only UI Automation seam. N2.19
+adds the single controlled ``native_mutation`` Win32 mutation seam. Exactly
 those native seam modules may import :mod:`ctypes` lazily; every Windows
-module still inherits the same no-third-party, no-module-level-native-load,
-no-mutation constraints. The A5.02 ``EnumWindows`` exception remains limited
-to ``_native`` only.
+module still inherits the same no-third-party and no-module-level-native-load
+constraints. The A5.02 ``EnumWindows`` exception remains limited to
+``_native``; N2.19 mutation exceptions remain limited to ``native_mutation``.
 """
 
 from __future__ import annotations
@@ -31,7 +32,8 @@ _WINDOWS_PKG = _AGENTX_SRC / "capabilities" / "windows"
 _PROVIDER = _WINDOWS_PKG / "provider.py"
 _NATIVE = _WINDOWS_PKG / "_native.py"
 _UIA_NATIVE = _WINDOWS_PKG / "_uia_native.py"
-_NATIVE_SEAMS = frozenset({_NATIVE, _UIA_NATIVE})
+_NATIVE_MUTATION = _WINDOWS_PKG / "native_mutation.py"
+_NATIVE_SEAMS = frozenset({_NATIVE, _UIA_NATIVE, _NATIVE_MUTATION})
 
 # Native/automation imports banned in every Windows-package module except the
 # explicit native seams below (which still permit only stdlib ``ctypes``).
@@ -69,10 +71,14 @@ _FORBIDDEN_IMPORTS = (
 _NATIVE_SEAM_ALLOWED_IMPORTS = frozenset({"ctypes"})
 
 # Exactly the A5.02 Win32 seam may expose the approved read-only window walk.
-_NATIVE_SEAM_ALLOWED_SYMBOLS = frozenset({"EnumWindows"})
+# Exactly the N2.19 mutation seam may expose the approved mutation primitives.
+_NATIVE_SEAM_ALLOWED_SYMBOLS = {
+    _NATIVE: frozenset({"EnumWindows"}),
+    _NATIVE_MUTATION: frozenset({"SendInput", "SetForegroundWindow"}),
+}
 
-# Automation verbs no Windows-package module may implement. EnumWindows is
-# retained here because it is allowed only in the A5.02 _native carve-out.
+# Automation verbs no Windows-package module may implement unless listed in
+# the path-specific native seam carve-outs above.
 _FORBIDDEN_SYMBOLS = (
     "EnumWindows",
     "FindWindow",
@@ -88,10 +94,16 @@ _FORBIDDEN_SYMBOLS = (
     "ocr",
 )
 
-# Mutating Win32 APIs remain banned everywhere, including both native seams.
+# Mutating Win32 APIs remain banned everywhere except the single N2.19
+# native_mutation seam, where only the explicitly approved narrow primitives
+# are recognized.
 _FORBIDDEN_WIN32_MUTATIONS = (
     "TerminateProcess",
     "CreateProcess",
+    "OpenClipboard",
+    "EmptyClipboard",
+    "SetClipboardData",
+    "SendInput",
     "WriteProcessMemory",
     "ReadProcessMemory",
     "VirtualAllocEx",
@@ -123,6 +135,18 @@ _FORBIDDEN_WIN32_MUTATIONS = (
     "DebugActiveProcess",
     "GenerateConsoleCtrlEvent",
     "SetThreadDesktop",
+)
+
+_NATIVE_MUTATION_ALLOWED_WIN32_MUTATIONS = frozenset(
+    {
+        "CreateProcess",
+        "OpenClipboard",
+        "EmptyClipboard",
+        "SetClipboardData",
+        "SendInput",
+        "SetForegroundWindow",
+        "ShowWindow",
+    }
 )
 
 _FORBIDDEN_COUPLING = (
@@ -204,8 +228,9 @@ def test_windows_package_defines_no_automation_surface(path: Path) -> None:
         if isinstance(node, ast.FunctionDef | ast.AsyncFunctionDef | ast.ClassDef)
     }
     attributes = {node.attr for node in ast.walk(tree) if isinstance(node, ast.Attribute)}
+    allowed_symbols = _NATIVE_SEAM_ALLOWED_SYMBOLS.get(path, frozenset())
     for symbol in _FORBIDDEN_SYMBOLS:
-        if path == _NATIVE and symbol in _NATIVE_SEAM_ALLOWED_SYMBOLS:
+        if symbol in allowed_symbols:
             continue
         assert symbol not in names
         assert symbol not in attributes
@@ -216,6 +241,8 @@ def test_windows_package_mentions_no_mutating_win32_api(path: Path) -> None:
     """Windows discovery/inspection remains read-only."""
     source = path.read_text(encoding="utf-8")
     for symbol in _FORBIDDEN_WIN32_MUTATIONS:
+        if path == _NATIVE_MUTATION and symbol in _NATIVE_MUTATION_ALLOWED_WIN32_MUTATIONS:
+            continue
         assert symbol not in source, f"{path.name} mentions forbidden Win32 API {symbol}"
 
 

@@ -30,7 +30,8 @@ _WINDOWS_PKG = _SRC_ROOT / "agentx" / "capabilities" / "windows"
 _DISCOVERY = _WINDOWS_PKG / "process_discovery.py"
 _NATIVE = _WINDOWS_PKG / "_native.py"
 _UIA_NATIVE = _WINDOWS_PKG / "_uia_native.py"
-_NATIVE_SEAMS = frozenset({_NATIVE, _UIA_NATIVE})
+_NATIVE_MUTATION = _WINDOWS_PKG / "native_mutation.py"
+_NATIVE_SEAMS = frozenset({_NATIVE, _UIA_NATIVE, _NATIVE_MUTATION})
 
 # Native markers that may appear ONLY inside isolated seam modules.
 _NATIVE_ONLY_MARKERS = ("windll", "WinDLL", "WINFUNCTYPE", "kernel32", "user32")
