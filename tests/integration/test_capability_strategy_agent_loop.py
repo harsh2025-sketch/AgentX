@@ -5,6 +5,7 @@ from __future__ import annotations
 from agentx.agent_loop import (
     AgentLoop,
     AttemptDisposition,
+    OrchestrationOutcome,
     OrchestrationStatus,
     OrchestrationStopReason,
     StrategyRegistry,
@@ -46,7 +47,7 @@ def _agent_loop(
 def _run_once(
     harness: OrchestrationHarness,
     adapter: GovernedCapabilityStrategy,
-):
+) -> OrchestrationOutcome:
     loop = _agent_loop(harness, adapter)
     request = harness.make_request(
         limits=default_limits(max_total_attempts=1, escalation_permitted=False)
