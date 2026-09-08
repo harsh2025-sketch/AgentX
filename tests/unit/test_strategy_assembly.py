@@ -203,4 +203,4 @@ def test_real_canonical_strategy_registry_is_the_composition_product() -> None:
 
     assert isinstance(registry, StrategyRegistry)
     assert registry.levels() == (ExecutionLevel.L3_GUIDED,)
-    assert registry.get(ExecutionLevel.L3_GUIDID) is strategy
+    assert registry.get(ExecutionLevel.L3_GUIDED) is strategy
