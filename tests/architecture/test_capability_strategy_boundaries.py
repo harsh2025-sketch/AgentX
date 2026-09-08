@@ -196,6 +196,7 @@ def test_architecture_manifest_has_no_adapter_special_case_or_new_edge() -> None
 
 
 def test_adapter_has_no_hidden_retry_fallback_routing_or_escalation_functions() -> None:
+    tree = _tree(_ADAPTER)
     functions = _defined_functions(_ADAPTER)
     assert functions == {
         "__post_init__",
@@ -204,9 +205,8 @@ def test_adapter_has_no_hidden_retry_fallback_routing_or_escalation_functions() 
         "executor",
         "attempt",
     }
+    assert not any(isinstance(node, ast.For | ast.While) for node in ast.walk(tree))
     source = _ADAPTER.read_text(encoding="utf-8")
-    assert "for " not in source
-    assert "while " not in source
     assert ".route(" not in source
     assert ".decide(" not in source
     assert ".evaluate(" not in source
