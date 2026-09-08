@@ -32,7 +32,7 @@ def test_windows_native_mutation_import_and_request_construction_are_inert() -> 
         executable_path="C:\\Windows\\System32\\notepad.exe",
         argv=("literal argument",),
     )
-    assert mutation._windows_command_line(launch).startswith('"C:\\Windows\\System32\\notepad.exe"')
+    assert mutation._windows_command_line(launch).startswith("C:\\Windows\\System32\\notepad.exe")
     assert NativeWindowStateRequest(1, NativeWindowShowState.RESTORE).window_handle == 1
     assert NativeWindowActivationRequest(1).window_handle == 1
     assert NativeTextInputRequest("hello").text == "hello"
