@@ -95,9 +95,7 @@ OS_ERROR_CODE: Final[str] = "capabilities.filesystem.os_error"
 CONTENT_TOO_LARGE_ERROR_CODE: Final[str] = "capabilities.filesystem.content_too_large"
 ENCODING_ERROR_CODE: Final[str] = "capabilities.filesystem.encoding_error"
 OVERWRITE_PROHIBITED_ERROR_CODE: Final[str] = "capabilities.filesystem.overwrite_prohibited"
-VERIFICATION_MISMATCH_ERROR_CODE: Final[str] = (
-    "capabilities.filesystem.verification_mismatch"
-)
+VERIFICATION_MISMATCH_ERROR_CODE: Final[str] = "capabilities.filesystem.verification_mismatch"
 _CANCELLED_ERROR_CODE: Final[str] = "capabilities.filesystem.cancelled"
 
 FILESYSTEM_READ_TEXT_IDENTITY: Final[CapabilityIdentity] = CapabilityIdentity(
