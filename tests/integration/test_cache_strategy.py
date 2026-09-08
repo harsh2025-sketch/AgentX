@@ -4,6 +4,15 @@ from __future__ import annotations
 
 from datetime import timedelta
 
+from tests.support.orchestration_harness import default_limits
+from tests.unit.test_cache_strategy import (
+    _T0,
+    _candidate,
+    _context,
+    _prior,
+    _StaticLookup,
+)
+
 from agentx.agent_loop import (
     AgentLoop,
     OrchestrationRequest,
@@ -15,14 +24,6 @@ from agentx.capabilities.verifier import VerificationRequirement
 from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.cognition.task_manager import TaskManager
 from agentx.core.tasks import TaskStatus
-from tests.support.orchestration_harness import default_limits
-from tests.unit.test_cache_strategy import (
-    _T0,
-    _StaticLookup,
-    _candidate,
-    _context,
-    _prior,
-)
 
 
 def _request(
