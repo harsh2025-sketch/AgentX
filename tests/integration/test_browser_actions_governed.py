@@ -295,28 +295,38 @@ def test_fill_verification_on_governed_path() -> None:
     assert "click_selected" not in harness.surface.calls
 
 
-def test_click_verification_failure_prevents_task_success() -> None:
+def test_click_requires_confirmation_before_execution() -> None:
     harness = Harness(
         authority=frozenset({Permission.WRITE, Permission.EXTERNAL_EFFECT}),
+        envelope=make_envelope(max_risk_level=RiskLevel.R3),
     )
     harness.register(BrowserActionOperation.CLICK_SELECTED)
     target = _target()
     result = harness.run(click_selected_request(target, _node(target)))
     outcome = result.unwrap()
 
-    assert "click_selected" in harness.surface.calls
-    assert outcome.execution is not None and outcome.execution.succeeded is True
-    assert outcome.kind is LoopOutcome.VERIFICATION_FAILED
+    assert outcome.kind is LoopOutcome.DENIED
     assert outcome.task.status is TaskStatus.FAILED
-    assert outcome.verification is not None
-    assert outcome.verification.passed is False
+    assert outcome.execution is None
+    assert outcome.verification is None
+    assert outcome.error is not None
+    assert outcome.error.code == "runtime.gate_denied"
+    assert outcome.error.category is ErrorCategory.PERMISSION
+    assert harness.surface.calls == []
+    decisions = [
+        event.payload.decision
+        for event in harness.events
+        if event.event_type is EventType.POLICY_DECISION
+        and isinstance(event.payload, DecisionPayload)
+    ]
+    assert "REQUIRE_CONFIRMATION" in decisions
     assert EventType.TASK_COMPLETED not in {event.event_type for event in harness.events}
-    assert EventType.TASK_FAILED in {event.event_type for event in harness.events}
 
 
-def test_click_with_unmet_postcondition_prevents_task_success() -> None:
+def test_click_postcondition_cannot_bypass_confirmation() -> None:
     harness = Harness(
         authority=frozenset({Permission.WRITE, Permission.EXTERNAL_EFFECT}),
+        envelope=make_envelope(max_risk_level=RiskLevel.R3),
     )
     harness.register(BrowserActionOperation.CLICK_SELECTED)
     target = _target()
@@ -331,8 +341,10 @@ def test_click_with_unmet_postcondition_prevents_task_success() -> None:
     )
     outcome = result.unwrap()
 
-    assert outcome.kind is LoopOutcome.VERIFICATION_FAILED
+    assert outcome.kind is LoopOutcome.DENIED
     assert outcome.task.status is TaskStatus.FAILED
+    assert outcome.execution is None
+    assert harness.surface.calls == []
 
 
 def test_resource_denial_never_reaches_provider() -> None:
