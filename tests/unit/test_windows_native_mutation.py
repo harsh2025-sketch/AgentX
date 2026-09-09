@@ -23,6 +23,8 @@ from agentx.capabilities.windows.native_mutation import (
     NativeTextInputRequest,
     NativeWindowActivationOutcome,
     NativeWindowActivationRequest,
+    NativeWindowMoveResizeOutcome,
+    NativeWindowMoveResizeRequest,
     NativeWindowShowState,
     NativeWindowStateOutcome,
     NativeWindowStateRequest,
@@ -209,6 +211,22 @@ def test_fake_native_surface_can_model_success_and_failure() -> None:
                 )
             )
 
+        def move_resize_window(
+            self,
+            request: NativeWindowMoveResizeRequest,
+        ) -> Result[NativeWindowMoveResizeOutcome, AgentXError]:
+            return Result.success(
+                NativeWindowMoveResizeOutcome(
+                    window_handle=request.window_handle,
+                    x=request.x,
+                    y=request.y,
+                    width=request.width,
+                    height=request.height,
+                    request_accepted=True,
+                    win32_error=0,
+                )
+            )
+
         def send_text(
             self,
             request: NativeTextInputRequest,
@@ -374,6 +392,7 @@ def test_adapter_methods_do_not_accept_authority_or_cancellation_parameters() ->
         "launch_process",
         "set_window_state",
         "activate_window",
+        "move_resize_window",
         "send_text",
         "send_key_strokes",
         "set_clipboard_text",
