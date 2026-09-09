@@ -303,14 +303,17 @@ def test_no_global_mutable_policy_state() -> None:
     assert len(module_assignments) == 5  # __all__ + three constants + vocabulary tuple
 
 
-def test_no_runtime_component_is_wired_to_the_policy_yet() -> None:
-    # Nothing outside the contract itself imports it: the executor that will
-    # one day consume this policy is a later, explicitly reviewed task.
+def test_only_the_canonical_repair_orchestrator_consumes_the_policy() -> None:
+    # The only permitted consumer is the N2.14 top-level repair workflow
+    # orchestrator, which composes this policy as its bounded anti-loop stage
+    # without re-implementing, resetting, or widening it. No executor, kernel,
+    # capability, or runtime component is wired to it.
+    allowed = {"src/agentx/repair_workflow.py"}
     importers = []
     for path in sorted(_SRC_ROOT.rglob("*.py")):
         if path == _MODULE:
             continue
         source = path.read_text(encoding="utf-8")
         if "repair_budget" in source:
-            importers.append(str(path.relative_to(_REPO_ROOT)))
-    assert importers == []
+            importers.append(path.relative_to(_REPO_ROOT).as_posix())
+    assert set(importers) <= allowed
