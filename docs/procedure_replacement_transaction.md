@@ -1,17 +1,20 @@
-# Procedure Replacement Transaction
+# N2.17 — Forward procedure replacement transaction
 
-The N2.17 Procedure Version Replacement Transaction implements the atomic persistence transaction to install an already-approved procedure replacement revision.
+`agentx.procedure_replacement_transaction` is the composition boundary for an
+already-assessed canonical `FORWARD_REPLACEMENT` decision.
 
-## Responsibilities
-- Receives a canonical `ProcedureReplacementDecision` that has been pre-evaluated as `ELIGIBLE` by the replacement policy.
-- Receives the exact current state of the store for the active record and the target record to replace it with.
-- Atomically, within a single serialized SQLite write transaction (`BEGIN IMMEDIATE`), transitions the current `ACTIVE` revision to `RETIRED`, and inserts or updates the target revision to `ACTIVE`.
-- Ensures concurrency safety by verifying that the state of the active record has not mutated since the decision was made.
+It does not decide eligibility, rollback, verification, promotion or execution
+authority. It binds the exact `ProcedureReplacementDecision`, current ACTIVE
+record and target CANDIDATE record to an exact `ProcedureStore` history
+snapshot, then delegates the storage mutation to
+`agentx.infrastructure.procedure_activation`.
 
-## Bound Requirements Checked
-- **Outcome**: The decision must strictly be `ELIGIBLE`.
-- **Identity & Revisions**: The supplied active record and target record must match the `ProcedureId` and revision numbers dictated by the decision.
-- **Concurrent Mutations**: If the active revision has been altered (e.g. is no longer `ACTIVE`, or was updated), the transaction aborts and leaves the store untouched.
-- **Atomicity**: Either both the retirement of the active revision and the promotion of the new revision happen, or neither do. No split state will be written.
+The shared activation seam owns only serialized storage mechanics. It rechecks
+the complete expected history inside the write transaction, requires the
+expected record to be the sole ACTIVE revision, preserves contiguous
+append-only revision identity, retires the current revision and activates the
+exact CANDIDATE atomically, and verifies the final single-ACTIVE postcondition.
+Any failure rolls the transaction back.
 
-This module guarantees purely mechanical, secure progression of versions without re-evaluating any replacement criteria, executing any capabilities, or altering execution authority.
+N2.17 never accepts `ROLLBACK` decisions and never activates RETIRED history.
+N2.18 owns rollback composition.

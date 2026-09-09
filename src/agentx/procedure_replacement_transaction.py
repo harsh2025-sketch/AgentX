@@ -1,47 +1,62 @@
+"""Atomic forward Procedure replacement composition (N2.17, B-reverified).
+
+Canonical replacement eligibility is decided upstream by
+``agentx.core.procedure_replacement``. This module binds one exact ELIGIBLE
+FORWARD_REPLACEMENT decision to exact immutable store evidence and delegates
+the storage mutation to ``agentx.infrastructure.procedure_activation``.
+
+Rollback is deliberately out of scope: N2.18 owns rollback composition.
+"""
+
 from __future__ import annotations
 
-import sqlite3
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from datetime import UTC, datetime
 
 from agentx.core.ids import ProcedureId
 from agentx.core.procedure_replacement import (
     ProcedureReplacementDecision,
+    ProcedureReplacementKind,
     ProcedureReplacementOutcome,
 )
-from agentx.core.procedures import (
-    ProcedureRecord,
-    ProcedureStatus,
+from agentx.core.procedures import ProcedureRecord, ProcedureStatus
+from agentx.infrastructure.procedure_activation import (
+    ProcedureActivationConflict,
+    activate_procedure_revision_atomically,
 )
-from agentx.infrastructure.procedure_store import (
-    _PROCEDURE_TABLE,
-    ProcedureStore,
-    ProcedureStoreError,
-    _decode_row,
-    _format_timestamp,
-    _write_transaction,
-)
+from agentx.infrastructure.procedure_store import ProcedureStore, ProcedureStoreError
 
 
 class ReplacementTransactionError(Exception):
-    """Base error for replacement transaction failures."""
-
-    pass
+    """Base error for replacement-transaction composition failures."""
 
 
 class ReplacementConcurrentStateError(ReplacementTransactionError):
-    """Raised when the store state has changed concurrently."""
-
-    pass
+    """Compatibility error name for stale/concurrent-state failures."""
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class ReplacementTransactionResult:
+    """Bounded lifecycle result; it is not verification or execution authority."""
+
     status: str
     procedure_id: ProcedureId
     previous_revision: int
     replacement_revision: int
     reason: str | None = None
+
+
+def _rejected(
+    decision: ProcedureReplacementDecision,
+    reason: str,
+) -> ReplacementTransactionResult:
+    return ReplacementTransactionResult(
+        status="REJECTED",
+        procedure_id=decision.procedure_id,
+        previous_revision=decision.active_revision,
+        replacement_revision=decision.target_revision,
+        reason=reason,
+    )
 
 
 def execute_replacement_transaction(
@@ -50,11 +65,7 @@ def execute_replacement_transaction(
     active_record: ProcedureRecord,
     target_record: ProcedureRecord,
 ) -> ReplacementTransactionResult:
-    """Execute the atomic procedure replacement transaction.
-
-    Verifies that the decision is ELIGIBLE, that the store's current active
-    revision matches the active_record exactly, and installs the target_record.
-    """
+    """Apply one exact, already-eligible forward replacement atomically."""
     if not isinstance(store, ProcedureStore):
         raise TypeError("store must be a ProcedureStore")
     if not isinstance(decision, ProcedureReplacementDecision):
@@ -65,185 +76,89 @@ def execute_replacement_transaction(
         raise TypeError("target_record must be a ProcedureRecord")
 
     if decision.outcome is not ProcedureReplacementOutcome.ELIGIBLE:
-        return ReplacementTransactionResult(
-            status="REJECTED",
-            procedure_id=decision.procedure_id,
-            previous_revision=decision.active_revision,
-            replacement_revision=decision.target_revision,
-            reason=f"Decision outcome is {decision.outcome.value}",
-        )
-
+        return _rejected(decision, f"Decision outcome is {decision.outcome.value}")
+    if decision.kind is not ProcedureReplacementKind.FORWARD_REPLACEMENT:
+        return _rejected(decision, "N2.17 accepts FORWARD_REPLACEMENT decisions only")
     if decision.procedure_id != active_record.procedure_id:
-        return ReplacementTransactionResult(
-            status="REJECTED",
-            procedure_id=decision.procedure_id,
-            previous_revision=decision.active_revision,
-            replacement_revision=decision.target_revision,
-            reason="Active record procedure_id mismatch",
-        )
-
+        return _rejected(decision, "Active record ProcedureId mismatch")
     if decision.procedure_id != target_record.procedure_id:
-        return ReplacementTransactionResult(
-            status="REJECTED",
-            procedure_id=decision.procedure_id,
-            previous_revision=decision.active_revision,
-            replacement_revision=decision.target_revision,
-            reason="Target record procedure_id mismatch",
-        )
-
+        return _rejected(decision, "Target record ProcedureId mismatch")
     if decision.active_revision != active_record.revision:
-        return ReplacementTransactionResult(
-            status="REJECTED",
-            procedure_id=decision.procedure_id,
-            previous_revision=decision.active_revision,
-            replacement_revision=decision.target_revision,
-            reason="Active record revision mismatch",
-        )
-
+        return _rejected(decision, "Active record revision mismatch")
     if decision.target_revision != target_record.revision:
-        return ReplacementTransactionResult(
-            status="REJECTED",
-            procedure_id=decision.procedure_id,
-            previous_revision=decision.active_revision,
-            replacement_revision=decision.target_revision,
-            reason="Target record revision mismatch",
+        return _rejected(decision, "Target record revision mismatch")
+    if active_record.status is not ProcedureStatus.ACTIVE:
+        return _rejected(decision, "Supplied active record is not ACTIVE")
+    if target_record.status is not ProcedureStatus.CANDIDATE:
+        return _rejected(decision, "Forward replacement target must be CANDIDATE")
+    if target_record.revision != active_record.revision + 1:
+        return _rejected(decision, "Forward replacement target must be the next revision")
+
+    try:
+        history = store.history(decision.procedure_id)
+    except ProcedureStoreError as exc:
+        return _rejected(decision, f"ProcedureStore read failed: {type(exc).__name__}")
+    if not history:
+        return _rejected(decision, "Active Procedure history is absent")
+
+    revisions = tuple(record.revision for record in history)
+    if revisions != tuple(range(1, len(revisions) + 1)):
+        return _rejected(decision, "Stored Procedure history is not contiguous")
+    stored_active = next(
+        (record for record in history if record.revision == active_record.revision),
+        None,
+    )
+    if stored_active != active_record:
+        return _rejected(decision, "Active record state changed after eligibility assessment")
+    active_records = tuple(
+        record for record in history if record.status is ProcedureStatus.ACTIVE
+    )
+    if active_records != (active_record,):
+        return _rejected(decision, "Expected active record is not the sole ACTIVE revision")
+
+    stored_target = next(
+        (record for record in history if record.revision == target_record.revision),
+        None,
+    )
+    target_must_exist = stored_target is not None
+    if target_must_exist:
+        if stored_target != target_record:
+            return _rejected(decision, "Target record differs from exact decision evidence")
+        if target_record.revision != revisions[-1]:
+            return _rejected(decision, "Forward target is stale; a newer revision exists")
+    elif target_record.revision != revisions[-1] + 1:
+        return _rejected(
+            decision,
+            "Forward target is not the next append-only revision",
         )
 
-    with store.database.connection() as connection:
-        try:
-            with _write_transaction(connection):
-                active_row = connection.execute(
-                    f"SELECT procedure_id, revision, created_at_utc, status, record_json "
-                    f"FROM {_PROCEDURE_TABLE} WHERE procedure_id = ? AND revision = ?",
-                    (decision.procedure_id.to_str(), decision.active_revision),
-                ).fetchone()
-
-                if active_row is None:
-                    raise ReplacementConcurrentStateError("Active revision not found in store")
-
-                stored_active_record = _decode_row(active_row)
-                if stored_active_record != active_record:
-                    raise ReplacementConcurrentStateError(
-                        "Active record state has changed concurrently"
-                    )
-
-                if stored_active_record.status is not ProcedureStatus.ACTIVE:
-                    raise ReplacementConcurrentStateError("Active revision is no longer ACTIVE")
-
-                other_active = connection.execute(
-                    f"SELECT revision FROM {_PROCEDURE_TABLE} "
-                    f"WHERE procedure_id = ? AND status = ? AND revision != ?",
-                    (
-                        decision.procedure_id.to_str(),
-                        ProcedureStatus.ACTIVE.value,
-                        decision.active_revision,
-                    ),
-                ).fetchone()
-                if other_active is not None:
-                    raise ReplacementConcurrentStateError("Another revision is concurrently ACTIVE")
-
-                retired_active = replace(
-                    stored_active_record,
-                    status=ProcedureStatus.RETIRED,
-                    updated_at=datetime.now(UTC),
-                )
-                connection.execute(
-                    f"UPDATE {_PROCEDURE_TABLE} SET status = ?, record_json = ? "
-                    "WHERE procedure_id = ? AND revision = ?",
-                    (
-                        retired_active.status.value,
-                        retired_active.to_json(),
-                        decision.procedure_id.to_str(),
-                        decision.active_revision,
-                    ),
-                )
-
-                target_row = connection.execute(
-                    f"SELECT procedure_id, revision, created_at_utc, status, record_json "
-                    f"FROM {_PROCEDURE_TABLE} WHERE procedure_id = ? AND revision = ?",
-                    (decision.procedure_id.to_str(), decision.target_revision),
-                ).fetchone()
-
-                if target_row is None:
-                    max_rev_row = connection.execute(
-                        "SELECT MAX(revision) AS max_rev FROM "
-                        f"{_PROCEDURE_TABLE} WHERE procedure_id = ?",
-                        (decision.procedure_id.to_str(),),
-                    ).fetchone()
-                    max_rev = (
-                        int(max_rev_row["max_rev"])
-                        if max_rev_row and max_rev_row["max_rev"] is not None
-                        else 0
-                    )
-                    if decision.target_revision != max_rev + 1:
-                        raise ReplacementConcurrentStateError(
-                            f"Target revision {decision.target_revision} is not contiguous "
-                            f"with max revision {max_rev}"
-                        )
-
-                    activated_target = replace(
-                        target_record,
-                        status=ProcedureStatus.ACTIVE,
-                        updated_at=datetime.now(UTC),
-                    )
-                    connection.execute(
-                        f"INSERT INTO {_PROCEDURE_TABLE} "
-                        "(procedure_id, revision, created_at_utc, status, record_json) "
-                        "VALUES (?, ?, ?, ?, ?)",
-                        (
-                            activated_target.procedure_id.to_str(),
-                            activated_target.revision,
-                            _format_timestamp(activated_target.created_at),
-                            activated_target.status.value,
-                            activated_target.to_json(),
-                        ),
-                    )
-                else:
-                    existing_target = _decode_row(target_row)
-                    activated_target = replace(
-                        existing_target,
-                        status=ProcedureStatus.ACTIVE,
-                        updated_at=datetime.now(UTC),
-                    )
-                    connection.execute(
-                        f"UPDATE {_PROCEDURE_TABLE} SET status = ?, record_json = ? "
-                        "WHERE procedure_id = ? AND revision = ?",
-                        (
-                            activated_target.status.value,
-                            activated_target.to_json(),
-                            decision.procedure_id.to_str(),
-                            decision.target_revision,
-                        ),
-                    )
-
-        except ReplacementConcurrentStateError as exc:
-            return ReplacementTransactionResult(
-                status="REJECTED",
-                procedure_id=decision.procedure_id,
-                previous_revision=decision.active_revision,
-                replacement_revision=decision.target_revision,
-                reason=str(exc),
-            )
-        except ProcedureStoreError as exc:
-            return ReplacementTransactionResult(
-                status="REJECTED",
-                procedure_id=decision.procedure_id,
-                previous_revision=decision.active_revision,
-                replacement_revision=decision.target_revision,
-                reason=str(exc),
-            )
-        except sqlite3.Error as exc:
-            return ReplacementTransactionResult(
-                status="REJECTED",
-                procedure_id=decision.procedure_id,
-                previous_revision=decision.active_revision,
-                replacement_revision=decision.target_revision,
-                reason=f"Database error: {exc}",
-            )
+    try:
+        transition = activate_procedure_revision_atomically(
+            store,
+            expected_history=history,
+            expected_active=active_record,
+            target_candidate=target_record,
+            target_must_exist=target_must_exist,
+            require_target_latest=True,
+            transitioned_at=datetime.now(UTC),
+        )
+    except ProcedureActivationConflict as exc:
+        return _rejected(decision, f"Concurrent store state rejected: {exc}")
+    except ProcedureStoreError as exc:
+        return _rejected(decision, f"ProcedureStore write failed: {type(exc).__name__}")
 
     return ReplacementTransactionResult(
         status="APPLIED",
         procedure_id=decision.procedure_id,
-        previous_revision=decision.active_revision,
-        replacement_revision=decision.target_revision,
+        previous_revision=transition.retired_record.revision,
+        replacement_revision=transition.active_record.revision,
+        reason=None,
     )
+
+
+__all__ = [
+    "ReplacementConcurrentStateError",
+    "ReplacementTransactionError",
+    "ReplacementTransactionResult",
+    "execute_replacement_transaction",
+]

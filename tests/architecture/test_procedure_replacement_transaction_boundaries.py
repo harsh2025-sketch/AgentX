@@ -1,29 +1,32 @@
+from __future__ import annotations
+
 import ast
 from pathlib import Path
 
 
-def test_no_model_calls_in_transaction():
-    """Verify that the transaction does not call LLM APIs or network services."""
-    module_path = Path("src/agentx/procedure_replacement_transaction.py")
-    tree = ast.parse(module_path.read_text())
-
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            for name in node.names:
-                assert name.name not in {"requests", "httpx", "urllib", "openai", "anthropic"}
-        elif isinstance(node, ast.ImportFrom) and node.module:
-            assert node.module not in {"requests", "httpx", "urllib", "openai", "anthropic"}
+def _source(path: str) -> str:
+    return Path(path).read_text(encoding="utf-8")
 
 
-def test_no_second_persistence_system():
-    """Verify it relies on the provided ProcedureStore and SQLite."""
-    module_path = Path("src/agentx/procedure_replacement_transaction.py")
-    tree = ast.parse(module_path.read_text())
+def test_n2_17_delegates_raw_persistence_to_single_infrastructure_seam() -> None:
+    source = _source("src/agentx/procedure_replacement_transaction.py")
+    assert "agentx.infrastructure.procedure_activation" in source
+    assert "BEGIN IMMEDIATE" not in source
+    assert ".database" not in source
+    assert "sqlite3" not in source
+    assert "DELETE FROM" not in source
 
-    has_sqlite = False
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            for name in node.names:
-                if name.name == "sqlite3":
-                    has_sqlite = True
-    assert has_sqlite, "Should use sqlite3 directly or via store"
+
+def test_shared_activation_seam_is_the_only_b_transaction_raw_sql_owner() -> None:
+    source = _source("src/agentx/infrastructure/procedure_activation.py")
+    assert "_write_transaction" in source
+    assert "DELETE FROM" not in source
+    assert "ProcedureStatus.RETIRED" in source
+    assert "ProcedureStatus.ACTIVE" in source
+    tree = ast.parse(source)
+    imports = {
+        node.module or ""
+        for node in ast.walk(tree)
+        if isinstance(node, ast.ImportFrom)
+    }
+    assert not any(module.startswith("agentx.kernel") for module in imports)

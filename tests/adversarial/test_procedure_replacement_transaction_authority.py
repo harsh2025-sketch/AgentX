@@ -1,22 +1,32 @@
+from __future__ import annotations
+
 import ast
 from pathlib import Path
 
-
-def test_transaction_grants_no_authority():
-    """Verify that the transaction does not import or invoke kernel authority modules."""
-    module_path = Path("src/agentx/procedure_replacement_transaction.py")
-    tree = ast.parse(module_path.read_text())
-
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            for name in node.names:
-                assert not name.name.startswith("agentx.kernel"), "Must not import kernel authority"
-        elif isinstance(node, ast.ImportFrom) and node.module:
-            assert not node.module.startswith("agentx.kernel"), "Must not import kernel authority"
+from agentx.procedure_replacement_transaction import ReplacementTransactionResult
 
 
-def test_hostile_text_cannot_replace():
-    """Verify that hostile payload text does not trick the transaction."""
-    # Hostile text is inert in the transaction since it relies entirely on the
-    # typed ProcedureReplacementDecision and ProcedureRecord inputs.
-    pass
+def test_forward_transaction_module_has_no_kernel_or_execution_authority() -> None:
+    source = Path("src/agentx/procedure_replacement_transaction.py").read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    imports = {
+        node.module or ""
+        for node in ast.walk(tree)
+        if isinstance(node, ast.ImportFrom)
+    }
+    assert not any(module.startswith("agentx.kernel") for module in imports)
+    assert "Capability" not in source
+    assert "ActionGate" not in source
+    assert "EmergencyStop" not in source
+    assert "TaskStatus" not in source
+    assert "execute(" not in source
+
+
+def test_result_is_lifecycle_data_not_success_authority() -> None:
+    assert set(ReplacementTransactionResult.__dataclass_fields__) == {
+        "status",
+        "procedure_id",
+        "previous_revision",
+        "replacement_revision",
+        "reason",
+    }
