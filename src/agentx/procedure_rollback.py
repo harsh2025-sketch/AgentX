@@ -185,12 +185,18 @@ class ProcedureRollbackResult:
             )
         if not isinstance(self.explanation, str) or not self.explanation.strip():
             raise ProcedureRollbackRequestError("explanation must be non-empty")
-        if type(self.schema_version) is not int or self.schema_version != CURRENT_ROLLBACK_SCHEMA_VERSION:
+        if (
+            type(self.schema_version) is not int
+            or self.schema_version != CURRENT_ROLLBACK_SCHEMA_VERSION
+        ):
             raise ProcedureRollbackRequestError("unsupported rollback schema version")
         if self.outcome is RollbackOutcome.APPLIED:
             if self.failure_reason is not None:
                 raise ProcedureRollbackRequestError("applied result cannot carry failure_reason")
-            if self.resulting_revision is None or self.resulting_status is not ProcedureStatus.ACTIVE:
+            if (
+                self.resulting_revision is None
+                or self.resulting_status is not ProcedureStatus.ACTIVE
+            ):
                 raise ProcedureRollbackRequestError(
                     "applied result requires resulting ACTIVE revision"
                 )
@@ -301,7 +307,10 @@ def execute_procedure_rollback(
             RollbackFailureReason.PERSISTENCE_CONFLICT,
             "stored Procedure revisions are not contiguous",
         )
-    if request.expected_known_revisions is not None and revisions != request.expected_known_revisions:
+    if (
+        request.expected_known_revisions is not None
+        and revisions != request.expected_known_revisions
+    ):
         return _reject(
             request,
             RollbackFailureReason.CONCURRENT_STORE_CHANGED,
