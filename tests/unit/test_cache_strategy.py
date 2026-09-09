@@ -366,6 +366,7 @@ def test_repeated_behavior_is_deterministic_without_candidate_mutation() -> None
 
     assert first == second
     assert first.outcome is not None
+    assert second.outcome is not None
     assert first.outcome.unwrap() is second.outcome.unwrap()
     assert candidate.prior is prior_before
     assert candidate.current_environment is environment_before

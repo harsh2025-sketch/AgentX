@@ -20,6 +20,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 from typing import ClassVar
 
+from agentx.core.ids import ProcedureId
 from agentx.core.procedure_matching import (
     ProcedureApplicabilityMatcher,
     ProcedureCandidate,
@@ -27,7 +28,7 @@ from agentx.core.procedure_matching import (
     ProcedureMatchResult,
     ProcedureRequirement,
 )
-from agentx.core.procedures import ProcedureId, ProcedureStatus
+from agentx.core.procedures import ProcedureStatus
 
 __all__ = [
     "ProcedureReuseSelectionOutcome",
@@ -112,7 +113,7 @@ class ProcedureReuseSelector:
         therefore make the result ``AMBIGUOUS`` if they could otherwise be
         eligible. Candidate order never affects the result.
         """
-        if not isinstance(candidates, Collection) or isinstance(candidates, (str, bytes)):
+        if not isinstance(candidates, Collection):
             raise TypeError("candidates must be a bounded collection of ProcedureCandidate values")
         if not isinstance(requirement, ProcedureRequirement):
             raise TypeError("requirement must be a ProcedureRequirement")

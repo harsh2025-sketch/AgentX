@@ -373,12 +373,6 @@ def execute_procedure_rollback(
             RollbackFailureReason.TARGET_ALREADY_ACTIVE,
             "rollback target is already ACTIVE",
         )
-    if target.status not in (ProcedureStatus.CANDIDATE, ProcedureStatus.RETIRED):
-        return _reject(
-            request,
-            RollbackFailureReason.TARGET_INVALID_CORRUPT,
-            "rollback target has unsupported lifecycle status",
-        )
 
     if target.status is ProcedureStatus.RETIRED:
         target_candidate = ProcedureRecord(

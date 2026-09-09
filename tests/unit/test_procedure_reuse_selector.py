@@ -34,7 +34,7 @@ def _record(
     )
 
 
-def test_one_active_exact_candidate_is_selected_and_identity_preserved():
+def test_one_active_exact_candidate_is_selected_and_identity_preserved() -> None:
     record = _record()
     result = ProcedureReuseSelector().select([ProcedureCandidate(record)], ProcedureRequirement())
     assert result.outcome is ProcedureReuseSelectionOutcome.SELECTED
@@ -42,7 +42,7 @@ def test_one_active_exact_candidate_is_selected_and_identity_preserved():
     assert (result.procedure_id, result.revision) == (record.procedure_id, record.revision)
 
 
-def test_empty_excluded_and_inapplicable_candidates_are_no_match():
+def test_empty_excluded_and_inapplicable_candidates_are_no_match() -> None:
     selector = ProcedureReuseSelector()
     assert (
         selector.select([], ProcedureRequirement()).outcome
@@ -63,7 +63,7 @@ def test_empty_excluded_and_inapplicable_candidates_are_no_match():
     )
 
 
-def test_exact_match_is_categorical_preference_over_compatible_match():
+def test_exact_match_is_categorical_preference_over_compatible_match() -> None:
     exact = _record()
     broad = _record()
     requirement = ProcedureRequirement(
@@ -84,7 +84,7 @@ def test_exact_match_is_categorical_preference_over_compatible_match():
     assert result.selected is not None and result.selected.record is exact
 
 
-def test_equal_active_candidates_are_ambiguous_and_duplicate_is_idempotent():
+def test_equal_active_candidates_are_ambiguous_and_duplicate_is_idempotent() -> None:
     first = _record()
     second = _record()
     selector = ProcedureReuseSelector()
@@ -99,7 +99,7 @@ def test_equal_active_candidates_are_ambiguous_and_duplicate_is_idempotent():
     assert one.outcome is ProcedureReuseSelectionOutcome.SELECTED
 
 
-def test_revision_number_does_not_break_tie_or_hostile_metadata():
+def test_revision_number_does_not_break_tie_or_hostile_metadata() -> None:
     first = _record(revision=1)
     second = _record(revision=2)
     result = ProcedureReuseSelector().select(

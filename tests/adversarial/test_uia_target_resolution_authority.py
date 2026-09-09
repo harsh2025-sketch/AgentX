@@ -28,6 +28,7 @@ from agentx.capabilities.windows.uia_tree import (
     UIATreeLimits,
     UIATreeSnapshot,
 )
+from agentx.core.tasks import JsonValue
 from agentx.kernel.action_gate import ActionGate, GateDecision, GateRequest
 from agentx.kernel.emergency_stop import EmergencyStop
 from agentx.kernel.permissions import AuthorityContext, Permission, PermissionEngine
@@ -64,7 +65,7 @@ class _Spec:
     state: UIAElementState = UIAElementState.AVAILABLE
 
 
-def _property(name: UIAPropertyName, value: object | None) -> UIAPropertyObservation:
+def _property(name: UIAPropertyName, value: JsonValue) -> UIAPropertyObservation:
     return UIAPropertyObservation(
         name=name,
         status=UIAObservationStatus.AVAILABLE,

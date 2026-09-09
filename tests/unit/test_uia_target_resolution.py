@@ -29,6 +29,7 @@ from agentx.capabilities.windows.uia_tree import (
     UIATreeLimits,
     UIATreeSnapshot,
 )
+from agentx.core.tasks import JsonValue
 
 _T0 = datetime(2026, 9, 8, 0, 0, tzinfo=UTC)
 
@@ -46,7 +47,7 @@ class _Spec:
     state: UIAElementState = UIAElementState.AVAILABLE
 
 
-def _property(name: UIAPropertyName, value: object | None) -> UIAPropertyObservation:
+def _property(name: UIAPropertyName, value: JsonValue) -> UIAPropertyObservation:
     return UIAPropertyObservation(
         name=name,
         status=UIAObservationStatus.AVAILABLE,
@@ -458,9 +459,9 @@ def test_result_contracts_are_frozen() -> None:
     result = resolve_uia_target(snapshot, UIATargetQuery(name="Save"))
 
     with pytest.raises(FrozenInstanceError):
-        result.status = UIATargetResolutionStatus.NOT_FOUND
+        setattr(result, "status", UIATargetResolutionStatus.NOT_FOUND)
     with pytest.raises(FrozenInstanceError):
-        result.query.name = "Changed"
+        setattr(result.query, "name", "Changed")
 
 
 def test_serialization_is_json_compatible_and_preserves_hostile_data() -> None:
