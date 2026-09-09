@@ -74,7 +74,7 @@ _NATIVE_SEAM_ALLOWED_IMPORTS = frozenset({"ctypes"})
 # Exactly the N2.19 mutation seam may expose the approved mutation primitives.
 _NATIVE_SEAM_ALLOWED_SYMBOLS = {
     _NATIVE: frozenset({"EnumWindows"}),
-    _NATIVE_MUTATION: frozenset({"SendInput", "SetForegroundWindow"}),
+    _NATIVE_MUTATION: frozenset({"SendInput", "SetForegroundWindow", "SetWindowPos"}),
 }
 
 # Automation verbs no Windows-package module may implement unless listed in
@@ -145,6 +145,7 @@ _NATIVE_MUTATION_ALLOWED_WIN32_MUTATIONS = frozenset(
         "SetClipboardData",
         "SendInput",
         "SetForegroundWindow",
+        "SetWindowPos",
         "ShowWindow",
     }
 )

@@ -194,15 +194,18 @@ def test_total_only_usage_preserves_reported_total() -> None:
     assert record.model_tokens == 100
 
 
-def test_partial_component_coverage_contradiction_fails_closed() -> None:
+def test_partial_component_coverage_keeps_only_exact_aggregate() -> None:
     recorder = _recorder()
     recorder.start(started_at=_T0)
     recorder.record_model_call(
         ModelCallEvent(model_id=_model_id(), usage=_usage(input_tokens=10, output_tokens=5))
     )
     recorder.record_model_call(ModelCallEvent(model_id=_model_id(), usage=_usage(total_tokens=8)))
-    with pytest.raises(ExecutionMetricsValidationError, match="contradict"):
-        recorder.finish(ended_at=_T0 + timedelta(seconds=1))
+    record = recorder.finish(ended_at=_T0 + timedelta(seconds=1))
+
+    assert record.model_input_tokens is None
+    assert record.model_output_tokens is None
+    assert record.model_tokens == 23
 
 
 def test_model_call_count_overflow_fails_closed() -> None:

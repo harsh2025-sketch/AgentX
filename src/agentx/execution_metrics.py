@@ -538,17 +538,21 @@ class ExecutionMetricsRecorder:
         "_execution_level",
         "_finished",
         "_input_tokens",
+        "_input_tokens_complete",
         "_machine_actions",
         "_model_calls",
         "_model_ids",
         "_outcome",
         "_outcome_set",
         "_output_tokens",
+        "_output_tokens_complete",
         "_procedure",
         "_started",
         "_started_at",
         "_task_id",
         "_total_tokens",
+        "_total_tokens_complete",
+        "_model_cost_complete",
         "_verification",
         "_verification_reference",
         "_verification_source",
@@ -586,9 +590,13 @@ class ExecutionMetricsRecorder:
         self._model_calls = 0
         self._model_ids: list[ModelId] = []
         self._input_tokens: int | None = None
+        self._input_tokens_complete = True
         self._output_tokens: int | None = None
+        self._output_tokens_complete = True
         self._total_tokens: int | None = None
+        self._total_tokens_complete = True
         self._cost: Decimal | None = None
+        self._model_cost_complete = True
         self._machine_actions = 0
         self._outcome_set = False
         self._outcome: ExecutionEvidenceOutcome | None = None
@@ -675,46 +683,83 @@ class ExecutionMetricsRecorder:
     def record_model_call(self, event: ModelCallEvent) -> None:
         """Record one explicit observed model-invocation event.
 
-        One recorded event is exactly one model call. The canonical hook is
-        placed at the provider-invocation boundary: a successful invocation
-        records ``ModelCallEvent.from_response(response)``; an invocation that
-        failed without usage data records an event with ``usage=None``.
-        Nothing in this module counts text, nodes, or levels as calls.
+        Run-level token/cost aggregates remain exact only while every observed
+        model invocation supplies enough canonical usage evidence for that
+        dimension. Missing usage never contributes an invented zero or leaves
+        an earlier subtotal looking like a complete run total.
         """
 
         self._require_open()
         if not isinstance(event, ModelCallEvent):
             raise TypeError("event must be a ModelCallEvent")
-        self._model_calls = _checked_add(self._model_calls, 1, field_name="model_calls")
-        self._model_ids.append(event.model_id)
+
         usage = event.usage
+        if usage is not None and usage.external_cost is not None and self._cost_unit is None:
+            # Validate before mutating the session so a rejected event cannot
+            # partially increment calls/tokens.
+            raise ExecutionMetricsValidationError(
+                "model usage reports external_cost but the session has no cost_unit"
+            )
+
+        next_model_calls = _checked_add(self._model_calls, 1, field_name="model_calls")
+        next_input_tokens = self._input_tokens
+        next_output_tokens = self._output_tokens
+        next_total_tokens = self._total_tokens
+        next_cost = self._cost
+        input_complete = self._input_tokens_complete
+        output_complete = self._output_tokens_complete
+        total_complete = self._total_tokens_complete
+        model_cost_complete = self._model_cost_complete
+
         if usage is None:
-            return
-        if usage.input_tokens is not None:
-            self._input_tokens = _checked_add(
-                0 if self._input_tokens is None else self._input_tokens,
-                usage.input_tokens,
-                field_name="model input tokens",
-            )
-        if usage.output_tokens is not None:
-            self._output_tokens = _checked_add(
-                0 if self._output_tokens is None else self._output_tokens,
-                usage.output_tokens,
-                field_name="model output tokens",
-            )
-        accounted = usage.accounted_tokens
-        if accounted is not None:
-            self._total_tokens = _checked_add(
-                0 if self._total_tokens is None else self._total_tokens,
-                accounted,
-                field_name="model tokens",
-            )
-        if usage.external_cost is not None:
-            if self._cost_unit is None:
-                raise ExecutionMetricsValidationError(
-                    "model usage reports external_cost but the session has no cost_unit"
+            input_complete = False
+            output_complete = False
+            total_complete = False
+            model_cost_complete = False
+        else:
+            if usage.input_tokens is None:
+                input_complete = False
+            else:
+                next_input_tokens = _checked_add(
+                    0 if next_input_tokens is None else next_input_tokens,
+                    usage.input_tokens,
+                    field_name="model input tokens",
                 )
-            self._cost = (Decimal(0) if self._cost is None else self._cost) + usage.external_cost
+
+            if usage.output_tokens is None:
+                output_complete = False
+            else:
+                next_output_tokens = _checked_add(
+                    0 if next_output_tokens is None else next_output_tokens,
+                    usage.output_tokens,
+                    field_name="model output tokens",
+                )
+
+            accounted = usage.accounted_tokens
+            if accounted is None:
+                total_complete = False
+            else:
+                next_total_tokens = _checked_add(
+                    0 if next_total_tokens is None else next_total_tokens,
+                    accounted,
+                    field_name="model tokens",
+                )
+
+            if usage.external_cost is None:
+                model_cost_complete = False
+            else:
+                next_cost = (Decimal(0) if next_cost is None else next_cost) + usage.external_cost
+
+        self._model_calls = next_model_calls
+        self._model_ids.append(event.model_id)
+        self._input_tokens = next_input_tokens
+        self._output_tokens = next_output_tokens
+        self._total_tokens = next_total_tokens
+        self._cost = next_cost
+        self._input_tokens_complete = input_complete
+        self._output_tokens_complete = output_complete
+        self._total_tokens_complete = total_complete
+        self._model_cost_complete = model_cost_complete
 
     def record_machine_action(self, *, count: int = 1) -> None:
         """Record explicitly observed capability/action invocations."""
@@ -833,10 +878,12 @@ class ExecutionMetricsRecorder:
 
         model_calls = self._model_calls
         model_ids = tuple(self._model_ids)
-        input_tokens = self._input_tokens
-        output_tokens = self._output_tokens
-        total_tokens = self._total_tokens
+        input_tokens = self._input_tokens if self._input_tokens_complete else None
+        output_tokens = self._output_tokens if self._output_tokens_complete else None
+        total_tokens = self._total_tokens if self._total_tokens_complete else None
         if input_tokens is not None and output_tokens is not None:
+            # Complete component coverage is itself exact aggregate evidence,
+            # even when a provider omitted total_tokens on individual calls.
             derived = _checked_add(input_tokens, output_tokens, field_name="model_tokens")
             if total_tokens is not None and total_tokens != derived:
                 raise ExecutionMetricsValidationError(
@@ -850,9 +897,15 @@ class ExecutionMetricsRecorder:
         verification = self._verification
         verification_source = self._verification_source
         verification_reference = self._verification_reference
+        # A run-level model cost is exact only when every observed model
+        # invocation reported a cost. Caller-supplied additive costs do not turn
+        # missing model-call cost evidence into zero.
+        external_cost = self._cost
+        if self._model_calls and not self._model_cost_complete:
+            external_cost = None
         # The accounting unit travels with the cost fact: a declared unit with
-        # no observed cost records absence, not an unattached unit.
-        cost_unit = None if self._cost is None else self._cost_unit
+        # no exact observed cost records absence, not an unattached unit.
+        cost_unit = None if external_cost is None else self._cost_unit
 
         return ExecutionMetricsRecord(
             task_id=self._task_id,
@@ -866,7 +919,7 @@ class ExecutionMetricsRecorder:
             started_at=started_at,
             ended_at=final_ended,
             elapsed=final_elapsed,
-            external_cost=self._cost,
+            external_cost=external_cost,
             cost_unit=cost_unit,
             machine_actions=self._machine_actions,
             procedure=self._procedure,

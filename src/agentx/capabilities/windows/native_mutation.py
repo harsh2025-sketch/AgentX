@@ -45,6 +45,7 @@ __all__ = [
     "NATIVE_MUTATION_UNAVAILABLE_ERROR_CODE",
     "PROCESS_LAUNCH_FAILED_ERROR_CODE",
     "WINDOW_ACTIVATION_FAILED_ERROR_CODE",
+    "WINDOW_MOVE_RESIZE_FAILED_ERROR_CODE",
     "NativeClipboardMutationOutcome",
     "NativeClipboardTextRequest",
     "NativeInputInjectionOutcome",
@@ -56,6 +57,8 @@ __all__ = [
     "NativeTextInputRequest",
     "NativeWindowActivationOutcome",
     "NativeWindowActivationRequest",
+    "NativeWindowMoveResizeOutcome",
+    "NativeWindowMoveResizeRequest",
     "NativeWindowShowState",
     "NativeWindowStateOutcome",
     "NativeWindowStateRequest",
@@ -77,6 +80,9 @@ PROCESS_LAUNCH_FAILED_ERROR_CODE: Final[str] = (
 WINDOW_ACTIVATION_FAILED_ERROR_CODE: Final[str] = (
     "capabilities.windows.native_mutation.window_activation_failed"
 )
+WINDOW_MOVE_RESIZE_FAILED_ERROR_CODE: Final[str] = (
+    "capabilities.windows.native_mutation.window_move_resize_failed"
+)
 INPUT_INJECTION_FAILED_ERROR_CODE: Final[str] = (
     "capabilities.windows.native_mutation.input_injection_failed"
 )
@@ -93,6 +99,10 @@ _MAX_TEXT_INPUT_CODE_UNITS: Final[int] = 1_024
 _MAX_KEY_STROKES: Final[int] = 64
 _MAX_INPUT_EVENTS: Final[int] = 512
 _MAX_CLIPBOARD_CODE_UNITS: Final[int] = 65_536
+_MIN_WINDOW_POSITION: Final[int] = -32_768
+_MAX_WINDOW_POSITION: Final[int] = 32_767
+_MIN_WINDOW_SIZE: Final[int] = 1
+_MAX_WINDOW_SIZE: Final[int] = 32_767
 
 T = TypeVar("T")
 
@@ -234,6 +244,20 @@ def _require_window_handle(value: object, *, field_name: str = "window_handle") 
     return value
 
 
+
+def _require_bounded_window_int(
+    value: object,
+    *,
+    field_name: str,
+    minimum: int,
+    maximum: int,
+) -> int:
+    if type(value) is not int:
+        raise TypeError(f"{field_name} must be an int, got {type(value).__name__}")
+    if value < minimum or value > maximum:
+        raise ValueError(f"{field_name} must be between {minimum} and {maximum}")
+    return value
+
 def _require_code_unit_bound(
     value: object,
     *,
@@ -353,6 +377,32 @@ class NativeWindowActivationRequest:
 
     def __post_init__(self) -> None:
         _require_window_handle(self.window_handle)
+
+
+@dataclass(frozen=True, slots=True)
+class NativeWindowMoveResizeRequest:
+    """Explicit bounded geometry mutation for one existing HWND."""
+
+    window_handle: int
+    x: int
+    y: int
+    width: int
+    height: int
+
+    def __post_init__(self) -> None:
+        _require_window_handle(self.window_handle)
+        _require_bounded_window_int(
+            self.x, field_name="x", minimum=_MIN_WINDOW_POSITION, maximum=_MAX_WINDOW_POSITION
+        )
+        _require_bounded_window_int(
+            self.y, field_name="y", minimum=_MIN_WINDOW_POSITION, maximum=_MAX_WINDOW_POSITION
+        )
+        _require_bounded_window_int(
+            self.width, field_name="width", minimum=_MIN_WINDOW_SIZE, maximum=_MAX_WINDOW_SIZE
+        )
+        _require_bounded_window_int(
+            self.height, field_name="height", minimum=_MIN_WINDOW_SIZE, maximum=_MAX_WINDOW_SIZE
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -487,6 +537,38 @@ class NativeWindowActivationOutcome:
 
 
 @dataclass(frozen=True, slots=True)
+class NativeWindowMoveResizeOutcome:
+    """Low-level SetWindowPos outcome; final geometry is not verified here."""
+
+    window_handle: int
+    x: int
+    y: int
+    width: int
+    height: int
+    request_accepted: bool
+    win32_error: int
+
+    def __post_init__(self) -> None:
+        _require_window_handle(self.window_handle)
+        _require_bounded_window_int(
+            self.x, field_name="x", minimum=_MIN_WINDOW_POSITION, maximum=_MAX_WINDOW_POSITION
+        )
+        _require_bounded_window_int(
+            self.y, field_name="y", minimum=_MIN_WINDOW_POSITION, maximum=_MAX_WINDOW_POSITION
+        )
+        _require_bounded_window_int(
+            self.width, field_name="width", minimum=_MIN_WINDOW_SIZE, maximum=_MAX_WINDOW_SIZE
+        )
+        _require_bounded_window_int(
+            self.height, field_name="height", minimum=_MIN_WINDOW_SIZE, maximum=_MAX_WINDOW_SIZE
+        )
+        if type(self.request_accepted) is not bool:
+            raise TypeError("request_accepted must be bool")
+        if type(self.win32_error) is not int or self.win32_error < 0:
+            raise ValueError("win32_error must be a non-negative int")
+
+
+@dataclass(frozen=True, slots=True)
 class NativeInputInjectionOutcome:
     """Low-level SendInput count; target text/state is not verified here."""
 
@@ -537,6 +619,11 @@ class NativeMutationSurface(Protocol):
         self,
         request: NativeWindowActivationRequest,
     ) -> Result[NativeWindowActivationOutcome, AgentXError]: ...
+
+    def move_resize_window(
+        self,
+        request: NativeWindowMoveResizeRequest,
+    ) -> Result[NativeWindowMoveResizeOutcome, AgentXError]: ...
 
     def send_text(
         self,
@@ -590,6 +677,17 @@ class WindowsNativeMutationAdapter:
         return _call_when_available(
             "window activation",
             lambda: _activate_window_windows(request),
+        )
+
+    def move_resize_window(
+        self,
+        request: NativeWindowMoveResizeRequest,
+    ) -> Result[NativeWindowMoveResizeOutcome, AgentXError]:
+        if not isinstance(request, NativeWindowMoveResizeRequest):
+            raise TypeError("request must be a NativeWindowMoveResizeRequest")
+        return _call_when_available(
+            "window move/resize",
+            lambda: _move_resize_window_windows(request),
         )
 
     def send_text(
@@ -836,6 +934,62 @@ def _activate_window_windows(
     return Result.success(
         NativeWindowActivationOutcome(
             window_handle=request.window_handle,
+            request_accepted=True,
+            win32_error=0,
+        )
+    )
+
+
+def _move_resize_window_windows(
+    request: NativeWindowMoveResizeRequest,
+) -> Result[NativeWindowMoveResizeOutcome, AgentXError]:
+    import ctypes
+    from ctypes import wintypes
+
+    ctypes_win: Any = ctypes
+    swp_nozorder = 0x0004
+    swp_noactivate = 0x0010
+
+    user32 = ctypes_win.WinDLL("user32", use_last_error=True)
+    user32.SetWindowPos.restype = wintypes.BOOL
+    user32.SetWindowPos.argtypes = (
+        wintypes.HWND,
+        wintypes.HWND,
+        ctypes.c_int,
+        ctypes.c_int,
+        ctypes.c_int,
+        ctypes.c_int,
+        wintypes.UINT,
+    )
+
+    ctypes_win.set_last_error(0)
+    request_accepted = bool(
+        user32.SetWindowPos(
+            request.window_handle,
+            None,
+            request.x,
+            request.y,
+            request.width,
+            request.height,
+            swp_nozorder | swp_noactivate,
+        )
+    )
+    win32_error = 0 if request_accepted else int(ctypes_win.get_last_error())
+    if not request_accepted:
+        return Result.failure(
+            _win32_error(
+                WINDOW_MOVE_RESIZE_FAILED_ERROR_CODE,
+                "SetWindowPos",
+                win32_error,
+            )
+        )
+    return Result.success(
+        NativeWindowMoveResizeOutcome(
+            window_handle=request.window_handle,
+            x=request.x,
+            y=request.y,
+            width=request.width,
+            height=request.height,
             request_accepted=True,
             win32_error=0,
         )
