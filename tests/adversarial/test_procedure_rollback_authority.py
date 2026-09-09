@@ -10,11 +10,7 @@ from agentx.procedure_rollback import ProcedureRollbackResult
 def test_rollback_module_has_no_kernel_capability_or_model_authority() -> None:
     source = Path("src/agentx/procedure_rollback.py").read_text(encoding="utf-8")
     tree = ast.parse(source)
-    imports = {
-        node.module or ""
-        for node in ast.walk(tree)
-        if isinstance(node, ast.ImportFrom)
-    }
+    imports = {node.module or "" for node in ast.walk(tree) if isinstance(node, ast.ImportFrom)}
     assert not any(module.startswith("agentx.kernel") for module in imports)
     assert not any(module.startswith("agentx.capabilities") for module in imports)
     assert not any(module.startswith("agentx.cognition") for module in imports)
