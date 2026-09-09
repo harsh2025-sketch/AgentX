@@ -244,7 +244,6 @@ def _require_window_handle(value: object, *, field_name: str = "window_handle") 
     return value
 
 
-
 def _require_bounded_window_int(
     value: object,
     *,
@@ -257,6 +256,7 @@ def _require_bounded_window_int(
     if value < minimum or value > maximum:
         raise ValueError(f"{field_name} must be between {minimum} and {maximum}")
     return value
+
 
 def _require_code_unit_bound(
     value: object,
