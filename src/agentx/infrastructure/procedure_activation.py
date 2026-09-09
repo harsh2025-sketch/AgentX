@@ -31,7 +31,7 @@ class ProcedureActivationError(Exception):
     """Base error for one atomic storage-level activation transaction."""
 
 
-class ProcedureActivationConflict(ProcedureActivationError):
+class ProcedureActivationConflict(ProcedureActivationError):  # noqa: N818
     """Persisted state no longer matches the caller's exact evidence."""
 
 
