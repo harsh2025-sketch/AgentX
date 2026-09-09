@@ -6,8 +6,6 @@ from datetime import UTC, datetime
 from uuid import UUID
 
 import pytest
-from tests.support.demo_capability import NoteWriteParams, write_request
-from tests.support.orchestration_harness import OrchestrationHarness
 
 from agentx.cognition.router import ExecutionLevel
 from agentx.compiled_procedure_strategy import (
@@ -44,6 +42,8 @@ from agentx.procedures.graph import (
     ProcedureNodeKind,
 )
 from agentx.procedures.nodes import ActionNodeSpec
+from tests.support.demo_capability import NoteWriteParams, write_request
+from tests.support.orchestration_harness import OrchestrationHarness
 
 _T0 = datetime(2026, 9, 8, 18, 0, tzinfo=UTC)
 _RUN_ID = UUID("00000000-0000-0000-0000-000000000204")
