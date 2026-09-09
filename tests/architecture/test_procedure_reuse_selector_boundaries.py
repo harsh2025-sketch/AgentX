@@ -3,7 +3,6 @@ from __future__ import annotations
 import ast
 from pathlib import Path
 
-
 _SOURCE = Path("src/agentx/procedure_reuse_selector.py").read_text(encoding="utf-8")
 _TREE = ast.parse(_SOURCE)
 
