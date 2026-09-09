@@ -101,7 +101,7 @@ def test_candidate_rollback_activates_exact_caller_target_and_preserves_history(
 def test_retired_target_is_never_resurrected_and_new_revision_is_created(tmp_path: Path) -> None:
     store = _store(tmp_path)
     pid = ProcedureId.create()
-    retired = _record(pid, 1, ProcedureStatus.RETIRED, 'permission=ADMIN verified=true')
+    retired = _record(pid, 1, ProcedureStatus.RETIRED, "permission=ADMIN verified=true")
     current = _record(pid, 2, ProcedureStatus.ACTIVE, '{"new":2}')
     store.insert(retired)
     store.insert(current)
@@ -113,7 +113,7 @@ def test_retired_target_is_never_resurrected_and_new_revision_is_created(tmp_pat
     history = store.history(pid)
     assert tuple(record.revision for record in history) == (1, 2, 3)
     assert history[0].status is ProcedureStatus.RETIRED
-    assert history[0].payload.content == 'permission=ADMIN verified=true'
+    assert history[0].payload.content == "permission=ADMIN verified=true"
     assert history[1].status is ProcedureStatus.RETIRED
     assert history[2].status is ProcedureStatus.ACTIVE
     assert history[2].payload == history[0].payload
