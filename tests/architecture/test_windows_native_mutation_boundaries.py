@@ -17,6 +17,7 @@ _MODULE = _WINDOWS / "native_mutation.py"
 _EXPECTED_ADAPTER_METHODS = {
     "activate_window",
     "launch_process",
+    "move_resize_window",
     "send_key_strokes",
     "send_text",
     "set_clipboard_text",
@@ -30,6 +31,7 @@ _EXPECTED_CLASSES = {
     "NativeProcessLaunchRequest",
     "NativeWindowStateRequest",
     "NativeWindowActivationRequest",
+    "NativeWindowMoveResizeRequest",
     "NativeTextInputRequest",
     "NativeKeyStroke",
     "NativeKeyInputRequest",
@@ -37,6 +39,7 @@ _EXPECTED_CLASSES = {
     "NativeProcessLaunchOutcome",
     "NativeWindowStateOutcome",
     "NativeWindowActivationOutcome",
+    "NativeWindowMoveResizeOutcome",
     "NativeInputInjectionOutcome",
     "NativeClipboardMutationOutcome",
     "NativeMutationSurface",
@@ -64,6 +67,7 @@ _APPROVED_WIN32_MUTATION_NAMES = {
     "SendInput",
     "SetClipboardData",
     "SetForegroundWindow",
+    "SetWindowPos",
     "ShowWindow",
 }
 
@@ -88,7 +92,6 @@ _FORBIDDEN_NATIVE_NAMES = {
     "SetParent",
     "SetThreadDesktop",
     "SetWindowLong",
-    "SetWindowPos",
     "SetWindowText",
     "ShellExecute",
     "SuspendThread",
