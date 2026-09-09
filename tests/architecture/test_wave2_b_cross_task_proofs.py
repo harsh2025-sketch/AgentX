@@ -71,17 +71,14 @@ def test_n2_03_n2_04_n2_06_l0_l2_l4_have_distinct_semantics_and_authority() -> N
 
     assert "Planning is not execution" in planning
     assert "agentx.cognition.reasoner" in planning_imports
-    assert not any(
-        name.startswith("agentx.capabilities") for name in planning_imports
-    )
-    assert not any(
-        name.startswith("agentx.infrastructure") for name in planning_imports
-    )
+    assert not any(name.startswith("agentx.capabilities") for name in planning_imports)
+    assert not any(name.startswith("agentx.infrastructure") for name in planning_imports)
     assert not any(name.startswith("agentx.kernel") for name in planning_imports)
 
 
-def test_n2_08_n2_09_n2_10_chain_requires_candidate_then_validation_then_explicit_promotion(
-) -> None:
+def test_n2_08_n2_09_n2_10_chain_requires_candidate_then_validation_then_explicit_promotion() -> (
+    None
+):
     """Compilation and varied validation cannot silently collapse into ACTIVE."""
     compiler = _source("skill_compiler.py")
     validation_runner = _source("procedure_validation_runner.py")
@@ -89,24 +86,23 @@ def test_n2_08_n2_09_n2_10_chain_requires_candidate_then_validation_then_explici
     validation_imports = _imports("procedure_validation_runner.py")
 
     assert "ProcedureStatus.CANDIDATE" in compiler
-    assert not any(
-        name.startswith("agentx.infrastructure") for name in compiler_imports
-    )
+    assert not any(name.startswith("agentx.infrastructure") for name in compiler_imports)
     assert "agentx.infrastructure.procedure_store" not in compiler_imports
 
     assert "ValidationPolicy" in validation_runner
     assert "ValidationRunEvidence" in validation_runner
-    assert not any(
-        name.startswith("agentx.infrastructure") for name in validation_imports
-    )
+    assert not any(name.startswith("agentx.infrastructure") for name in validation_imports)
 
     assert PERMITTED_TRANSITION_REASONS[
         (ProcedureStatus.CANDIDATE, ProcedureStatus.ACTIVE)
     ] == frozenset({ProcedureLifecycleReason.VALIDATION_PROMOTION})
     assert ProcedureStatus.RETIRED in TERMINAL_PROCEDURE_STATUSES
-    assert PERMITTED_TRANSITION_REASONS.get(
-        (ProcedureStatus.RETIRED, ProcedureStatus.ACTIVE), frozenset()
-    ) == frozenset()
+    assert (
+        PERMITTED_TRANSITION_REASONS.get(
+            (ProcedureStatus.RETIRED, ProcedureStatus.ACTIVE), frozenset()
+        )
+        == frozenset()
+    )
 
 
 def test_n2_11_n2_12_reuse_selection_and_measurement_are_evidence_not_authority() -> None:
@@ -117,32 +113,23 @@ def test_n2_11_n2_12_reuse_selection_and_measurement_are_evidence_not_authority(
     experiment_imports = _imports("reuse_experiment.py")
 
     assert ProcedureReuseSelectionResult.grants_execution_authority is False
-    assert not any(
-        name.startswith("agentx.infrastructure") for name in selector_imports
-    )
+    assert not any(name.startswith("agentx.infrastructure") for name in selector_imports)
     assert not any(name.startswith("agentx.kernel") for name in selector_imports)
-    assert not any(
-        name.startswith("agentx.cognition") for name in selector_imports
-    )
+    assert not any(name.startswith("agentx.cognition") for name in selector_imports)
 
     assert "compare_execution_efficiency" in experiment
     assert "ExecutionEfficiencyEvidence" in experiment
     assert "WARM_IMPROVED" in experiment
     assert not any(name.startswith("agentx.kernel") for name in experiment_imports)
-    assert not any(
-        name.startswith("agentx.infrastructure") for name in experiment_imports
-    )
-    assert not any(
-        name.startswith("agentx.cognition") for name in experiment_imports
-    )
+    assert not any(name.startswith("agentx.infrastructure") for name in experiment_imports)
+    assert not any(name.startswith("agentx.cognition") for name in experiment_imports)
 
     assert "INSUFFICIENT_EVIDENCE" in efficiency
     assert "None" in efficiency
     assert "verified" in efficiency.lower()
 
 
-def test_n2_14_n2_15_n2_17_n2_18_share_one_atomic_activation_seam_without_resurrection(
-) -> None:
+def test_n2_14_n2_15_n2_17_n2_18_share_one_atomic_activation_seam_without_resurrection() -> None:
     """Repair evidence/materialization stays inert until one shared transaction seam."""
     materializer = _source("repair_patch_materializer.py")
     replacement = _source("procedure_replacement_transaction.py")
@@ -151,13 +138,9 @@ def test_n2_14_n2_15_n2_17_n2_18_share_one_atomic_activation_seam_without_resurr
     workflow_imports = _imports("repair_workflow.py")
     materializer_imports = _imports("repair_patch_materializer.py")
 
-    assert not any(
-        name.startswith("agentx.infrastructure") for name in workflow_imports
-    )
+    assert not any(name.startswith("agentx.infrastructure") for name in workflow_imports)
     assert "ProcedureStatus.CANDIDATE" in materializer
-    assert not any(
-        name.startswith("agentx.infrastructure") for name in materializer_imports
-    )
+    assert not any(name.startswith("agentx.infrastructure") for name in materializer_imports)
 
     shared_import = "from agentx.infrastructure.procedure_activation import"
     assert shared_import in replacement
@@ -178,8 +161,7 @@ def test_n2_14_n2_15_n2_17_n2_18_share_one_atomic_activation_seam_without_resurr
     assert "status=ProcedureStatus.CANDIDATE" in rollback
 
 
-def test_n2_21_to_n2_25_keep_risk_action_resolution_observation_and_verification_separate(
-) -> None:
+def test_n2_21_to_n2_25_keep_risk_action_resolution_observation_and_verification_separate() -> None:
     """Action evidence cannot collapse policy, resolution or verification."""
     launch = _source("capabilities/windows/application_launch_v2.py")
     risk = _source("capabilities/filesystem_structural_risk.py")
@@ -192,9 +174,7 @@ def test_n2_21_to_n2_25_keep_risk_action_resolution_observation_and_verification
     assert "RiskAssessment" in risk
     assert "The policy never performs filesystem I/O" in risk
     assert "never executes a filesystem operation" in risk
-    assert not any(
-        name.startswith("agentx.infrastructure") for name in risk_imports
-    )
+    assert not any(name.startswith("agentx.infrastructure") for name in risk_imports)
 
     assert "CapabilityObservation" in launch
     assert "readiness is unverified" in launch
