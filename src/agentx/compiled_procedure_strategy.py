@@ -344,8 +344,7 @@ class GovernedCompiledProcedureStrategy:
             raise TypeError(f"executor must be an Executor, got {type(executor).__name__}")
         if not isinstance(binding, CompiledProcedureStrategyBinding):
             raise TypeError(
-                "binding must be a CompiledProcedureStrategyBinding, "
-                f"got {type(binding).__name__}"
+                f"binding must be a CompiledProcedureStrategyBinding, got {type(binding).__name__}"
             )
         if run_sink is not None and not callable(run_sink):
             raise TypeError("run_sink must be callable or None")
@@ -383,9 +382,7 @@ class GovernedCompiledProcedureStrategy:
         if not isinstance(task, Task):
             raise TypeError(f"task must be a Task, got {type(task).__name__}")
         if not isinstance(context, ExecutionContext):
-            raise TypeError(
-                f"context must be an ExecutionContext, got {type(context).__name__}"
-            )
+            raise TypeError(f"context must be an ExecutionContext, got {type(context).__name__}")
         if not isinstance(level, ExecutionLevel):
             raise TypeError(f"level must be an ExecutionLevel, got {type(level).__name__}")
         if level is not COMPILED_PROCEDURE_STRATEGY_LEVEL:
