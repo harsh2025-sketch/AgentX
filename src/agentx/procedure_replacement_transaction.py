@@ -110,9 +110,7 @@ def execute_replacement_transaction(
     )
     if stored_active != active_record:
         return _rejected(decision, "Active record state changed after eligibility assessment")
-    active_records = tuple(
-        record for record in history if record.status is ProcedureStatus.ACTIVE
-    )
+    active_records = tuple(record for record in history if record.status is ProcedureStatus.ACTIVE)
     if active_records != (active_record,):
         return _rejected(decision, "Expected active record is not the sole ACTIVE revision")
 
