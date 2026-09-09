@@ -36,9 +36,7 @@ def _record(
 
 def test_one_active_exact_candidate_is_selected_and_identity_preserved():
     record = _record()
-    result = ProcedureReuseSelector().select(
-        [ProcedureCandidate(record)], ProcedureRequirement()
-    )
+    result = ProcedureReuseSelector().select([ProcedureCandidate(record)], ProcedureRequirement())
     assert result.outcome is ProcedureReuseSelectionOutcome.SELECTED
     assert result.selected is not None
     assert (result.procedure_id, result.revision) == (record.procedure_id, record.revision)
@@ -55,9 +53,7 @@ def test_empty_excluded_and_inapplicable_candidates_are_no_match():
         selector.select([ProcedureCandidate(retired)], ProcedureRequirement()).outcome
         is ProcedureReuseSelectionOutcome.NO_MATCH
     )
-    scoped = _record(
-        scope=ProcedureScope({ProcedureScopeDimension.OPERATING_SYSTEM: "windows"})
-    )
+    scoped = _record(scope=ProcedureScope({ProcedureScopeDimension.OPERATING_SYSTEM: "windows"}))
     requirement = ProcedureRequirement(
         scope=ProcedureScope({ProcedureScopeDimension.OPERATING_SYSTEM: "linux"})
     )
