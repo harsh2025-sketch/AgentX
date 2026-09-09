@@ -6,14 +6,16 @@ from datetime import UTC, datetime
 from uuid import UUID
 
 import pytest
+from tests.support.demo_capability import NoteWriteParams, write_request
+from tests.support.orchestration_harness import OrchestrationHarness
 
+from agentx.cognition.router import ExecutionLevel
 from agentx.compiled_procedure_strategy import (
     COMPILED_PROCEDURE_STRATEGY_LEVEL,
     CompiledProcedureStrategyBinding,
     CompiledProcedureStrategyBindingError,
     GovernedCompiledProcedureStrategy,
 )
-from agentx.cognition.router import ExecutionLevel
 from agentx.core.ids import ProcedureId
 from agentx.core.procedure_execution import (
     ProcedureRunDisposition,
@@ -42,8 +44,6 @@ from agentx.procedures.graph import (
     ProcedureNodeKind,
 )
 from agentx.procedures.nodes import ActionNodeSpec
-from tests.support.demo_capability import NoteWriteParams, write_request
-from tests.support.orchestration_harness import OrchestrationHarness
 
 _T0 = datetime(2026, 9, 8, 18, 0, tzinfo=UTC)
 _RUN_ID = UUID("00000000-0000-0000-0000-000000000204")
@@ -141,7 +141,7 @@ def test_binding_rejects_wrong_execution_level() -> None:
 def test_non_active_procedure_is_rejected(status: ProcedureStatus) -> None:
     with pytest.raises(
         CompiledProcedureStrategyBindingError,
-        match="requires ProcedureStatus.ACTIVE",
+        match=r"requires ProcedureStatus.ACTIVE",
     ):
         _binding(record=_record(status=status))
 
@@ -156,7 +156,10 @@ def test_malformed_json_procedure_is_rejected() -> None:
         kind=ProcedurePayloadKind.CANONICAL_JSON,
         content='{"not":"a procedure graph"}',
     )
-    with pytest.raises(CompiledProcedureStrategyBindingError, match="valid canonical ProcedureGraph"):
+    with pytest.raises(
+        CompiledProcedureStrategyBindingError,
+        match="valid canonical ProcedureGraph",
+    ):
         _binding(record=_record(payload=malformed))
 
 
@@ -179,7 +182,7 @@ def test_malformed_action_contract_is_rejected() -> None:
             ),
         ),
     )
-    with pytest.raises(CompiledProcedureStrategyBindingError, match="ACTION node.*malformed"):
+    with pytest.raises(CompiledProcedureStrategyBindingError, match=r"ACTION node.*malformed"):
         _binding(record=_record(graph=graph))
 
 

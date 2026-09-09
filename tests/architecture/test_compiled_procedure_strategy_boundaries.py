@@ -133,7 +133,9 @@ def test_only_governed_executor_execute_is_called_for_capability_work() -> None:
 def test_adapter_cannot_construct_authority_gate_risk_budget_or_stop_objects() -> None:
     imports = _imports(_ADAPTER)
     for module in imports:
-        assert not any(module == item or module.startswith(f"{item}.") for item in _FORBIDDEN_IMPORTS)
+        assert not any(
+            module == item or module.startswith(f"{item}.") for item in _FORBIDDEN_IMPORTS
+        )
         assert module.split(".")[0] not in _FORBIDDEN_EXTERNAL_ROOTS
 
     source = _ADAPTER.read_text(encoding="utf-8")

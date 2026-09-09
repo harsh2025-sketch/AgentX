@@ -5,14 +5,20 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from uuid import UUID
 
+from tests.support.demo_capability import DemoNoteCapability, NoteWriteParams, write_request
+from tests.support.orchestration_harness import (
+    OrchestrationHarness,
+    default_limits,
+)
+
 from agentx.agent_loop import OrchestrationStatus
 from agentx.capabilities.runtime import LoopOutcome
 from agentx.capabilities.verifier import VerificationRequirement
+from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.compiled_procedure_strategy import (
     CompiledProcedureStrategyBinding,
     GovernedCompiledProcedureStrategy,
 )
-from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.core.ids import ProcedureId
 from agentx.core.procedure_execution import (
     ExecutedNodeKind,
@@ -39,11 +45,6 @@ from agentx.procedures.graph import (
     ProcedureNodeId,
 )
 from agentx.procedures.nodes import ActionNodeSpec
-from tests.support.demo_capability import DemoNoteCapability, NoteWriteParams, write_request
-from tests.support.orchestration_harness import (
-    OrchestrationHarness,
-    default_limits,
-)
 
 _T0 = datetime(2026, 9, 8, 18, 30, tzinfo=UTC)
 _RUN_ID = UUID("00000000-0000-0000-0000-000000000214")
