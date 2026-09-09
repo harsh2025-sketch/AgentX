@@ -268,7 +268,9 @@ def test_model_call_hook_counts_exactly_one_per_provider_invocation() -> None:
         result = provider.invoke(request)
         assert result.is_success
         recorder.record_model_call(ModelCallEvent.from_response(result.unwrap()))
-    # One failed invocation: still a real invocation, no usage reported.
+    # One failed invocation is still a real invocation, but it contributes no
+    # usage evidence. Run-level token totals therefore remain unknown rather
+    # than presenting the three successful-call subtotal as an exact total.
     bad_request = ModelRequest(
         model_id=ModelId(ProviderId("test-provider"), "other-model"),
         content=(TextContent(text="never served"),),
@@ -282,6 +284,6 @@ def test_model_call_hook_counts_exactly_one_per_provider_invocation() -> None:
 
     assert provider._calls == 3
     assert record.model_calls == 4
-    assert record.model_input_tokens == 9
-    assert record.model_output_tokens == 6
-    assert record.model_tokens == 15
+    assert record.model_input_tokens is None
+    assert record.model_output_tokens is None
+    assert record.model_tokens is None
