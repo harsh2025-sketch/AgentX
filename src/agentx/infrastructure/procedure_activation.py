@@ -230,11 +230,7 @@ def activate_procedure_revision_atomically(
                     )
 
                 target_in_store = next(
-                    (
-                        record
-                        for record in history
-                        if record.revision == target_candidate.revision
-                    ),
+                    (record for record in history if record.revision == target_candidate.revision),
                     None,
                 )
                 max_revision = history[-1].revision
@@ -242,13 +238,9 @@ def activate_procedure_revision_atomically(
                     if target_in_store is None:
                         raise ProcedureActivationConflict("target candidate disappeared")
                     if target_in_store != target_candidate:
-                        raise ProcedureActivationConflict(
-                            "target candidate changed concurrently"
-                        )
+                        raise ProcedureActivationConflict("target candidate changed concurrently")
                     if target_in_store.status is not ProcedureStatus.CANDIDATE:
-                        raise ProcedureActivationConflict(
-                            "stored target is no longer CANDIDATE"
-                        )
+                        raise ProcedureActivationConflict("stored target is no longer CANDIDATE")
                     if require_target_latest and target_candidate.revision != max_revision:
                         raise ProcedureActivationConflict(
                             "forward replacement target is no longer latest"
