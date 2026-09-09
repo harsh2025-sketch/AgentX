@@ -457,11 +457,13 @@ def test_result_constructor_cannot_fabricate_success() -> None:
 def test_result_contracts_are_frozen() -> None:
     snapshot = _standard_tree()
     result = resolve_uia_target(snapshot, UIATargetQuery(name="Save"))
+    status_attribute = "status"
+    name_attribute = "name"
 
     with pytest.raises(FrozenInstanceError):
-        setattr(result, "status", UIATargetResolutionStatus.NOT_FOUND)
+        setattr(result, status_attribute, UIATargetResolutionStatus.NOT_FOUND)
     with pytest.raises(FrozenInstanceError):
-        setattr(result.query, "name", "Changed")
+        setattr(result.query, name_attribute, "Changed")
 
 
 def test_serialization_is_json_compatible_and_preserves_hostile_data() -> None:
