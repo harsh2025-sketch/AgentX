@@ -19,7 +19,7 @@ from agentx.core.procedure_lifecycle import (
 )
 from agentx.core.procedures import ProcedureStatus
 from agentx.planning_strategy import PLANNING_STRATEGY_LEVEL
-from agentx.procedure_reuse_selector import ProcedureReuseSelection
+from agentx.procedure_reuse_selector import ProcedureReuseSelectionResult
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _SRC = _REPO_ROOT / "src" / "agentx"
@@ -107,7 +107,7 @@ def test_n2_11_n2_12_reuse_selection_and_measurement_are_evidence_not_authority(
     selector_imports = _imports("procedure_reuse_selector.py")
     experiment_imports = _imports("reuse_experiment.py")
 
-    assert ProcedureReuseSelection.grants_execution_authority is False
+    assert ProcedureReuseSelectionResult.grants_execution_authority is False
     assert not any(name.startswith("agentx.infrastructure") for name in selector_imports)
     assert not any(name.startswith("agentx.kernel") for name in selector_imports)
     assert not any(name.startswith("agentx.cognition") for name in selector_imports)
