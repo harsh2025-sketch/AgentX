@@ -9,11 +9,7 @@ from agentx.procedure_replacement_transaction import ReplacementTransactionResul
 def test_forward_transaction_module_has_no_kernel_or_execution_authority() -> None:
     source = Path("src/agentx/procedure_replacement_transaction.py").read_text(encoding="utf-8")
     tree = ast.parse(source)
-    imports = {
-        node.module or ""
-        for node in ast.walk(tree)
-        if isinstance(node, ast.ImportFrom)
-    }
+    imports = {node.module or "" for node in ast.walk(tree) if isinstance(node, ast.ImportFrom)}
     assert not any(module.startswith("agentx.kernel") for module in imports)
     assert "Capability" not in source
     assert "ActionGate" not in source
