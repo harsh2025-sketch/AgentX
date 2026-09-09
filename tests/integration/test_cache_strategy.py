@@ -17,11 +17,11 @@ from agentx.cognition.task_manager import TaskManager
 from agentx.core.tasks import TaskStatus
 from tests.support.orchestration_harness import default_limits
 from tests.unit.test_cache_strategy import (
-    _StaticLookup,
     _T0,
     _candidate,
     _context,
     _prior,
+    _StaticLookup,
 )
 
 
