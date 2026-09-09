@@ -8,11 +8,7 @@ _TREE = ast.parse(_SOURCE)
 
 
 def test_selector_is_in_its_owned_module_and_has_no_effectful_imports() -> None:
-    imports = {
-        node.module or ""
-        for node in ast.walk(_TREE)
-        if isinstance(node, ast.ImportFrom)
-    }
+    imports = {node.module or "" for node in ast.walk(_TREE) if isinstance(node, ast.ImportFrom)}
     assert imports <= {
         "__future__",
         "collections.abc",
