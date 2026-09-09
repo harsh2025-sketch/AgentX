@@ -111,9 +111,7 @@ def _binding(
     )
     return CompiledProcedureStrategyBinding(
         candidate=ProcedureCandidate(record=_record() if record is None else record),
-        requirement=(
-            ProcedureRequirement(scope=_scope()) if requirement is None else requirement
-        ),
+        requirement=(ProcedureRequirement(scope=_scope()) if requirement is None else requirement),
         action_requests=requests,  # type: ignore[arg-type]
         run_id=_RUN_ID,
         recorded_at=_T0,
