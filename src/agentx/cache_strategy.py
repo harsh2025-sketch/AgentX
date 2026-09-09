@@ -300,9 +300,7 @@ class VerifiedCacheStrategy:
         if not isinstance(task, Task):
             raise TypeError(f"task must be a Task, got {type(task).__name__}")
         if not isinstance(context, ExecutionContext):
-            raise TypeError(
-                f"context must be an ExecutionContext, got {type(context).__name__}"
-            )
+            raise TypeError(f"context must be an ExecutionContext, got {type(context).__name__}")
         if not isinstance(level, ExecutionLevel):
             raise TypeError(f"level must be an ExecutionLevel, got {type(level).__name__}")
 
@@ -328,6 +326,4 @@ class VerifiedCacheStrategy:
             return StrategyResult.unavailable(
                 "cache candidate does not prove current verified reuse applicability"
             )
-        return StrategyResult.executed(
-            Result[ClosedLoopOutcome, AgentXError].success(outcome)
-        )
+        return StrategyResult.executed(Result[ClosedLoopOutcome, AgentXError].success(outcome))
