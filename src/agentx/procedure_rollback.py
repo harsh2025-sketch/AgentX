@@ -174,9 +174,7 @@ class ProcedureRollbackResult:
         if self.resulting_status is not None and not isinstance(
             self.resulting_status, ProcedureStatus
         ):
-            raise ProcedureRollbackRequestError(
-                "resulting_status must be ProcedureStatus or None"
-            )
+            raise ProcedureRollbackRequestError("resulting_status must be ProcedureStatus or None")
         if self.failure_reason is not None and not isinstance(
             self.failure_reason, RollbackFailureReason
         ):
@@ -339,9 +337,7 @@ def execute_procedure_rollback(
             RollbackFailureReason.CURRENT_NOT_ACTIVE,
             "requested current revision is not ACTIVE",
         )
-    active_records = tuple(
-        record for record in history if record.status is ProcedureStatus.ACTIVE
-    )
+    active_records = tuple(record for record in history if record.status is ProcedureStatus.ACTIVE)
     if active_records != (current,):
         return _reject(
             request,
