@@ -31,6 +31,7 @@ from agentx.capabilities.abi import (
     VerificationResult,
 )
 from agentx.core.execution import ExecutionContext
+from agentx.core.tasks import JsonValue
 from agentx.kernel.permissions import Permission
 from agentx.kernel.risk import assess_risk
 
@@ -78,7 +79,7 @@ class ApplicationLaunchParams(CapabilityParams):
             if "\x00" in self.working_directory:
                 raise ValueError("working_directory must not contain NUL")
 
-    def to_dict(self) -> dict[str, object]:
+    def to_dict(self) -> dict[str, JsonValue]:
         return {
             "executable": self.executable,
             "argv": list(self.argv),
@@ -164,7 +165,7 @@ class WindowsApplicationLaunchV2Capability:
             )
         except Exception as exc:
             return self._failure(f"native launch adapter failed: {type(exc).__name__}")
-        data: dict[str, object] = {"launched": outcome.launched, "detail": outcome.detail}
+        data: dict[str, JsonValue] = {"launched": outcome.launched, "detail": outcome.detail}
         if outcome.process_id is not None:
             data["process_id"] = outcome.process_id
         return ExecutionResult(
