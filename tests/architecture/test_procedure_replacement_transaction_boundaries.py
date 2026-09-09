@@ -24,9 +24,5 @@ def test_shared_activation_seam_is_the_only_b_transaction_raw_sql_owner() -> Non
     assert "ProcedureStatus.RETIRED" in source
     assert "ProcedureStatus.ACTIVE" in source
     tree = ast.parse(source)
-    imports = {
-        node.module or ""
-        for node in ast.walk(tree)
-        if isinstance(node, ast.ImportFrom)
-    }
+    imports = {node.module or "" for node in ast.walk(tree) if isinstance(node, ast.ImportFrom)}
     assert not any(module.startswith("agentx.kernel") for module in imports)
