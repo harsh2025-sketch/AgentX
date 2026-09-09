@@ -58,7 +58,12 @@ def _decision(pid: ProcedureId, current: int, target: int) -> ProcedureReplaceme
     )
 
 
-def _request(pid: ProcedureId, current: int, target: int, known: tuple[int, ...]) -> ProcedureRollbackRequest:
+def _request(
+    pid: ProcedureId,
+    current: int,
+    target: int,
+    known: tuple[int, ...],
+) -> ProcedureRollbackRequest:
     return ProcedureRollbackRequest(
         procedure_id=pid,
         current_revision=current,
@@ -69,7 +74,9 @@ def _request(pid: ProcedureId, current: int, target: int, known: tuple[int, ...]
     )
 
 
-def test_candidate_rollback_activates_exact_caller_target_and_preserves_history(tmp_path: Path) -> None:
+def test_candidate_rollback_activates_exact_caller_target_and_preserves_history(
+    tmp_path: Path,
+) -> None:
     store = _store(tmp_path)
     pid = ProcedureId.create()
     target = _record(pid, 1, ProcedureStatus.CANDIDATE, '{"old":1}')
