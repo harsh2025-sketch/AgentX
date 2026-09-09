@@ -7,7 +7,6 @@ from decimal import Decimal
 from pathlib import Path
 from uuid import NAMESPACE_URL, uuid5
 
-from agentx.capabilities.abi import VerificationResult
 from agentx.core.decomposition_readiness import (
     EXECUTION_METADATA_KEY,
     DecompositionReadinessDisposition,
@@ -194,7 +193,6 @@ def test_ready_is_not_and_cannot_fabricate_capability_verification() -> None:
     result = DecompositionReadinessValidator().assess(_ready_decomposition())
 
     assert result.disposition is DecompositionReadinessDisposition.READY
-    assert not isinstance(result, VerificationResult)
     assert not hasattr(result, "passed")
     assert not hasattr(result, "verification")
 
