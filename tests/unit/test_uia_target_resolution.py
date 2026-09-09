@@ -84,7 +84,7 @@ def _snapshot(*specs: _Spec, root_window_handle: int = 100) -> UIATreeSnapshot:
         properties = (
             _unavailable(UIAPropertyName.RUNTIME_ID)
             if runtime_id is None
-            else _property(UIAPropertyName.RUNTIME_ID, runtime_id),
+            else _property(UIAPropertyName.RUNTIME_ID, cast(JsonValue, runtime_id)),
             _property(UIAPropertyName.BOUNDING_RECTANGLE, [0.0, 0.0, 10.0, 10.0]),
             _property(UIAPropertyName.PROCESS_ID, 123),
             _property(UIAPropertyName.CONTROL_TYPE, spec.control_type),
