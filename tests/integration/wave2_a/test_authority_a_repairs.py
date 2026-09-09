@@ -79,9 +79,7 @@ class _NativeSurfaceFake:
     def set_window_state(
         self, request: NativeWindowStateRequest
     ) -> Result[NativeWindowStateOutcome, AgentXError]:
-        return Result.success(
-            NativeWindowStateOutcome(request.window_handle, request.state, False)
-        )
+        return Result.success(NativeWindowStateOutcome(request.window_handle, request.state, False))
 
     def activate_window(
         self, request: NativeWindowActivationRequest
