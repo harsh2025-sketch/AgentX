@@ -10,16 +10,27 @@ from agentx.core.procedure_replacement import (
     ProcedureReplacementOutcome,
     ProcedureReplacementReason,
 )
-from agentx.core.procedures import ProcedurePayload, ProcedurePayloadKind, ProcedureRecord, ProcedureStatus
+from agentx.core.procedures import (
+    ProcedurePayload,
+    ProcedurePayloadKind,
+    ProcedureRecord,
+    ProcedureStatus,
+)
 from agentx.infrastructure.persistence import SQLiteDatabase
 from agentx.infrastructure.procedure_store import ProcedureStore
-from agentx.procedure_rollback import ProcedureRollbackRequest, RollbackOutcome, execute_procedure_rollback
+from agentx.procedure_rollback import (
+    ProcedureRollbackRequest,
+    RollbackOutcome,
+    execute_procedure_rollback,
+)
 
 _T0 = datetime(2026, 9, 9, 0, 0, tzinfo=UTC)
 _T1 = datetime(2026, 9, 9, 1, 0, tzinfo=UTC)
 
 
-def test_retired_target_rollback_is_atomic_restart_safe_and_history_preserving(tmp_path: Path) -> None:
+def test_retired_target_rollback_is_atomic_restart_safe_and_history_preserving(
+    tmp_path: Path,
+) -> None:
     path = tmp_path / "rollback_restart.sqlite3"
     pid = ProcedureId.create()
     store = ProcedureStore(SQLiteDatabase(path))
