@@ -19,6 +19,7 @@ def test_selector_is_in_its_owned_module_and_has_no_effectful_imports() -> None:
         "collections.abc",
         "dataclasses",
         "enum",
+        "typing",
         "agentx.core.procedure_matching",
         "agentx.core.procedures",
     }
