@@ -89,9 +89,7 @@ class ActiveProcedureReuse:
         candidates = tuple(
             ProcedureCandidate(
                 record=record,
-                capability=self.capability_bindings.get(
-                    (record.procedure_id, record.revision)
-                ),
+                capability=self.capability_bindings.get((record.procedure_id, record.revision)),
             )
             for record in records
         )
