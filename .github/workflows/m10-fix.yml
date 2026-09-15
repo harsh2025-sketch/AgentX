@@ -54,6 +54,11 @@ jobs:
               1,
           )
           text = text.replace(
+              'observation.entity_id = WorldEntityId("env-local", WorldEntityKind.PERCEPTION, "changed")',
+              'observation.entity_id = WorldEntityId("env-local", WorldEntityKind.PERCEPTION, "changed")  # type: ignore[misc]',
+              1,
+          )
+          text = text.replace(
               "observation.entity_id = WorldEntityId(\n",
               "observation.entity_id = WorldEntityId(  # type: ignore[misc]\n",
               1,
@@ -65,15 +70,20 @@ jobs:
           )
           unit.write_text(text, encoding="utf-8", newline="\n")
 
+          integration = Path("tests/integration/test_world_model_integration.py")
+          text = integration.read_text(encoding="utf-8")
+          text = text.replace("    ObservationMetadata,\n", "", 1)
+          integration.write_text(text, encoding="utf-8", newline="\n")
+
       - name: Commit repairs if needed
         shell: bash
         run: |
-          if git diff --quiet -- src/agentx/world_model.py tests/unit/test_world_model.py; then
+          if git diff --quiet -- src/agentx/world_model.py tests/unit/test_world_model.py tests/integration/test_world_model_integration.py; then
             echo "No repair changes required."
             exit 0
           fi
           git config user.name "agentx-ci-repair"
           git config user.email "agentx-ci-repair@users.noreply.github.com"
-          git add src/agentx/world_model.py tests/unit/test_world_model.py
-          git commit -m "Fix M10 world-model CI failures"
+          git add src/agentx/world_model.py tests/unit/test_world_model.py tests/integration/test_world_model_integration.py
+          git commit -m "Finish M10 world-model lint and type cleanup"
           git push origin HEAD:agent-m10/world-model-completion
