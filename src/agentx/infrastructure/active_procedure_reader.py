@@ -18,9 +18,9 @@ from typing import Final
 
 from agentx.core.procedures import ProcedureRecord, ProcedureStatus
 from agentx.infrastructure.procedure_store import (
+    _PROCEDURE_TABLE,
     ProcedureStore,
     ProcedureStoreStorageError,
-    _PROCEDURE_TABLE,
     _decode_row,
 )
 
