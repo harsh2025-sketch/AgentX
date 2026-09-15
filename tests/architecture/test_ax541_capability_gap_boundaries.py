@@ -27,6 +27,7 @@ def test_capability_gap_detector_imports_no_installation_or_execution_owner() ->
 
     forbidden_roots = {"subprocess", "importlib", "pip", "venv"}
     assert not {name for name in imported if name.partition(".")[0] in forbidden_roots}
+    assert "agentx.capabilities.registry" not in imported
     assert not ({"execute", "verify", "register", "install", "load_module"} & calls)
     assert "agentx.kernel" not in source
     assert "agentx.capabilities.runtime" not in source
