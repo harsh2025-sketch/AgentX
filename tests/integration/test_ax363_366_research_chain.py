@@ -6,16 +6,9 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from agentx.cognition.gap_detector import KnowledgeGapAssessmentRequest, KnowledgeGapRequirement
-from agentx.cognition.hive_first_research import HiveFirstResearchLookup
 from agentx.cognition.research_gap_state import (
     KnowledgeResearchGapState,
     ResearchGapClassifier,
-)
-from agentx.cognition.research_ingestion import (
-    ResearchConfidence,
-    ResearchFinding,
-    ResearchKnowledgeIngestor,
-    decode_research_finding,
 )
 from agentx.cognition.research_provider import (
     ResearchProviderAvailability,
@@ -32,9 +25,16 @@ from agentx.core.knowledge import (
     ProvenanceReference,
     ScopeDimension,
 )
+from agentx.hive_first_research import HiveFirstResearchLookup
 from agentx.infrastructure.knowledge_retrieval import KnowledgeRetrieval, KnowledgeRetrievalQuery
 from agentx.infrastructure.knowledge_store import KnowledgeStore
 from agentx.infrastructure.persistence import SQLiteDatabase
+from agentx.research_ingestion import (
+    ResearchConfidence,
+    ResearchFinding,
+    ResearchKnowledgeIngestor,
+    decode_research_finding,
+)
 
 _T0 = datetime(2026, 9, 15, 8, 0, tzinfo=UTC)
 _SCOPE = KnowledgeScope(
@@ -206,5 +206,7 @@ def test_hostile_research_text_and_provider_availability_cannot_promote_knowledg
     )
 
     assert record.status is KnowledgeStatus.UNVERIFIED
-    assert store.get(record.knowledge_id).status is KnowledgeStatus.UNVERIFIED  # type: ignore[union-attr]
+    persisted = store.get(record.knowledge_id)
+    assert persisted is not None
+    assert persisted.status is KnowledgeStatus.UNVERIFIED
     assert decode_research_finding(record).claim == hostile
