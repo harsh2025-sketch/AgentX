@@ -7,13 +7,18 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from agentx.core.ids import KnowledgeId
-from agentx.core.knowledge import KnowledgeRecord, KnowledgeStatus, KnowledgeType
+from agentx.core.knowledge import (
+    KnowledgeRecord,
+    KnowledgeStatus,
+    KnowledgeType,
+    ProvenanceKind,
+    ProvenanceReference,
+)
 from agentx.core.knowledge_assurance import (
     KnowledgeRevalidation,
     KnowledgeRevalidationOutcome,
     KnowledgeRevalidationRequest,
 )
-from agentx.core.knowledge import ProvenanceKind, ProvenanceReference
 from agentx.core.provenance import EvidenceKind, EvidenceReference
 from agentx.infrastructure.event_journal import EventJournal
 from agentx.infrastructure.knowledge_assurance_ledger import (
@@ -37,7 +42,10 @@ def test_concurrent_duplicate_completion_commits_exactly_once(tmp_path: Path) ->
         status=KnowledgeStatus.UNVERIFIED,
     )
     store.insert(record)
-    ledger = KnowledgeAssuranceLedger(journal=EventJournal(database), knowledge_store=store)
+    ledger = KnowledgeAssuranceLedger(
+        journal=EventJournal(database),
+        knowledge_store=store,
+    )
     request = KnowledgeRevalidationRequest.create(
         knowledge_id=record.knowledge_id,
         source="verifier",
