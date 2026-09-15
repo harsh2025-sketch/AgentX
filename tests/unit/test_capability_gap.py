@@ -152,7 +152,9 @@ def test_inventory_snapshot_is_bounded_unique_and_typed() -> None:
     identity = _identity("test.cap")
     with pytest.raises(CapabilityGapValidationError, match="unique"):
         CapabilityGapDetector((identity, identity))
-    too_many = tuple(_identity(f"inventory.{index}") for index in range(MAX_CAPABILITY_INVENTORY + 1))
+    too_many = tuple(
+        _identity(f"inventory.{index}") for index in range(MAX_CAPABILITY_INVENTORY + 1)
+    )
     with pytest.raises(CapabilityGapValidationError, match="bounded"):
         CapabilityGapDetector(too_many)
     with pytest.raises(TypeError, match="CapabilityIdentity"):
