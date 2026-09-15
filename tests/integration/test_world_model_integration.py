@@ -20,7 +20,6 @@ from agentx.infrastructure.persistence import SQLiteDatabase
 from agentx.world_model import (
     FilesystemState,
     LinkVerificationStatus,
-    ObservationMetadata,
     WorldEntityId,
     WorldEntityKind,
     WorldFreshness,

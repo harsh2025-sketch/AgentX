@@ -144,7 +144,7 @@ def test_ax409_perception_round_trip_hostile_text_and_immutable_identity() -> No
     assert restored.regions[0].text == observation.regions[0].text
     assert restored.metadata.device_id == device_id
     with pytest.raises(FrozenInstanceError):
-        observation.entity_id = WorldEntityId("env-local", WorldEntityKind.PERCEPTION, "changed")
+        observation.entity_id = WorldEntityId("env-local", WorldEntityKind.PERCEPTION, "changed")  # type: ignore[misc]
 
 
 @pytest.mark.parametrize(
