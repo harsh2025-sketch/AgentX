@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from enum import StrEnum
 from types import MappingProxyType
@@ -34,6 +34,8 @@ __all__ = [
     "RuntimeUiEventKind",
     "RuntimeUiValidationError",
     "project_event_for_ui",
+    "runtime_ui_disconnected",
+    "runtime_ui_restarted",
 ]
 
 RUNTIME_UI_SCHEMA_VERSION: Final[int] = 1
@@ -139,7 +141,7 @@ class RuntimeUiEvent:
     state: str
     correlation_id: UUID | None = None
     task_id: str | None = None
-    payload: Mapping[str, object] = MappingProxyType({})
+    payload: Mapping[str, object] = field(default_factory=lambda: MappingProxyType({}))
     schema_version: int = RUNTIME_UI_SCHEMA_VERSION
 
     def __post_init__(self) -> None:
@@ -198,12 +200,26 @@ class RuntimeUiEvent:
         }
         if set(raw) != expected:
             raise RuntimeUiValidationError("runtime UI fields are incomplete or unknown")
+        version = raw["schema_version"]
+        sequence = raw["sequence"]
+        if type(version) is not int:
+            raise RuntimeUiValidationError("schema_version must be an integer")
+        if type(sequence) is not int:
+            raise RuntimeUiValidationError("sequence must be an integer")
+        runtime_raw = raw["runtime_instance_id"]
+        correlation_raw = raw["correlation_id"]
+        kind_raw = raw["kind"]
+        if not isinstance(runtime_raw, str):
+            raise RuntimeUiValidationError("runtime_instance_id must be a UUID string")
+        if correlation_raw is not None and not isinstance(correlation_raw, str):
+            raise RuntimeUiValidationError("correlation_id must be a UUID string or null")
+        if not isinstance(kind_raw, str):
+            raise RuntimeUiValidationError("kind must be a string")
         try:
-            runtime_id = UUID(str(raw["runtime_instance_id"]))
-            correlation_raw = raw["correlation_id"]
-            correlation_id = None if correlation_raw is None else UUID(str(correlation_raw))
-            kind = RuntimeUiEventKind(str(raw["kind"]))
-        except (ValueError, TypeError) as exc:
+            runtime_id = UUID(runtime_raw)
+            correlation_id = None if correlation_raw is None else UUID(correlation_raw)
+            kind = RuntimeUiEventKind(kind_raw)
+        except ValueError as exc:
             raise RuntimeUiValidationError("runtime UI identity or kind is invalid") from exc
         task_id = raw["task_id"]
         if task_id is not None and not isinstance(task_id, str):
@@ -213,14 +229,14 @@ class RuntimeUiEvent:
             raise RuntimeUiValidationError("payload must be an object")
         return cls(
             runtime_instance_id=runtime_id,
-            sequence=raw["sequence"],  # type: ignore[arg-type]
+            sequence=sequence,
             timestamp=_parse_timestamp(raw["timestamp"]),
             kind=kind,
             state=_state(raw["state"]),
             correlation_id=correlation_id,
             task_id=task_id,
             payload=payload,
-            schema_version=raw["schema_version"],  # type: ignore[arg-type]
+            schema_version=version,
         )
 
     @classmethod
@@ -254,4 +270,40 @@ def project_event_for_ui(
         correlation_id=event.correlation_id,
         task_id=event.task_id,
         payload=_safe_payload(event),
+    )
+
+
+def runtime_ui_disconnected(
+    *,
+    runtime_instance_id: UUID,
+    sequence: int,
+    timestamp: datetime,
+) -> RuntimeUiEvent:
+    """Describe a known telemetry disconnect; it performs no reconnection."""
+    return RuntimeUiEvent(
+        runtime_instance_id=runtime_instance_id,
+        sequence=sequence,
+        timestamp=timestamp,
+        kind=RuntimeUiEventKind.DISCONNECTED,
+        state="runtime.disconnected",
+    )
+
+
+def runtime_ui_restarted(
+    *,
+    runtime_instance_id: UUID,
+    previous_runtime_instance_id: UUID,
+    timestamp: datetime,
+) -> RuntimeUiEvent:
+    """Start a new runtime sequence at zero with explicit previous-instance evidence."""
+    _uuid(previous_runtime_instance_id, field_name="previous_runtime_instance_id")
+    if runtime_instance_id == previous_runtime_instance_id:
+        raise RuntimeUiValidationError("restart requires a new runtime_instance_id")
+    return RuntimeUiEvent(
+        runtime_instance_id=runtime_instance_id,
+        sequence=0,
+        timestamp=timestamp,
+        kind=RuntimeUiEventKind.RUNTIME_RESTARTED,
+        state="runtime.restarted",
+        payload={"previous_runtime_instance_id": str(previous_runtime_instance_id)},
     )
