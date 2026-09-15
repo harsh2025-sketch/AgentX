@@ -162,9 +162,7 @@ def test_research_finding_is_persisted_unverified_and_survives_restart(tmp_path:
     finding = ResearchFinding(
         claim="The provider claims the target feature exists.",
         knowledge_type=KnowledgeType.FACT,
-        evidence=(
-            ProvenanceReference(ProvenanceKind.WEB, "https://example.invalid/evidence"),
-        ),
+        evidence=(ProvenanceReference(ProvenanceKind.WEB, "https://example.invalid/evidence"),),
         scope=_SCOPE,
         retrieved_at=_T0,
         confidence=ResearchConfidence.MEDIUM,
