@@ -101,9 +101,7 @@ def test_validated_candidate_survives_restart_and_is_reused_deterministically(
         )
         for index in (1, 2)
     )
-    report = ValidationPolicy(
-        allowed_environments=frozenset({"desktop-primary"})
-    ).evaluate(
+    report = ValidationPolicy(allowed_environments=frozenset({"desktop-primary"})).evaluate(
         ProcedureCandidateIdentity(candidate.procedure_id, candidate.revision),
         evidence,
     )
