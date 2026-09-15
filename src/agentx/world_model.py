@@ -18,7 +18,7 @@ import os
 import platform
 import stat
 from collections.abc import Callable, Mapping
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, replace
 from datetime import UTC, datetime, timedelta
 from enum import StrEnum
 from pathlib import Path
@@ -47,7 +47,7 @@ from agentx.core.knowledge import (
     ProvenanceReference,
     ScopeDimension,
 )
-from agentx.core.provenance import EvidenceKind, EvidenceReference
+from agentx.core.provenance import EvidenceReference
 from agentx.infrastructure.knowledge_store import KnowledgeStore
 
 __all__ = [
@@ -760,6 +760,10 @@ class ApplicationRecord:
             raise TypeError("metadata must be ObservationMetadata")
         if self.metadata.environment_id != self.identity.environment_id:
             raise WorldModelValidationError("application metadata has wrong environment")
+
+    @property
+    def entity_id(self) -> WorldEntityId:
+        return self.identity.entity_id
 
 
 @dataclass(frozen=True, slots=True)

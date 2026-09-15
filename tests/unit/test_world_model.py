@@ -38,6 +38,7 @@ from agentx.world_model import (
     ApplicationRegistryConflictError,
     BrowserPageState,
     BrowserSessionState,
+    CacheLookup,
     CacheRefreshState,
     DeviceState,
     FilesystemEntityType,
@@ -238,7 +239,7 @@ def test_ax411_invalidation_wins_over_racing_refresh() -> None:
 
     assert len(results) == 1
     result = results[0]
-    assert isinstance(result, type(cache.lookup(entity_id, at=NOW, refresh=False)))
+    assert isinstance(result, CacheLookup)
     assert result.state is CacheRefreshState.REFRESH_FAILURE
     assert result.freshness is WorldFreshness.UNKNOWN
 
@@ -454,7 +455,7 @@ def test_ax418_windows_path_normalization_and_lazy_filesystem_observation(
     tmp_path: Path,
 ) -> None:
     assert normalize_filesystem_path(r"C:\\Users\\Me\\..\\ME\\File.txt", windows=True) == (
-        r"c:\\users\\me\\file.txt"
+        r"c:\users\me\file.txt"
     )
 
     path = tmp_path / "example.txt"
