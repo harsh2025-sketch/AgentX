@@ -113,7 +113,9 @@ def test_production_has_no_dynamic_authority_execution_primitives() -> None:
             if isinstance(node, ast.Import):
                 for alias in node.names:
                     if alias.name == "subprocess":
-                        violations.append(f"{path.relative_to(_REPO_ROOT)}:{node.lineno}:subprocess")
+                        violations.append(
+                            f"{path.relative_to(_REPO_ROOT)}:{node.lineno}:subprocess"
+                        )
             elif isinstance(node, ast.ImportFrom) and node.module == "subprocess":
                 violations.append(f"{path.relative_to(_REPO_ROOT)}:{node.lineno}:subprocess")
             elif isinstance(node, ast.Call):
