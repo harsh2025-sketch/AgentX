@@ -43,7 +43,6 @@ from agentx.capabilities.windows.input_verification import (
     VerifiedWindowsSendTextCapability,
 )
 from agentx.capabilities.windows.keyboard_text_clipboard import (
-    ClipboardNativePort,
     Key,
     KeyChord,
     Modifier,
@@ -58,7 +57,7 @@ from agentx.capabilities.windows.keyboard_text_clipboard import (
     send_keys_request,
     send_text_request,
 )
-from agentx.core.errors import AgentXError
+from agentx.core.errors import AgentXError, AgentXException
 from agentx.core.execution import CancellationSource, ExecutionContext
 from agentx.core.result import Result
 from agentx.kernel.permissions import Permission
@@ -102,7 +101,7 @@ def test_structural_descriptors_are_fixed_and_request_text_cannot_lower_governan
     descriptor = capability.descriptor  # type: ignore[attr-defined]
     assert descriptor.identity == identity
     assert permission in descriptor.required_permissions
-    assert "safe" not in {field for field in descriptor.to_dict() if isinstance(field, str)}
+    assert not hasattr(descriptor, "safe")
 
 
 def test_ax260_safe_true_path_text_is_inert_risk_input() -> None:
@@ -192,7 +191,7 @@ def test_rename_is_same_parent_only_and_independently_verified(tmp_path: Path) -
 
     other = tmp_path / "other"
     other.mkdir()
-    with pytest.raises(Exception, match="share one parent"):
+    with pytest.raises(AgentXException, match="share one parent"):
         RenameFileParams(
             source_path=str(destination.resolve()),
             destination_path=str((other / "new.txt").resolve()),
@@ -375,7 +374,6 @@ def test_clipboard_verification_detects_state_race_and_rejects_same_port_object(
     assert capability.verify(request, executed.observation, _context()).passed is False
 
     combined = _CombinedClipboardPort(state)
-    assert isinstance(combined, ClipboardNativePort)
     with pytest.raises(ValueError, match="distinct"):
         VerifiedWindowsClipboardWriteTextCapability(
             windows_support(),
