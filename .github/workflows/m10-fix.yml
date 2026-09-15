@@ -1,0 +1,79 @@
+name: Temporary M10 CI Repair
+
+on:
+  push:
+    branches:
+      - agent-m10/world-model-completion
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out M10 branch
+        uses: actions/checkout@v7
+        with:
+          ref: agent-m10/world-model-completion
+
+      - name: Apply deterministic M10 repairs
+        shell: python
+        run: |
+          from pathlib import Path
+
+          production = Path("src/agentx/world_model.py")
+          text = production.read_text(encoding="utf-8")
+          text = text.replace(
+              "from dataclasses import dataclass, field, replace",
+              "from dataclasses import dataclass, replace",
+          )
+          text = text.replace(
+              "from agentx.core.provenance import EvidenceKind, EvidenceReference",
+              "from agentx.core.provenance import EvidenceReference",
+          )
+          marker = '''        if self.metadata.environment_id != self.identity.environment_id:\n            raise WorldModelValidationError("application metadata has wrong environment")\n\n\n@dataclass(frozen=True, slots=True)\nclass ProcessState:\n'''
+          replacement = '''        if self.metadata.environment_id != self.identity.environment_id:\n            raise WorldModelValidationError("application metadata has wrong environment")\n\n    @property\n    def entity_id(self) -> WorldEntityId:\n        return self.identity.entity_id\n\n\n@dataclass(frozen=True, slots=True)\nclass ProcessState:\n'''
+          if marker in text:
+              text = text.replace(marker, replacement, 1)
+          elif "def entity_id(self) -> WorldEntityId:\n        return self.identity.entity_id" not in text:
+              raise SystemExit("ApplicationRecord entity_id insertion point not found")
+          production.write_text(text, encoding="utf-8", newline="\n")
+
+          unit = Path("tests/unit/test_world_model.py")
+          text = unit.read_text(encoding="utf-8")
+          if "    CacheLookup,\n" not in text:
+              text = text.replace(
+                  "    BrowserSessionState,\n    CacheRefreshState,",
+                  "    BrowserSessionState,\n    CacheLookup,\n    CacheRefreshState,",
+                  1,
+              )
+          text = text.replace(
+              "assert isinstance(result, type(cache.lookup(entity_id, at=NOW, refresh=False)))",
+              "assert isinstance(result, CacheLookup)",
+              1,
+          )
+          text = text.replace(
+              "observation.entity_id = WorldEntityId(\n",
+              "observation.entity_id = WorldEntityId(  # type: ignore[misc]\n",
+              1,
+          )
+          text = text.replace(
+              '        r"c:\\\\users\\\\me\\\\file.txt"',
+              '        r"c:\\users\\me\\file.txt"',
+              1,
+          )
+          unit.write_text(text, encoding="utf-8", newline="\n")
+
+      - name: Commit repairs if needed
+        shell: bash
+        run: |
+          if git diff --quiet -- src/agentx/world_model.py tests/unit/test_world_model.py; then
+            echo "No repair changes required."
+            exit 0
+          fi
+          git config user.name "agentx-ci-repair"
+          git config user.email "agentx-ci-repair@users.noreply.github.com"
+          git add src/agentx/world_model.py tests/unit/test_world_model.py
+          git commit -m "Fix M10 world-model CI failures"
+          git push origin HEAD:agent-m10/world-model-completion
