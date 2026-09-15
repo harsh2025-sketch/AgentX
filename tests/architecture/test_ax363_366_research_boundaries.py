@@ -1,4 +1,4 @@
-"""Architecture guards for the AX-363–366 research campaign slice."""
+"""Architecture guards for the AX-363-366 research campaign slice."""
 
 from __future__ import annotations
 
