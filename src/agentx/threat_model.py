@@ -179,9 +179,7 @@ def canonical_threat_model() -> ThreatModel:
             ThreatBoundary.TRUSTED_KERNEL,
             TrustDisposition.AUTHORITY_SOURCE,
             frozenset({AgentXAsset.AUTHORITY, AgentXAsset.RESOURCE_BUDGET}),
-            frozenset(
-                {ThreatClass.AUTHORITY_SPOOFING, ThreatClass.DESTRUCTIVE_ACTION}
-            ),
+            frozenset({ThreatClass.AUTHORITY_SPOOFING, ThreatClass.DESTRUCTIVE_ACTION}),
             "Only canonical kernel policy may authorize governed machine actions.",
             (
                 "src/agentx/kernel/action_gate.py",
@@ -276,9 +274,7 @@ def canonical_threat_model() -> ThreatModel:
             ThreatBoundary.CLIPBOARD,
             TrustDisposition.UNTRUSTED_DATA,
             frozenset({AgentXAsset.USER_DATA, AgentXAsset.SECRETS}),
-            frozenset(
-                {ThreatClass.DATA_EXFILTRATION, ThreatClass.PROMPT_INJECTION}
-            ),
+            frozenset({ThreatClass.DATA_EXFILTRATION, ThreatClass.PROMPT_INJECTION}),
             "Clipboard text is untrusted and must not become authority or unsafe telemetry.",
             ("src/agentx/capabilities/windows/keyboard_text_clipboard.py",),
             ("tests/adversarial/test_windows_keyboard_text_clipboard_authority.py",),
@@ -334,9 +330,7 @@ def canonical_threat_model() -> ThreatModel:
             "persistence-boundary",
             ThreatBoundary.PERSISTENCE,
             TrustDisposition.TRUSTED_ENFORCEMENT,
-            frozenset(
-                {AgentXAsset.KNOWLEDGE, AgentXAsset.PROCEDURES, AgentXAsset.EVIDENCE}
-            ),
+            frozenset({AgentXAsset.KNOWLEDGE, AgentXAsset.PROCEDURES, AgentXAsset.EVIDENCE}),
             frozenset({ThreatClass.UNSAFE_REPLAY, ThreatClass.STALE_EVIDENCE}),
             "Durable state is schema-validated and corrupt records fail closed.",
             (
@@ -371,9 +365,7 @@ def canonical_threat_model() -> ThreatModel:
             ThreatBoundary.PROCEDURE_RUNTIME,
             TrustDisposition.TRUSTED_ENFORCEMENT,
             frozenset({AgentXAsset.PROCEDURES, AgentXAsset.TASK_STATE}),
-            frozenset(
-                {ThreatClass.UNSAFE_REPLAY, ThreatClass.RESOURCE_EXHAUSTION}
-            ),
+            frozenset({ThreatClass.UNSAFE_REPLAY, ThreatClass.RESOURCE_EXHAUSTION}),
             "Procedure execution is bounded and END is not task success.",
             (
                 "src/agentx/compiled_procedure_strategy.py",
@@ -390,9 +382,7 @@ def canonical_threat_model() -> ThreatModel:
             ThreatBoundary.REPAIR,
             TrustDisposition.EVIDENCE_ONLY,
             frozenset({AgentXAsset.PROCEDURES, AgentXAsset.TASK_STATE}),
-            frozenset(
-                {ThreatClass.UNSAFE_REPLAY, ThreatClass.AUTHORITY_SPOOFING}
-            ),
+            frozenset({ThreatClass.UNSAFE_REPLAY, ThreatClass.AUTHORITY_SPOOFING}),
             "Repair evidence cannot activate a replacement or grant execution authority.",
             (
                 "src/agentx/repair_workflow.py",
