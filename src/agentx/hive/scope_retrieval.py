@@ -1,11 +1,11 @@
 """Fail-closed scope-isolated Hive retrieval (AX-124).
 
 This module is the protected retrieval boundary for callers that operate inside
-one applicability scope.  It composes over the existing canonical
+one applicability scope. It composes over the existing canonical
 ``KnowledgeScope`` and ``KnowledgeStorePort`` contracts instead of creating a
 second knowledge store or interpreting free-text scope claims.
 
-A scope is DATA, never authority.  Supplying a scope can only narrow which
+A scope is DATA, never authority. Supplying a scope can only narrow which
 knowledge is visible; it never grants permission, broadens machine authority,
 or changes risk/policy decisions.
 """
@@ -23,7 +23,7 @@ from agentx.core.knowledge import (
     KnowledgeType,
     ProvenanceKind,
 )
-from agentx.hive.semantic_memory import KnowledgeStorePort, SEMANTIC_KNOWLEDGE_TYPES
+from agentx.hive.semantic_memory import SEMANTIC_KNOWLEDGE_TYPES, KnowledgeStorePort
 
 __all__ = [
     "MAX_SCOPED_KNOWLEDGE_RESULTS",
@@ -91,13 +91,15 @@ class ScopedKnowledgeQuery:
         if not isinstance(record, KnowledgeRecord):
             raise TypeError("record must be a KnowledgeRecord")
 
-        if record.scope != self.scope:
-            if not (
-                self.global_policy is GlobalKnowledgePolicy.INCLUDE
-                and not record.scope.dimensions
-            ):
-                return False
-        if self.knowledge_types is not None and record.knowledge_type not in self.knowledge_types:
+        if record.scope != self.scope and not (
+            self.global_policy is GlobalKnowledgePolicy.INCLUDE
+            and not record.scope.dimensions
+        ):
+            return False
+        if (
+            self.knowledge_types is not None
+            and record.knowledge_type not in self.knowledge_types
+        ):
             return False
         if self.statuses is not None and record.status not in self.statuses:
             return False
@@ -122,7 +124,7 @@ class ScopedKnowledgeRetrieval:
         """Return a bounded deterministic view, preferring exact-scope records.
 
         Global records can be visible only through the typed opt-in policy and
-        are ordered after exact-scope evidence.  This prevents storage insertion
+        are ordered after exact-scope evidence. This prevents storage insertion
         order or UUID generation from changing scope precedence.
         """
         if not isinstance(query, ScopedKnowledgeQuery):
@@ -130,7 +132,8 @@ class ScopedKnowledgeRetrieval:
         matches = [
             record
             for record in self.store.list_records()
-            if record.knowledge_type in SEMANTIC_KNOWLEDGE_TYPES and query.matches(record)
+            if record.knowledge_type in SEMANTIC_KNOWLEDGE_TYPES
+            and query.matches(record)
         ]
         matches.sort(
             key=lambda record: (
@@ -150,7 +153,9 @@ def _validate_members(
     if values is None:
         return
     if not isinstance(values, frozenset):
-        raise ScopedKnowledgeRetrievalError(f"{field_name} must be a frozenset or None")
+        raise ScopedKnowledgeRetrievalError(
+            f"{field_name} must be a frozenset or None"
+        )
     if not values:
         raise ScopedKnowledgeRetrievalError(f"{field_name} must not be empty")
     for value in values:
