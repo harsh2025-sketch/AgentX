@@ -122,9 +122,7 @@ def _evidence_from_json(
         copied: dict[str, object] = {}
         for key, nested in item.items():
             if not isinstance(key, str):
-                raise KnowledgeValidationError(
-                    f"{field_name}[{index}] has a non-string key"
-                )
+                raise KnowledgeValidationError(f"{field_name}[{index}] has a non-string key")
             copied[key] = nested
         result.append(EvidenceReference.from_dict(copied))
     return tuple(result)
@@ -141,12 +139,8 @@ def _require_exact(
         missing = expected - actual
         unknown = actual - expected
         if missing:
-            raise KnowledgeValidationError(
-                f"{name} missing required fields: {sorted(missing)}"
-            )
-        raise KnowledgeValidationError(
-            f"{name} contains unknown fields: {sorted(unknown)}"
-        )
+            raise KnowledgeValidationError(f"{name} missing required fields: {sorted(missing)}")
+        raise KnowledgeValidationError(f"{name} contains unknown fields: {sorted(unknown)}")
 
 
 def _load_object(raw: str, *, name: str) -> dict[str, object]:
@@ -205,12 +199,8 @@ class KnowledgeAssuranceMetadata:
         for name in ("verification_count", "failure_count", "contradiction_count"):
             value = getattr(self, name)
             if not isinstance(value, int) or isinstance(value, bool) or value < 0:
-                raise KnowledgeValidationError(
-                    f"{name} must be a non-negative integer"
-                )
-        if self.environment_valid is not None and not isinstance(
-            self.environment_valid, bool
-        ):
+                raise KnowledgeValidationError(f"{name} must be a non-negative integer")
+        if self.environment_valid is not None and not isinstance(self.environment_valid, bool):
             raise KnowledgeValidationError("environment_valid must be bool or None")
         for name in ("source_observed_at", "fresh_until", "last_verification"):
             value = getattr(self, name)
@@ -222,9 +212,7 @@ class KnowledgeAssuranceMetadata:
                 )
         _validate_evidence(self.evidence)
         if not isinstance(self.confidence_state, KnowledgeConfidenceState):
-            raise KnowledgeValidationError(
-                "confidence_state must be KnowledgeConfidenceState"
-            )
+            raise KnowledgeValidationError("confidence_state must be KnowledgeConfidenceState")
         if not isinstance(self.superseded, bool):
             raise KnowledgeValidationError("superseded must be bool")
 
@@ -245,9 +233,7 @@ class KnowledgeAssuranceMetadata:
             "failure_count": self.failure_count,
             "environment_valid": self.environment_valid,
             "fresh_until": (
-                None
-                if self.fresh_until is None
-                else _format_timestamp(self.fresh_until)
+                None if self.fresh_until is None else _format_timestamp(self.fresh_until)
             ),
             "last_verification": (
                 None
@@ -281,9 +267,7 @@ class KnowledgeAssuranceMetadata:
         try:
             state = KnowledgeConfidenceState(state_raw)
         except ValueError as exc:
-            raise KnowledgeValidationError(
-                f"unknown confidence_state: {state_raw!r}"
-            ) from exc
+            raise KnowledgeValidationError(f"unknown confidence_state: {state_raw!r}") from exc
         environment = raw["environment_valid"]
         if environment is not None and not isinstance(environment, bool):
             raise KnowledgeValidationError("environment_valid must be bool or null")
@@ -431,20 +415,14 @@ class KnowledgeRevalidation:
         ):
             raise KnowledgeValidationError("source must be a non-empty trimmed string")
         if not isinstance(self.outcome, KnowledgeRevalidationOutcome):
-            raise KnowledgeValidationError(
-                "outcome must be KnowledgeRevalidationOutcome"
-            )
+            raise KnowledgeValidationError("outcome must be KnowledgeRevalidationOutcome")
         _validate_evidence(self.evidence)
         if not self.evidence:
-            raise KnowledgeValidationError(
-                "completed revalidation requires attributable evidence"
-            )
+            raise KnowledgeValidationError("completed revalidation requires attributable evidence")
         if self.related_knowledge_id is not None and not isinstance(
             self.related_knowledge_id, KnowledgeId
         ):
-            raise KnowledgeValidationError(
-                "related_knowledge_id must be KnowledgeId or None"
-            )
+            raise KnowledgeValidationError("related_knowledge_id must be KnowledgeId or None")
         if (
             self.outcome
             in {
@@ -461,9 +439,7 @@ class KnowledgeRevalidation:
             or not self.environment_reference
             or self.environment_reference != self.environment_reference.strip()
         ):
-            raise KnowledgeValidationError(
-                "environment_reference must be non-empty and trimmed"
-            )
+            raise KnowledgeValidationError("environment_reference must be non-empty and trimmed")
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -475,9 +451,7 @@ class KnowledgeRevalidation:
             "outcome": self.outcome.value,
             "evidence": [item.to_dict() for item in self.evidence],
             "related_knowledge_id": (
-                None
-                if self.related_knowledge_id is None
-                else self.related_knowledge_id.to_str()
+                None if self.related_knowledge_id is None else self.related_knowledge_id.to_str()
             ),
             "environment_reference": self.environment_reference,
         }
@@ -503,15 +477,11 @@ class KnowledgeRevalidation:
         try:
             outcome = KnowledgeRevalidationOutcome(outcome_raw)
         except ValueError as exc:
-            raise KnowledgeValidationError(
-                f"unknown revalidation outcome: {outcome_raw!r}"
-            ) from exc
+            raise KnowledgeValidationError(f"unknown revalidation outcome: {outcome_raw!r}") from exc
         related_raw = raw["related_knowledge_id"]
         environment = raw["environment_reference"]
         if environment is not None and not isinstance(environment, str):
-            raise KnowledgeValidationError(
-                "environment_reference must be a string or null"
-            )
+            raise KnowledgeValidationError("environment_reference must be a string or null")
         return cls(
             revalidation_id=_parse_uuid(
                 raw["revalidation_id"],
@@ -580,11 +550,7 @@ def assurance_after_revalidation(
         last_verification = result.completed_at
         state = KnowledgeConfidenceState.DEGRADED
     elif result.outcome is KnowledgeRevalidationOutcome.INCONCLUSIVE:
-        state = (
-            KnowledgeConfidenceState.PROVISIONAL
-            if verification_count == 0
-            else state
-        )
+        state = KnowledgeConfidenceState.PROVISIONAL if verification_count == 0 else state
     elif result.outcome is KnowledgeRevalidationOutcome.ENVIRONMENT_MISMATCH:
         failure_count += 1
         environment_valid = False
