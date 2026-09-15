@@ -102,7 +102,10 @@ def _validate_evidence(value: object) -> tuple[EvidenceReference, ...]:
 
 
 def _evidence_from_json(value: object, *, field_name: str) -> tuple[EvidenceReference, ...]:
-    if not isinstance(value, list):
+    # ``from_dict`` is used both on direct JSON-decoded objects (list) and on
+    # EventJournal payloads after their canonical immutable freeze (tuple).
+    # Accept only those two sequence shapes; strings/mappings remain rejected.
+    if not isinstance(value, (list, tuple)):
         raise KnowledgeValidationError(f"{field_name} must be a JSON array")
     result: list[EvidenceReference] = []
     for index, item in enumerate(value):
