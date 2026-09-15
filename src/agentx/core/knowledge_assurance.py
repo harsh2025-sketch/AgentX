@@ -1,6 +1,6 @@
 """Evidence-backed, non-authoritative knowledge assurance contracts (AX-122/123).
 
-Assurance is metadata about evidence and revalidation history.  It is DATA,
+Assurance is metadata about evidence and revalidation history. It is DATA,
 never authority: no state in this module grants permissions, changes risk,
 bypasses ActionGate, authorizes a capability, or proves task success.
 
@@ -20,7 +20,11 @@ from typing import Final
 from uuid import UUID, uuid4
 
 from agentx.core.ids import KnowledgeId
-from agentx.core.knowledge import KnowledgeValidationError, _format_timestamp, _parse_timestamp
+from agentx.core.knowledge import (
+    KnowledgeValidationError,
+    _format_timestamp,
+    _parse_timestamp,
+)
 from agentx.core.provenance import EvidenceReference
 
 __all__ = [
@@ -101,7 +105,11 @@ def _validate_evidence(value: object) -> tuple[EvidenceReference, ...]:
     return value
 
 
-def _evidence_from_json(value: object, *, field_name: str) -> tuple[EvidenceReference, ...]:
+def _evidence_from_json(
+    value: object,
+    *,
+    field_name: str,
+) -> tuple[EvidenceReference, ...]:
     # ``from_dict`` is used both on direct JSON-decoded objects (list) and on
     # EventJournal payloads after their canonical immutable freeze (tuple).
     # Accept only those two sequence shapes; strings/mappings remain rejected.
@@ -114,20 +122,31 @@ def _evidence_from_json(value: object, *, field_name: str) -> tuple[EvidenceRefe
         copied: dict[str, object] = {}
         for key, nested in item.items():
             if not isinstance(key, str):
-                raise KnowledgeValidationError(f"{field_name}[{index}] has a non-string key")
+                raise KnowledgeValidationError(
+                    f"{field_name}[{index}] has a non-string key"
+                )
             copied[key] = nested
         result.append(EvidenceReference.from_dict(copied))
     return tuple(result)
 
 
-def _require_exact(raw: Mapping[str, object], expected: frozenset[str], *, name: str) -> None:
+def _require_exact(
+    raw: Mapping[str, object],
+    expected: frozenset[str],
+    *,
+    name: str,
+) -> None:
     actual = set(raw)
     if actual != expected:
         missing = expected - actual
         unknown = actual - expected
         if missing:
-            raise KnowledgeValidationError(f"{name} missing required fields: {sorted(missing)}")
-        raise KnowledgeValidationError(f"{name} contains unknown fields: {sorted(unknown)}")
+            raise KnowledgeValidationError(
+                f"{name} missing required fields: {sorted(missing)}"
+            )
+        raise KnowledgeValidationError(
+            f"{name} contains unknown fields: {sorted(unknown)}"
+        )
 
 
 def _load_object(raw: str, *, name: str) -> dict[str, object]:
@@ -186,16 +205,26 @@ class KnowledgeAssuranceMetadata:
         for name in ("verification_count", "failure_count", "contradiction_count"):
             value = getattr(self, name)
             if not isinstance(value, int) or isinstance(value, bool) or value < 0:
-                raise KnowledgeValidationError(f"{name} must be a non-negative integer")
-        if self.environment_valid is not None and not isinstance(self.environment_valid, bool):
+                raise KnowledgeValidationError(
+                    f"{name} must be a non-negative integer"
+                )
+        if self.environment_valid is not None and not isinstance(
+            self.environment_valid, bool
+        ):
             raise KnowledgeValidationError("environment_valid must be bool or None")
         for name in ("source_observed_at", "fresh_until", "last_verification"):
             value = getattr(self, name)
             if value is not None:
-                object.__setattr__(self, name, _validate_time(value, field_name=name))
+                object.__setattr__(
+                    self,
+                    name,
+                    _validate_time(value, field_name=name),
+                )
         _validate_evidence(self.evidence)
         if not isinstance(self.confidence_state, KnowledgeConfidenceState):
-            raise KnowledgeValidationError("confidence_state must be KnowledgeConfidenceState")
+            raise KnowledgeValidationError(
+                "confidence_state must be KnowledgeConfidenceState"
+            )
         if not isinstance(self.superseded, bool):
             raise KnowledgeValidationError("superseded must be bool")
 
@@ -208,14 +237,22 @@ class KnowledgeAssuranceMetadata:
         return {
             "knowledge_id": self.knowledge_id.to_str(),
             "source_observed_at": (
-                None if self.source_observed_at is None else _format_timestamp(self.source_observed_at)
+                None
+                if self.source_observed_at is None
+                else _format_timestamp(self.source_observed_at)
             ),
             "verification_count": self.verification_count,
             "failure_count": self.failure_count,
             "environment_valid": self.environment_valid,
-            "fresh_until": None if self.fresh_until is None else _format_timestamp(self.fresh_until),
+            "fresh_until": (
+                None
+                if self.fresh_until is None
+                else _format_timestamp(self.fresh_until)
+            ),
             "last_verification": (
-                None if self.last_verification is None else _format_timestamp(self.last_verification)
+                None
+                if self.last_verification is None
+                else _format_timestamp(self.last_verification)
             ),
             "evidence": [item.to_dict() for item in self.evidence],
             "confidence_state": self.confidence_state.value,
@@ -225,7 +262,11 @@ class KnowledgeAssuranceMetadata:
 
     def to_json(self) -> str:
         return json.dumps(
-            self.to_dict(), ensure_ascii=False, allow_nan=False, separators=(",", ":"), sort_keys=True
+            self.to_dict(),
+            ensure_ascii=False,
+            allow_nan=False,
+            separators=(",", ":"),
+            sort_keys=True,
         )
 
     @classmethod
@@ -240,7 +281,9 @@ class KnowledgeAssuranceMetadata:
         try:
             state = KnowledgeConfidenceState(state_raw)
         except ValueError as exc:
-            raise KnowledgeValidationError(f"unknown confidence_state: {state_raw!r}") from exc
+            raise KnowledgeValidationError(
+                f"unknown confidence_state: {state_raw!r}"
+            ) from exc
         environment = raw["environment_valid"]
         if environment is not None and not isinstance(environment, bool):
             raise KnowledgeValidationError("environment_valid must be bool or null")
@@ -252,23 +295,38 @@ class KnowledgeAssuranceMetadata:
             source_observed_at=(
                 None
                 if source_raw is None
-                else _parse_timestamp(source_raw, field_name="source_observed_at")
+                else _parse_timestamp(
+                    source_raw,
+                    field_name="source_observed_at",
+                )
             ),
             verification_count=_parse_nonnegative_int(
-                raw["verification_count"], field_name="verification_count"
+                raw["verification_count"],
+                field_name="verification_count",
             ),
-            failure_count=_parse_nonnegative_int(raw["failure_count"], field_name="failure_count"),
+            failure_count=_parse_nonnegative_int(
+                raw["failure_count"],
+                field_name="failure_count",
+            ),
             environment_valid=environment,
-            fresh_until=None if fresh_raw is None else _parse_timestamp(fresh_raw, field_name="fresh_until"),
+            fresh_until=(
+                None
+                if fresh_raw is None
+                else _parse_timestamp(fresh_raw, field_name="fresh_until")
+            ),
             last_verification=(
                 None
                 if verified_raw is None
-                else _parse_timestamp(verified_raw, field_name="last_verification")
+                else _parse_timestamp(
+                    verified_raw,
+                    field_name="last_verification",
+                )
             ),
             evidence=_evidence_from_json(raw["evidence"], field_name="evidence"),
             confidence_state=state,
             contradiction_count=_parse_nonnegative_int(
-                raw["contradiction_count"], field_name="contradiction_count"
+                raw["contradiction_count"],
+                field_name="contradiction_count",
             ),
             superseded=superseded,
         )
@@ -292,13 +350,25 @@ class KnowledgeRevalidationRequest:
             raise KnowledgeValidationError("revalidation_id must be a non-nil UUID")
         if not isinstance(self.knowledge_id, KnowledgeId):
             raise KnowledgeValidationError("knowledge_id must be a KnowledgeId")
-        object.__setattr__(self, "requested_at", _validate_time(self.requested_at, field_name="requested_at"))
-        if not isinstance(self.source, str) or not self.source or self.source != self.source.strip():
+        object.__setattr__(
+            self,
+            "requested_at",
+            _validate_time(self.requested_at, field_name="requested_at"),
+        )
+        if (
+            not isinstance(self.source, str)
+            or not self.source
+            or self.source != self.source.strip()
+        ):
             raise KnowledgeValidationError("source must be a non-empty trimmed string")
 
     @classmethod
     def create(
-        cls, *, knowledge_id: KnowledgeId, source: str, requested_at: datetime | None = None
+        cls,
+        *,
+        knowledge_id: KnowledgeId,
+        source: str,
+        requested_at: datetime | None = None,
     ) -> KnowledgeRevalidationRequest:
         return cls(
             revalidation_id=uuid4(),
@@ -342,30 +412,58 @@ class KnowledgeRevalidation:
             raise KnowledgeValidationError("revalidation_id must be a non-nil UUID")
         if not isinstance(self.knowledge_id, KnowledgeId):
             raise KnowledgeValidationError("knowledge_id must be a KnowledgeId")
-        object.__setattr__(self, "requested_at", _validate_time(self.requested_at, field_name="requested_at"))
-        object.__setattr__(self, "completed_at", _validate_time(self.completed_at, field_name="completed_at"))
+        object.__setattr__(
+            self,
+            "requested_at",
+            _validate_time(self.requested_at, field_name="requested_at"),
+        )
+        object.__setattr__(
+            self,
+            "completed_at",
+            _validate_time(self.completed_at, field_name="completed_at"),
+        )
         if self.completed_at < self.requested_at:
             raise KnowledgeValidationError("completed_at must not precede requested_at")
-        if not isinstance(self.source, str) or not self.source or self.source != self.source.strip():
+        if (
+            not isinstance(self.source, str)
+            or not self.source
+            or self.source != self.source.strip()
+        ):
             raise KnowledgeValidationError("source must be a non-empty trimmed string")
         if not isinstance(self.outcome, KnowledgeRevalidationOutcome):
-            raise KnowledgeValidationError("outcome must be KnowledgeRevalidationOutcome")
+            raise KnowledgeValidationError(
+                "outcome must be KnowledgeRevalidationOutcome"
+            )
         _validate_evidence(self.evidence)
         if not self.evidence:
-            raise KnowledgeValidationError("completed revalidation requires attributable evidence")
-        if self.related_knowledge_id is not None and not isinstance(self.related_knowledge_id, KnowledgeId):
-            raise KnowledgeValidationError("related_knowledge_id must be KnowledgeId or None")
-        if self.outcome in {
-            KnowledgeRevalidationOutcome.CONTRADICTION_DISCOVERED,
-            KnowledgeRevalidationOutcome.SUPERSEDING_EVIDENCE_DISCOVERED,
-        } and self.related_knowledge_id is None:
-            raise KnowledgeValidationError("relationship-discovery outcome requires related_knowledge_id")
+            raise KnowledgeValidationError(
+                "completed revalidation requires attributable evidence"
+            )
+        if self.related_knowledge_id is not None and not isinstance(
+            self.related_knowledge_id, KnowledgeId
+        ):
+            raise KnowledgeValidationError(
+                "related_knowledge_id must be KnowledgeId or None"
+            )
+        if (
+            self.outcome
+            in {
+                KnowledgeRevalidationOutcome.CONTRADICTION_DISCOVERED,
+                KnowledgeRevalidationOutcome.SUPERSEDING_EVIDENCE_DISCOVERED,
+            }
+            and self.related_knowledge_id is None
+        ):
+            raise KnowledgeValidationError(
+                "relationship-discovery outcome requires related_knowledge_id"
+            )
         if self.environment_reference is not None and (
             not isinstance(self.environment_reference, str)
             or not self.environment_reference
             or self.environment_reference != self.environment_reference.strip()
         ):
-            raise KnowledgeValidationError("environment_reference must be non-empty and trimmed")
+            raise KnowledgeValidationError(
+                "environment_reference must be non-empty and trimmed"
+            )
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -377,14 +475,20 @@ class KnowledgeRevalidation:
             "outcome": self.outcome.value,
             "evidence": [item.to_dict() for item in self.evidence],
             "related_knowledge_id": (
-                None if self.related_knowledge_id is None else self.related_knowledge_id.to_str()
+                None
+                if self.related_knowledge_id is None
+                else self.related_knowledge_id.to_str()
             ),
             "environment_reference": self.environment_reference,
         }
 
     def to_json(self) -> str:
         return json.dumps(
-            self.to_dict(), ensure_ascii=False, allow_nan=False, separators=(",", ":"), sort_keys=True
+            self.to_dict(),
+            ensure_ascii=False,
+            allow_nan=False,
+            separators=(",", ":"),
+            sort_keys=True,
         )
 
     @classmethod
@@ -399,21 +503,42 @@ class KnowledgeRevalidation:
         try:
             outcome = KnowledgeRevalidationOutcome(outcome_raw)
         except ValueError as exc:
-            raise KnowledgeValidationError(f"unknown revalidation outcome: {outcome_raw!r}") from exc
+            raise KnowledgeValidationError(
+                f"unknown revalidation outcome: {outcome_raw!r}"
+            ) from exc
         related_raw = raw["related_knowledge_id"]
         environment = raw["environment_reference"]
         if environment is not None and not isinstance(environment, str):
-            raise KnowledgeValidationError("environment_reference must be a string or null")
+            raise KnowledgeValidationError(
+                "environment_reference must be a string or null"
+            )
         return cls(
-            revalidation_id=_parse_uuid(raw["revalidation_id"], field_name="revalidation_id"),
-            knowledge_id=_parse_id(raw["knowledge_id"], field_name="knowledge_id"),
-            requested_at=_parse_timestamp(raw["requested_at"], field_name="requested_at"),
-            completed_at=_parse_timestamp(raw["completed_at"], field_name="completed_at"),
+            revalidation_id=_parse_uuid(
+                raw["revalidation_id"],
+                field_name="revalidation_id",
+            ),
+            knowledge_id=_parse_id(
+                raw["knowledge_id"],
+                field_name="knowledge_id",
+            ),
+            requested_at=_parse_timestamp(
+                raw["requested_at"],
+                field_name="requested_at",
+            ),
+            completed_at=_parse_timestamp(
+                raw["completed_at"],
+                field_name="completed_at",
+            ),
             source=source,
             outcome=outcome,
             evidence=_evidence_from_json(raw["evidence"], field_name="evidence"),
             related_knowledge_id=(
-                None if related_raw is None else _parse_id(related_raw, field_name="related_knowledge_id")
+                None
+                if related_raw is None
+                else _parse_id(
+                    related_raw,
+                    field_name="related_knowledge_id",
+                )
             ),
             environment_reference=environment,
         )
@@ -429,7 +554,9 @@ def assurance_after_revalidation(
 ) -> KnowledgeAssuranceMetadata:
     """Apply deterministic evidence rules without conferring authority."""
     if current.knowledge_id != result.knowledge_id:
-        raise KnowledgeValidationError("revalidation knowledge_id does not match assurance metadata")
+        raise KnowledgeValidationError(
+            "revalidation knowledge_id does not match assurance metadata"
+        )
 
     verification_count = current.verification_count
     failure_count = current.failure_count
@@ -453,7 +580,11 @@ def assurance_after_revalidation(
         last_verification = result.completed_at
         state = KnowledgeConfidenceState.DEGRADED
     elif result.outcome is KnowledgeRevalidationOutcome.INCONCLUSIVE:
-        state = KnowledgeConfidenceState.PROVISIONAL if verification_count == 0 else state
+        state = (
+            KnowledgeConfidenceState.PROVISIONAL
+            if verification_count == 0
+            else state
+        )
     elif result.outcome is KnowledgeRevalidationOutcome.ENVIRONMENT_MISMATCH:
         failure_count += 1
         environment_valid = False
