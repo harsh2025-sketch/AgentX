@@ -56,9 +56,7 @@ class KnowledgeResearchRequirementState:
             raise TypeError("state must be a KnowledgeResearchGapState")
         if not isinstance(self.matching_knowledge_ids, tuple):
             raise TypeError("matching_knowledge_ids must be a tuple")
-        if any(
-            not isinstance(item, KnowledgeId) for item in self.matching_knowledge_ids
-        ):
+        if any(not isinstance(item, KnowledgeId) for item in self.matching_knowledge_ids):
             raise TypeError("matching_knowledge_ids must contain KnowledgeId values")
 
 
@@ -74,12 +72,9 @@ class KnowledgeResearchGapResult:
         if not isinstance(self.requirements, tuple) or not self.requirements:
             raise ValueError("requirements must be a non-empty tuple")
         if any(
-            not isinstance(item, KnowledgeResearchRequirementState)
-            for item in self.requirements
+            not isinstance(item, KnowledgeResearchRequirementState) for item in self.requirements
         ):
-            raise TypeError(
-                "requirements must contain KnowledgeResearchRequirementState values"
-            )
+            raise TypeError("requirements must contain KnowledgeResearchRequirementState values")
         if type(self.research_required) is not bool:
             raise TypeError("research_required must be bool")
         if self.research_required is not (
@@ -106,17 +101,11 @@ def _state_for(
     contradictory_ids: frozenset[KnowledgeId],
 ) -> KnowledgeResearchRequirementState:
     candidates = tuple(
-        record
-        for record in evidence
-        if record.knowledge_id in requirement.acceptable_knowledge_ids
+        record for record in evidence if record.knowledge_id in requirement.acceptable_knowledge_ids
     )
     matching = tuple(
         sorted(
-            (
-                record.knowledge_id
-                for record in candidates
-                if requirement.is_satisfied_by(record)
-            ),
+            (record.knowledge_id for record in candidates if requirement.is_satisfied_by(record)),
             key=lambda item: item.to_str(),
         )
     )
