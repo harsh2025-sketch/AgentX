@@ -294,9 +294,7 @@ class KnowledgeAssuranceMetadata:
             ),
             environment_valid=environment,
             fresh_until=(
-                None
-                if fresh_raw is None
-                else _parse_timestamp(fresh_raw, field_name="fresh_until")
+                None if fresh_raw is None else _parse_timestamp(fresh_raw, field_name="fresh_until")
             ),
             last_verification=(
                 None
@@ -477,7 +475,9 @@ class KnowledgeRevalidation:
         try:
             outcome = KnowledgeRevalidationOutcome(outcome_raw)
         except ValueError as exc:
-            raise KnowledgeValidationError(f"unknown revalidation outcome: {outcome_raw!r}") from exc
+            raise KnowledgeValidationError(
+                f"unknown revalidation outcome: {outcome_raw!r}"
+            ) from exc
         related_raw = raw["related_knowledge_id"]
         environment = raw["environment_reference"]
         if environment is not None and not isinstance(environment, str):
