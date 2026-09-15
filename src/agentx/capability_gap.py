@@ -1,9 +1,10 @@
-"""Bounded missing-capability detection over the canonical registry (AX-541).
+"""Bounded missing-capability detection over an inert inventory snapshot (AX-541).
 
 This module answers one descriptive question: which explicitly required
-CapabilityIdentity values are absent from a registry snapshot?  It never loads,
-installs, generates, imports, selects, executes, or authorizes a capability.
-A gap is planning evidence only and cannot grant permission or lower risk.
+CapabilityIdentity values are absent from an immutable identity snapshot? It
+never imports the registry, loads, installs, generates, selects, executes, or
+authorizes a capability. A gap is planning evidence only and cannot grant
+permission or lower risk.
 """
 
 from __future__ import annotations
@@ -13,10 +14,10 @@ from enum import StrEnum
 from typing import Final
 
 from agentx.capabilities.abi import CapabilityIdentity
-from agentx.capabilities.registry import CapabilityRegistry
 
 __all__ = [
     "MAX_CAPABILITY_GAP_REQUIREMENTS",
+    "MAX_CAPABILITY_INVENTORY",
     "CapabilityAvailability",
     "CapabilityGap",
     "CapabilityGapDetector",
@@ -25,11 +26,12 @@ __all__ = [
 ]
 
 MAX_CAPABILITY_GAP_REQUIREMENTS: Final[int] = 128
+MAX_CAPABILITY_INVENTORY: Final[int] = 4096
 _MAX_ALTERNATIVES_PER_GAP: Final[int] = 32
 
 
 class CapabilityGapValidationError(ValueError):
-    """Raised when a gap-detection request is malformed or unbounded."""
+    """Raised when gap-detection input is malformed or unbounded."""
 
 
 class CapabilityAvailability(StrEnum):
@@ -40,6 +42,29 @@ class CapabilityAvailability(StrEnum):
 def _identity_key(identity: CapabilityIdentity) -> tuple[str, int, int, int]:
     version = identity.version
     return (identity.name.value, version.major, version.minor, version.patch)
+
+
+def _validate_identity_tuple(
+    identities: object,
+    *,
+    field_name: str,
+    maximum: int,
+    allow_empty: bool,
+) -> tuple[CapabilityIdentity, ...]:
+    if not isinstance(identities, tuple):
+        raise TypeError(f"{field_name} must be a tuple")
+    if not identities and not allow_empty:
+        raise CapabilityGapValidationError(f"{field_name} must not be empty")
+    if len(identities) > maximum:
+        raise CapabilityGapValidationError(f"{field_name} exceeds the bounded limit")
+    seen: set[CapabilityIdentity] = set()
+    for identity in identities:
+        if not isinstance(identity, CapabilityIdentity):
+            raise TypeError(f"{field_name} must contain CapabilityIdentity values")
+        if identity in seen:
+            raise CapabilityGapValidationError(f"{field_name} identities must be unique")
+        seen.add(identity)
+    return tuple(sorted(identities, key=_identity_key))
 
 
 @dataclass(frozen=True, slots=True)
@@ -61,13 +86,21 @@ class CapabilityGap:
             if not isinstance(alternative, CapabilityIdentity):
                 raise TypeError("alternatives must contain CapabilityIdentity values")
             if alternative.name != self.required.name:
-                raise CapabilityGapValidationError("alternatives must have the required capability name")
+                raise CapabilityGapValidationError(
+                    "alternatives must have the required capability name"
+                )
             if alternative == self.required:
-                raise CapabilityGapValidationError("the required identity cannot be its own alternative")
+                raise CapabilityGapValidationError(
+                    "the required identity cannot be its own alternative"
+                )
             if alternative in seen:
                 raise CapabilityGapValidationError("duplicate capability alternative")
             seen.add(alternative)
-        object.__setattr__(self, "alternatives", tuple(sorted(self.alternatives, key=_identity_key)))
+        object.__setattr__(
+            self,
+            "alternatives",
+            tuple(sorted(self.alternatives, key=_identity_key)),
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -85,47 +118,39 @@ class CapabilityGapReport:
 
 
 class CapabilityGapDetector:
-    """Read-only exact-identity detector backed by CapabilityRegistry snapshots."""
+    """Read-only exact-identity detector over an injected immutable snapshot."""
 
-    __slots__ = ("_registry",)
+    __slots__ = ("_inventory", "_inventory_set")
 
-    def __init__(self, registry: CapabilityRegistry) -> None:
-        if not isinstance(registry, CapabilityRegistry):
-            raise TypeError("registry must be a CapabilityRegistry")
-        self._registry = registry
+    def __init__(self, inventory: tuple[CapabilityIdentity, ...]) -> None:
+        ordered = _validate_identity_tuple(
+            inventory,
+            field_name="inventory",
+            maximum=MAX_CAPABILITY_INVENTORY,
+            allow_empty=True,
+        )
+        self._inventory = ordered
+        self._inventory_set = frozenset(ordered)
 
     def detect(self, required: tuple[CapabilityIdentity, ...]) -> CapabilityGapReport:
-        if not isinstance(required, tuple):
-            raise TypeError("required must be a tuple")
-        if not required:
-            raise CapabilityGapValidationError("required must not be empty")
-        if len(required) > MAX_CAPABILITY_GAP_REQUIREMENTS:
-            raise CapabilityGapValidationError("required exceeds the bounded requirement limit")
+        ordered_required = _validate_identity_tuple(
+            required,
+            field_name="required",
+            maximum=MAX_CAPABILITY_GAP_REQUIREMENTS,
+            allow_empty=False,
+        )
 
-        seen: set[CapabilityIdentity] = set()
-        for identity in required:
-            if not isinstance(identity, CapabilityIdentity):
-                raise TypeError("required must contain CapabilityIdentity values")
-            if identity in seen:
-                raise CapabilityGapValidationError("required identities must be unique")
-            seen.add(identity)
-
-        ordered_required = tuple(sorted(required, key=_identity_key))
-        snapshot = self._registry.snapshot()
-        registered = tuple(snapshot)
         available: list[CapabilityIdentity] = []
         gaps: list[CapabilityGap] = []
         for identity in ordered_required:
-            if identity in snapshot:
+            if identity in self._inventory_set:
                 available.append(identity)
                 continue
             alternatives = tuple(
                 candidate
-                for candidate in registered
+                for candidate in self._inventory
                 if candidate.name == identity.name and candidate != identity
-            )
-            if len(alternatives) > _MAX_ALTERNATIVES_PER_GAP:
-                alternatives = alternatives[:_MAX_ALTERNATIVES_PER_GAP]
+            )[:_MAX_ALTERNATIVES_PER_GAP]
             gaps.append(CapabilityGap(required=identity, alternatives=alternatives))
         return CapabilityGapReport(
             required=ordered_required,
