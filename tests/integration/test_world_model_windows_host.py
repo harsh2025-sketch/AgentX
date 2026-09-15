@@ -9,7 +9,12 @@ import pytest
 from agentx.capabilities.windows.process_discovery import WindowsProcessDiscovery
 from agentx.capabilities.windows.provider import detect_platform_facts, evaluate_windows_support
 from agentx.core.knowledge import ProvenanceKind, ProvenanceReference
-from agentx.world_model import CacheRefreshState, WorldAvailability, WorldModel
+from agentx.world_model import (
+    CacheRefreshState,
+    FilesystemState,
+    WorldAvailability,
+    WorldModel,
+)
 
 pytestmark = pytest.mark.skipif(os.name != "nt", reason="real-host Windows acceptance")
 
@@ -54,5 +59,5 @@ def test_real_windows_host_world_model_acceptance(tmp_path: Path) -> None:
     world.invalidate_filesystem_path(file_id, reason="safe acceptance mutation")
     second = world.cache.lookup(file_id, at=datetime.now(UTC), refresh=True)
     assert second.state is CacheRefreshState.REFRESH_SUCCESS
-    assert second.value is not None
+    assert isinstance(second.value, FilesystemState)
     assert second.value.size_bytes == len("after")

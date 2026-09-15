@@ -1932,7 +1932,7 @@ class WorldModel:
             )
             window_ids[window.handle] = entity_id
             app_identity = applications.get(window.process_id)
-            state = WindowState(
+            window_state = WindowState(
                 entity_id=entity_id,
                 handle=window.handle,
                 process_id=process_ids.get(window.process_id),
@@ -1947,12 +1947,12 @@ class WorldModel:
                 availability=WorldAvailability.AVAILABLE,
                 metadata=metadata,
             )
-            self.cache.put(state)
-            window_states.append(state)
+            self.cache.put(window_state)
+            window_states.append(window_state)
 
         for process in snapshot.processes:
             app_identity = applications.get(process.process_id)
-            state = ProcessState(
+            process_state = ProcessState(
                 entity_id=process_ids[process.process_id],
                 pid=process.process_id,
                 executable_name=process.executable_name,
@@ -1965,8 +1965,8 @@ class WorldModel:
                 availability=WorldAvailability.AVAILABLE,
                 metadata=metadata,
             )
-            self.cache.put(state)
-            process_states.append(state)
+            self.cache.put(process_state)
+            process_states.append(process_state)
 
         for app_identity in sorted(set(applications.values())):
             record = self.applications.get(app_identity)
