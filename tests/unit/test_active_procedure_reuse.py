@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from agentx.active_procedure_reuse import ActiveProcedureReuse
+from agentx.core.ids import ProcedureId
 from agentx.core.procedure_matching import ProcedureRequirement
 from agentx.core.procedures import (
     ProcedurePayload,
@@ -33,7 +34,12 @@ def _store(path: Path) -> ProcedureStore:
     return ProcedureStore(SQLiteDatabase(path))
 
 
-def _candidate(*, procedure_id=None, revision: int = 1, label: str = "a") -> ProcedureRecord:
+def _candidate(
+    *,
+    procedure_id: ProcedureId | None = None,
+    revision: int = 1,
+    label: str = "a",
+) -> ProcedureRecord:
     return ProcedureRecord.create(
         procedure_id=procedure_id,
         revision=revision,
