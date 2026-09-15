@@ -73,7 +73,7 @@ _NATIVE_SEAM_ALLOWED_IMPORTS = frozenset({"ctypes"})
 # Exactly the A5.02 Win32 seam may expose the approved read-only window walk.
 # Exactly the N2.19 mutation seam may expose the approved mutation primitives.
 _NATIVE_SEAM_ALLOWED_SYMBOLS = {
-    _NATIVE: frozenset({"EnumWindows"}),
+    _NATIVE: frozenset({"EnumWindows", "GetForegroundWindow"}),
     _NATIVE_MUTATION: frozenset({"SendInput", "SetForegroundWindow", "SetWindowPos"}),
 }
 

@@ -105,6 +105,7 @@ READ_SEAM_METHODS = frozenset(
     {
         "enumerate_processes",
         "enumerate_windows",
+        "get_foreground_window",
         "query_executable_path",
     }
 )
@@ -125,8 +126,10 @@ class FakeWindowsNative:
     windows: list[_native.RawWindowEntry] = field(default_factory=list)
     path_queries: dict[int, _native.RawPathQuery] = field(default_factory=dict)
     default_path_query: _native.RawPathQuery = field(default_factory=path_ok)
+    foreground_handle: int | None = None
     fail_processes: AgentXError | None = None
     fail_windows: AgentXError | None = None
+    fail_foreground: AgentXError | None = None
     fail_path_query: AgentXError | None = None
     calls: list[str] = field(default_factory=list)
 
@@ -147,6 +150,12 @@ class FakeWindowsNative:
         if self.fail_windows is not None:
             return Result.failure(self.fail_windows)
         return Result.success(tuple(self.windows))
+
+    def get_foreground_window(self) -> Result[int | None, AgentXError]:
+        self.calls.append("get_foreground_window")
+        if self.fail_foreground is not None:
+            return Result.failure(self.fail_foreground)
+        return Result.success(self.foreground_handle)
 
     def query_executable_path(self, process_id: int) -> Result[_native.RawPathQuery, AgentXError]:
         self.calls.append("query_executable_path")
