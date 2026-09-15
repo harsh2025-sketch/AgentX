@@ -155,9 +155,7 @@ class RuntimeUiEvent:
         if self.correlation_id is not None:
             _uuid(self.correlation_id, field_name="correlation_id")
         if self.task_id is not None and (
-            not isinstance(self.task_id, str)
-            or not self.task_id.strip()
-            or len(self.task_id) > 512
+            not isinstance(self.task_id, str) or not self.task_id.strip() or len(self.task_id) > 512
         ):
             raise RuntimeUiValidationError("task_id must be bounded non-empty text")
         object.__setattr__(self, "payload", _validate_safe_payload(self.payload))
