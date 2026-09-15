@@ -71,9 +71,7 @@ class ScopedKnowledgeQuery:
                 "protected scoped retrieval requires a non-empty explicit scope"
             )
         if not isinstance(self.global_policy, GlobalKnowledgePolicy):
-            raise ScopedKnowledgeRetrievalError(
-                "global_policy must be a GlobalKnowledgePolicy"
-            )
+            raise ScopedKnowledgeRetrievalError("global_policy must be a GlobalKnowledgePolicy")
         _validate_members(self.knowledge_types, KnowledgeType, "knowledge_types")
         _validate_members(self.statuses, KnowledgeStatus, "statuses")
         _validate_members(self.provenance_kinds, ProvenanceKind, "provenance_kinds")
@@ -92,14 +90,10 @@ class ScopedKnowledgeQuery:
             raise TypeError("record must be a KnowledgeRecord")
 
         if record.scope != self.scope and not (
-            self.global_policy is GlobalKnowledgePolicy.INCLUDE
-            and not record.scope.dimensions
+            self.global_policy is GlobalKnowledgePolicy.INCLUDE and not record.scope.dimensions
         ):
             return False
-        if (
-            self.knowledge_types is not None
-            and record.knowledge_type not in self.knowledge_types
-        ):
+        if self.knowledge_types is not None and record.knowledge_type not in self.knowledge_types:
             return False
         if self.statuses is not None and record.status not in self.statuses:
             return False
@@ -132,8 +126,7 @@ class ScopedKnowledgeRetrieval:
         matches = [
             record
             for record in self.store.list_records()
-            if record.knowledge_type in SEMANTIC_KNOWLEDGE_TYPES
-            and query.matches(record)
+            if record.knowledge_type in SEMANTIC_KNOWLEDGE_TYPES and query.matches(record)
         ]
         matches.sort(
             key=lambda record: (
@@ -153,9 +146,7 @@ def _validate_members(
     if values is None:
         return
     if not isinstance(values, frozenset):
-        raise ScopedKnowledgeRetrievalError(
-            f"{field_name} must be a frozenset or None"
-        )
+        raise ScopedKnowledgeRetrievalError(f"{field_name} must be a frozenset or None")
     if not values:
         raise ScopedKnowledgeRetrievalError(f"{field_name} must not be empty")
     for value in values:
