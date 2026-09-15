@@ -151,12 +151,14 @@ def test_stop_cancels_source_and_shutdown_is_idempotent() -> None:
     framework.register(registration, source)
     framework.start(registration.watcher_id)
     framework.poll_once(registration.watcher_id, polled_at=_T0)
-    assert source.last_token is not None and not source.last_token.is_cancelled
+    token = source.last_token
+    assert token is not None
+    assert bool(token.is_cancelled) is False
 
     framework.stop(registration.watcher_id, reason="test stop")
     assert framework.lifecycle(registration.watcher_id) is WatcherLifecycle.STOPPED
-    assert source.last_token.is_cancelled
-    assert source.last_token.reason == "test stop"
+    assert bool(token.is_cancelled) is True
+    assert token.reason == "test stop"
 
     framework.shutdown()
     framework.shutdown()
