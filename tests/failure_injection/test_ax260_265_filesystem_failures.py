@@ -5,6 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 from uuid import uuid4
 
+import pytest
+
 from agentx.capabilities.filesystem_structural import (
     FilesystemDeleteDirectoryCapability,
     FilesystemMoveFileCapability,
@@ -23,7 +25,7 @@ def _context() -> ExecutionContext:
 
 def test_move_os_failure_never_fabricates_success(
     tmp_path: Path,
-    monkeypatch,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     source = tmp_path / "source.txt"
     destination = tmp_path / "destination.txt"
@@ -45,7 +47,7 @@ def test_move_os_failure_never_fabricates_success(
 
 def test_directory_delete_race_fails_closed_when_rmdir_rejects(
     tmp_path: Path,
-    monkeypatch,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     target = tmp_path / "empty-at-preflight"
     target.mkdir()
