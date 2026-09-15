@@ -52,10 +52,11 @@ def test_ax174_guided_chain_records_exact_reasoning_and_deterministic_regions() 
     assert run.reasoning_calls == 1
     assert run.governed_dispatches == 1
     assert len(provider.calls) == 1
+    # REACHED_END is the terminal disposition; the canonical trace records
+    # executed work nodes rather than manufacturing an executable END step.
     assert tuple(step.node_kind for step in run.steps) == (
         ExecutedNodeKind.REASON,
         ExecutedNodeKind.ACTION,
-        ExecutedNodeKind.END,
     )
 
 
