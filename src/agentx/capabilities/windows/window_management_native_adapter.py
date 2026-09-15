@@ -7,8 +7,6 @@ low-level execution evidence and are never verification.
 
 from __future__ import annotations
 
-from typing import TypeVar
-
 from agentx.capabilities.windows.native_mutation import (
     NativeMutationSurface,
     NativeWindowActivationRequest,
@@ -21,8 +19,6 @@ from agentx.core.errors import AgentXError
 from agentx.core.result import Result
 
 __all__ = ["CanonicalNativeWindowManagementAdapter"]
-
-_NativeOutcome = TypeVar("_NativeOutcome")
 
 
 class CanonicalNativeWindowManagementAdapter:
@@ -66,7 +62,7 @@ class CanonicalNativeWindowManagementAdapter:
         return _receipt(result, handle=handle, operation="move_resize")
 
 
-def _receipt(
+def _receipt[_NativeOutcome](
     result: Result[_NativeOutcome, AgentXError],
     *,
     handle: int,
