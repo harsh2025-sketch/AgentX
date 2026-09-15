@@ -120,9 +120,7 @@ def test_application_environment_project_and_context_dimensions_are_isolated(
         values[dimension] = replacement
         store.insert(_record(f"other-{dimension.value}", KnowledgeScope(values)))
 
-    result = ScopedKnowledgeRetrieval(store).retrieve(
-        ScopedKnowledgeQuery(scope=target_scope)
-    )
+    result = ScopedKnowledgeRetrieval(store).retrieve(ScopedKnowledgeQuery(scope=target_scope))
 
     assert result == (target,)
 
