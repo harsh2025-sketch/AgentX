@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
+import pytest
+
 from agentx.core.ids import KnowledgeId
 from agentx.core.knowledge import KnowledgeValidationError
 from agentx.core.knowledge_assurance import KnowledgeAssuranceMetadata
-
-import pytest
 
 
 def test_assurance_unknown_fields_fail_closed() -> None:
