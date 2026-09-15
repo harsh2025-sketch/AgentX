@@ -83,7 +83,8 @@ def _canonical_evidence_key(reference: EvidenceReference) -> str:
 
 
 def _merge_evidence(
-    first: tuple[EvidenceReference, ...], second: tuple[EvidenceReference, ...]
+    first: tuple[EvidenceReference, ...],
+    second: tuple[EvidenceReference, ...],
 ) -> tuple[EvidenceReference, ...]:
     merged: dict[str, EvidenceReference] = {}
     for reference in first + second:
@@ -97,7 +98,9 @@ def _payload_mapping(event: Event) -> Mapping[str, object] | None:
     if event.source != _SOURCE:
         return None
     payload = event.payload
-    if not isinstance(payload, ObservationPayload) or not isinstance(payload.value, Mapping):
+    if not isinstance(payload, ObservationPayload) or not isinstance(
+        payload.value, Mapping
+    ):
         return None
     return payload.value
 
@@ -114,7 +117,9 @@ def _parse_seed(payload: Mapping[str, object]) -> KnowledgeAssuranceMetadata:
     copied: dict[str, object] = {}
     for key, value in raw.items():
         if not isinstance(key, str):
-            raise KnowledgeValidationError("assurance seed has a non-string metadata key")
+            raise KnowledgeValidationError(
+                "assurance seed has a non-string metadata key"
+            )
         copied[key] = value
     return KnowledgeAssuranceMetadata.from_dict(copied)
 
@@ -131,13 +136,19 @@ def _parse_request(payload: Mapping[str, object]) -> KnowledgeRevalidationReques
     requested = raw["requested_at"]
     source = raw["source"]
     if not all(isinstance(value, str) for value in (rid, kid, requested, source)):
-        raise KnowledgeValidationError("revalidation request scalar fields must be strings")
+        raise KnowledgeValidationError(
+            "revalidation request scalar fields must be strings"
+        )
     try:
         revalidation_id = UUID(rid)
         knowledge_id = KnowledgeId.parse(kid)
-        requested_at = datetime.fromisoformat(requested.replace("Z", "+00:00")).astimezone(UTC)
+        requested_at = datetime.fromisoformat(
+            requested.replace("Z", "+00:00")
+        ).astimezone(UTC)
     except (ValueError, TypeError) as exc:
-        raise KnowledgeValidationError("revalidation request identifiers/timestamp are malformed") from exc
+        raise KnowledgeValidationError(
+            "revalidation request identifiers/timestamp are malformed"
+        ) from exc
     return KnowledgeRevalidationRequest(
         revalidation_id=revalidation_id,
         knowledge_id=knowledge_id,
@@ -150,7 +161,9 @@ def _request_dict(request: KnowledgeRevalidationRequest) -> dict[str, str]:
     return {
         "revalidation_id": str(request.revalidation_id),
         "knowledge_id": request.knowledge_id.to_str(),
-        "requested_at": request.requested_at.astimezone(UTC).isoformat().replace("+00:00", "Z"),
+        "requested_at": (
+            request.requested_at.astimezone(UTC).isoformat().replace("+00:00", "Z")
+        ),
         "source": request.source,
     }
 
@@ -162,7 +175,9 @@ def _parse_result(payload: Mapping[str, object]) -> KnowledgeRevalidation:
     copied: dict[str, object] = {}
     for key, value in raw.items():
         if not isinstance(key, str):
-            raise KnowledgeValidationError("revalidation result has a non-string key")
+            raise KnowledgeValidationError(
+                "revalidation result has a non-string key"
+            )
         copied[key] = value
     return KnowledgeRevalidation.from_dict(copied)
 
@@ -200,12 +215,19 @@ class KnowledgeAssuranceLedger:
             )
         return tuple(entry.event for entry in entries)
 
-    def record_seed(self, metadata: KnowledgeAssuranceMetadata, *, recorded_at: datetime | None = None) -> int:
+    def record_seed(
+        self,
+        metadata: KnowledgeAssuranceMetadata,
+        *,
+        recorded_at: datetime | None = None,
+    ) -> int:
         """Append explicit source/freshness/evidence metadata without promotion."""
         if not isinstance(metadata, KnowledgeAssuranceMetadata):
             raise TypeError("metadata must be KnowledgeAssuranceMetadata")
         if self._knowledge_store.get(metadata.knowledge_id) is None:
-            raise KnowledgeNotFoundError(f"No stored knowledge record {metadata.knowledge_id}")
+            raise KnowledgeNotFoundError(
+                f"No stored knowledge record {metadata.knowledge_id}"
+            )
         event = Event.create(
             event_type=EventType.OBSERVATION_RECORDED,
             source=_SOURCE,
@@ -222,7 +244,9 @@ class KnowledgeAssuranceLedger:
         if not isinstance(request, KnowledgeRevalidationRequest):
             raise TypeError("request must be KnowledgeRevalidationRequest")
         if self._knowledge_store.get(request.knowledge_id) is None:
-            raise KnowledgeNotFoundError(f"No stored knowledge record {request.knowledge_id}")
+            raise KnowledgeNotFoundError(
+                f"No stored knowledge record {request.knowledge_id}"
+            )
         event = Event(
             event_id=_request_event_id(request.revalidation_id),
             event_type=EventType.OBSERVATION_RECORDED,
@@ -250,11 +274,14 @@ class KnowledgeAssuranceLedger:
         if not isinstance(result, KnowledgeRevalidation):
             raise TypeError("result must be KnowledgeRevalidation")
         if self._knowledge_store.get(result.knowledge_id) is None:
-            raise KnowledgeNotFoundError(f"No stored knowledge record {result.knowledge_id}")
+            raise KnowledgeNotFoundError(
+                f"No stored knowledge record {result.knowledge_id}"
+            )
 
         with self._lock:
             requests = {
-                request.revalidation_id: request for request in self.list_requests(result.knowledge_id)
+                request.revalidation_id: request
+                for request in self.list_requests(result.knowledge_id)
             }
             request = requests.get(result.revalidation_id)
             if request is None or request.knowledge_id != result.knowledge_id:
@@ -282,7 +309,10 @@ class KnowledgeAssuranceLedger:
                     f"Revalidation {result.revalidation_id} was already completed"
                 ) from exc
 
-    def list_requests(self, knowledge_id: KnowledgeId) -> tuple[KnowledgeRevalidationRequest, ...]:
+    def list_requests(
+        self,
+        knowledge_id: KnowledgeId,
+    ) -> tuple[KnowledgeRevalidationRequest, ...]:
         if not isinstance(knowledge_id, KnowledgeId):
             raise TypeError("knowledge_id must be a KnowledgeId")
         values: list[KnowledgeRevalidationRequest] = []
@@ -295,7 +325,10 @@ class KnowledgeAssuranceLedger:
                 values.append(request)
         return tuple(values)
 
-    def list_revalidations(self, knowledge_id: KnowledgeId) -> tuple[KnowledgeRevalidation, ...]:
+    def list_revalidations(
+        self,
+        knowledge_id: KnowledgeId,
+    ) -> tuple[KnowledgeRevalidation, ...]:
         if not isinstance(knowledge_id, KnowledgeId):
             raise TypeError("knowledge_id must be a KnowledgeId")
         values: list[KnowledgeRevalidation] = []
@@ -309,7 +342,10 @@ class KnowledgeAssuranceLedger:
         return tuple(values)
 
     def assurance_for(
-        self, knowledge_id: KnowledgeId, *, now: datetime | None = None
+        self,
+        knowledge_id: KnowledgeId,
+        *,
+        now: datetime | None = None,
     ) -> KnowledgeAssuranceMetadata:
         """Reconstruct current evidence state deterministically from durable history."""
         if not isinstance(knowledge_id, KnowledgeId):
@@ -351,7 +387,8 @@ class KnowledgeAssuranceLedger:
         contradictions = sum(
             1
             for relation in self._knowledge_store.list_contradictions()
-            if knowledge_id in (relation.first_knowledge_id, relation.second_knowledge_id)
+            if knowledge_id
+            in (relation.first_knowledge_id, relation.second_knowledge_id)
         )
         superseded = any(
             relation.superseded_knowledge_id == knowledge_id
