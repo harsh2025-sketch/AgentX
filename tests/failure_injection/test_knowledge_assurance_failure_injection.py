@@ -9,13 +9,18 @@ from unittest.mock import patch
 import pytest
 
 from agentx.core.ids import KnowledgeId
-from agentx.core.knowledge import KnowledgeRecord, KnowledgeStatus, KnowledgeType
+from agentx.core.knowledge import (
+    KnowledgeRecord,
+    KnowledgeStatus,
+    KnowledgeType,
+    ProvenanceKind,
+    ProvenanceReference,
+)
 from agentx.core.knowledge_assurance import (
     KnowledgeRevalidation,
     KnowledgeRevalidationOutcome,
     KnowledgeRevalidationRequest,
 )
-from agentx.core.knowledge import ProvenanceKind, ProvenanceReference
 from agentx.core.provenance import EvidenceKind, EvidenceReference
 from agentx.infrastructure.event_journal import EventJournal, EventJournalStorageError
 from agentx.infrastructure.knowledge_assurance_ledger import KnowledgeAssuranceLedger
@@ -66,13 +71,15 @@ def test_failed_result_append_leaves_only_request_and_no_confidence_increment(
         ),
     )
 
-    with patch.object(
-        EventJournal,
-        "append",
-        side_effect=EventJournalStorageError("injected durable write failure"),
+    with (
+        patch.object(
+            EventJournal,
+            "append",
+            side_effect=EventJournalStorageError("injected durable write failure"),
+        ),
+        pytest.raises(EventJournalStorageError),
     ):
-        with pytest.raises(EventJournalStorageError):
-            ledger.record_revalidation(result)
+        ledger.record_revalidation(result)
 
     restarted = KnowledgeAssuranceLedger(
         journal=EventJournal(database),
