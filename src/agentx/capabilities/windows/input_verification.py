@@ -15,6 +15,7 @@ itself, prove the intended application state. Verification evidence is narrow
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 from uuid import UUID
@@ -125,7 +126,7 @@ class ClipboardReadbackPort(Protocol):
         ...
 
 
-def _observation_data(observation: CapabilityObservation) -> dict[str, object] | None:
+def _observation_data(observation: CapabilityObservation) -> Mapping[str, object] | None:
     if not isinstance(observation, CapabilityObservation):
         raise TypeError("observation must be a CapabilityObservation")
     data = observation.to_dict()["data"]
@@ -147,7 +148,7 @@ def _keyboard_verdict(
 ) -> VerificationResult:
     if result.is_failure:
         return _verification_error(operation, result.unwrap_error())
-    evidence = result.unwrap()
+    evidence: object = result.unwrap()
     if not isinstance(evidence, IndependentVerificationEvidence):
         return VerificationResult(
             passed=False,
@@ -178,7 +179,7 @@ def _readback(
     result = port.read_text()
     if result.is_failure:
         return None, _verification_error(operation, result.unwrap_error())
-    raw = result.unwrap()
+    raw: object = result.unwrap()
     if not isinstance(raw, RawClipboardText):
         return None, VerificationResult(
             passed=False,
@@ -204,7 +205,8 @@ class VerifiedWindowsSendTextCapability:
         execution_port: KeyboardNativePort,
         verification_port: KeyboardActionVerificationPort,
     ) -> None:
-        if execution_port is verification_port:
+        execution_object: object = execution_port
+        if execution_object is verification_port:
             raise ValueError("execution and verification ports must be distinct objects")
         if not isinstance(verification_port, KeyboardActionVerificationPort):
             raise TypeError("verification_port must implement KeyboardActionVerificationPort")
@@ -259,7 +261,8 @@ class VerifiedWindowsSendKeysCapability:
         execution_port: KeyboardNativePort,
         verification_port: KeyboardActionVerificationPort,
     ) -> None:
-        if execution_port is verification_port:
+        execution_object: object = execution_port
+        if execution_object is verification_port:
             raise ValueError("execution and verification ports must be distinct objects")
         if not isinstance(verification_port, KeyboardActionVerificationPort):
             raise TypeError("verification_port must implement KeyboardActionVerificationPort")
@@ -311,7 +314,8 @@ class _ClipboardVerifiedBase:
         execution_port: ClipboardNativePort,
         verification_port: ClipboardReadbackPort,
     ) -> None:
-        if execution_port is verification_port:
+        execution_object: object = execution_port
+        if execution_object is verification_port:
             raise ValueError("execution and verification ports must be distinct objects")
         if not isinstance(verification_port, ClipboardReadbackPort):
             raise TypeError("verification_port must implement ClipboardReadbackPort")
