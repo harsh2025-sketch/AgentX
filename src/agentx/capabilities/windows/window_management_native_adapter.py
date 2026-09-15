@@ -62,8 +62,8 @@ class CanonicalNativeWindowManagementAdapter:
         return _receipt(result, handle=handle, operation="move_resize")
 
 
-def _receipt[_NativeOutcomeT](
-    result: Result[_NativeOutcomeT, AgentXError],
+def _receipt[NativeOutcomeT](
+    result: Result[NativeOutcomeT, AgentXError],
     *,
     handle: int,
     operation: str,
