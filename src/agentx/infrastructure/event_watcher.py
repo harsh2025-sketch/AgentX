@@ -176,8 +176,7 @@ class WatcherObservation:
 
 class WatcherSource(Protocol):
     @property
-    def source_id(self) -> WatcherSourceId:
-        ...
+    def source_id(self) -> WatcherSourceId: ...
 
     def poll(
         self,
