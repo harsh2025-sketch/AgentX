@@ -95,7 +95,11 @@ class HiveFirstResearchLookup:
             raise TypeError("requirements must contain KnowledgeGapRequirement values")
         if not isinstance(query, KnowledgeRetrievalQuery):
             raise TypeError("query must be a KnowledgeRetrievalQuery")
-        if query.scope is None or not isinstance(query.scope, KnowledgeScope) or not query.scope.dimensions:
+        if (
+            query.scope is None
+            or not isinstance(query.scope, KnowledgeScope)
+            or not query.scope.dimensions
+        ):
             raise ValueError("Hive-first research lookup requires an explicit non-empty scope")
 
         records_by_id: dict[KnowledgeId, KnowledgeRecord] = {}
