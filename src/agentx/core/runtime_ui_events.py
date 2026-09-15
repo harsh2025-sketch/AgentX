@@ -154,9 +154,12 @@ class RuntimeUiEvent:
         object.__setattr__(self, "state", _state(self.state))
         if self.correlation_id is not None:
             _uuid(self.correlation_id, field_name="correlation_id")
-        if self.task_id is not None:
-            if not isinstance(self.task_id, str) or not self.task_id.strip() or len(self.task_id) > 512:
-                raise RuntimeUiValidationError("task_id must be bounded non-empty text")
+        if self.task_id is not None and (
+            not isinstance(self.task_id, str)
+            or not self.task_id.strip()
+            or len(self.task_id) > 512
+        ):
+            raise RuntimeUiValidationError("task_id must be bounded non-empty text")
         object.__setattr__(self, "payload", _validate_safe_payload(self.payload))
         if self.schema_version != RUNTIME_UI_SCHEMA_VERSION:
             raise RuntimeUiValidationError("unsupported runtime UI schema version")
