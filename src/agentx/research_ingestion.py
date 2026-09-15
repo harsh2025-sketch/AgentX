@@ -129,7 +129,7 @@ class ResearchFinding:
         )
 
     @classmethod
-    def from_dict(cls, raw: Mapping[str, object]) -> "ResearchFinding":
+    def from_dict(cls, raw: Mapping[str, object]) -> ResearchFinding:
         expected = {
             "schema_version",
             "claim",
@@ -140,7 +140,9 @@ class ResearchFinding:
             "confidence",
         }
         if set(raw) != expected:
-            raise ResearchFindingValidationError("research finding fields are incomplete or unknown")
+            raise ResearchFindingValidationError(
+                "research finding fields are incomplete or unknown"
+            )
         version = raw["schema_version"]
         if type(version) is not int or version != CURRENT_RESEARCH_FINDING_SCHEMA_VERSION:
             raise ResearchFindingValidationError("unsupported research finding schema version")
