@@ -65,12 +65,12 @@ from agentx.kernel.permissions import Permission
 from agentx.kernel.risk import RiskAssessment, assess_risk
 
 __all__ = [
-    "MAX_STRUCTURAL_FILE_BYTES",
     "FILESYSTEM_CREATE_DIRECTORY_IDENTITY",
     "FILESYSTEM_DELETE_DIRECTORY_IDENTITY",
     "FILESYSTEM_DELETE_FILE_IDENTITY",
     "FILESYSTEM_MOVE_FILE_IDENTITY",
     "FILESYSTEM_RENAME_FILE_IDENTITY",
+    "MAX_STRUCTURAL_FILE_BYTES",
     "CreateDirectoryParams",
     "DeleteDirectoryParams",
     "DeleteFileParams",
@@ -98,8 +98,12 @@ COLLISION_ERROR_CODE: Final[str] = "capabilities.filesystem.structural.collision
 UNSUPPORTED_TARGET_ERROR_CODE: Final[str] = "capabilities.filesystem.structural.unsupported_target"
 PARENT_MISSING_ERROR_CODE: Final[str] = "capabilities.filesystem.structural.parent_missing"
 FILE_TOO_LARGE_ERROR_CODE: Final[str] = "capabilities.filesystem.structural.file_too_large"
-DIRECTORY_NOT_EMPTY_ERROR_CODE: Final[str] = "capabilities.filesystem.structural.directory_not_empty"
-CROSS_PARENT_RENAME_ERROR_CODE: Final[str] = "capabilities.filesystem.structural.cross_parent_rename"
+DIRECTORY_NOT_EMPTY_ERROR_CODE: Final[str] = (
+    "capabilities.filesystem.structural.directory_not_empty"
+)
+CROSS_PARENT_RENAME_ERROR_CODE: Final[str] = (
+    "capabilities.filesystem.structural.cross_parent_rename"
+)
 OS_ERROR_CODE: Final[str] = "capabilities.filesystem.structural.os_error"
 VERIFICATION_ERROR_CODE: Final[str] = "capabilities.filesystem.structural.verification_failed"
 RISK_INVARIANT_ERROR_CODE: Final[str] = "capabilities.filesystem.structural.risk_invariant"
@@ -417,7 +421,11 @@ def _parent_ready(path: Path) -> Result[None, AgentXError]:
         )
     if not stat.S_ISDIR(info.st_mode):
         return Result.failure(
-            _error(PARENT_MISSING_ERROR_CODE, "destination parent is not a directory", ErrorCategory.PRECONDITION)
+            _error(
+                PARENT_MISSING_ERROR_CODE,
+                "destination parent is not a directory",
+                ErrorCategory.PRECONDITION,
+            )
         )
     return Result.success(None)
 
@@ -427,11 +435,18 @@ def _fingerprint(path: Path) -> Result[_Fingerprint, AgentXError]:
         info = path.lstat()
     except FileNotFoundError as exc:
         return Result.failure(
-            _error(NOT_FOUND_ERROR_CODE, "regular file does not exist", ErrorCategory.NOT_FOUND, cause=exc)
+            _error(
+                NOT_FOUND_ERROR_CODE,
+                "regular file does not exist",
+                ErrorCategory.NOT_FOUND,
+                cause=exc,
+            )
         )
     except PermissionError as exc:
         return Result.failure(
-            _error(OS_ERROR_CODE, "regular-file inspection denied", ErrorCategory.PERMISSION, cause=exc)
+            _error(
+                OS_ERROR_CODE, "regular-file inspection denied", ErrorCategory.PERMISSION, cause=exc
+            )
         )
     except OSError as exc:
         return Result.failure(
@@ -491,7 +506,9 @@ def _fingerprint(path: Path) -> Result[_Fingerprint, AgentXError]:
         )
     except PermissionError as exc:
         return Result.failure(
-            _error(OS_ERROR_CODE, "file fingerprint read denied", ErrorCategory.PERMISSION, cause=exc)
+            _error(
+                OS_ERROR_CODE, "file fingerprint read denied", ErrorCategory.PERMISSION, cause=exc
+            )
         )
     except OSError as exc:
         return Result.failure(
@@ -530,11 +547,15 @@ def _directory_empty(path: Path) -> Result[bool, AgentXError]:
             return Result.success(next(entries, None) is None)
     except FileNotFoundError as exc:
         return Result.failure(
-            _error(NOT_FOUND_ERROR_CODE, "directory does not exist", ErrorCategory.NOT_FOUND, cause=exc)
+            _error(
+                NOT_FOUND_ERROR_CODE, "directory does not exist", ErrorCategory.NOT_FOUND, cause=exc
+            )
         )
     except PermissionError as exc:
         return Result.failure(
-            _error(OS_ERROR_CODE, "directory inspection denied", ErrorCategory.PERMISSION, cause=exc)
+            _error(
+                OS_ERROR_CODE, "directory inspection denied", ErrorCategory.PERMISSION, cause=exc
+            )
         )
     except OSError as exc:
         return Result.failure(
@@ -548,9 +569,14 @@ def _directory_empty(path: Path) -> Result[bool, AgentXError]:
         )
 
 
-def _risk_guard(request: FilesystemStructuralRiskRequest, descriptor: CapabilityDescriptor) -> AgentXError | None:
+def _risk_guard(
+    request: FilesystemStructuralRiskRequest, descriptor: CapabilityDescriptor
+) -> AgentXError | None:
     result = classify_filesystem_structural_risk(request)
-    if result.assessment.effective_level.severity > descriptor.risk_assessment.effective_level.severity:
+    if (
+        result.assessment.effective_level.severity
+        > descriptor.risk_assessment.effective_level.severity
+    ):
         return _error(
             RISK_INVARIANT_ERROR_CODE,
             "request-sensitive structural risk exceeds the capability governance ceiling",
@@ -650,7 +676,12 @@ def _move_or_rename_execute(
         )
     except PermissionError as exc:
         return _failed(
-            _error(OS_ERROR_CODE, "operating system denied structural mutation", ErrorCategory.PERMISSION, cause=exc),
+            _error(
+                OS_ERROR_CODE,
+                "operating system denied structural mutation",
+                ErrorCategory.PERMISSION,
+                cause=exc,
+            ),
             "structural mutation denied",
         )
     except OSError as exc:
@@ -725,7 +756,9 @@ class FilesystemCreateDirectoryCapability:
             return _failed(exists.unwrap_error(), "directory target inspection failed")
         if exists.unwrap():
             return _failed(
-                _error(COLLISION_ERROR_CODE, "directory target already exists", ErrorCategory.CONFLICT),
+                _error(
+                    COLLISION_ERROR_CODE, "directory target already exists", ErrorCategory.CONFLICT
+                ),
                 "directory creation collision",
             )
         risk_error = _risk_guard(
@@ -743,22 +776,40 @@ class FilesystemCreateDirectoryCapability:
             path.mkdir(parents=False, exist_ok=False)
         except FileExistsError as exc:
             return _failed(
-                _error(COLLISION_ERROR_CODE, "directory target appeared before creation", ErrorCategory.CONFLICT, cause=exc),
+                _error(
+                    COLLISION_ERROR_CODE,
+                    "directory target appeared before creation",
+                    ErrorCategory.CONFLICT,
+                    cause=exc,
+                ),
                 "directory creation collision",
             )
         except (FileNotFoundError, NotADirectoryError) as exc:
             return _failed(
-                _error(PARENT_MISSING_ERROR_CODE, "directory parent disappeared before creation", ErrorCategory.PRECONDITION, cause=exc),
+                _error(
+                    PARENT_MISSING_ERROR_CODE,
+                    "directory parent disappeared before creation",
+                    ErrorCategory.PRECONDITION,
+                    cause=exc,
+                ),
                 "directory parent disappeared",
             )
         except PermissionError as exc:
             return _failed(
-                _error(OS_ERROR_CODE, "directory creation denied", ErrorCategory.PERMISSION, cause=exc),
+                _error(
+                    OS_ERROR_CODE, "directory creation denied", ErrorCategory.PERMISSION, cause=exc
+                ),
                 "directory creation denied",
             )
         except OSError as exc:
             return _failed(
-                _error(OS_ERROR_CODE, "directory creation failed", ErrorCategory.EXECUTION, retryability=Retryability.UNKNOWN, cause=exc),
+                _error(
+                    OS_ERROR_CODE,
+                    "directory creation failed",
+                    ErrorCategory.EXECUTION,
+                    retryability=Retryability.UNKNOWN,
+                    cause=exc,
+                ),
                 "directory creation failed",
             )
         return ExecutionResult(
@@ -785,8 +836,12 @@ class FilesystemCreateDirectoryCapability:
         path = _path(request.params.path, field_name="path")
         empty = _directory_empty(path)
         if empty.is_failure or not empty.unwrap():
-            return _verify_fail("created directory is not independently confirmed as an empty directory")
-        return VerificationResult(passed=True, detail="empty directory existence independently verified")
+            return _verify_fail(
+                "created directory is not independently confirmed as an empty directory"
+            )
+        return VerificationResult(
+            passed=True, detail="empty directory existence independently verified"
+        )
 
 
 class FilesystemMoveFileCapability:
@@ -904,7 +959,13 @@ class FilesystemDeleteFileCapability:
             path.unlink()
         except FileNotFoundError as exc:
             return _failed(
-                _error(NOT_FOUND_ERROR_CODE, "file disappeared before deletion", ErrorCategory.CONFLICT, retryability=Retryability.UNKNOWN, cause=exc),
+                _error(
+                    NOT_FOUND_ERROR_CODE,
+                    "file disappeared before deletion",
+                    ErrorCategory.CONFLICT,
+                    retryability=Retryability.UNKNOWN,
+                    cause=exc,
+                ),
                 "delete_file target disappeared",
             )
         except PermissionError as exc:
@@ -914,7 +975,13 @@ class FilesystemDeleteFileCapability:
             )
         except OSError as exc:
             return _failed(
-                _error(OS_ERROR_CODE, "file deletion failed", ErrorCategory.EXECUTION, retryability=Retryability.UNKNOWN, cause=exc),
+                _error(
+                    OS_ERROR_CODE,
+                    "file deletion failed",
+                    ErrorCategory.EXECUTION,
+                    retryability=Retryability.UNKNOWN,
+                    cause=exc,
+                ),
                 "delete_file failed",
             )
         return ExecutionResult(
@@ -941,7 +1008,9 @@ class FilesystemDeleteFileCapability:
         exists = _exists(_path(request.params.path, field_name="path"))
         if exists.is_failure or exists.unwrap():
             return _verify_fail("deleted file path is not independently confirmed absent")
-        return VerificationResult(passed=True, detail="deleted file path independently confirmed absent")
+        return VerificationResult(
+            passed=True, detail="deleted file path independently confirmed absent"
+        )
 
 
 class FilesystemDeleteDirectoryCapability:
@@ -987,7 +1056,13 @@ class FilesystemDeleteDirectoryCapability:
             path.rmdir()
         except FileNotFoundError as exc:
             return _failed(
-                _error(NOT_FOUND_ERROR_CODE, "directory disappeared before deletion", ErrorCategory.CONFLICT, retryability=Retryability.UNKNOWN, cause=exc),
+                _error(
+                    NOT_FOUND_ERROR_CODE,
+                    "directory disappeared before deletion",
+                    ErrorCategory.CONFLICT,
+                    retryability=Retryability.UNKNOWN,
+                    cause=exc,
+                ),
                 "delete_directory target disappeared",
             )
         except OSError as exc:

@@ -55,8 +55,11 @@ def test_windows_unicode_and_long_component_structural_round_trip(tmp_path: Path
     delete_request = delete_directory_request(str(directory.resolve()))
     delete_result = delete_directory.execute(delete_request, _context())
     assert delete_result.succeeded is True
-    assert delete_directory.verify(
-        delete_request,
-        delete_result.observation,
-        _context(),
-    ).passed is True
+    assert (
+        delete_directory.verify(
+            delete_request,
+            delete_result.observation,
+            _context(),
+        ).passed
+        is True
+    )

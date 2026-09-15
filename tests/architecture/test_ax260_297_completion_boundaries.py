@@ -7,9 +7,7 @@ from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[2]
 _STRUCTURAL = _REPO / "src" / "agentx" / "capabilities" / "filesystem_structural.py"
-_INPUT_VERIFY = (
-    _REPO / "src" / "agentx" / "capabilities" / "windows" / "input_verification.py"
-)
+_INPUT_VERIFY = _REPO / "src" / "agentx" / "capabilities" / "windows" / "input_verification.py"
 
 
 def _imports(path: Path) -> tuple[str, ...]:
@@ -54,8 +52,7 @@ def test_input_verification_is_observation_only_and_cannot_own_authority() -> No
         "agentx.capabilities.runtime",
     ):
         assert not any(
-            imported == forbidden or imported.startswith(f"{forbidden}.")
-            for imported in imports
+            imported == forbidden or imported.startswith(f"{forbidden}.") for imported in imports
         )
 
 
