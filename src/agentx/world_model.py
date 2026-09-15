@@ -791,9 +791,11 @@ class ProcessState:
         _validate_untrusted_text(
             self.executable_path, field_name="executable_path", max_length=4096
         )
-        if self.application_id is not None:
-            if self.application_id.kind is not WorldEntityKind.APPLICATION:
-                raise WorldModelValidationError("application_id must identify APPLICATION")
+        if (
+            self.application_id is not None
+            and self.application_id.kind is not WorldEntityKind.APPLICATION
+        ):
+            raise WorldModelValidationError("application_id must identify APPLICATION")
         for window_id in self.window_ids:
             if window_id.kind is not WorldEntityKind.WINDOW:
                 raise WorldModelValidationError("window_ids must identify WINDOW entities")
@@ -1339,9 +1341,7 @@ class ApplicationRegistry:
         metadata: ObservationMetadata,
     ) -> tuple[ApplicationRecord, ...]:
         """Drop relationships absent from a full refreshed environment snapshot."""
-        _validate_text(
-            environment_id, field_name="environment_id", max_length=_MAX_IDENTIFIER
-        )
+        _validate_text(environment_id, field_name="environment_id", max_length=_MAX_IDENTIFIER)
         if metadata.environment_id != environment_id:
             raise WorldModelValidationError("registry reconciliation crosses environment scope")
         updated_records: list[ApplicationRecord] = []
@@ -1685,9 +1685,7 @@ class WorldHiveLinkage:
                     separators=(",", ":"),
                     sort_keys=True,
                 ),
-                scope=KnowledgeScope(
-                    dimensions={ScopeDimension.ENVIRONMENT: link.environment_id}
-                ),
+                scope=KnowledgeScope(dimensions={ScopeDimension.ENVIRONMENT: link.environment_id}),
                 provenance=ProvenanceReference(
                     kind=ProvenanceKind.DERIVED,
                     reference=_WORLD_LINK_PROVENANCE,
@@ -1769,9 +1767,7 @@ class WorldHiveLinkage:
         if not isinstance(evidence_raw, list) or not evidence_raw:
             raise WorldModelValidationError("stored world/Hive link evidence is malformed")
         evidence = tuple(
-            EvidenceReference.from_dict(item)
-            for item in evidence_raw
-            if isinstance(item, Mapping)
+            EvidenceReference.from_dict(item) for item in evidence_raw if isinstance(item, Mapping)
         )
         if len(evidence) != len(evidence_raw):
             raise WorldModelValidationError("stored world/Hive link evidence is malformed")
@@ -1801,7 +1797,7 @@ def normalize_filesystem_path(path: str, *, windows: bool) -> str:
             raise WorldModelValidationError("Windows filesystem context requires an absolute path")
         return ntpath.normcase(normalized)
     normalized = os.path.normpath(checked)
-    if not os.path.isabs(normalized):
+    if not Path(normalized).is_absolute():
         raise WorldModelValidationError("filesystem context requires an absolute path")
     return normalized
 
@@ -1964,9 +1960,7 @@ class WorldModel:
                 parent_pid=process.parent_process_id,
                 application_id=None if app_identity is None else app_identity.entity_id,
                 window_ids=tuple(
-                    window_ids[handle]
-                    for handle in process.window_handles
-                    if handle in window_ids
+                    window_ids[handle] for handle in process.window_handles if handle in window_ids
                 ),
                 availability=WorldAvailability.AVAILABLE,
                 metadata=metadata,
@@ -1993,9 +1987,7 @@ class WorldModel:
                 process_ids=pids,
                 window_ids=wins,
                 availability=(
-                    WorldAvailability.AVAILABLE
-                    if pids or wins
-                    else WorldAvailability.UNAVAILABLE
+                    WorldAvailability.AVAILABLE if pids or wins else WorldAvailability.UNAVAILABLE
                 ),
                 metadata=metadata,
             )
@@ -2161,8 +2153,7 @@ class WorldModel:
         )
         health = tuple(
             sorted(
-                (str(item.capability), item.availability.value)
-                for item in descriptor.capabilities
+                (str(item.capability), item.availability.value) for item in descriptor.capabilities
             )
         )
         state = DeviceState(
@@ -2178,8 +2169,7 @@ class WorldModel:
         if availability is not WorldAvailability.AVAILABLE:
             dependent = self.cache.invalidate_where(
                 lambda dependent_id, value: (
-                    dependent_id != entity_id
-                    and _metadata_of(value).device_id == entity_id
+                    dependent_id != entity_id and _metadata_of(value).device_id == entity_id
                 ),
                 reason="device is unavailable",
             )
@@ -2326,7 +2316,8 @@ class WorldModel:
             affected = tuple(
                 entity_id
                 for entity_id in binding.entity_ids
-                if entity_id.kind in {
+                if entity_id.kind
+                in {
                     WorldEntityKind.BROWSER_PAGE,
                     WorldEntityKind.BROWSER_SESSION,
                 }

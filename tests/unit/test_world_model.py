@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import FrozenInstanceError
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
-from threading import Event as ThreadEvent, Thread
-from typing import Callable
+from threading import Event as ThreadEvent
+from threading import Thread
 from uuid import uuid4
 
 import pytest
@@ -601,9 +602,7 @@ def test_windows_refresh_invalidates_disappeared_process_window_and_application(
     )
     world.ingest_windows_snapshot(
         empty,
-        metadata=metadata(
-            observation_id="windows-gone", observed_at=NOW + timedelta(seconds=1)
-        ),
+        metadata=metadata(observation_id="windows-gone", observed_at=NOW + timedelta(seconds=1)),
         application_by_pid={},
         foreground_handle=None,
     )
@@ -618,9 +617,7 @@ def test_windows_refresh_invalidates_disappeared_process_window_and_application(
         is WorldFreshness.STALE
     )
     assert (
-        world.cache.lookup(
-            world.active_window_id("env-local"), at=at, refresh=False
-        ).freshness
+        world.cache.lookup(world.active_window_id("env-local"), at=at, refresh=False).freshness
         is WorldFreshness.STALE
     )
     assert world.tasks.get(task_id) is None
@@ -644,16 +641,13 @@ def test_browser_active_page_change_and_close_invalidate_only_affected_session()
         _browser_observation(
             url="https://example.test/two", document_version="doc-2", target_value="tab-2"
         ),
-        metadata=metadata(
-            observation_id="browser-two", observed_at=NOW + timedelta(seconds=1)
-        ),
+        metadata=metadata(observation_id="browser-two", observed_at=NOW + timedelta(seconds=1)),
         active=True,
     )
     at = NOW + timedelta(seconds=1)
     assert first.session_id == second.session_id
     assert (
-        world.cache.lookup(first.entity_id, at=at, refresh=False).freshness
-        is WorldFreshness.STALE
+        world.cache.lookup(first.entity_id, at=at, refresh=False).freshness is WorldFreshness.STALE
     )
     session_before_close = world.cache.lookup(second.session_id, at=at, refresh=False)
     assert isinstance(session_before_close.value, BrowserSessionState)
@@ -661,8 +655,7 @@ def test_browser_active_page_change_and_close_invalidate_only_affected_session()
 
     world.close_browser_page(second.entity_id)
     assert (
-        world.cache.lookup(second.entity_id, at=at, refresh=False).freshness
-        is WorldFreshness.STALE
+        world.cache.lookup(second.entity_id, at=at, refresh=False).freshness is WorldFreshness.STALE
     )
     assert (
         world.cache.lookup(second.session_id, at=at, refresh=False).freshness
