@@ -14,6 +14,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import StrEnum
+from typing import Final
 
 from agentx.core.knowledge import (
     KnowledgeRecord,
@@ -25,11 +26,14 @@ from agentx.core.knowledge import (
 from agentx.hive.semantic_memory import KnowledgeStorePort, SEMANTIC_KNOWLEDGE_TYPES
 
 __all__ = [
+    "MAX_SCOPED_KNOWLEDGE_RESULTS",
     "GlobalKnowledgePolicy",
     "ScopedKnowledgeQuery",
     "ScopedKnowledgeRetrieval",
     "ScopedKnowledgeRetrievalError",
 ]
+
+MAX_SCOPED_KNOWLEDGE_RESULTS: Final[int] = 256
 
 
 class ScopedKnowledgeRetrievalError(ValueError):
@@ -57,6 +61,7 @@ class ScopedKnowledgeQuery:
     knowledge_types: frozenset[KnowledgeType] | None = None
     statuses: frozenset[KnowledgeStatus] | None = None
     provenance_kinds: frozenset[ProvenanceKind] | None = None
+    limit: int = MAX_SCOPED_KNOWLEDGE_RESULTS
 
     def __post_init__(self) -> None:
         if not isinstance(self.scope, KnowledgeScope):
@@ -72,6 +77,14 @@ class ScopedKnowledgeQuery:
         _validate_members(self.knowledge_types, KnowledgeType, "knowledge_types")
         _validate_members(self.statuses, KnowledgeStatus, "statuses")
         _validate_members(self.provenance_kinds, ProvenanceKind, "provenance_kinds")
+        if (
+            not isinstance(self.limit, int)
+            or isinstance(self.limit, bool)
+            or not 1 <= self.limit <= MAX_SCOPED_KNOWLEDGE_RESULTS
+        ):
+            raise ScopedKnowledgeRetrievalError(
+                f"limit must be an integer from 1 to {MAX_SCOPED_KNOWLEDGE_RESULTS}"
+            )
 
     def matches(self, record: KnowledgeRecord) -> bool:
         """Return whether ``record`` is visible inside this exact boundary."""
@@ -106,13 +119,27 @@ class ScopedKnowledgeRetrieval:
             raise TypeError("store must satisfy KnowledgeStorePort")
 
     def retrieve(self, query: ScopedKnowledgeQuery) -> tuple[KnowledgeRecord, ...]:
+        """Return a bounded deterministic view, preferring exact-scope records.
+
+        Global records can be visible only through the typed opt-in policy and
+        are ordered after exact-scope evidence.  This prevents storage insertion
+        order or UUID generation from changing scope precedence.
+        """
         if not isinstance(query, ScopedKnowledgeQuery):
             raise TypeError("query must be a ScopedKnowledgeQuery")
-        return tuple(
+        matches = [
             record
             for record in self.store.list_records()
             if record.knowledge_type in SEMANTIC_KNOWLEDGE_TYPES and query.matches(record)
+        ]
+        matches.sort(
+            key=lambda record: (
+                record.scope != query.scope,
+                record.created_at,
+                record.knowledge_id.to_str(),
+            )
         )
+        return tuple(matches[: query.limit])
 
 
 def _validate_members(
