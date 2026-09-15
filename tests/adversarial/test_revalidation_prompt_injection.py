@@ -8,10 +8,18 @@ from pathlib import Path
 import pytest
 
 from agentx.core.ids import KnowledgeId
-from agentx.core.knowledge import KnowledgeRecord, KnowledgeStatus, KnowledgeType
-from agentx.core.knowledge_assurance import KnowledgeRevalidation, KnowledgeRevalidationOutcome
+from agentx.core.knowledge import (
+    KnowledgeRecord,
+    KnowledgeStatus,
+    KnowledgeType,
+    ProvenanceKind,
+    ProvenanceReference,
+)
+from agentx.core.knowledge_assurance import (
+    KnowledgeRevalidation,
+    KnowledgeRevalidationOutcome,
+)
 from agentx.core.provenance import EvidenceKind, EvidenceReference
-from agentx.core.knowledge import ProvenanceKind, ProvenanceReference
 from agentx.infrastructure.event_journal import EventJournal
 from agentx.infrastructure.knowledge_assurance_ledger import (
     KnowledgeAssuranceLedger,
@@ -23,7 +31,9 @@ from agentx.infrastructure.persistence import SQLiteDatabase
 _T0 = datetime(2026, 9, 15, 8, 0, tzinfo=UTC)
 
 
-def test_model_text_claiming_verified_cannot_create_revalidation_transition(tmp_path: Path) -> None:
+def test_model_text_claiming_verified_cannot_create_revalidation_transition(
+    tmp_path: Path,
+) -> None:
     database = SQLiteDatabase((tmp_path / "agentx.sqlite3").resolve())
     store = KnowledgeStore(database)
     record = KnowledgeRecord(
