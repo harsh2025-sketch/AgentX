@@ -86,7 +86,9 @@ def test_candidate_and_retired_revisions_are_never_resurrected(tmp_path: Path) -
     assert result.selected is None
 
 
-def test_stale_historical_revision_is_not_reused_when_new_revision_is_active(tmp_path: Path) -> None:
+def test_stale_historical_revision_is_not_reused_when_new_revision_is_active(
+    tmp_path: Path,
+) -> None:
     store = _store(tmp_path / "agentx.sqlite3")
     revision1 = _candidate(label="old")
     store.insert(revision1)
