@@ -6,11 +6,10 @@ import ast
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[2]
-_MODULES = (
-    _REPO / "src" / "agentx" / "cognition" / "research_gap_state.py",
-    _REPO / "src" / "agentx" / "cognition" / "hive_first_research.py",
-    _REPO / "src" / "agentx" / "cognition" / "research_ingestion.py",
-)
+_GAP = _REPO / "src" / "agentx" / "cognition" / "research_gap_state.py"
+_LOOKUP = _REPO / "src" / "agentx" / "hive_first_research.py"
+_INGESTION = _REPO / "src" / "agentx" / "research_ingestion.py"
+_MODULES = (_GAP, _LOOKUP, _INGESTION)
 _FORBIDDEN_PREFIXES = (
     "agentx.kernel",
     "agentx.capabilities.runtime",
@@ -40,18 +39,25 @@ def test_research_gap_lookup_and_ingestion_cannot_import_authority_or_execution_
             ), f"{path.name} crosses trusted execution boundary via {imported}"
 
 
+def test_cognition_research_classifier_has_no_outward_infrastructure_dependency() -> None:
+    imports = _imports(_GAP)
+    assert not any(
+        imported == "agentx.infrastructure" or imported.startswith("agentx.infrastructure.")
+        for imported in imports
+    )
+    cognition_dir = _REPO / "src" / "agentx" / "cognition"
+    assert not (cognition_dir / "hive_first_research.py").exists()
+    assert not (cognition_dir / "research_ingestion.py").exists()
+
+
 def test_research_campaign_modules_are_bounded_explicit_composition_surfaces() -> None:
-    gap = (_REPO / "src" / "agentx" / "cognition" / "research_gap_state.py").read_text(
-        encoding="utf-8"
-    )
-    lookup = (_REPO / "src" / "agentx" / "cognition" / "hive_first_research.py").read_text(
-        encoding="utf-8"
-    )
-    ingestion = (_REPO / "src" / "agentx" / "cognition" / "research_ingestion.py").read_text(
-        encoding="utf-8"
-    )
+    gap = _GAP.read_text(encoding="utf-8")
+    lookup = _LOOKUP.read_text(encoding="utf-8")
+    ingestion = _INGESTION.read_text(encoding="utf-8")
 
     assert "MAX_RESEARCH_GAP_RECORDS" in gap
     assert "MAX_HIVE_FIRST_LOOKUP_IDS" in lookup
     assert "KnowledgeRecord.create" in ingestion
     assert "update_status" not in ingestion
+    assert "CapabilityExecutionLoop" not in lookup
+    assert "CapabilityExecutionLoop" not in ingestion
