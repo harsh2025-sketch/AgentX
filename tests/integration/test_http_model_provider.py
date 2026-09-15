@@ -8,7 +8,7 @@ import threading
 import time
 import unittest
 from collections.abc import Iterator
-from contextlib import contextmanager
+from contextlib import contextmanager, suppress
 from dataclasses import replace
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -54,7 +54,7 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, format: str, *args: object) -> None:
         pass
 
-    def do_POST(self) -> None:  # noqa: N802
+    def do_POST(self) -> None:
         self.close_connection = True
         body = self.rfile.read(int(self.headers["Content-Length"]))
         self.requests.append((dict(self.headers), body))
@@ -67,10 +67,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(len(self.response_body)))
         self.send_header("Location", "http://127.0.0.1:1/credential-leak")
         self.end_headers()
-        try:
+        with suppress(BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
             self.wfile.write(self.response_body)
-        except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
-            pass
 
 
 @contextmanager

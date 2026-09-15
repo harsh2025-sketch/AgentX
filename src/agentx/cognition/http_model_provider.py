@@ -97,7 +97,7 @@ class HttpModelConfig:
             raise ValueError("unsupported output limit field")
 
 
-class _Cancelled(Exception):
+class _CancelledError(Exception):
     pass
 
 
@@ -174,7 +174,7 @@ class HttpModelProvider:
 
     def _remaining(self, deadline: float) -> float:
         if self._cancellation is not None and self._cancellation.is_cancelled:
-            raise _Cancelled
+            raise _CancelledError
         remaining = deadline - time.monotonic()
         if remaining <= 0:
             raise TimeoutError
@@ -206,6 +206,7 @@ class HttpModelProvider:
         started = time.monotonic()
         deadline = started + config.timeout_seconds
         connection: http.client.HTTPConnection | None = None
+        response: http.client.HTTPResponse | None = None
         try:
             self._remaining(deadline)
             headers = {"Content-Type": "application/json", "Accept": "application/json"}
@@ -256,11 +257,13 @@ class HttpModelProvider:
                 if total > config.max_response_bytes:
                     return self._failure(ProviderFailureKind.RESOURCE_LIMITED)
                 chunks.append(chunk)
+            if response.length not in (None, 0):
+                raise ValueError("incomplete HTTP response body")
             self._remaining(deadline)
             result = self._decode(b"".join(chunks), time.monotonic() - started)
             self._remaining(deadline)
             return Result.success(result)
-        except _Cancelled:
+        except _CancelledError:
             return Result.failure(
                 AgentXError(
                     code="model_provider.cancelled",
@@ -276,6 +279,8 @@ class HttpModelProvider:
         except (ValueError, TypeError, KeyError, OverflowError, RecursionError):
             return self._failure(ProviderFailureKind.INTERNAL)
         finally:
+            if response is not None:
+                response.close()
             if connection is not None:
                 connection.close()
 
