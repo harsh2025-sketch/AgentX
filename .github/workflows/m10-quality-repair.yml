@@ -1,0 +1,93 @@
+name: Temporary M10 Quality Repair
+
+on:
+  push:
+    branches:
+      - agent-m10/world-model-completion
+
+permissions:
+  contents: write
+
+jobs:
+  repair-and-preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out M10 branch
+        uses: actions/checkout@v7
+        with:
+          ref: agent-m10/world-model-completion
+
+      - name: Apply exact Ruff repairs
+        shell: python
+        run: |
+          from pathlib import Path
+
+          production = Path("src/agentx/world_model.py")
+          text = production.read_text(encoding="utf-8")
+          old = '''        if self.application_id is not None:\n            if self.application_id.kind is not WorldEntityKind.APPLICATION:\n                raise WorldModelValidationError("application_id must identify APPLICATION")\n'''
+          new = '''        if (\n            self.application_id is not None\n            and self.application_id.kind is not WorldEntityKind.APPLICATION\n        ):\n            raise WorldModelValidationError("application_id must identify APPLICATION")\n'''
+          if old in text:
+              text = text.replace(old, new, 1)
+          elif new not in text:
+              raise SystemExit("nested application_id validation pattern not found")
+          text = text.replace(
+              "if not os.path.isabs(normalized):",
+              "if not Path(normalized).is_absolute():",
+              1,
+          )
+          production.write_text(text, encoding="utf-8", newline="\n")
+
+      - name: Install development tools
+        run: python -m pip install ".[dev]"
+
+      - name: Auto-fix imports and format M10 files
+        shell: bash
+        run: |
+          python -m ruff check --fix \
+            src/agentx/world_model.py \
+            tests/unit/test_world_model.py \
+            tests/integration/test_world_model_integration.py \
+            tests/integration/test_world_model_windows_host.py \
+            tests/adversarial/test_world_model_adversarial.py \
+            tests/architecture/test_world_model_boundaries.py
+          python -m ruff format \
+            src/agentx/world_model.py \
+            tests/unit/test_world_model.py \
+            tests/integration/test_world_model_integration.py \
+            tests/integration/test_world_model_windows_host.py \
+            tests/adversarial/test_world_model_adversarial.py \
+            tests/architecture/test_world_model_boundaries.py
+
+      - name: Commit repaired files
+        shell: bash
+        run: |
+          if git diff --quiet -- \
+            src/agentx/world_model.py \
+            tests/unit/test_world_model.py \
+            tests/integration/test_world_model_integration.py \
+            tests/integration/test_world_model_windows_host.py \
+            tests/adversarial/test_world_model_adversarial.py \
+            tests/architecture/test_world_model_boundaries.py; then
+            echo "No quality repair changes required."
+          else
+            git config user.name "agentx-ci-repair"
+            git config user.email "agentx-ci-repair@users.noreply.github.com"
+            git add \
+              src/agentx/world_model.py \
+              tests/unit/test_world_model.py \
+              tests/integration/test_world_model_integration.py \
+              tests/integration/test_world_model_windows_host.py \
+              tests/adversarial/test_world_model_adversarial.py \
+              tests/architecture/test_world_model_boundaries.py
+            git commit -m "Fix M10 lint and formatting gate"
+            git push origin HEAD:agent-m10/world-model-completion
+          fi
+
+      - name: Ruff lint preflight
+        run: python -m ruff check .
+
+      - name: Ruff format preflight
+        run: python -m ruff format --check .
+
+      - name: mypy preflight
+        run: python -m mypy
