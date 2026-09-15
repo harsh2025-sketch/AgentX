@@ -13,14 +13,12 @@ from agentx.core.knowledge import (
     KnowledgeRecord,
     KnowledgeScope,
     KnowledgeType,
+    ProvenanceKind,
+    ProvenanceReference,
     ScopeDimension,
 )
 from agentx.core.knowledge_assurance import KnowledgeAssuranceMetadata
-from agentx.core.provenance import (
-    EvidenceKind,
-    EvidenceReference,
-)
-from agentx.core.knowledge import ProvenanceKind, ProvenanceReference
+from agentx.core.provenance import EvidenceKind, EvidenceReference
 from agentx.hive.scope_retrieval import (
     MAX_SCOPED_KNOWLEDGE_RESULTS,
     GlobalKnowledgePolicy,
