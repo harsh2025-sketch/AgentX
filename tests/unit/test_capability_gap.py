@@ -27,6 +27,7 @@ from agentx.capabilities.abi import (
 from agentx.capabilities.registry import CapabilityRegistry
 from agentx.capability_gap import (
     MAX_CAPABILITY_GAP_REQUIREMENTS,
+    MAX_CAPABILITY_INVENTORY,
     CapabilityGapDetector,
     CapabilityGapValidationError,
 )
@@ -70,7 +71,11 @@ class _Capability:
     def descriptor(self) -> CapabilityDescriptor:
         return self._descriptor
 
-    def execute(self, request: CapabilityRequest[_Params], context: ExecutionContext) -> ExecutionResult:
+    def execute(
+        self,
+        request: CapabilityRequest[_Params],
+        context: ExecutionContext,
+    ) -> ExecutionResult:
         raise AssertionError("gap detection must not execute capabilities")
 
     def verify(
@@ -89,6 +94,10 @@ def _identity(name: str, major: int = 1) -> CapabilityIdentity:
     )
 
 
+def _snapshot(registry: CapabilityRegistry) -> tuple[CapabilityIdentity, ...]:
+    return tuple(registry.snapshot())
+
+
 def test_detects_exact_missing_identity_and_same_name_alternative_without_execution() -> None:
     registry = CapabilityRegistry()
     present = _identity("files.read", 1)
@@ -96,7 +105,9 @@ def test_detects_exact_missing_identity_and_same_name_alternative_without_execut
     missing_version = _identity("files.read", 2)
     missing_name = _identity("browser.form", 1)
 
-    report = CapabilityGapDetector(registry).detect((missing_name, present, missing_version))
+    report = CapabilityGapDetector(_snapshot(registry)).detect(
+        (missing_name, present, missing_version)
+    )
 
     assert report.available == (present,)
     assert tuple(gap.required for gap in report.gaps) == (missing_name, missing_version)
@@ -116,7 +127,7 @@ def test_hostile_descriptor_text_cannot_erase_gap_or_create_authority() -> None:
     )
     missing = _identity("missing.write")
 
-    report = CapabilityGapDetector(registry).detect((missing,))
+    report = CapabilityGapDetector(_snapshot(registry)).detect((missing,))
 
     assert tuple(gap.required for gap in report.gaps) == (missing,)
     assert not report.is_satisfied
@@ -124,19 +135,46 @@ def test_hostile_descriptor_text_cannot_erase_gap_or_create_authority() -> None:
 
 
 def test_requirement_set_is_bounded_unique_and_typed() -> None:
-    detector = CapabilityGapDetector(CapabilityRegistry())
+    detector = CapabilityGapDetector(())
     identity = _identity("test.cap")
     with pytest.raises(CapabilityGapValidationError, match="must not be empty"):
         detector.detect(())
     with pytest.raises(CapabilityGapValidationError, match="unique"):
         detector.detect((identity, identity))
-    too_many = tuple(_identity(f"cap.{index}") for index in range(MAX_CAPABILITY_GAP_REQUIREMENTS + 1))
+    too_many = tuple(
+        _identity(f"cap.{index}") for index in range(MAX_CAPABILITY_GAP_REQUIREMENTS + 1)
+    )
     with pytest.raises(CapabilityGapValidationError, match="bounded"):
         detector.detect(too_many)
 
 
+def test_inventory_snapshot_is_bounded_unique_and_typed() -> None:
+    identity = _identity("test.cap")
+    with pytest.raises(CapabilityGapValidationError, match="unique"):
+        CapabilityGapDetector((identity, identity))
+    too_many = tuple(_identity(f"inventory.{index}") for index in range(MAX_CAPABILITY_INVENTORY + 1))
+    with pytest.raises(CapabilityGapValidationError, match="bounded"):
+        CapabilityGapDetector(too_many)
+    with pytest.raises(TypeError, match="CapabilityIdentity"):
+        CapabilityGapDetector((object(),))  # type: ignore[arg-type]
+
+
+def test_snapshot_is_immutable_after_detector_construction() -> None:
+    registry = CapabilityRegistry()
+    first = _identity("first.cap")
+    second = _identity("second.cap")
+    registry.register(_Capability(first))
+    detector = CapabilityGapDetector(_snapshot(registry))
+    registry.register(_Capability(second))
+
+    report = detector.detect((first, second))
+
+    assert report.available == (first,)
+    assert tuple(gap.required for gap in report.gaps) == (second,)
+
+
 def test_report_order_is_deterministic_not_request_order() -> None:
-    detector = CapabilityGapDetector(CapabilityRegistry())
+    detector = CapabilityGapDetector(())
     a = _identity("a.cap")
     b = _identity("b.cap")
     report = detector.detect((b, a))
