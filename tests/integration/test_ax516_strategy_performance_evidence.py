@@ -89,7 +89,9 @@ def test_unrelated_journal_events_remain_unrelated_and_order_is_durable(tmp_path
     assert entries[0].sequence == 2
 
 
-def test_historical_evidence_is_inert_and_cannot_manufacture_verified_success(tmp_path: Path) -> None:
+def test_historical_evidence_is_inert_and_cannot_manufacture_verified_success(
+    tmp_path: Path,
+) -> None:
     metrics = _metrics(ExecutionLevel.L5_EXPLORATORY)
     evidence = StrategyPerformanceEvidence.from_metrics(metrics, observed_at=_T0)
     assert evidence.outcome is ExecutionEvidenceOutcome.UNVERIFIED
