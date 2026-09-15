@@ -171,6 +171,7 @@ def test_importing_discovery_performs_no_native_read() -> None:
         "    raise AssertionError('native read performed at import time')\n"
         "native.enumerate_processes_raw = _boom\n"
         "native.enumerate_windows_raw = _boom\n"
+        "native.get_foreground_window_raw = _boom\n"
         "native.query_executable_path_raw = _boom\n"
         "import agentx.capabilities.windows.process_discovery as discovery\n"
         "assert discovery.WINDOWS_PROCESS_DISCOVERY_IDENTITY is not None\n"

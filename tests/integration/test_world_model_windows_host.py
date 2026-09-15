@@ -38,9 +38,12 @@ def test_real_windows_host_world_model_acceptance(tmp_path: Path) -> None:
     snapshot = result.unwrap()
     assert snapshot.process_count >= 1
 
-    world.ingest_windows_snapshot(
+    foreground = discovery.foreground_window_handle()
+    assert foreground.is_success
+    world.ingest_windows_snapshot_observing_foreground(
         snapshot,
         metadata=device.state.metadata,
+        discovery=discovery,
     )
     assert any(entity.kind.value == "process" for entity in world.cache.snapshot_ids())
 

@@ -7,7 +7,7 @@ from uuid import uuid4
 import pytest
 
 from agentx.core.execution import CancellationSource, ExecutionContext
-from agentx.core.ids import TaskId
+from agentx.core.ids import KnowledgeId, TaskId
 from agentx.core.knowledge import (
     KnowledgeRecord,
     KnowledgeType,
@@ -228,3 +228,39 @@ def test_ax421_restart_rejects_malformed_durable_link_payload(tmp_path: Path) ->
 
     with pytest.raises(WorldModelValidationError, match="malformed"):
         WorldHiveLinkage(knowledge_store=store).load_durable()
+
+
+def test_ax421_restart_rejects_scalar_type_coercion_in_durable_link(tmp_path: Path) -> None:
+    store = KnowledgeStore(SQLiteDatabase((tmp_path / "agentx.db").resolve()))
+    malformed = KnowledgeRecord.create(
+        knowledge_type=KnowledgeType.OBSERVATION,
+        content=(
+            '{"contradiction_ids":[],"durable":"false","environment_id":"env-local",'
+            '"evidence":[{"kind":"observation","observed_at":"2026-09-15T10:00:00Z",'
+            '"provenance":{"kind":"system","reference":"tests.integration.world"},'
+            '"reference":"obs-1"}],"knowledge_id":"knowledge:00000000-0000-0000-0000-000000000001",'
+            '"observed_at":"2026-09-15T10:00:00Z","schema_version":1,'
+            '"supersedes_ids":[],"verification_status":"unverified",'
+            '"world_entity":{"environment_id":"env-local","kind":"application","value":"app:x"}}'
+        ),
+        provenance=ProvenanceReference(
+            kind=ProvenanceKind.DERIVED, reference="agentx.world_model.link/v1"
+        ),
+        created_at=NOW,
+    )
+    store.insert(malformed)
+    with pytest.raises(WorldModelValidationError, match="durable must be a bool"):
+        WorldHiveLinkage(knowledge_store=store).load_durable()
+
+
+def test_ax420_ax421_relationship_metadata_is_explicitly_bounded() -> None:
+    entity_id = WorldEntityId("env-local", WorldEntityKind.APPLICATION, "app:x")
+    too_much_evidence = tuple(_evidence(f"e-{index}")[0] for index in range(129))
+    with pytest.raises(WorldModelValidationError, match="evidence is unbounded"):
+        WorldHiveLink(
+            world_entity_id=entity_id,
+            knowledge_id=KnowledgeId.create(),
+            evidence=too_much_evidence,
+            observed_at=NOW,
+            environment_id="env-local",
+        )

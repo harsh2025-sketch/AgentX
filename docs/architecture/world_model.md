@@ -134,10 +134,14 @@ launch permission.
 
 The world model represents active-window state with an environment-scoped
 synthetic current-state key (`__active_window__`) whose value is still a
-canonical `WindowState` observation. Windows discovery data supplies window and
-process identity; a caller must supply a trustworthy foreground-handle
-observation from the platform composition boundary. Without that evidence the
-active-window cache entry is invalidated/unknown rather than guessed.
+canonical `WindowState` observation. Windows discovery data supplies window and process identity. The canonical
+read-only Windows discovery seam now exposes an on-demand
+`GetForegroundWindow` observation, and
+`ingest_windows_snapshot_observing_foreground()` consumes that independent
+point-in-time evidence. If the native read fails, returns no handle, or races
+with the snapshot, active-window state is invalidated/unknown rather than
+guessed. The lower-level explicit-handle ingestion path remains available for
+deterministic composition/tests.
 
 Focus-affecting governed actions invalidate only the environments associated
 with the same Task binding. Native/action success never makes a requested
@@ -303,3 +307,24 @@ canonical `DeviceDescriptor` into `DeviceState` without adding Android
 execution here. Screen capture, frame identity, visual grounding/fallback,
 evidence ranking, DPI/multi-monitor policy, Android execution, voice,
 proactivity, and self-extension remain outside this package.
+
+
+## Completion matrix for the allotted M10 package
+
+| Task | Production | Integration | Freshness | Invalidation | Persistence | Security | Failure | Concurrency | Tests | Acceptance |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| AX-409 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS |
+| AX-411 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS |
+| AX-414 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS |
+| AX-415 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS |
+| AX-416 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS |
+| AX-417 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS |
+| AX-418 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS |
+| AX-419 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS |
+| AX-420 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS |
+| AX-421 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS |
+
+Persistence is deliberately ephemeral/reconstructed for current environmental
+state and Task bindings; the PASS entries mean that policy is explicit and
+tested. Durable AX-421 relationships use the canonical KnowledgeStore. No cell
+claims implementation of AX-422 through AX-435.

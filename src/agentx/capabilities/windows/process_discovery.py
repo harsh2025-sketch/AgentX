@@ -485,6 +485,10 @@ class NativeWindowsSurface(Protocol):
         """Walk the top-level windows once, read-only."""
         ...
 
+    def get_foreground_window(self) -> Result[int | None, AgentXError]:
+        """Read the point-in-time foreground HWND without changing focus."""
+        ...
+
 
 class ToolhelpNativeSurface:
     """Adapter over the isolated Win32 module; the default native seam.
@@ -505,6 +509,9 @@ class ToolhelpNativeSurface:
 
     def enumerate_windows(self) -> Result[tuple[_native.RawWindowEntry, ...], AgentXError]:
         return _native.enumerate_windows_raw()
+
+    def get_foreground_window(self) -> Result[int | None, AgentXError]:
+        return _native.get_foreground_window_raw()
 
 
 # --------------------------------------------------------------------------
@@ -752,6 +759,12 @@ class WindowsProcessDiscovery:
     def is_supported(self) -> bool:
         """Whether the described host is a supported Windows host."""
         return self._support.is_supported
+
+    def foreground_window_handle(self) -> Result[int | None, AgentXError]:
+        """Observe the current foreground HWND through the canonical read seam."""
+        if not self._support.is_supported:
+            return Result.failure(unsupported_platform_error(self._support))
+        return self._native_surface.get_foreground_window()
 
     def discover(self) -> Result[WindowsProcessSnapshot, AgentXError]:
         """Take one read-only, deterministically normalized snapshot.

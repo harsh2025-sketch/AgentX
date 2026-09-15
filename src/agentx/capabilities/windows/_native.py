@@ -83,6 +83,7 @@ __all__ = [
     "RawWindowEntry",
     "enumerate_processes_raw",
     "enumerate_windows_raw",
+    "get_foreground_window_raw",
     "is_native_surface_available",
     "query_executable_path_raw",
 ]
@@ -388,6 +389,27 @@ def _read_window_class(user32: Any, handle: int) -> tuple[str | None, int]:
     if copied <= 0:
         return (None, ctypes.get_last_error())
     return (str(buffer.value[:copied]), 0)
+
+
+def get_foreground_window_raw() -> Result[int | None, AgentXError]:
+    """Read the current foreground HWND without changing focus.
+
+    ``None`` means Windows reported no foreground window. The handle is
+    point-in-time evidence only and may become stale immediately.
+    """
+    if not is_native_surface_available():
+        return Result.failure(_native_unavailable_error("foreground window query"))
+
+    import ctypes
+    from ctypes import wintypes
+
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    user32.GetForegroundWindow.restype = wintypes.HWND
+    user32.GetForegroundWindow.argtypes = ()
+    handle = user32.GetForegroundWindow()
+    if not handle:
+        return Result.success(None)
+    return Result.success(int(handle))
 
 
 def enumerate_windows_raw() -> Result[tuple[RawWindowEntry, ...], AgentXError]:

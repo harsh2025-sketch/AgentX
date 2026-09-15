@@ -49,9 +49,11 @@ from agentx.world_model import (
     ObservationMetadata,
     PerceptionObservation,
     PerceptionRegion,
+    ProcessState,
     ScreenBounds,
     TaskWorldBinder,
     WindowShowState,
+    WindowState,
     WorldAvailability,
     WorldEntityId,
     WorldEntityKind,
@@ -60,6 +62,12 @@ from agentx.world_model import (
     WorldModelValidationError,
     WorldStateProvider,
     normalize_filesystem_path,
+)
+from tests.support.fake_windows_native import (
+    FakeWindowsNative,
+    raw_process,
+    raw_window,
+    windows_discovery,
 )
 
 NOW = datetime(2026, 9, 15, 10, 0, tzinfo=UTC)
@@ -723,3 +731,141 @@ def test_cache_cleanup_removes_only_stale_entries() -> None:
     assert removed == 1
     assert stale_id not in cache.snapshot_ids()
     assert fresh_id in cache.snapshot_ids()
+
+
+def test_ax415_on_demand_foreground_observation_uses_canonical_native_read_seam() -> None:
+    fake = FakeWindowsNative(
+        processes=[raw_process(100, executable_name="notepad.exe")],
+        windows=[raw_window(500, process_id=100, title="Notepad")],
+        foreground_handle=500,
+    )
+    discovery = windows_discovery(fake)
+    snapshot_result = discovery.discover()
+    assert snapshot_result.is_success
+    world = WorldModel()
+    world.ingest_windows_snapshot_observing_foreground(
+        snapshot_result.unwrap(),
+        metadata=metadata(observation_id="foreground-native"),
+        discovery=discovery,
+    )
+    active = world.cache.lookup(world.active_window_id("env-local"), at=NOW, refresh=False)
+    assert active.freshness is WorldFreshness.FRESH
+    assert isinstance(active.value, WindowState)
+    assert active.value.is_foreground is True
+    assert fake.calls[-1] == "get_foreground_window"
+
+
+def test_world_state_rejects_cross_environment_process_relationship() -> None:
+    process_id = WorldEntityId("env-a", WorldEntityKind.PROCESS, "pid:1|image:a.exe")
+    foreign_application = WorldEntityId("env-b", WorldEntityKind.APPLICATION, "app:a")
+    with pytest.raises(WorldModelValidationError, match="crosses environment"):
+        ProcessState(
+            entity_id=process_id,
+            pid=1,
+            executable_name="a.exe",
+            executable_path=None,
+            parent_pid=None,
+            application_id=foreign_application,
+            window_ids=(),
+            availability=WorldAvailability.AVAILABLE,
+            metadata=metadata(environment_id="env-a"),
+        )
+
+
+def test_application_registry_restart_rejects_identity_type_coercion() -> None:
+    raw = (
+        '[{"aliases":[],"canonical_name":"app","display_name":"App",'
+        '"environment_id":7,"executable_ids":[],"launch_targets":[],'
+        '"package_ids":[],"platform":"windows","stable_id":"app:x"}]'
+    )
+    with pytest.raises(WorldModelValidationError, match="identity fields must be strings"):
+        ApplicationRegistry.from_stable_snapshot_json(raw, metadata=metadata())
+
+
+def test_filesystem_context_registry_is_bounded(tmp_path: Path) -> None:
+    world = WorldModel()
+    for index in range(1024):
+        world.track_filesystem_path(
+            str((tmp_path / f"tracked-{index}.txt").resolve()),
+            environment_id="env-local",
+            windows=False,
+            source=SOURCE,
+            ttl=TTL,
+        )
+    with pytest.raises(WorldModelValidationError, match="registry is full"):
+        world.track_filesystem_path(
+            str((tmp_path / "overflow.txt").resolve()),
+            environment_id="env-local",
+            windows=False,
+            source=SOURCE,
+            ttl=TTL,
+        )
+
+
+def test_filesystem_action_event_removes_stale_task_binding(tmp_path: Path) -> None:
+    world = WorldModel()
+    task_id = TaskId.create()
+    cancellation = CancellationSource()
+    context = ExecutionContext(
+        correlation_id=uuid4(),
+        cancellation_token=cancellation.token,
+        task_id=task_id,
+    )
+    entity_id = world.track_filesystem_path(
+        str((tmp_path / "event.txt").resolve()),
+        environment_id="env-local",
+        windows=False,
+        source=SOURCE,
+        ttl=TTL,
+        task_id=task_id,
+        correlation_id=context.correlation_id,
+    )
+    world.tasks.bind(context, entity_ids=(entity_id,), evidence=evidence(), updated_at=NOW)
+    event = Event.create(
+        event_type=EventType.ACTION_COMPLETED,
+        source="capability-runtime",
+        payload=ActionPayload(name="filesystem.write_text@1.0.0", data={"succeeded": True}),
+        correlation_id=context.correlation_id,
+        task_id=task_id.to_str(),
+        timestamp=NOW,
+    )
+    world.handle_event(event)
+    assert world.tasks.get(task_id) is None
+
+
+def test_task_world_binder_concurrent_task_updates_remain_isolated() -> None:
+    binder = TaskWorldBinder()
+    task_a = TaskId.create()
+    task_b = TaskId.create()
+    cancel_a = CancellationSource()
+    cancel_b = CancellationSource()
+    context_a = ExecutionContext(
+        correlation_id=uuid4(), cancellation_token=cancel_a.token, task_id=task_a
+    )
+    context_b = ExecutionContext(
+        correlation_id=uuid4(), cancellation_token=cancel_b.token, task_id=task_b
+    )
+    entity = WorldEntityId("env-local", WorldEntityKind.DEVICE, "shared-device")
+    threads = [
+        Thread(
+            target=lambda: binder.bind(
+                context_a, entity_ids=(entity,), evidence=evidence("task-a"), updated_at=NOW
+            )
+        ),
+        Thread(
+            target=lambda: binder.bind(
+                context_b, entity_ids=(entity,), evidence=evidence("task-b"), updated_at=NOW
+            )
+        ),
+    ]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join(timeout=5)
+        assert not thread.is_alive()
+    binding_a = binder.get(task_a)
+    binding_b = binder.get(task_b)
+    assert binding_a is not None
+    assert binding_b is not None
+    assert binding_a.task_id == task_a
+    assert binding_b.task_id == task_b

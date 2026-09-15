@@ -35,7 +35,10 @@ from agentx.capabilities.device import (
     DeviceDescriptor,
     DevicePlatform,
 )
-from agentx.capabilities.windows.process_discovery import WindowsProcessSnapshot
+from agentx.capabilities.windows.process_discovery import (
+    WindowsProcessDiscovery,
+    WindowsProcessSnapshot,
+)
 from agentx.core.events import ActionPayload, Event, EventType
 from agentx.core.execution import ExecutionContext
 from agentx.core.ids import KnowledgeId, TaskId
@@ -104,6 +107,11 @@ _MAX_RELATIONSHIPS_PER_APPLICATION: Final[int] = 256
 _MAX_TASK_ENTITIES: Final[int] = 256
 _MAX_TASK_BINDINGS: Final[int] = 1024
 _MAX_LINKS: Final[int] = 4096
+_MAX_TASK_EVIDENCE: Final[int] = 128
+_MAX_LINK_EVIDENCE: Final[int] = 128
+_MAX_LINK_RELATIONSHIPS: Final[int] = 256
+_MAX_DEVICE_CAPABILITIES: Final[int] = 256
+_MAX_FILESYSTEM_PATHS: Final[int] = 1024
 
 
 class WorldModelError(ValueError):
@@ -791,20 +799,32 @@ class ProcessState:
         _validate_untrusted_text(
             self.executable_path, field_name="executable_path", max_length=4096
         )
-        if (
-            self.application_id is not None
-            and self.application_id.kind is not WorldEntityKind.APPLICATION
-        ):
-            raise WorldModelValidationError("application_id must identify APPLICATION")
+        if self.application_id is not None:
+            if not isinstance(self.application_id, WorldEntityId):
+                raise TypeError("application_id must be WorldEntityId or None")
+            if self.application_id.kind is not WorldEntityKind.APPLICATION:
+                raise WorldModelValidationError("application_id must identify APPLICATION")
+            if self.application_id.environment_id != self.entity_id.environment_id:
+                raise WorldModelValidationError("process application_id crosses environment scope")
+        if not isinstance(self.window_ids, tuple):
+            raise TypeError("window_ids must be a tuple")
+        if len(self.window_ids) > _MAX_RELATIONSHIPS_PER_APPLICATION:
+            raise WorldModelValidationError("process window_ids is unbounded")
         for window_id in self.window_ids:
+            if not isinstance(window_id, WorldEntityId):
+                raise TypeError("window_ids must contain WorldEntityId values")
             if window_id.kind is not WorldEntityKind.WINDOW:
                 raise WorldModelValidationError("window_ids must identify WINDOW entities")
+            if window_id.environment_id != self.entity_id.environment_id:
+                raise WorldModelValidationError("process window_ids cross environment scope")
         if len(set(self.window_ids)) != len(self.window_ids):
             raise WorldModelValidationError("window_ids must be unique")
         if not isinstance(self.availability, WorldAvailability):
             raise TypeError("availability must be WorldAvailability")
         if not isinstance(self.metadata, ObservationMetadata):
             raise TypeError("metadata must be ObservationMetadata")
+        if self.metadata.environment_id != self.entity_id.environment_id:
+            raise WorldModelValidationError("process metadata crosses environment scope")
 
 
 @dataclass(frozen=True, slots=True)
@@ -826,13 +846,20 @@ class WindowState:
             raise WorldModelValidationError("window state requires WINDOW identity")
         if self.handle is not None and (type(self.handle) is not int or self.handle < 1):
             raise WorldModelValidationError("handle must be a positive int or None")
-        if self.process_id is not None and self.process_id.kind is not WorldEntityKind.PROCESS:
-            raise WorldModelValidationError("process_id must identify PROCESS")
-        if (
-            self.application_id is not None
-            and self.application_id.kind is not WorldEntityKind.APPLICATION
-        ):
-            raise WorldModelValidationError("application_id must identify APPLICATION")
+        if self.process_id is not None:
+            if not isinstance(self.process_id, WorldEntityId):
+                raise TypeError("process_id must be WorldEntityId or None")
+            if self.process_id.kind is not WorldEntityKind.PROCESS:
+                raise WorldModelValidationError("process_id must identify PROCESS")
+            if self.process_id.environment_id != self.entity_id.environment_id:
+                raise WorldModelValidationError("window process_id crosses environment scope")
+        if self.application_id is not None:
+            if not isinstance(self.application_id, WorldEntityId):
+                raise TypeError("application_id must be WorldEntityId or None")
+            if self.application_id.kind is not WorldEntityKind.APPLICATION:
+                raise WorldModelValidationError("application_id must identify APPLICATION")
+            if self.application_id.environment_id != self.entity_id.environment_id:
+                raise WorldModelValidationError("window application_id crosses environment scope")
         _validate_untrusted_text(self.title, field_name="window title", max_length=4096)
         if self.bounds is not None and not isinstance(self.bounds, ScreenBounds):
             raise TypeError("bounds must be ScreenBounds or None")
@@ -846,6 +873,8 @@ class WindowState:
             raise TypeError("availability must be WorldAvailability")
         if not isinstance(self.metadata, ObservationMetadata):
             raise TypeError("metadata must be ObservationMetadata")
+        if self.metadata.environment_id != self.entity_id.environment_id:
+            raise WorldModelValidationError("window metadata crosses environment scope")
 
 
 @dataclass(frozen=True, slots=True)
@@ -864,22 +893,27 @@ class BrowserSessionState:
             raise WorldModelValidationError("browser session requires BROWSER_SESSION identity")
         _validate_text(self.provider_id, field_name="provider_id", max_length=_MAX_IDENTIFIER)
         _validate_text(self.session_id, field_name="session_id", max_length=_MAX_IDENTIFIER)
-        if (
-            self.active_page_id is not None
-            and self.active_page_id.kind is not WorldEntityKind.BROWSER_PAGE
+        for field_name, related, expected_kind in (
+            ("active_page_id", self.active_page_id, WorldEntityKind.BROWSER_PAGE),
+            ("application_id", self.application_id, WorldEntityKind.APPLICATION),
+            ("process_id", self.process_id, WorldEntityKind.PROCESS),
         ):
-            raise WorldModelValidationError("active_page_id must identify BROWSER_PAGE")
-        if (
-            self.application_id is not None
-            and self.application_id.kind is not WorldEntityKind.APPLICATION
-        ):
-            raise WorldModelValidationError("application_id must identify APPLICATION")
-        if self.process_id is not None and self.process_id.kind is not WorldEntityKind.PROCESS:
-            raise WorldModelValidationError("process_id must identify PROCESS")
+            if related is None:
+                continue
+            if not isinstance(related, WorldEntityId):
+                raise TypeError(f"{field_name} must be WorldEntityId or None")
+            if related.kind is not expected_kind:
+                raise WorldModelValidationError(f"{field_name} must identify {expected_kind.name}")
+            if related.environment_id != self.entity_id.environment_id:
+                raise WorldModelValidationError(
+                    f"browser session {field_name} crosses environment scope"
+                )
         if not isinstance(self.availability, WorldAvailability):
             raise TypeError("availability must be WorldAvailability")
         if not isinstance(self.metadata, ObservationMetadata):
             raise TypeError("metadata must be ObservationMetadata")
+        if self.metadata.environment_id != self.entity_id.environment_id:
+            raise WorldModelValidationError("browser session metadata crosses environment scope")
 
 
 @dataclass(frozen=True, slots=True)
@@ -899,8 +933,12 @@ class BrowserPageState:
     def __post_init__(self) -> None:
         if self.entity_id.kind is not WorldEntityKind.BROWSER_PAGE:
             raise WorldModelValidationError("browser page requires BROWSER_PAGE identity")
+        if not isinstance(self.session_id, WorldEntityId):
+            raise TypeError("session_id must be WorldEntityId")
         if self.session_id.kind is not WorldEntityKind.BROWSER_SESSION:
             raise WorldModelValidationError("session_id must identify BROWSER_SESSION")
+        if self.session_id.environment_id != self.entity_id.environment_id:
+            raise WorldModelValidationError("browser page session crosses environment scope")
         _validate_text(self.target_id, field_name="target_id", max_length=_MAX_IDENTIFIER)
         _validate_untrusted_text(self.title, field_name="browser title", max_length=4096)
         _validate_untrusted_text(self.url, field_name="browser url", max_length=16_384)
@@ -923,6 +961,8 @@ class BrowserPageState:
             raise TypeError("availability must be WorldAvailability")
         if not isinstance(self.metadata, ObservationMetadata):
             raise TypeError("metadata must be ObservationMetadata")
+        if self.metadata.environment_id != self.entity_id.environment_id:
+            raise WorldModelValidationError("browser page metadata crosses environment scope")
 
 
 @dataclass(frozen=True, slots=True)
@@ -942,6 +982,8 @@ class FilesystemState:
             raise WorldModelValidationError("filesystem state requires FILESYSTEM identity")
         _validate_text(self.normalized_path, field_name="normalized_path", max_length=4096)
         _validate_text(self.original_path, field_name="original_path", max_length=4096)
+        if self.entity_id.value != self.normalized_path:
+            raise WorldModelValidationError("filesystem identity must equal normalized_path")
         if not isinstance(self.existence, FilesystemExistence):
             raise TypeError("existence must be FilesystemExistence")
         if not isinstance(self.entity_type, FilesystemEntityType):
@@ -958,6 +1000,8 @@ class FilesystemState:
             raise TypeError("task_relevant must be bool")
         if not isinstance(self.metadata, ObservationMetadata):
             raise TypeError("metadata must be ObservationMetadata")
+        if self.metadata.environment_id != self.entity_id.environment_id:
+            raise WorldModelValidationError("filesystem metadata crosses environment scope")
 
 
 @dataclass(frozen=True, slots=True)
@@ -979,6 +1023,8 @@ class DeviceState:
             raise TypeError("availability must be WorldAvailability")
         if not isinstance(self.capability_health, tuple):
             raise TypeError("capability_health must be a tuple")
+        if len(self.capability_health) > _MAX_DEVICE_CAPABILITIES:
+            raise WorldModelValidationError("capability_health is unbounded")
         previous: tuple[str, str] | None = None
         for item in self.capability_health:
             if not isinstance(item, tuple) or len(item) != 2:
@@ -996,6 +1042,8 @@ class DeviceState:
         )
         if not isinstance(self.metadata, ObservationMetadata):
             raise TypeError("metadata must be ObservationMetadata")
+        if self.metadata.environment_id != self.entity_id.environment_id:
+            raise WorldModelValidationError("device metadata crosses environment scope")
 
 
 type WorldStateValue = (
@@ -1429,10 +1477,19 @@ class ApplicationRegistry:
             }
             if set(item) != required:
                 raise WorldModelValidationError("application registry entry fields are malformed")
+            environment_raw = item["environment_id"]
+            platform_raw = item["platform"]
+            stable_id_raw = item["stable_id"]
+            if not all(
+                isinstance(value, str) for value in (environment_raw, platform_raw, stable_id_raw)
+            ):
+                raise WorldModelValidationError(
+                    "application registry identity fields must be strings"
+                )
             identity = ApplicationIdentity(
-                environment_id=str(item["environment_id"]),
-                platform=str(item["platform"]),
-                stable_id=str(item["stable_id"]),
+                environment_id=environment_raw,
+                platform=platform_raw,
+                stable_id=stable_id_raw,
             )
             if identity.environment_id != metadata.environment_id:
                 raise WorldModelValidationError("restored application crosses environment scope")
@@ -1492,6 +1549,8 @@ class TaskWorldBinding:
         object.__setattr__(self, "entity_ids", tuple(sorted(self.entity_ids)))
         if not isinstance(self.evidence, tuple) or not self.evidence:
             raise WorldModelValidationError("task binding requires explicit evidence")
+        if len(self.evidence) > _MAX_TASK_EVIDENCE:
+            raise WorldModelValidationError("task binding evidence is unbounded")
         for reference in self.evidence:
             if not isinstance(reference, EvidenceReference):
                 raise TypeError("evidence must contain EvidenceReference values")
@@ -1605,6 +1664,8 @@ class WorldHiveLink:
             raise TypeError("knowledge_id must be KnowledgeId")
         if not isinstance(self.evidence, tuple) or not self.evidence:
             raise WorldModelValidationError("world/Hive link requires evidence")
+        if len(self.evidence) > _MAX_LINK_EVIDENCE:
+            raise WorldModelValidationError("world/Hive link evidence is unbounded")
         for reference in self.evidence:
             if not isinstance(reference, EvidenceReference):
                 raise TypeError("evidence must contain EvidenceReference values")
@@ -1622,6 +1683,8 @@ class WorldHiveLink:
             values = getattr(self, field_name)
             if not isinstance(values, tuple):
                 raise TypeError(f"{field_name} must be a tuple")
+            if len(values) > _MAX_LINK_RELATIONSHIPS:
+                raise WorldModelValidationError(f"{field_name} is unbounded")
             for knowledge_id in values:
                 if not isinstance(knowledge_id, KnowledgeId):
                     raise TypeError(f"{field_name} must contain KnowledgeId values")
@@ -1744,47 +1807,104 @@ class WorldHiveLinkage:
             raise WorldModelValidationError("stored world/Hive link JSON is malformed") from exc
         if not isinstance(raw, Mapping):
             raise WorldModelValidationError("stored world/Hive link must be a JSON object")
-        if raw.get("schema_version") != _WORLD_LINK_SCHEMA_VERSION:
+        expected = {
+            "schema_version",
+            "world_entity",
+            "knowledge_id",
+            "evidence",
+            "observed_at",
+            "environment_id",
+            "verification_status",
+            "contradiction_ids",
+            "supersedes_ids",
+            "durable",
+        }
+        if set(raw) != expected:
+            raise WorldModelValidationError("stored world/Hive link fields are malformed")
+        if raw["schema_version"] != _WORLD_LINK_SCHEMA_VERSION:
             raise WorldModelValidationError("stored world/Hive link schema is unsupported")
-        entity_raw = raw.get("world_entity")
-        if not isinstance(entity_raw, Mapping):
+        entity_raw = raw["world_entity"]
+        if not isinstance(entity_raw, Mapping) or set(entity_raw) != {
+            "environment_id",
+            "kind",
+            "value",
+        }:
             raise WorldModelValidationError("stored world entity is malformed")
-        try:
-            entity_kind = WorldEntityKind(str(entity_raw["kind"]))
-            entity_id = WorldEntityId(
-                environment_id=str(entity_raw["environment_id"]),
-                kind=entity_kind,
-                value=str(entity_raw["value"]),
+        entity_environment = entity_raw["environment_id"]
+        entity_kind_raw = entity_raw["kind"]
+        entity_value = entity_raw["value"]
+        knowledge_raw = raw["knowledge_id"]
+        verification_raw = raw["verification_status"]
+        environment_raw = raw["environment_id"]
+        durable_raw = raw["durable"]
+        if not all(
+            isinstance(value, str)
+            for value in (
+                entity_environment,
+                entity_kind_raw,
+                entity_value,
+                knowledge_raw,
+                verification_raw,
+                environment_raw,
             )
-            knowledge_id = KnowledgeId.parse(str(raw["knowledge_id"]))
-            verification = LinkVerificationStatus(str(raw["verification_status"]))
+        ):
+            raise WorldModelValidationError("stored world/Hive identity fields must be strings")
+        if type(durable_raw) is not bool:
+            raise WorldModelValidationError("stored world/Hive durable must be a bool")
+        try:
+            entity_id = WorldEntityId(
+                environment_id=entity_environment,
+                kind=WorldEntityKind(entity_kind_raw),
+                value=entity_value,
+            )
+            knowledge_id = KnowledgeId.parse(knowledge_raw)
+            verification = LinkVerificationStatus(verification_raw)
             observed_at = _parse_timestamp(raw["observed_at"], field_name="observed_at")
-        except (KeyError, ValueError) as exc:
+        except (TypeError, ValueError) as exc:
             raise WorldModelValidationError(
                 "stored world/Hive link contains invalid identity data"
             ) from exc
-        evidence_raw = raw.get("evidence")
-        if not isinstance(evidence_raw, list) or not evidence_raw:
+        evidence_raw = raw["evidence"]
+        if (
+            not isinstance(evidence_raw, list)
+            or not evidence_raw
+            or len(evidence_raw) > _MAX_LINK_EVIDENCE
+            or not all(isinstance(item, Mapping) for item in evidence_raw)
+        ):
             raise WorldModelValidationError("stored world/Hive link evidence is malformed")
-        evidence = tuple(
-            EvidenceReference.from_dict(item) for item in evidence_raw if isinstance(item, Mapping)
-        )
-        if len(evidence) != len(evidence_raw):
-            raise WorldModelValidationError("stored world/Hive link evidence is malformed")
-        contradiction_raw = raw.get("contradiction_ids", [])
-        supersedes_raw = raw.get("supersedes_ids", [])
-        if not isinstance(contradiction_raw, list) or not isinstance(supersedes_raw, list):
-            raise WorldModelValidationError("stored world/Hive relationship lists are malformed")
+        try:
+            evidence = tuple(EvidenceReference.from_dict(item) for item in evidence_raw)
+        except (TypeError, ValueError) as exc:
+            raise WorldModelValidationError("stored world/Hive link evidence is malformed") from exc
+        contradiction_raw = raw["contradiction_ids"]
+        supersedes_raw = raw["supersedes_ids"]
+        for field_name, values in (
+            ("contradiction_ids", contradiction_raw),
+            ("supersedes_ids", supersedes_raw),
+        ):
+            if (
+                not isinstance(values, list)
+                or len(values) > _MAX_LINK_RELATIONSHIPS
+                or not all(isinstance(item, str) for item in values)
+            ):
+                raise WorldModelValidationError(f"stored world/Hive {field_name} is malformed")
+        try:
+            contradiction_ids = tuple(KnowledgeId.parse(item) for item in contradiction_raw)
+            supersedes_ids = tuple(KnowledgeId.parse(item) for item in supersedes_raw)
+        except ValueError as exc:
+            raise WorldModelValidationError(
+                "stored world/Hive relationship ids are malformed"
+            ) from exc
         return WorldHiveLink(
             world_entity_id=entity_id,
             knowledge_id=knowledge_id,
             evidence=evidence,
             observed_at=observed_at,
-            environment_id=str(raw.get("environment_id", "")),
+            environment_id=environment_raw,
             verification_status=verification,
-            contradiction_ids=tuple(KnowledgeId.parse(str(item)) for item in contradiction_raw),
-            supersedes_ids=tuple(KnowledgeId.parse(str(item)) for item in supersedes_raw),
-            durable=bool(raw.get("durable", False)),
+            contradiction_ids=contradiction_ids,
+            supersedes_ids=supersedes_ids,
+            durable=durable_raw,
         )
 
 
@@ -1898,6 +2018,30 @@ class WorldModel:
     @staticmethod
     def active_window_id(environment_id: str) -> WorldEntityId:
         return WorldEntityId(environment_id, WorldEntityKind.WINDOW, ACTIVE_WINDOW_KEY)
+
+    def ingest_windows_snapshot_observing_foreground(
+        self,
+        snapshot: WindowsProcessSnapshot,
+        *,
+        metadata: ObservationMetadata,
+        discovery: WindowsProcessDiscovery,
+        application_by_pid: Mapping[int, ApplicationIdentity] | None = None,
+    ) -> tuple[tuple[ProcessState, ...], tuple[WindowState, ...]]:
+        """Ingest a snapshot and independently observe foreground state on demand.
+
+        A failed/absent foreground read produces UNKNOWN/STALE active-window
+        state through ``ingest_windows_snapshot``; it never fabricates success.
+        """
+        if not isinstance(discovery, WindowsProcessDiscovery):
+            raise TypeError("discovery must be WindowsProcessDiscovery")
+        foreground = discovery.foreground_window_handle()
+        foreground_handle = foreground.unwrap() if foreground.is_success else None
+        return self.ingest_windows_snapshot(
+            snapshot,
+            metadata=metadata,
+            application_by_pid=application_by_pid,
+            foreground_handle=foreground_handle,
+        )
 
     def ingest_windows_snapshot(
         self,
@@ -2226,6 +2370,11 @@ class WorldModel:
         normalized = normalize_filesystem_path(path, windows=windows)
         entity_id = WorldEntityId(environment_id, WorldEntityKind.FILESYSTEM, normalized)
         with self._lock:
+            if (
+                entity_id not in self._filesystem_paths
+                and len(self._filesystem_paths) >= _MAX_FILESYSTEM_PATHS
+            ):
+                raise WorldModelValidationError("filesystem context registry is full")
             self._filesystem_paths[entity_id] = path
             provider = _NativeFilesystemProvider(
                 source=source,
@@ -2276,9 +2425,15 @@ class WorldModel:
             binding = self.tasks.get(task_id)
             if binding is None:
                 return
-            for entity_id in binding.entity_ids:
-                if entity_id.kind is WorldEntityKind.FILESYSTEM:
-                    self.cache.invalidate(entity_id, reason="governed filesystem mutation")
+            affected = tuple(
+                entity_id
+                for entity_id in binding.entity_ids
+                if entity_id.kind is WorldEntityKind.FILESYSTEM
+            )
+            for entity_id in affected:
+                self.cache.invalidate(entity_id, reason="governed filesystem mutation")
+            if affected:
+                self.tasks.invalidate_entities(affected)
         elif capability_name in {
             "windows.window.activate",
             "windows.window_management.activate",
