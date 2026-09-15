@@ -105,10 +105,13 @@ def test_relationship_and_revalidation_history_survive_fresh_store_instances(
     )
     relationships = KnowledgeRelationshipQuery(restarted_store)
 
-    assert relationships.traverse_supersession(
-        old.knowledge_id,
-        direction=SupersessionDirection.HISTORY_TO_REPLACEMENT,
-    )[-1].knowledge_id == current.knowledge_id
+    assert (
+        relationships.traverse_supersession(
+            old.knowledge_id,
+            direction=SupersessionDirection.HISTORY_TO_REPLACEMENT,
+        )[-1].knowledge_id
+        == current.knowledge_id
+    )
     assert relationships.contradiction_views(current.knowledge_id)[0].relation == (
         KnowledgeContradiction(
             first_knowledge_id=current.knowledge_id,
