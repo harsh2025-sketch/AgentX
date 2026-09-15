@@ -458,7 +458,9 @@ class VerifiedWindowsClipboardWriteTextCapability(_ClipboardVerifiedBase):
         if data is None or data.get("character_count") != len(request.params.text):
             return VerificationResult(
                 passed=False,
-                detail=("clipboard_write: execution observation lacks matching typed count evidence"),
+                detail=(
+                    "clipboard_write: execution observation lacks matching typed count evidence"
+                ),
             )
         raw, failure = self._readback(operation="clipboard_write")
         if failure is not None:
