@@ -144,9 +144,7 @@ class StrategyPerformanceEvidence:
                 raise StrategyPerformanceEvidenceError(
                     "external_cost requires a non-empty cost_unit"
                 )
-        if self.verification_passed is not None and not isinstance(
-            self.verification_passed, bool
-        ):
+        if self.verification_passed is not None and not isinstance(self.verification_passed, bool):
             raise TypeError("verification_passed must be bool or None")
         if type(self.schema_version) is not int or self.schema_version != 1:
             raise StrategyPerformanceEvidenceError(
@@ -164,9 +162,7 @@ class StrategyPerformanceEvidence:
         """Capture measured facts without deriving any routing recommendation."""
         if not isinstance(metrics, ExecutionMetricsRecord):
             raise TypeError("metrics must be an ExecutionMetricsRecord")
-        verification_passed = (
-            None if metrics.verification is None else metrics.verification.passed
-        )
+        verification_passed = None if metrics.verification is None else metrics.verification.passed
         return cls(
             evidence_id=uuid4() if evidence_id is None else evidence_id,
             task_id=metrics.task_id,
@@ -183,11 +179,7 @@ class StrategyPerformanceEvidence:
         )
 
     def to_dict(self) -> dict[str, object]:
-        elapsed_us = (
-            None
-            if self.elapsed is None
-            else self.elapsed // timedelta(microseconds=1)
-        )
+        elapsed_us = None if self.elapsed is None else self.elapsed // timedelta(microseconds=1)
         return {
             "schema_version": self.schema_version,
             "evidence_id": str(self.evidence_id),
@@ -199,9 +191,7 @@ class StrategyPerformanceEvidence:
             "elapsed_microseconds": elapsed_us,
             "model_calls": self.model_calls,
             "machine_actions": self.machine_actions,
-            "external_cost": (
-                None if self.external_cost is None else str(self.external_cost)
-            ),
+            "external_cost": (None if self.external_cost is None else str(self.external_cost)),
             "cost_unit": self.cost_unit,
             "verification_passed": self.verification_passed,
         }
@@ -256,9 +246,7 @@ class StrategyPerformanceEvidence:
             raise StrategyPerformanceEvidenceError("external_cost must be a string or null")
         verification = raw["verification_passed"]
         if verification is not None and not isinstance(verification, bool):
-            raise StrategyPerformanceEvidenceError(
-                "verification_passed must be boolean or null"
-            )
+            raise StrategyPerformanceEvidenceError("verification_passed must be boolean or null")
         cost_unit = raw["cost_unit"]
         if cost_unit is not None and not isinstance(cost_unit, str):
             raise StrategyPerformanceEvidenceError("cost_unit must be a string or null")
@@ -270,15 +258,9 @@ class StrategyPerformanceEvidence:
             execution_level=level,
             outcome=outcome,
             observed_at=_parse_time(raw["observed_at"]),
-            elapsed=(
-                None
-                if elapsed_raw is None
-                else timedelta(microseconds=elapsed_raw)
-            ),
+            elapsed=(None if elapsed_raw is None else timedelta(microseconds=elapsed_raw)),
             model_calls=_counter(raw["model_calls"], field_name="model_calls"),
-            machine_actions=_counter(
-                raw["machine_actions"], field_name="machine_actions"
-            ),
+            machine_actions=_counter(raw["machine_actions"], field_name="machine_actions"),
             external_cost=cost,
             cost_unit=cost_unit,
             verification_passed=verification,
@@ -327,9 +309,7 @@ class StrategyPerformanceLedger:
         execution_level: ExecutionLevel | None = None,
     ) -> tuple[StrategyPerformanceEntry, ...]:
         if type(after_sequence) is not int or after_sequence < 0:
-            raise StrategyPerformanceEvidenceError(
-                "after_sequence must be a non-negative integer"
-            )
+            raise StrategyPerformanceEvidenceError("after_sequence must be a non-negative integer")
         if type(limit) is not int or not 1 <= limit <= MAX_STRATEGY_EVIDENCE_READ:
             raise StrategyPerformanceEvidenceError("limit is outside the bounded range")
         if type(max_scan) is not int or not 1 <= max_scan <= MAX_STRATEGY_EVIDENCE_SCAN:
@@ -377,9 +357,7 @@ class StrategyPerformanceLedger:
                     )
                 if execution_level is not None and evidence.execution_level is not execution_level:
                     continue
-                results.append(
-                    StrategyPerformanceEntry(sequence=entry.sequence, evidence=evidence)
-                )
+                results.append(StrategyPerformanceEntry(sequence=entry.sequence, evidence=evidence))
                 if len(results) >= limit:
                     break
         return tuple(results)
