@@ -23,8 +23,8 @@ from agentx.core.execution import CancellationSource, CancellationToken
 from agentx.core.knowledge import ProvenanceReference
 
 __all__ = [
-    "MAX_WATCHER_BATCH",
     "MAX_WATCHERS",
+    "MAX_WATCHER_BATCH",
     "EventWatcherFramework",
     "WatcherEmission",
     "WatcherLifecycle",
