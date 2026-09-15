@@ -1,4 +1,4 @@
-"""Governed bounded filesystem structural capabilities (AX-261–265).
+"""Governed bounded filesystem structural capabilities (AX-261-265).
 
 The capabilities in this module execute only through the canonical
 CapabilityExecutionLoop. They contain no permission engine or ActionGate and
@@ -245,7 +245,9 @@ class DeleteDirectoryParams(CapabilityParams):
 
 _PRECONDITION_PARENT: Final[CapabilityPrecondition] = CapabilityPrecondition(
     name="filesystem.parent_exists",
-    description="The explicit target parent must already exist; parents are never created implicitly.",
+    description=(
+        "The explicit target parent must already exist; parents are never created implicitly."
+    ),
 )
 _PRECONDITION_NO_REPLACE: Final[CapabilityPrecondition] = CapabilityPrecondition(
     name="filesystem.destination_absent",
@@ -254,7 +256,8 @@ _PRECONDITION_NO_REPLACE: Final[CapabilityPrecondition] = CapabilityPrecondition
 _PRECONDITION_REGULAR_FILE: Final[CapabilityPrecondition] = CapabilityPrecondition(
     name="filesystem.regular_file",
     description=(
-        "The explicit source/target must be a regular file, not a directory, symlink or special file."
+        "The explicit source/target must be a regular file, not a directory, "
+        "symlink or special file."
     ),
 )
 _PRECONDITION_EMPTY_DIRECTORY: Final[CapabilityPrecondition] = CapabilityPrecondition(
@@ -308,7 +311,9 @@ def _descriptor(
         preconditions=preconditions,
         rollback=RollbackDeclaration(
             support=RollbackSupport.UNSUPPORTED,
-            detail="AX-261–265 retain no hidden backup; verification reports the resulting state.",
+            detail=(
+                "AX-261-265 retain no hidden backup; verification reports the resulting state."
+            ),
         ),
         estimate=ResourceEstimate(
             wall_clock=timedelta(seconds=2),

@@ -1,4 +1,4 @@
-"""Failure-injection proofs for AX-260–265 filesystem mutations."""
+"""Failure-injection proofs for AX-260-265 filesystem mutations."""
 
 from __future__ import annotations
 

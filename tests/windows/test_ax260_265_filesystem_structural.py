@@ -1,4 +1,4 @@
-"""Windows-host acceptance for AX-260–265 structural filesystem operations."""
+"""Windows-host acceptance for AX-260-265 structural filesystem operations."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Governed integration acceptance for AX-260–265 and AX-296–297."""
+"""Governed integration acceptance for AX-260-265 and AX-296-297."""
 
 from __future__ import annotations
 
@@ -116,8 +116,8 @@ def test_create_directory_runs_through_canonical_loop_and_reaches_verified_succe
 def test_move_file_runs_through_canonical_loop_with_independent_identity_verification(
     tmp_path: Path,
 ) -> None:
-    source = tmp_path / "source-α.txt"
-    destination = tmp_path / "destination-β.txt"
+    source = tmp_path / "source-é.txt"
+    destination = tmp_path / "destination-ø.txt"
     payload = b"governed-move-exact-bytes"
     source.write_bytes(payload)
     loop, _, _ = _loop(FilesystemMoveFileCapability(), frozenset({Permission.WRITE}))

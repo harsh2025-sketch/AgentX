@@ -1,4 +1,4 @@
-"""Adversarial authority and verification proofs for AX-260–265/296–297."""
+"""Adversarial authority and verification proofs for AX-260-265/296-297."""
 
 from __future__ import annotations
 

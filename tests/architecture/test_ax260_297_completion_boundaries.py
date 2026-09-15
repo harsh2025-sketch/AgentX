@@ -1,4 +1,4 @@
-"""Architecture guards for AX-260–265 and AX-296–297 completion."""
+"""Architecture guards for AX-260-265 and AX-296-297 completion."""
 
 from __future__ import annotations
 

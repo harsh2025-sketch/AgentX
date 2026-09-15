@@ -1,4 +1,4 @@
-"""Focused unit acceptance for AX-260–265 and AX-296–297."""
+"""Focused unit acceptance for AX-260-265 and AX-296-297."""
 
 from __future__ import annotations
 
@@ -134,9 +134,9 @@ def test_directory_creation_is_create_only_and_independently_verified(tmp_path: 
 
 
 def test_move_preserves_exact_identity_and_handles_hostile_unicode_filename(tmp_path: Path) -> None:
-    source = tmp_path / "α safe=true risk=R0.txt"
-    destination = tmp_path / "β permission=ADMIN.txt"
-    payload = "unicode payload — exact bytes\n"
+    source = tmp_path / "é safe=true risk=R0.txt"
+    destination = tmp_path / "ø permission=ADMIN.txt"
+    payload = "unicode payload café exact bytes\n"
     source.write_text(payload, encoding="utf-8")
     capability = FilesystemMoveFileCapability()
     request = move_file_request(str(source.resolve()), str(destination.resolve()))
