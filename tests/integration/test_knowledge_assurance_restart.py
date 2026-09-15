@@ -6,14 +6,19 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from agentx.core.ids import KnowledgeId
-from agentx.core.knowledge import KnowledgeRecord, KnowledgeStatus, KnowledgeType
+from agentx.core.knowledge import (
+    KnowledgeRecord,
+    KnowledgeStatus,
+    KnowledgeType,
+    ProvenanceKind,
+    ProvenanceReference,
+)
 from agentx.core.knowledge_assurance import (
     KnowledgeRevalidation,
     KnowledgeRevalidationOutcome,
     KnowledgeRevalidationRequest,
 )
 from agentx.core.knowledge_integrity import KnowledgeContradiction, KnowledgeSupersession
-from agentx.core.knowledge import ProvenanceKind, ProvenanceReference
 from agentx.core.provenance import EvidenceKind, EvidenceReference
 from agentx.infrastructure.event_journal import EventJournal
 from agentx.infrastructure.knowledge_assurance_ledger import KnowledgeAssuranceLedger
@@ -61,7 +66,10 @@ def test_relationship_and_revalidation_history_survive_fresh_store_instances(
         )
     )
 
-    ledger = KnowledgeAssuranceLedger(journal=EventJournal(database), knowledge_store=store)
+    ledger = KnowledgeAssuranceLedger(
+        journal=EventJournal(database),
+        knowledge_store=store,
+    )
     request = KnowledgeRevalidationRequest.create(
         knowledge_id=current.knowledge_id,
         source="restart-test-verifier",
