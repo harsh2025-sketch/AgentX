@@ -92,16 +92,12 @@ def test_stale_historical_revision_is_not_reused_when_new_revision_is_active(
     store = _store(tmp_path / "agentx.sqlite3")
     revision1 = _candidate(label="old")
     store.insert(revision1)
-    active1 = store.update_status(
-        revision1.procedure_id, 1, ProcedureStatus.ACTIVE, updated_at=_T0
-    )
+    active1 = store.update_status(revision1.procedure_id, 1, ProcedureStatus.ACTIVE, updated_at=_T0)
     store.update_status(active1.procedure_id, 1, ProcedureStatus.RETIRED, updated_at=_T0)
 
     revision2 = _candidate(procedure_id=revision1.procedure_id, revision=2, label="new")
     store.insert(revision2)
-    active2 = store.update_status(
-        revision2.procedure_id, 2, ProcedureStatus.ACTIVE, updated_at=_T0
-    )
+    active2 = store.update_status(revision2.procedure_id, 2, ProcedureStatus.ACTIVE, updated_at=_T0)
 
     result = ActiveProcedureReuse(ActiveProcedureReader(store), {}).select(
         ProcedureRequirement(scope=_SCOPE)
