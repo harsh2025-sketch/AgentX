@@ -1,9 +1,10 @@
 """Typed, code-connected AgentX threat-model foundation (AX-390).
 
-This module is descriptive security data, not enforcement. Runtime unsafe-action
-detection remains owned by AX-040 and is deliberately not reimplemented here.
-The model names trust boundaries, assets, abuse classes, invariant controls and
-the machine-test files that exercise those controls.
+This module is descriptive security data, not runtime enforcement.  AX-040 owns
+the Trusted-Kernel whole-system security audit and unsafe-action controls.  The
+model here keeps the ongoing threat inventory code-connected: every control
+names a boundary, protected assets, threat classes, an invariant, concrete
+implementation paths, machine-test paths and residual risk.
 """
 
 from __future__ import annotations
@@ -75,7 +76,7 @@ class ThreatClass(StrEnum):
 
 @dataclass(frozen=True, slots=True)
 class ThreatControl:
-    """One code-connected invariant and its residual risk."""
+    """One descriptive invariant connected to current production and tests."""
 
     control_id: str
     boundary: ThreatBoundary
@@ -88,39 +89,51 @@ class ThreatControl:
     residual_risk: str
 
     def __post_init__(self) -> None:
+        if not isinstance(self.control_id, str):
+            raise TypeError("control_id must be a string")
         if not self.control_id or self.control_id != self.control_id.strip():
             raise ValueError("control_id must be non-empty and trimmed")
         if not isinstance(self.boundary, ThreatBoundary):
             raise TypeError("boundary must be a ThreatBoundary")
         if not isinstance(self.disposition, TrustDisposition):
             raise TypeError("disposition must be a TrustDisposition")
-        if not self.assets or any(not isinstance(item, AgentXAsset) for item in self.assets):
-            raise ValueError("assets must be a non-empty AgentXAsset set")
-        if not self.threats or any(not isinstance(item, ThreatClass) for item in self.threats):
-            raise ValueError("threats must be a non-empty ThreatClass set")
+        if not isinstance(self.assets, frozenset) or not self.assets:
+            raise ValueError("assets must be a non-empty frozenset")
+        if any(not isinstance(item, AgentXAsset) for item in self.assets):
+            raise TypeError("assets must contain only AgentXAsset values")
+        if not isinstance(self.threats, frozenset) or not self.threats:
+            raise ValueError("threats must be a non-empty frozenset")
+        if any(not isinstance(item, ThreatClass) for item in self.threats):
+            raise TypeError("threats must contain only ThreatClass values")
         for field_name, values in (
             ("implementation_paths", self.implementation_paths),
             ("test_paths", self.test_paths),
         ):
-            if not values:
-                raise ValueError(f"{field_name} must not be empty")
+            if not isinstance(values, tuple) or not values:
+                raise ValueError(f"{field_name} must be a non-empty tuple")
             for value in values:
+                if not isinstance(value, str) or not value:
+                    raise ValueError(f"{field_name} entries must be non-empty strings")
                 path = PurePosixPath(value)
                 if path.is_absolute() or ".." in path.parts:
                     raise ValueError(f"{field_name} entries must be repository-relative")
-        if not self.invariant.strip() or not self.residual_risk.strip():
-            raise ValueError("invariant and residual_risk must be non-empty")
+        if not isinstance(self.invariant, str) or not self.invariant.strip():
+            raise ValueError("invariant must be non-empty")
+        if not isinstance(self.residual_risk, str) or not self.residual_risk.strip():
+            raise ValueError("residual_risk must be non-empty")
 
 
 @dataclass(frozen=True, slots=True)
 class ThreatModel:
-    """Bounded set of threat controls for the current AgentX architecture."""
+    """Bounded immutable threat/control map for the current architecture."""
 
     controls: tuple[ThreatControl, ...]
 
     def __post_init__(self) -> None:
-        if not self.controls:
-            raise ValueError("controls must not be empty")
+        if not isinstance(self.controls, tuple) or not self.controls:
+            raise ValueError("controls must be a non-empty tuple")
+        if any(not isinstance(item, ThreatControl) for item in self.controls):
+            raise TypeError("controls must contain only ThreatControl values")
         ids = tuple(item.control_id for item in self.controls)
         if len(ids) != len(set(ids)):
             raise ValueError("control_id values must be unique")
@@ -159,18 +172,17 @@ def _control(
 
 
 def canonical_threat_model() -> ThreatModel:
-    """Return the canonical code-connected threat/control map for this tree."""
+    """Return the canonical bounded threat/control map for this repository tree."""
     controls = (
         _control(
             "kernel-authority",
             ThreatBoundary.TRUSTED_KERNEL,
             TrustDisposition.AUTHORITY_SOURCE,
             frozenset({AgentXAsset.AUTHORITY, AgentXAsset.RESOURCE_BUDGET}),
-            frozenset({ThreatClass.AUTHORITY_SPOOFING, ThreatClass.DESTRUCTIVE_ACTION}),
-            (
-                "Only canonical permission, risk, ActionGate and budget contracts may "
-                "authorize machine actions."
+            frozenset(
+                {ThreatClass.AUTHORITY_SPOOFING, ThreatClass.DESTRUCTIVE_ACTION}
             ),
+            "Only canonical kernel policy may authorize governed machine actions.",
             (
                 "src/agentx/kernel/action_gate.py",
                 "src/agentx/kernel/permissions.py",
@@ -180,10 +192,7 @@ def canonical_threat_model() -> ThreatModel:
                 "tests/unit/test_action_gate.py",
                 "tests/adversarial/test_trusted_kernel_adversarial.py",
             ),
-            (
-                "A correct policy can still authorize an operation the user later regrets; "
-                "approval semantics remain operation-specific."
-            ),
+            "Correct policy cannot eliminate user regret or every host race.",
         ),
         _control(
             "model-data",
@@ -197,13 +206,13 @@ def canonical_threat_model() -> ThreatModel:
                     ThreatClass.PROVIDER_FAILURE,
                 }
             ),
+            "Model output is data and cannot directly create authority or success.",
             (
-                "Model output is data and cannot directly mutate authority, verification "
-                "truth, or task success."
+                "src/agentx/cognition/model_provider.py",
+                "src/agentx/cognition/reasoner.py",
             ),
-            ("src/agentx/cognition/model_provider.py", "src/agentx/cognition/reasoner.py"),
             ("tests/unit/test_model_provider.py", "tests/unit/test_reasoner.py"),
-            "Incorrect model content still requires deterministic validation before use.",
+            "Incorrect model content can still mislead later deterministic consumers.",
         ),
         _control(
             "research-data",
@@ -211,10 +220,7 @@ def canonical_threat_model() -> ThreatModel:
             TrustDisposition.UNTRUSTED_DATA,
             frozenset({AgentXAsset.KNOWLEDGE, AgentXAsset.AUTHORITY}),
             frozenset({ThreatClass.PROMPT_INJECTION, ThreatClass.PROVIDER_FAILURE}),
-            (
-                "Research-provider evidence is untrusted and cannot itself create verified "
-                "knowledge or authority."
-            ),
+            "Research evidence remains untrusted until independently revalidated.",
             (
                 "src/agentx/cognition/research_provider.py",
                 "src/agentx/cognition/research_acquisition.py",
@@ -223,30 +229,30 @@ def canonical_threat_model() -> ThreatModel:
                 "tests/adversarial/test_research_provider_authority.py",
                 "tests/adversarial/test_research_acquisition_authority.py",
             ),
-            (
-                "External provenance can be forged; explicit later revalidation is required "
-                "before load-bearing truth use."
-            ),
+            "External provenance can be forged or become stale after retrieval.",
         ),
         _control(
             "browser-boundary",
             ThreatBoundary.BROWSER,
             TrustDisposition.UNTRUSTED_DATA,
             frozenset({AgentXAsset.USER_DATA, AgentXAsset.AUTHORITY}),
-            frozenset({ThreatClass.PROMPT_INJECTION, ThreatClass.STALE_EVIDENCE}),
-            (
-                "DOM/page content is untrusted observation and browser actions remain "
-                "governed capabilities."
+            frozenset(
+                {
+                    ThreatClass.PROMPT_INJECTION,
+                    ThreatClass.STALE_EVIDENCE,
+                    ThreatClass.TOCTOU,
+                }
             ),
-            ("src/agentx/capabilities/browser_dom.py", "src/agentx/capabilities/browser_actions.py"),
+            "DOM data is untrusted and browser mutations remain governed actions.",
+            (
+                "src/agentx/capabilities/browser_dom.py",
+                "src/agentx/capabilities/browser_actions.py",
+            ),
             (
                 "tests/adversarial/test_browser_dom_authority.py",
                 "tests/adversarial/test_browser_actions_adversarial.py",
             ),
-            (
-                "A page can change between observation and action; targeting must revalidate "
-                "freshness and identity."
-            ),
+            "Pages may change between observation, target resolution and action.",
         ),
         _control(
             "windows-ui-boundary",
@@ -254,10 +260,7 @@ def canonical_threat_model() -> ThreatModel:
             TrustDisposition.EVIDENCE_ONLY,
             frozenset({AgentXAsset.USER_DATA, AgentXAsset.TASK_STATE}),
             frozenset({ThreatClass.TOCTOU, ThreatClass.STALE_EVIDENCE}),
-            (
-                "Windows UI dispatch never proves the intended state transition; execution "
-                "and independent verification remain separate."
-            ),
+            "Native dispatch never proves the intended user-visible state transition.",
             (
                 "src/agentx/capabilities/windows/window_management_v2.py",
                 "src/agentx/windows_transition_verification.py",
@@ -266,24 +269,20 @@ def canonical_threat_model() -> ThreatModel:
                 "tests/adversarial/test_windows_window_management_v2_authority.py",
                 "tests/adversarial/test_windows_transition_verification_authority.py",
             ),
-            (
-                "Applications may expose incomplete accessibility state, leaving some "
-                "outcomes explicitly observed-only."
-            ),
+            "Applications can expose incomplete or rapidly changing UI state.",
         ),
         _control(
             "clipboard-boundary",
             ThreatBoundary.CLIPBOARD,
             TrustDisposition.UNTRUSTED_DATA,
             frozenset({AgentXAsset.USER_DATA, AgentXAsset.SECRETS}),
-            frozenset({ThreatClass.DATA_EXFILTRATION, ThreatClass.PROMPT_INJECTION}),
+            frozenset(
+                {ThreatClass.DATA_EXFILTRATION, ThreatClass.PROMPT_INJECTION}
+            ),
             "Clipboard text is untrusted and must not become authority or unsafe telemetry.",
             ("src/agentx/capabilities/windows/keyboard_text_clipboard.py",),
             ("tests/adversarial/test_windows_keyboard_text_clipboard_authority.py",),
-            (
-                "Other applications can mutate clipboard state concurrently between dispatch "
-                "and verification."
-            ),
+            "Other applications can mutate clipboard state concurrently.",
         ),
         _control(
             "filesystem-boundary",
@@ -297,10 +296,7 @@ def canonical_threat_model() -> ThreatModel:
                     ThreatClass.DATA_EXFILTRATION,
                 }
             ),
-            (
-                "Filesystem mutation is permission/risk gated and independently verified; "
-                "path text is inert."
-            ),
+            "Filesystem mutation is governed and API return is not verification.",
             (
                 "src/agentx/capabilities/filesystem.py",
                 "src/agentx/capabilities/filesystem_structural_risk.py",
@@ -309,10 +305,7 @@ def canonical_threat_model() -> ThreatModel:
                 "tests/adversarial/test_filesystem_capability_adversarial.py",
                 "tests/unit/test_filesystem_structural_risk.py",
             ),
-            (
-                "Filesystem state can race after preflight; destructive operations require "
-                "conservative request-sensitive policy."
-            ),
+            "Host filesystem state can race after any preflight observation.",
         ),
         _control(
             "memory-boundary",
@@ -326,7 +319,7 @@ def canonical_threat_model() -> ThreatModel:
                     ThreatClass.UNSAFE_REPLAY,
                 }
             ),
-            "Knowledge lifecycle, status and provenance remain data, never authority.",
+            "Knowledge status, provenance and content remain data rather than authority.",
             (
                 "src/agentx/infrastructure/knowledge_store.py",
                 "src/agentx/infrastructure/knowledge_retrieval.py",
@@ -335,27 +328,26 @@ def canonical_threat_model() -> ThreatModel:
                 "tests/unit/test_knowledge_integrity.py",
                 "tests/architecture/test_knowledge_retrieval_boundaries.py",
             ),
-            (
-                "Stored claims may remain wrong despite provenance; contradiction and "
-                "revalidation must surface uncertainty."
-            ),
+            "Persisted claims can remain wrong even when provenance is preserved.",
         ),
         _control(
             "persistence-boundary",
             ThreatBoundary.PERSISTENCE,
             TrustDisposition.TRUSTED_ENFORCEMENT,
-            frozenset({AgentXAsset.KNOWLEDGE, AgentXAsset.PROCEDURES, AgentXAsset.EVIDENCE}),
+            frozenset(
+                {AgentXAsset.KNOWLEDGE, AgentXAsset.PROCEDURES, AgentXAsset.EVIDENCE}
+            ),
             frozenset({ThreatClass.UNSAFE_REPLAY, ThreatClass.STALE_EVIDENCE}),
+            "Durable state is schema-validated and corrupt records fail closed.",
             (
-                "Durable state is schema-validated and corruption fails closed instead of "
-                "being repaired silently."
+                "src/agentx/infrastructure/persistence.py",
+                "src/agentx/infrastructure/recovery.py",
             ),
-            ("src/agentx/infrastructure/persistence.py", "src/agentx/infrastructure/recovery.py"),
-            ("tests/unit/test_persistence.py", "tests/unit/test_persistence_recovery.py"),
             (
-                "Storage failure can make state unavailable; some corruption still requires "
-                "operator recovery."
+                "tests/unit/test_persistence.py",
+                "tests/unit/test_persistence_recovery.py",
             ),
+            "Storage corruption can make valid state unavailable until operator recovery.",
         ),
         _control(
             "procedure-compiler",
@@ -363,56 +355,54 @@ def canonical_threat_model() -> ThreatModel:
             TrustDisposition.EVIDENCE_ONLY,
             frozenset({AgentXAsset.PROCEDURES}),
             frozenset({ThreatClass.UNSAFE_REPLAY, ThreatClass.PROMPT_INJECTION}),
+            "Generated procedures require independent validation and explicit promotion.",
             (
-                "Generated candidates require independent validation and explicit promotion "
-                "before ACTIVE reuse."
+                "src/agentx/procedure_validation.py",
+                "src/agentx/procedure_promotion.py",
             ),
-            ("src/agentx/procedure_validation.py", "src/agentx/procedure_promotion.py"),
             (
                 "tests/unit/test_procedure_validation_policy.py",
                 "tests/unit/test_procedure_promotion.py",
             ),
-            (
-                "Validation can miss future drift; ACTIVE lifecycle is not permanent proof "
-                "of correctness."
-            ),
+            "Validation cannot prove correctness under every future environment change.",
         ),
         _control(
             "procedure-runtime",
             ThreatBoundary.PROCEDURE_RUNTIME,
             TrustDisposition.TRUSTED_ENFORCEMENT,
             frozenset({AgentXAsset.PROCEDURES, AgentXAsset.TASK_STATE}),
-            frozenset({ThreatClass.UNSAFE_REPLAY, ThreatClass.RESOURCE_EXHAUSTION}),
-            "Procedure execution is bounded, governed, and END is not task success.",
-            ("src/agentx/compiled_procedure_strategy.py", "src/agentx/guided_procedure_strategy.py"),
+            frozenset(
+                {ThreatClass.UNSAFE_REPLAY, ThreatClass.RESOURCE_EXHAUSTION}
+            ),
+            "Procedure execution is bounded and END is not task success.",
+            (
+                "src/agentx/compiled_procedure_strategy.py",
+                "src/agentx/guided_procedure_strategy.py",
+            ),
             (
                 "tests/integration/test_compiled_procedure_strategy.py",
                 "tests/integration/test_guided_procedure_strategy.py",
             ),
-            (
-                "An ACTIVE procedure can become stale when environmental assumptions change "
-                "and must be invalidated by higher layers."
-            ),
+            "An ACTIVE procedure may become stale as environmental assumptions drift.",
         ),
         _control(
             "repair-boundary",
             ThreatBoundary.REPAIR,
             TrustDisposition.EVIDENCE_ONLY,
             frozenset({AgentXAsset.PROCEDURES, AgentXAsset.TASK_STATE}),
-            frozenset({ThreatClass.UNSAFE_REPLAY, ThreatClass.AUTHORITY_SPOOFING}),
-            (
-                "Repair proposals and validation evidence cannot activate replacements "
-                "without canonical lifecycle policy."
+            frozenset(
+                {ThreatClass.UNSAFE_REPLAY, ThreatClass.AUTHORITY_SPOOFING}
             ),
-            ("src/agentx/repair_workflow.py", "src/agentx/core/repair_validation.py"),
+            "Repair evidence cannot activate a replacement or grant execution authority.",
+            (
+                "src/agentx/repair_workflow.py",
+                "src/agentx/core/repair_validation.py",
+            ),
             (
                 "tests/adversarial/test_repair_workflow_authority.py",
                 "tests/unit/test_repair_validation.py",
             ),
-            (
-                "Automated validation can be incomplete; destructive repair still requires "
-                "governed execution."
-            ),
+            "Automated repair validation can miss environment-specific failures.",
         ),
         _control(
             "world-state",
@@ -420,50 +410,35 @@ def canonical_threat_model() -> ThreatModel:
             TrustDisposition.EVIDENCE_ONLY,
             frozenset({AgentXAsset.TASK_STATE, AgentXAsset.USER_DATA}),
             frozenset({ThreatClass.STALE_EVIDENCE, ThreatClass.TOCTOU}),
-            (
-                "World observations are timestamped evidence, never current truth without "
-                "freshness evidence."
-            ),
+            "World-state observations carry freshness and never become authority.",
             ("src/agentx/core/world_state.py",),
-            ("tests/adversarial/test_world_state_authority.py", "tests/unit/test_world_state.py"),
-            (
-                "Providers can be incomplete or delayed; absence of observation is not proof "
-                "of absence."
-            ),
+            ("tests/adversarial/test_world_state_authority.py",),
+            "Observed state can become stale immediately after capture.",
         ),
         _control(
-            "events-boundary",
+            "event-system",
             ThreatBoundary.EVENT_SYSTEM,
             TrustDisposition.EVIDENCE_ONLY,
             frozenset({AgentXAsset.EVIDENCE, AgentXAsset.TASK_STATE}),
-            frozenset({ThreatClass.EVENT_SPOOFING, ThreatClass.RESOURCE_EXHAUSTION}),
-            (
-                "Events describe runtime facts but never grant authority or mutate canonical "
-                "task state by themselves."
-            ),
+            frozenset({ThreatClass.EVENT_SPOOFING, ThreatClass.UNSAFE_REPLAY}),
+            "Events are typed evidence; publication is not permission or verification.",
             ("src/agentx/core/events.py", "src/agentx/infrastructure/event_bus.py"),
             ("tests/unit/test_events.py", "tests/unit/test_event_bus.py"),
-            (
-                "Consumers can disconnect or lag; bounded queues and replay semantics are "
-                "needed for future UI/watchers."
-            ),
+            "A valid event can still describe stale or malicious external data.",
         ),
         _control(
-            "extensions-boundary",
+            "extension-boundary",
             ThreatBoundary.EXTENSIONS,
             TrustDisposition.UNTRUSTED_DATA,
-            frozenset({AgentXAsset.AUTHORITY, AgentXAsset.SECRETS, AgentXAsset.USER_DATA}),
+            frozenset({AgentXAsset.AUTHORITY, AgentXAsset.USER_DATA}),
             frozenset({ThreatClass.SUPPLY_CHAIN, ThreatClass.AUTHORITY_SPOOFING}),
-            (
-                "Extension metadata cannot create permissions or bypass canonical registry "
-                "and governance boundaries."
-            ),
+            "Capability discovery identifies implementations but never grants authority.",
             ("src/agentx/capabilities/registry.py",),
-            ("tests/architecture/test_capability_registry_placement.py",),
             (
-                "Future plugin execution increases supply-chain attack surface and requires "
-                "an explicit governed loading design."
+                "tests/unit/test_capability_registry.py",
+                "tests/architecture/test_capability_registry_placement.py",
             ),
+            "Future dynamic extension loading will require additional supply-chain controls.",
         ),
     )
     return ThreatModel(controls=controls)
