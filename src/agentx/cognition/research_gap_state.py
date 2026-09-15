@@ -71,10 +71,7 @@ class KnowledgeResearchGapResult:
             raise TypeError("state must be a KnowledgeResearchGapState")
         if not isinstance(self.requirements, tuple) or not self.requirements:
             raise ValueError("requirements must be a non-empty tuple")
-        if any(
-            not isinstance(item, KnowledgeResearchRequirementState)
-            for item in self.requirements
-        ):
+        if any(not isinstance(item, KnowledgeResearchRequirementState) for item in self.requirements):
             raise TypeError("requirements must contain KnowledgeResearchRequirementState values")
         if type(self.research_required) is not bool:
             raise TypeError("research_required must be bool")
