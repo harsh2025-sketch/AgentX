@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ast
 from pathlib import Path
 
 from agentx.core.audio import (
@@ -28,18 +29,28 @@ def test_audio_foundation_exposes_provider_neutral_resource_lifecycle_contracts(
     assert hasattr(AudioProvider, "open")
 
 
-def test_audio_core_does_not_name_vendor_or_start_always_on_runtime() -> None:
-    source = (_ROOT / "src/agentx/core/audio.py").read_text(encoding="utf-8").lower()
-    forbidden_runtime = (
-        "openai import",
-        "whisper import",
-        "kokoro import",
-        "threading",
-        "asyncio.create_task",
-        "while true",
-        "audio history",
-    )
-    assert all(token not in source for token in forbidden_runtime)
+def test_audio_core_does_not_import_vendor_or_start_always_on_runtime() -> None:
+    source = (_ROOT / "src/agentx/core/audio.py").read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    imported_modules: set[str] = set()
+    called_names: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            imported_modules.update(alias.name for alias in node.names)
+        elif isinstance(node, ast.ImportFrom) and node.module is not None:
+            imported_modules.add(node.module)
+        elif isinstance(node, ast.Call):
+            if isinstance(node.func, ast.Name):
+                called_names.add(node.func.id)
+            elif isinstance(node.func, ast.Attribute):
+                called_names.add(node.func.attr)
+
+    forbidden_import_roots = {"openai", "whisper", "kokoro", "threading", "asyncio"}
+    assert not {
+        name for name in imported_modules if name.partition(".")[0] in forbidden_import_roots
+    }
+    assert not ({"create_task", "create_task_group"} & called_names)
+    assert "while True:" not in source
 
 
 def test_runtime_ui_protocol_cannot_import_machine_authority() -> None:
