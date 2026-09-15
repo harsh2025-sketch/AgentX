@@ -490,6 +490,34 @@ class CapabilityExecutionLoop:
             )
             return self._cancelled(chain, current, usage, error, policy_reason)
 
+        # Final C1.09 execution admission. This is intentionally after every
+        # potentially slow precondition above and immediately before resource
+        # consumption: stop activation and execution admission are serialized
+        # by the canonical EmergencyStop. A stop that wins this race denies the
+        # run before budget consumption or Capability.execute can begin.
+        if not self._emergency_stop.try_admit_execution():
+            self._record_audit(
+                scope,
+                operation="runtime.emergency_stop",
+                outcome=AuditOutcome.STOP_REQUESTED,
+                reason="emergency stop activated before final execution admission",
+                risk_level=effective_level,
+                target=str(request.identity),
+            )
+            error = _failure_error(
+                code="runtime.emergency_stop_active",
+                message="emergency stop is active; no governed execution may start",
+                category=ErrorCategory.PRECONDITION,
+                details={"capability": str(request.identity)},
+            )
+            return self._cancelled(
+                chain,
+                current,
+                usage,
+                error,
+                policy_reason="DENY: emergency stop won final execution admission.",
+            )
+
         # 7. Canonical C1.08 budget: atomic preflight check-and-consume of the
         # descriptor-declared estimate. A DENY consumes nothing.
         budget_result = self._budget.check_and_consume(
