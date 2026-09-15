@@ -14,6 +14,9 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from uuid import UUID, uuid4
 
+from tests.support.demo_capability import DemoNoteCapability, NoteWriteParams, write_request
+from tests.support.orchestration_harness import make_envelope
+
 from agentx.capabilities.registry import CapabilityRegistry
 from agentx.capabilities.runtime import CapabilityExecutionLoop, LoopOutcome
 from agentx.core.causal_experience import CausalExperience, CausalOutcome, ExperienceState
@@ -35,8 +38,6 @@ from agentx.kernel.resource_budget import ResourceBudget
 from agentx.kernel.risk import RiskLevel, assess_risk
 from agentx.kernel.secrets import SecretValue
 from agentx.skill_compiler import SkillCompilationOutcome, compile_skill_candidate
-from tests.support.demo_capability import DemoNoteCapability, NoteWriteParams, write_request
-from tests.support.orchestration_harness import make_envelope
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _SRC_ROOT = _REPO_ROOT / "src" / "agentx"
