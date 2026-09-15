@@ -137,7 +137,9 @@ class EnvironmentInvalidationEvidence:
             "detail",
         }
         if set(raw) != expected:
-            raise EnvironmentFreshnessValidationError("invalidation fields are incomplete or unknown")
+            raise EnvironmentFreshnessValidationError(
+                "invalidation fields are incomplete or unknown"
+            )
         reason = raw["reason"]
         if not isinstance(reason, str):
             raise EnvironmentFreshnessValidationError("reason must be a string")
@@ -261,7 +263,7 @@ class EnvironmentFreshness:
     def invalidate(self, evidence: EnvironmentInvalidationEvidence) -> EnvironmentFreshness:
         if not isinstance(evidence, EnvironmentInvalidationEvidence):
             raise TypeError("evidence must be EnvironmentInvalidationEvidence")
-        return replace(self, invalidations=self.invalidations + (evidence,))
+        return replace(self, invalidations=(*self.invalidations, evidence))
 
     def refresh(
         self,
@@ -272,7 +274,9 @@ class EnvironmentFreshness:
     ) -> EnvironmentFreshness:
         refreshed_at = _time(observed_at, field_name="observed_at")
         if refreshed_at < self.observed_at:
-            raise EnvironmentFreshnessValidationError("refresh cannot move observation time backward")
+            raise EnvironmentFreshnessValidationError(
+                "refresh cannot move observation time backward"
+            )
         return EnvironmentFreshness(
             subject=self.subject,
             environment_reference=self.environment_reference,
