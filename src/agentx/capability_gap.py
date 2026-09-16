@@ -1,7 +1,10 @@
 """Bounded missing-capability detection over an inert inventory snapshot (AX-541).
 
 This module answers one descriptive question: which explicitly required
-CapabilityIdentity values are absent from an immutable identity snapshot? It
+CapabilityIdentity values are absent from an explicitly complete identity snapshot?
+Incomplete visibility is unknown; restricted identities are never missing. The
+completeness and restriction metadata must come from the inventory owner, not
+model or retrieved text. This module does not decide permissions. It
 never imports the registry, loads, installs, generates, selects, executes, or
 authorizes a capability. A gap is planning evidence only and cannot grant
 permission or lower risk.
@@ -37,6 +40,8 @@ class CapabilityGapValidationError(ValueError):
 class CapabilityAvailability(StrEnum):
     AVAILABLE = "available"
     MISSING = "missing"
+    UNKNOWN = "unknown"
+    RESTRICTED = "restricted"
 
 
 def _identity_key(identity: CapabilityIdentity) -> tuple[str, int, int, int]:
@@ -110,19 +115,38 @@ class CapabilityGapReport:
     required: tuple[CapabilityIdentity, ...]
     available: tuple[CapabilityIdentity, ...]
     gaps: tuple[CapabilityGap, ...]
+    unknown: tuple[CapabilityIdentity, ...] = ()
+    restricted: tuple[CapabilityIdentity, ...] = ()
 
     @property
     def is_satisfied(self) -> bool:
         """Whether every exact identity was present; this grants no authority."""
-        return not self.gaps
+        return not (self.gaps or self.unknown or self.restricted)
 
 
 class CapabilityGapDetector:
     """Read-only exact-identity detector over an injected immutable snapshot."""
 
-    __slots__ = ("_inventory", "_inventory_set")
+    __slots__ = ("_inventory", "_inventory_set", "_inventory_complete", "_restricted")
 
-    def __init__(self, inventory: tuple[CapabilityIdentity, ...]) -> None:
+    def __init__(
+        self,
+        inventory: tuple[CapabilityIdentity, ...],
+        *,
+        inventory_complete: bool = False,
+        restricted: tuple[CapabilityIdentity, ...] = (),
+    ) -> None:
+        if type(inventory_complete) is not bool:
+            raise TypeError("inventory_complete must be a bool")
+        self._inventory_complete = inventory_complete
+        self._restricted = frozenset(
+            _validate_identity_tuple(
+                restricted,
+                field_name="restricted",
+                maximum=MAX_CAPABILITY_INVENTORY,
+                allow_empty=True,
+            )
+        )
         ordered = _validate_identity_tuple(
             inventory,
             field_name="inventory",
@@ -142,18 +166,30 @@ class CapabilityGapDetector:
 
         available: list[CapabilityIdentity] = []
         gaps: list[CapabilityGap] = []
+        unknown: list[CapabilityIdentity] = []
+        restricted: list[CapabilityIdentity] = []
         for identity in ordered_required:
+            if identity in self._restricted:
+                restricted.append(identity)
+                continue
             if identity in self._inventory_set:
                 available.append(identity)
+                continue
+            if not self._inventory_complete:
+                unknown.append(identity)
                 continue
             alternatives = tuple(
                 candidate
                 for candidate in self._inventory
-                if candidate.name == identity.name and candidate != identity
+                if candidate.name == identity.name
+                and candidate != identity
+                and candidate not in self._restricted
             )[:_MAX_ALTERNATIVES_PER_GAP]
             gaps.append(CapabilityGap(required=identity, alternatives=alternatives))
         return CapabilityGapReport(
             required=ordered_required,
             available=tuple(available),
             gaps=tuple(gaps),
+            unknown=tuple(unknown),
+            restricted=tuple(restricted),
         )

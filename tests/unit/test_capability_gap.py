@@ -105,7 +105,7 @@ def test_detects_exact_missing_identity_and_same_name_alternative_without_execut
     missing_version = _identity("files.read", 2)
     missing_name = _identity("browser.form", 1)
 
-    report = CapabilityGapDetector(_snapshot(registry)).detect(
+    report = CapabilityGapDetector(_snapshot(registry), inventory_complete=True).detect(
         (missing_name, present, missing_version)
     )
 
@@ -127,7 +127,7 @@ def test_hostile_descriptor_text_cannot_erase_gap_or_create_authority() -> None:
     )
     missing = _identity("missing.write")
 
-    report = CapabilityGapDetector(_snapshot(registry)).detect((missing,))
+    report = CapabilityGapDetector(_snapshot(registry), inventory_complete=True).detect((missing,))
 
     assert tuple(gap.required for gap in report.gaps) == (missing,)
     assert not report.is_satisfied
@@ -135,7 +135,7 @@ def test_hostile_descriptor_text_cannot_erase_gap_or_create_authority() -> None:
 
 
 def test_requirement_set_is_bounded_unique_and_typed() -> None:
-    detector = CapabilityGapDetector(())
+    detector = CapabilityGapDetector((), inventory_complete=True)
     identity = _identity("test.cap")
     with pytest.raises(CapabilityGapValidationError, match="must not be empty"):
         detector.detect(())
@@ -166,7 +166,7 @@ def test_snapshot_is_immutable_after_detector_construction() -> None:
     first = _identity("first.cap")
     second = _identity("second.cap")
     registry.register(_Capability(first))
-    detector = CapabilityGapDetector(_snapshot(registry))
+    detector = CapabilityGapDetector(_snapshot(registry), inventory_complete=True)
     registry.register(_Capability(second))
 
     report = detector.detect((first, second))
@@ -176,7 +176,7 @@ def test_snapshot_is_immutable_after_detector_construction() -> None:
 
 
 def test_report_order_is_deterministic_not_request_order() -> None:
-    detector = CapabilityGapDetector(())
+    detector = CapabilityGapDetector((), inventory_complete=True)
     a = _identity("a.cap")
     b = _identity("b.cap")
     report = detector.detect((b, a))
