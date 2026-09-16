@@ -171,7 +171,11 @@ class HttpModelProviderTests(unittest.TestCase):
 
     def test_malformed_and_authority_shaped_results_fail_closed(self) -> None:
         invalid: list[object] = [
-            None, [], {}, {"model": "wrong"}, {"model": MODEL.value, "choices": []}
+            None,
+            [],
+            {},
+            {"model": "wrong"},
+            {"model": MODEL.value, "choices": []},
         ]
         for message in [
             {"role": "assistant", "content": ""},
@@ -208,7 +212,8 @@ class HttpModelProviderTests(unittest.TestCase):
     def test_bounds_prevent_calls_and_bound_response(self) -> None:
         with server() as (config, scenario):
             for bounded in [
-                replace(config, max_request_bytes=10), replace(config, max_output_tokens=1)
+                replace(config, max_request_bytes=10),
+                replace(config, max_output_tokens=1),
             ]:
                 self.assertEqual(
                     HttpModelProvider(bounded).invoke(request()).unwrap_error().code,
