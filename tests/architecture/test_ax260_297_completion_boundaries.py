@@ -4,6 +4,23 @@ from __future__ import annotations
 
 import ast
 from pathlib import Path
+from typing import cast
+from unittest import TestCase
+
+from agentx.capabilities.windows.input_verification import (
+    ClipboardReadbackPort,
+    KeyboardActionVerificationPort,
+    VerifiedWindowsClipboardClearCapability,
+    VerifiedWindowsClipboardReadTextCapability,
+    VerifiedWindowsClipboardWriteTextCapability,
+    VerifiedWindowsSendKeysCapability,
+    VerifiedWindowsSendTextCapability,
+)
+from agentx.capabilities.windows.keyboard_text_clipboard import (
+    ClipboardNativePort,
+    KeyboardNativePort,
+)
+from tests.support.fake_windows_native import windows_support
 
 _REPO = Path(__file__).resolve().parents[2]
 _STRUCTURAL = _REPO / "src" / "agentx" / "capabilities" / "filesystem_structural.py"
@@ -57,9 +74,25 @@ def test_input_verification_is_observation_only_and_cannot_own_authority() -> No
 
 
 def test_input_verification_requires_distinct_execution_and_observation_ports() -> None:
-    source = _INPUT_VERIFY.read_text(encoding="utf-8")
-    assert "execution_port is verification_port" in source
-    assert "KeyboardActionVerificationPort" in source
-    assert "ClipboardReadbackPort" in source
-    assert "RawClipboardText" in source
-    assert "IndependentVerificationEvidence" in source
+    # Exercise the invariant for every adapter instead of matching variable names.
+    # The same object must be refused before native port methods can be inspected.
+    shared = object()
+    assertion = TestCase()
+    for keyboard in (VerifiedWindowsSendTextCapability, VerifiedWindowsSendKeysCapability):
+        with assertion.assertRaisesRegex(ValueError, "distinct"):
+            keyboard(
+                windows_support(),
+                execution_port=cast(KeyboardNativePort, shared),
+                verification_port=cast(KeyboardActionVerificationPort, shared),
+            )
+    for clipboard in (
+        VerifiedWindowsClipboardReadTextCapability,
+        VerifiedWindowsClipboardWriteTextCapability,
+        VerifiedWindowsClipboardClearCapability,
+    ):
+        with assertion.assertRaisesRegex(ValueError, "distinct"):
+            clipboard(
+                windows_support(),
+                execution_port=cast(ClipboardNativePort, shared),
+                verification_port=cast(ClipboardReadbackPort, shared),
+            )
