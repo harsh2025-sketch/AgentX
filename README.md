@@ -6,16 +6,17 @@ can operate a user's Windows machine, browser, and devices through governed,
 verifiable capabilities, with persistent memory and the ability to learn and
 repair its own procedures over time.
 
-> **Current status: bootstrap + architecture boundaries (tasks A1.01, A1.02).**
+> **Current status: substantial governed research prototype; not a finished AgentOS.**
 >
-> What exists today is a valid Python package, a version, a trivial
-> command-line entry point, a test suite for those things, lint/type-check
-> configuration, and an explicit machine-testable top-level module dependency
-> model. **None of the architectural subsystems listed below are
-> implemented.** Except for the single architecture metadata module
-> (`agentx._architecture`) described below, their packages are empty ownership
-> boundaries. Do not expect any agent, model, memory, or automation behaviour
-> from this repository yet.
+> Implemented code includes the Trusted Kernel, bounded agent/runtime strategies,
+> persistent experience and semantic memory, procedure compilation/validation,
+> reuse and repair machinery, and Windows/browser capability foundations.
+> These components do not yet establish the complete adaptive-learning workflow
+> or a ready-to-use desktop product. The CLI currently exposes package metadata,
+> not a natural-language agent session.
+>
+> See the [whole-project roadmap](docs/ROADMAP.md) for milestone exit criteria and
+> the [status and completion ledger](docs/STATUS.md) for evidence and remaining work.
 
 ## Requirements
 
@@ -107,34 +108,34 @@ AgentX/
 
 ## Module map (ownership boundaries)
 
-Each sub-package below is a canonical top-level ownership boundary. Except
-for the architecture metadata module `agentx._architecture`, they each contain
-a docstring and nothing else; a test enforces that they stay empty until a task
-explicitly implements them.
+Each sub-package below is a canonical top-level ownership boundary. Production
+modules exist in all eight packages. Top-level strategy/composition modules connect
+these owners without introducing forbidden subsystem imports.
 
 | Package                  | Responsibility for                                             | Status          |
 | ------------------------ | -------------------------------------------------------------- | --------------- |
-| `agentx.core`            | Shared domain contracts and Agent Runtime primitives           | not implemented |
-| `agentx.kernel`          | Trusted authority boundary: permissions, risk, budgets, capability gating, audit/security policy | not implemented |
-| `agentx.capabilities`    | Governed machine/browser/device capability implementations and contracts | not implemented |
-| `agentx.hive`            | Persistent semantic/episodic/procedural/causal/environmental knowledge | not implemented |
-| `agentx.procedures`      | Procedure Graph IR/runtime and skill lifecycle                 | not implemented |
-| `agentx.cognition`       | Provider-neutral reasoning/planning/model interfaces           | not implemented |
-| `agentx.learning`        | Research, skill compilation, reflection, repair and adaptive mechanisms | not implemented |
-| `agentx.infrastructure`  | Configuration, events, persistence adapters and other non-domain plumbing | not implemented |
+| `agentx.core`            | Shared contracts, task/execution state, evidence and world-state representations | implemented foundations |
+| `agentx.kernel`          | Permissions, risk, budgets, action gating, stop, secrets and audit | implemented; hardening continues |
+| `agentx.capabilities`    | Governed filesystem, Windows and browser operations | partial capability coverage |
+| `agentx.hive`            | Knowledge, provenance, scope, preferences and retrieval contracts | implemented foundations |
+| `agentx.procedures`      | Procedure graph/runtime, applicability and lifecycle | implemented; full lifecycle proof pending |
+| `agentx.cognition`       | Reasoner, model roles, decomposition, routing and research contracts | implemented; concrete runtime gaps remain |
+| `agentx.learning`        | Causal extraction, parameterization, synthesis and compilation | implemented; full adaptive proof pending |
+| `agentx.infrastructure`  | Configuration, event journal, persistence and store adapters | implemented foundations |
 
 The canonical names, allowed direct top-level imports, and forbidden dependency
 examples are recorded in
 [`docs/architecture/README.md`](docs/architecture/README.md) and are
 machine-testable from `agentx._architecture`. Those rules are architecture
 guardrails, not security enforcement; the Trusted Kernel is the security
-authority and is owned by its own task.
+authority.
 
 The architectural invariants these boundaries are meant to protect are also
 recorded in [`docs/architecture/README.md`](docs/architecture/README.md). They
-describe intent, not implemented behaviour.
+require both implementation and regression evidence; passing a boundary test alone
+does not prove a real-world task succeeds.
 
-## Contributing conventions (bootstrap)
+## Contributing conventions
 
 - Python 3.12+ syntax and typing; `mypy --strict` must pass.
 - `ruff check` and `ruff format --check` must pass.
