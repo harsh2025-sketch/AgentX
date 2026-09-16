@@ -15,6 +15,7 @@ itself, prove the intended application state. Verification evidence is narrow
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 from uuid import UUID
@@ -125,7 +126,7 @@ class ClipboardReadbackPort(Protocol):
         ...
 
 
-def _observation_data(observation: CapabilityObservation) -> dict[str, object] | None:
+def _observation_data(observation: CapabilityObservation) -> Mapping[str, object] | None:
     if not isinstance(observation, CapabilityObservation):
         raise TypeError("observation must be a CapabilityObservation")
     data = observation.to_dict()["data"]
@@ -147,7 +148,7 @@ def _keyboard_verdict(
 ) -> VerificationResult:
     if result.is_failure:
         return _verification_error(operation, result.unwrap_error())
-    evidence = result.unwrap()
+    evidence: object = result.unwrap()
     if not isinstance(evidence, IndependentVerificationEvidence):
         return VerificationResult(
             passed=False,
@@ -178,7 +179,7 @@ def _readback(
     result = port.read_text()
     if result.is_failure:
         return None, _verification_error(operation, result.unwrap_error())
-    raw = result.unwrap()
+    raw: object = result.unwrap()
     if not isinstance(raw, RawClipboardText):
         return None, VerificationResult(
             passed=False,
@@ -187,9 +188,7 @@ def _readback(
     if raw.text is not None and len(raw.text) > MAX_CLIPBOARD_TEXT_LENGTH:
         return None, VerificationResult(
             passed=False,
-            detail=(
-                f"{operation}: independent clipboard read-back exceeded the governed bound"
-            ),
+            detail=(f"{operation}: independent clipboard read-back exceeded the governed bound"),
         )
     return raw, None
 
@@ -206,12 +205,11 @@ class VerifiedWindowsSendTextCapability:
         execution_port: KeyboardNativePort,
         verification_port: KeyboardActionVerificationPort,
     ) -> None:
-        if execution_port is verification_port:
+        execution_object: object = execution_port
+        if execution_object is verification_port:
             raise ValueError("execution and verification ports must be distinct objects")
         if not isinstance(verification_port, KeyboardActionVerificationPort):
-            raise TypeError(
-                "verification_port must implement KeyboardActionVerificationPort"
-            )
+            raise TypeError("verification_port must implement KeyboardActionVerificationPort")
         self._inner = WindowsSendTextCapability(support, keyboard_port=execution_port)
         self._verification_port = verification_port
 
@@ -243,9 +241,7 @@ class VerifiedWindowsSendTextCapability:
         if data is None or data.get("character_count") != len(request.params.text):
             return VerificationResult(
                 passed=False,
-                detail=(
-                    "send_text: execution observation lacks matching typed count evidence"
-                ),
+                detail=("send_text: execution observation lacks matching typed count evidence"),
             )
         return _keyboard_verdict(
             "send_text",
@@ -265,12 +261,11 @@ class VerifiedWindowsSendKeysCapability:
         execution_port: KeyboardNativePort,
         verification_port: KeyboardActionVerificationPort,
     ) -> None:
-        if execution_port is verification_port:
+        execution_object: object = execution_port
+        if execution_object is verification_port:
             raise ValueError("execution and verification ports must be distinct objects")
         if not isinstance(verification_port, KeyboardActionVerificationPort):
-            raise TypeError(
-                "verification_port must implement KeyboardActionVerificationPort"
-            )
+            raise TypeError("verification_port must implement KeyboardActionVerificationPort")
         self._inner = WindowsSendKeysCapability(support, keyboard_port=execution_port)
         self._verification_port = verification_port
 
@@ -302,9 +297,7 @@ class VerifiedWindowsSendKeysCapability:
         if data is None or data.get("chord_count") != len(request.params.chords):
             return VerificationResult(
                 passed=False,
-                detail=(
-                    "send_keys: execution observation lacks matching typed count evidence"
-                ),
+                detail=("send_keys: execution observation lacks matching typed count evidence"),
             )
         return _keyboard_verdict(
             "send_keys",
@@ -321,7 +314,8 @@ class _ClipboardVerifiedBase:
         execution_port: ClipboardNativePort,
         verification_port: ClipboardReadbackPort,
     ) -> None:
-        if execution_port is verification_port:
+        execution_object: object = execution_port
+        if execution_object is verification_port:
             raise ValueError("execution and verification ports must be distinct objects")
         if not isinstance(verification_port, ClipboardReadbackPort):
             raise TypeError("verification_port must implement ClipboardReadbackPort")
@@ -397,9 +391,7 @@ class VerifiedWindowsClipboardReadTextCapability(_ClipboardVerifiedBase):
         ):
             return VerificationResult(
                 passed=False,
-                detail=(
-                    "clipboard_read: execution observation lacks typed clipboard evidence"
-                ),
+                detail=("clipboard_read: execution observation lacks typed clipboard evidence"),
             )
         raw, failure = self._readback(operation="clipboard_read")
         if failure is not None:
@@ -407,14 +399,10 @@ class VerifiedWindowsClipboardReadTextCapability(_ClipboardVerifiedBase):
         assert raw is not None
         current = raw.text
         expected = text if has_text else None
-        if current != expected or (
-            expected is not None and len(expected) != character_count
-        ):
+        if current != expected or (expected is not None and len(expected) != character_count):
             return VerificationResult(
                 passed=False,
-                detail=(
-                    "clipboard_read: independent read-back differs from execution evidence"
-                ),
+                detail=("clipboard_read: independent read-back differs from execution evidence"),
             )
         return VerificationResult(
             passed=True,
@@ -485,9 +473,7 @@ class VerifiedWindowsClipboardWriteTextCapability(_ClipboardVerifiedBase):
         if raw.text != request.params.text:
             return VerificationResult(
                 passed=False,
-                detail=(
-                    "clipboard_write: independent read-back does not match intended text"
-                ),
+                detail=("clipboard_write: independent read-back does not match intended text"),
             )
         return VerificationResult(
             passed=True,
@@ -555,9 +541,7 @@ class VerifiedWindowsClipboardClearCapability(_ClipboardVerifiedBase):
         if raw.text is not None:
             return VerificationResult(
                 passed=False,
-                detail=(
-                    "clipboard_clear: independent read-back still observes clipboard text"
-                ),
+                detail=("clipboard_clear: independent read-back still observes clipboard text"),
             )
         return VerificationResult(
             passed=True,
