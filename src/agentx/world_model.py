@@ -1096,6 +1096,7 @@ class LazyWorldStateCache:
         self._entries: dict[WorldEntityId, _CacheEntry] = {}
         self._providers: dict[WorldEntityKind, WorldStateProvider] = {}
         self._epochs: dict[WorldEntityId, int] = {}
+        self._epoch_generation = 0
         self._lock = RLock()
 
     @property
@@ -1122,7 +1123,7 @@ class LazyWorldStateCache:
             if entity_id not in self._entries and len(self._entries) >= self._max_entries:
                 self._evict_one_locked()
             self._entries[entity_id] = _CacheEntry(value=value)
-            self._epochs[entity_id] = self._epochs.get(entity_id, 0) + 1
+            self._bump_epoch_locked(entity_id)
 
     def lookup(
         self, entity_id: WorldEntityId, *, at: datetime, refresh: bool = True
@@ -1175,7 +1176,7 @@ class LazyWorldStateCache:
                     stale_value,
                     "no provider registered",
                 )
-            epoch = self._epochs.get(entity_id, 0)
+            epoch = (self._epoch_generation, self._epochs.get(entity_id, 0))
 
         try:
             observed = provider.observe(entity_id)
@@ -1206,7 +1207,7 @@ class LazyWorldStateCache:
             )
 
         with self._lock:
-            if self._epochs.get(entity_id, 0) != epoch:
+            if (self._epoch_generation, self._epochs.get(entity_id, 0)) != epoch:
                 current = self._entries.get(entity_id)
                 current_value = None if current is None else current.value
                 return CacheLookup(
@@ -1219,7 +1220,7 @@ class LazyWorldStateCache:
             if entity_id not in self._entries and len(self._entries) >= self._max_entries:
                 self._evict_one_locked()
             self._entries[entity_id] = _CacheEntry(value=observed)
-            self._epochs[entity_id] = epoch + 1
+            self._bump_epoch_locked(entity_id)
         freshness = _metadata_of(observed).freshness(moment)
         return CacheLookup(
             entity_id,
@@ -1231,7 +1232,7 @@ class LazyWorldStateCache:
     def invalidate(self, entity_id: WorldEntityId, *, reason: str) -> bool:
         checked_reason = _validate_text(reason, field_name="invalidation reason", max_length=512)
         with self._lock:
-            self._epochs[entity_id] = self._epochs.get(entity_id, 0) + 1
+            self._bump_epoch_locked(entity_id)
             entry = self._entries.get(entity_id)
             if entry is None:
                 return False
@@ -1253,7 +1254,7 @@ class LazyWorldStateCache:
                 if predicate(entity_id, entry.value):
                     entry.invalidated = True
                     entry.invalidated_reason = checked_reason
-                    self._epochs[entity_id] = self._epochs.get(entity_id, 0) + 1
+                    self._bump_epoch_locked(entity_id)
                     invalidated.append(entity_id)
         return tuple(invalidated)
 
@@ -1269,13 +1270,23 @@ class LazyWorldStateCache:
             ]
             for entity_id in stale_ids:
                 del self._entries[entity_id]
-                self._epochs[entity_id] = self._epochs.get(entity_id, 0) + 1
+                self._bump_epoch_locked(entity_id)
                 removed += 1
         return removed
 
     def snapshot_ids(self) -> tuple[WorldEntityId, ...]:
         with self._lock:
             return tuple(sorted(self._entries))
+
+    def _bump_epoch_locked(self, entity_id: WorldEntityId) -> None:
+        # Tombstones must be bounded too: arbitrary absent IDs can be invalidated.
+        # Rotating the generation prevents an in-flight refresh from mistaking a
+        # forgotten tombstone for an unchanged key (the ABA problem). Rotation
+        # conservatively discards older in-flight refreshes, never cached values.
+        if entity_id not in self._epochs and len(self._epochs) >= self._max_entries:
+            self._epochs.clear()
+            self._epoch_generation += 1
+        self._epochs[entity_id] = self._epochs.get(entity_id, 0) + 1
 
     def _evict_one_locked(self) -> None:
         if not self._entries:
@@ -1288,7 +1299,7 @@ class LazyWorldStateCache:
             ),
         )
         del self._entries[victim]
-        self._epochs[victim] = self._epochs.get(victim, 0) + 1
+        self._bump_epoch_locked(victim)
 
 
 class ApplicationRegistry:
