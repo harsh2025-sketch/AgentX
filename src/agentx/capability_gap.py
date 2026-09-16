@@ -127,7 +127,7 @@ class CapabilityGapReport:
 class CapabilityGapDetector:
     """Read-only exact-identity detector over an injected immutable snapshot."""
 
-    __slots__ = ("_inventory", "_inventory_set", "_inventory_complete", "_restricted")
+    __slots__ = ("_inventory", "_inventory_complete", "_inventory_set", "_restricted")
 
     def __init__(
         self,
