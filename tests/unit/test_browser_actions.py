@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from dataclasses import replace
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 from typing import Any
@@ -834,3 +835,75 @@ def test_observation_projection_does_not_treat_driver_success_as_verified() -> N
     executed = capability.execute(fill_selected_request(target, _node_ref(target), "x"), _context())
     assert executed.observation.data["verified"] is False
     assert executed.observation.data["executed"] is True
+
+
+def test_fill_text_is_redacted_from_repr_serialization_and_execution_evidence() -> None:
+    capability, fake = _capability(BrowserActionOperation.FILL_SELECTED)
+    target = _target()
+    secret = "sensitive-field-material-unique-123"
+    request = fill_selected_request(target, _node_ref(target), secret)
+    result = capability.execute(request, _context())
+
+    assert result.succeeded
+    assert fake.node_values["node-001"] == secret
+    assert secret not in repr(request)
+    assert secret not in str(request.params.to_dict())
+    assert secret not in repr(result)
+    assert result.observation.data["fill_text"] == "[REDACTED]"
+    assert capability.verify(request, result.observation, _context()).passed
+    assert [call[0] for call in fake.calls] == ["fill_selected", "observe_dom"]
+
+
+def test_fill_provider_error_cannot_echo_sensitive_text_into_evidence() -> None:
+    capability, fake = _capability(BrowserActionOperation.FILL_SELECTED)
+    secret = "private-field-value-456"
+    fake.fail_with = AgentXError(code=secret, message=secret, category=ErrorCategory.EXECUTION)
+    target = _target()
+    result = capability.execute(
+        fill_selected_request(target, _node_ref(target), secret), _context()
+    )
+    assert not result.succeeded
+    assert secret not in repr(result)
+    assert _error_code(result) == BrowserActionErrorCode.PROVIDER_EXECUTION_FAILURE.value
+
+
+class _PageTextOnlySurface(FakeBrowserSurface):
+    def observe_dom(
+        self, request: BrowserDomReadRequest
+    ) -> Result[BrowserDomObservation, AgentXError]:
+        observed = super().observe_dom(request).unwrap()
+        return Result.success(
+            replace(observed, nodes=tuple(replace(node, attributes=()) for node in observed.nodes))
+        )
+
+
+def test_matching_page_text_without_field_value_is_not_verified() -> None:
+    capability, _ = _capability(BrowserActionOperation.FILL_SELECTED, _PageTextOnlySurface())
+    target = _target()
+    request = fill_selected_request(target, _node_ref(target), "expected")
+    result = capability.execute(request, _context())
+    assert result.succeeded
+    assert not capability.verify(request, result.observation, _context()).passed
+
+
+class _LeakingObservationSurface(FakeBrowserSurface):
+    def observe_dom(
+        self, request: BrowserDomReadRequest
+    ) -> Result[BrowserDomObservation, AgentXError]:
+        return Result.failure(
+            AgentXError(
+                code="provider.failure",
+                message="private-field-value-789",
+                category=ErrorCategory.VERIFICATION,
+            )
+        )
+
+
+def test_fill_observation_error_is_sanitized() -> None:
+    capability, _ = _capability(BrowserActionOperation.FILL_SELECTED, _LeakingObservationSurface())
+    target = _target()
+    request = fill_selected_request(target, _node_ref(target), "private-field-value-789")
+    result = capability.execute(request, _context())
+    verified = capability.verify(request, result.observation, _context())
+    assert not verified.passed
+    assert "private-field-value-789" not in repr(verified)
