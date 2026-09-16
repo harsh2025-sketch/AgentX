@@ -1,0 +1,20 @@
+name: Integration diagnostics (temporary)
+on: pull_request
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[dev]'
+      - name: Report style and types without changing files
+        shell: python
+        run: |
+          import subprocess, sys
+          commands = [[sys.executable, '-m', 'ruff', 'check', '.'], [sys.executable, '-m', 'ruff', 'format', '--diff', '.'], [sys.executable, '-m', 'mypy']]
+          statuses = [subprocess.run(command, check=False).returncode for command in commands]
+          sys.exit(max(statuses))

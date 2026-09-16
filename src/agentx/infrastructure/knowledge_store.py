@@ -165,6 +165,25 @@ class KnowledgeStore:
 
         return tuple(_decode_row(row) for row in rows)
 
+    def scan_records(self, *, limit: int) -> tuple[KnowledgeRecord, ...]:
+        """Materialize at most ``limit`` rows in the canonical deterministic order.
+
+        Callers needing a complete bounded universe request one overflow row and
+        reject truncation. The existing unbounded list API remains unchanged.
+        """
+        if type(limit) is not int or limit < 1:
+            raise ValueError("knowledge scan limit must be a positive integer")
+        with self.database.connection() as connection:
+            try:
+                rows = connection.execute(
+                    f"SELECT knowledge_id, created_at_utc, record_json FROM {_KNOWLEDGE_TABLE} "
+                    "ORDER BY created_at_utc ASC, knowledge_id ASC LIMIT ?",
+                    (limit,),
+                ).fetchall()
+            except sqlite3.Error as exc:
+                raise KnowledgeStoreStorageError("Unable to scan the knowledge store") from exc
+        return tuple(_decode_row(row) for row in rows)
+
     def update_status(
         self,
         knowledge_id: KnowledgeId,
