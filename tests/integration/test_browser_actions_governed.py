@@ -409,3 +409,21 @@ def test_click_without_external_effect_permission_is_denied() -> None:
 
     assert outcome.kind is LoopOutcome.DENIED
     assert harness.surface.calls == []
+
+
+def test_sensitive_fill_stays_out_of_governed_events_and_audit() -> None:
+    harness = Harness()
+    harness.register(BrowserActionOperation.FILL_SELECTED)
+    target = _target()
+    secret = "sensitive-input-only-at-driver-boundary-123"
+    request = fill_selected_request(target, _node(target), secret)
+    outcome = harness.run(request).unwrap()
+
+    assert outcome.kind is LoopOutcome.VERIFIED
+    assert harness.surface.node_values["node-001"] == secret
+    assert harness.surface.calls == ["fill_selected", "observe_dom"]
+    assert secret not in repr(request)
+    assert secret not in str(request.params.to_dict())
+    assert secret not in repr(outcome)
+    assert secret not in repr(harness.events)
+    assert secret not in repr(harness.audit_records)

@@ -39,7 +39,7 @@ states distinguish production code, candidate changes and missing acceptance.
 | M4 Learning efficiency | Metrics, reuse evidence and experiment contracts | Real model-backed cold/warm comparison with independently verified outcomes |
 | M5 Repair | Diagnosis, degradation, shadow validation, replacement and rollback machinery | Deliberate break/repair/reuse experiment and failed-repair rollback |
 | M6 Windows | Structured filesystem, app/window/input/UIA foundations | Integrate/review #156 and repair #157; representative Windows 10/11 workflows |
-| M7 Browser | State, DOM, target selection, navigation, click and selected-node fill | N2.27 complete form/submission flow and concrete browser driver; verified multi-page workflow |
+| M7 Browser | State, DOM, target selection, navigation, click and selected-node fill | N2.27 privacy/field-type acceptance; concrete browser driver and verified multi-page workflow |
 | M8 Models/research | Canonical model/Reasoner and research contracts; #149 research candidate; #158 canonical HTTP adapter | N2.07 L5; configured real service/credentials; plan-to-action wiring and live acceptance |
 | M9 Adversarial hardening | Existing suites and merged AX-040 | Integrate/review #150; modern cross-surface attacks on the integrated runtime |
 | M10 World model | Canonical snapshots; #146/#151 candidate observation/cache/invalidation work | Combined review and real environment-change recovery benchmark |
@@ -95,9 +95,10 @@ was also stale; twelve were open at the start of this review, including #145.
 2. Configure a real pinned model through
    the secret boundary. Keep operational failures and missing usage explicit.
 3. Complete L4 plan-to-action composition and N2.07 bounded Hive-first exploration.
-4. Complete N2.27 beyond the existing selected-node fill: governed forms,
-   submission and a concrete browser driver with independent field/submission
-   verification. Keep authentication, upload and consequential submission explicit.
+4. Audit and harden the existing selected-node fill against N2.27, including
+   sensitive-text redaction and independent field-value readback. N2.27 explicitly
+   forbids implicit submission. Complete a concrete browser driver and separately
+   governed multi-page workflows; authentication/upload/submission remain explicit.
 5. Demonstrate cold goal -> governed action -> independent verification -> causal
    experience -> compile -> varied validation -> promote -> restart -> verified
    warm reuse with measured reasoning reduction.
@@ -132,3 +133,4 @@ CI. No skips, exclusions, xfails or workflow weakening were added to evade this.
 These additional repairs have focused regression coverage. Acceptance still
 requires the final combined Windows gate; intermediate green runs do not
 certify later commits.
+

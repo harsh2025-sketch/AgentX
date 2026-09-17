@@ -50,7 +50,7 @@ contracts.
 from __future__ import annotations
 
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import timedelta
 from decimal import Decimal
 from enum import StrEnum
@@ -285,7 +285,7 @@ def _node_filled_value(snapshot: BrowserDomNodeSnapshot) -> str | None:
     for attribute in snapshot.attributes:
         if attribute.name == "value":
             return attribute.value
-    return snapshot.text
+    return None
 
 
 def _error(
@@ -339,7 +339,7 @@ class BrowserActionParams(CapabilityParams):
     target: BrowserTargetRef
     url: str | None = None
     selected_node: BrowserDomNodeRef | None = None
-    text: str | None = None
+    text: str | None = field(default=None, repr=False)
     click_postcondition: BrowserClickPostcondition | None = None
 
     def __post_init__(self) -> None:
@@ -413,7 +413,7 @@ class BrowserActionParams(CapabilityParams):
             "selected_node": (
                 None if self.selected_node is None else _json_object(self.selected_node.to_dict())
             ),
-            "text": self.text,
+            "text": None if self.text is None else "[REDACTED]",
             "click_postcondition": (
                 None if self.click_postcondition is None else self.click_postcondition.to_dict()
             ),
@@ -795,9 +795,15 @@ class BrowserActionsCapability:
             return self._failed_result(
                 _error(
                     BrowserActionErrorCode.PROVIDER_EXECUTION_FAILURE,
-                    error.message,
+                    "browser fill provider failed"
+                    if params.operation is BrowserActionOperation.FILL_SELECTED
+                    else error.message,
                     category=ErrorCategory.EXECUTION,
-                    details={"provider_code": error.code},
+                    details=(
+                        None
+                        if params.operation is BrowserActionOperation.FILL_SELECTED
+                        else {"provider_code": error.code}
+                    ),
                 ),
                 request_params=params,
             )
@@ -806,7 +812,9 @@ class BrowserActionsCapability:
             return self._failed_result(
                 _error(
                     BrowserActionErrorCode.PROVIDER_EXECUTION_FAILURE,
-                    outcome.message,
+                    "browser fill provider reported failure"
+                    if params.operation is BrowserActionOperation.FILL_SELECTED
+                    else outcome.message,
                     category=ErrorCategory.EXECUTION,
                 ),
                 request_params=params,
@@ -862,7 +870,7 @@ class BrowserActionsCapability:
             if params.selected_node is not None:
                 data["selected_node"] = _json_object(params.selected_node.to_dict())
             if params.text is not None:
-                data["fill_text"] = params.text
+                data["fill_text"] = "[REDACTED]"
             if params.click_postcondition is not None:
                 data["click_postcondition"] = params.click_postcondition.to_dict()
         return data
@@ -916,7 +924,7 @@ class BrowserActionsCapability:
         assert params.text is not None
         observed = self._observe(params.target)
         if observed.is_failure:
-            return VerificationResult(passed=False, detail=observed.unwrap_error().message)
+            return VerificationResult(passed=False, detail="independent field observation failed")
         snapshot = observed.unwrap()
         if snapshot.state is not BrowserDomObservationState.OBSERVED:
             return VerificationResult(
