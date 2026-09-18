@@ -12,6 +12,7 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass
+from threading import Lock
 from datetime import timedelta
 from decimal import Decimal
 from typing import Final, Protocol
@@ -58,7 +59,9 @@ __all__ = [
 ]
 
 _DEFAULT_MAX_PIXELS: Final[int] = 33_177_600
-_MAX_PIXELS_LIMIT: Final[int] = 67_108_864
+_MAX_PIXELS_LIMIT: Final[int] = 33_554_432
+_MAX_BUFFER_BYTES: Final[int] = 134_217_728
+_MAX_RETAINED_FRAMES: Final[int] = 4
 _MAX_DISPLAYS: Final[int] = 32
 
 
@@ -272,7 +275,7 @@ class Win32ScreenSurface:
 class WindowsScreenCapture:
     """Bounded, explicit one-shot screen observer with no background polling."""
 
-    __slots__ = ("_native_surface", "_support")
+    __slots__ = ("_frames", "_lock", "_native_surface", "_support")
 
     def __init__(
         self,
@@ -288,6 +291,8 @@ class WindowsScreenCapture:
             native_surface if native_surface is not None else Win32ScreenSurface(),
         )
         object.__setattr__(self, "_support", support)
+        object.__setattr__(self, "_frames", {})
+        object.__setattr__(self, "_lock", Lock())
 
     def __setattr__(self, name: str, value: object) -> None:
         raise AttributeError(f"WindowsScreenCapture is immutable; cannot set {name!r}")
@@ -354,19 +359,49 @@ class WindowsScreenCapture:
             separators=(",", ":"),
         ).encode("utf-8")
         frame_id = ScreenFrameId(hashlib.sha256(identity_payload).hexdigest())
-        return Result.success(
-            ScreenFrame(
-                frame_id=frame_id,
-                environment_id=environment_id,
-                surface_id=surface_id,
-                captured_at_iso=captured_at,
-                bounds=bounds,
-                row_stride=raw.row_stride,
-                pixel_digest=digest,
-                pixels_bgra=raw.pixels_bgra,
-                displays=tuple(displays),
-            )
+        frame = ScreenFrame(
+            frame_id=frame_id,
+            environment_id=environment_id,
+            surface_id=surface_id,
+            captured_at_iso=captured_at,
+            bounds=bounds,
+            row_stride=raw.row_stride,
+            pixel_digest=digest,
+            pixels_bgra=raw.pixels_bgra,
+            displays=tuple(displays),
         )
+        with self._lock:
+            self._frames[frame.frame_id.value] = frame
+            while (
+                len(self._frames) > _MAX_RETAINED_FRAMES
+                or sum(len(item.pixels_bgra) for item in self._frames.values())
+                > _MAX_BUFFER_BYTES
+            ):
+                oldest = next(iter(self._frames))
+                if oldest == frame.frame_id.value and len(self._frames) == 1:
+                    break
+                self._frames.pop(oldest)
+        return Result.success(frame)
+
+    def get_frame(self, frame_id: ScreenFrameId) -> ScreenFrame | None:
+        """Return a retained frame by immutable identity, or None after bounded eviction."""
+        if not isinstance(frame_id, ScreenFrameId):
+            raise TypeError("frame_id must be ScreenFrameId")
+        with self._lock:
+            return self._frames.get(frame_id.value)
+
+    def latest_frame(self, *, environment_id: str, surface_id: str) -> ScreenFrame | None:
+        """Return the newest retained frame for one environment/surface scope."""
+        _require_text(environment_id, field_name="environment_id")
+        _require_text(surface_id, field_name="surface_id")
+        with self._lock:
+            for frame in reversed(tuple(self._frames.values())):
+                if (
+                    frame.environment_id == environment_id
+                    and frame.surface_id == surface_id
+                ):
+                    return frame
+        return None
 
 
 WINDOWS_SCREEN_CAPTURE_IDENTITY: Final[CapabilityIdentity] = CapabilityIdentity(
