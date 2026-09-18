@@ -807,6 +807,13 @@ def test_real_break_repair_restart_reuse_and_post_promotion_rollback(
     )
     assert rollback_decision.outcome is ProcedureReplacementOutcome.ELIGIBLE
 
+    # The canonical M3 rollback boundary rejects requests older than the
+    # persisted ACTIVE revision's last lifecycle transition.  Build this
+    # request after the exact v2 state used for eligibility was observed.
+    rollback_requested_at = _T0 + timedelta(minutes=80)
+    if active_v2.updated_at is not None and active_v2.updated_at >= rollback_requested_at:
+        rollback_requested_at = active_v2.updated_at + timedelta(seconds=1)
+
     rollback = execute_procedure_rollback(
         restarted,
         ProcedureRollbackRequest(
@@ -814,7 +821,7 @@ def test_real_break_repair_restart_reuse_and_post_promotion_rollback(
             current_revision=2,
             target_revision=1,
             eligibility=rollback_decision,
-            requested_at=_T0 + timedelta(minutes=80),
+            requested_at=rollback_requested_at,
             expected_known_revisions=(1, 2),
         ),
     )
