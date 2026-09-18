@@ -59,5 +59,10 @@ jobs:
           AGENTX_M6_REAL_HOST: "1"
         run: python -m pytest -q -s tests/windows/test_m6_real_host_acceptance.py tests/windows/test_m6_multi_app_workflow.py
 
+      - name: Run M7 real browser acceptance
+        env:
+          AGENTX_M7_REAL_BROWSER: "1"
+        run: python -m pytest -q -s tests/windows/test_m7_real_browser_acceptance.py
+
       - name: Run pytest
         run: python -m pytest
