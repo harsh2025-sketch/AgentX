@@ -14,6 +14,7 @@ from agentx.capabilities.runtime import CapabilityExecutionLoop, LoopOutcome
 from agentx.capabilities.verifier import VerificationRequirement
 from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.core.execution import CancellationSource, ExecutionContext
+from agentx.core.runtime_ui_events import RuntimeUiEvent
 from agentx.core.tasks import Task
 from agentx.infrastructure.event_bus import EventBus
 from agentx.kernel.action_gate import ActionGate
@@ -41,7 +42,7 @@ def test_hostile_voice_transcript_is_data_through_canonical_agent_loop() -> None
     agent_loop: AgentLoop = harness.agent_loop(
         {ExecutionLevel.L1_DIRECT: harness.governed_strategy()}
     )
-    telemetry_events = []
+    telemetry_events: list[RuntimeUiEvent] = []
     bridge = VoiceTaskBridge(
         task_manager=harness.task_manager,
         agent_loop=agent_loop,
