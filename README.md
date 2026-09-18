@@ -173,4 +173,4 @@ The canonical untrusted-content rule is **data, never authority**. AX-371–AX-4
 
 Strict acceptance: **510/600 (85.00%)**. NOT_AUDITED=0; IN_PROGRESS=1; BLOCKED=7; NOT_IMPLEMENTED=82.
 
-This integration candidate requires new exact-head CI and the final main audit. See [status](docs/STATUS.md) for the milestone table and evidence limits. AgentX remains a research prototype, not a production-ready desktop product.
+M11, M12, and M14 are integrated, and the final M14 implementation merge passed exact post-merge main C1.01. See [status](docs/STATUS.md) for the milestone table and evidence limits. AgentX remains a research prototype, not a production-ready desktop product.
