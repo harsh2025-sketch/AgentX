@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from typing import Final
 
 from agentx.core.knowledge import KnowledgeRecord, KnowledgeStatus
-from agentx.core.tasks import Task
+from agentx.core.tasks import JsonValue, Task
 from agentx.research_ingestion import decode_research_finding
 
 __all__ = [
@@ -44,7 +44,7 @@ class ResearchContextEntry:
             if not isinstance(value, str) or not value or value != value.strip():
                 raise ValueError(f"{name} must be a non-empty trimmed string")
 
-    def to_dict(self) -> dict[str, str]:
+    def to_dict(self) -> dict[str, JsonValue]:
         return {
             "knowledge_id": self.knowledge_id,
             "claim": self.claim,
@@ -97,7 +97,8 @@ class ResearchExecutionHandoff:
         assert isinstance(metadata, dict)
         if RESEARCH_CONTEXT_KEY in metadata:
             raise ValueError("task already carries research_context")
-        metadata[RESEARCH_CONTEXT_KEY] = [entry.to_dict() for entry in entries]
+        research_context: list[JsonValue] = [entry.to_dict() for entry in entries]
+        metadata[RESEARCH_CONTEXT_KEY] = research_context
         return Task.create(
             task_id=task.task_id,
             objective=task.objective,
