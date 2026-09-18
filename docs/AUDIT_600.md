@@ -1,16 +1,16 @@
 # AgentX 600-task acceptance record
 
-Repository: `harsh2025-sketch/AgentX`. Integration baseline: `9b2ecd350e24833860fbd1cbf7bde1e2f549bad5`.
+Repository: `harsh2025-sketch/AgentX`. M14 implementation baseline: `446771fab52278b4f12fa752fb000bd4668a5241`.
 
-PR #169 security and PR #171 world-model implementation are merged. This reconciliation incorporates PR #173's core-intelligence evidence; its exact new head must pass canonical CI before merge. The final whole-project audit follows integration. Historical `reported_status` remains unchanged. Counts below are calculated from TASKS.json, not added from PR summaries.
+Canonical main at M14 start already included PR #173 and passed exact-SHA C1.01. PR #176 is the isolated M14 implementation/acceptance campaign and must not be self-merged. Historical `reported_status` remains unchanged. Counts below are calculated from TASKS.json, not added from PR summaries.
 
 | State | Tasks | Percentage |
 | --- | ---: | ---: |
-| VERIFIED | 440 | 73.33% |
+| VERIFIED | 463 | 77.17% |
 | NOT_AUDITED | 0 | 0.00% |
 | IN_PROGRESS | 1 | 0.17% |
 | BLOCKED | 7 | 1.17% |
-| NOT_IMPLEMENTED | 152 | 25.33% |
+| NOT_IMPLEMENTED | 129 | 21.50% |
 | TOTAL | 600 | 100.00% |
 
 ## Milestones
@@ -31,13 +31,15 @@ PR #169 security and PR #171 world-model implementation are merged. This reconci
 | M11 | AX-436–AX-460 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
 | M12 | AX-461–AX-485 | 1 | 25 | 4.00% | NOT_IMPLEMENTED=24 | PARTIAL |
 | M13 | AX-486–AX-515 | 2 | 30 | 6.67% | NOT_IMPLEMENTED=28 | PARTIAL |
-| M14 | AX-516–AX-540 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
+| M14 | AX-516–AX-540 | 25 | 25 | 100.00% | none | COMPLETE |
 | M15 | AX-541–AX-570 | 1 | 30 | 3.33% | NOT_IMPLEMENTED=29 | PARTIAL |
 | M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
 
 ## Evidence boundaries
 
 M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 release matrix or a user desktop hardware matrix. M7 uses actual headless Chrome against controlled localhost pages. This proves browser mechanics and governance, not compatibility with arbitrary external sites/accounts. M10 DPI/multi-monitor and visual accuracy evidence uses bounded deterministic fixtures in addition to real native capture. Real model/research credentials were unavailable; controlled-provider metrics do not satisfy live-efficiency acceptance. The CLI exposes metadata/help, not a complete natural-language product session.
+
+M14 acceptance uses deterministic controlled strategy/correction/specialist datasets plus real SQLite/EventJournal restart/concurrency mechanics. It proves the production optimization contracts, safety constraints, rollback, and reproducibility; it does **not** claim live-provider cost, statistically representative production improvement, or a real-user preference corpus. See `docs/M14_ADAPTIVE_OPTIMIZATION_ACCEPTANCE.md`.
 
 ## Task decisions
 
@@ -558,31 +560,31 @@ M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 releas
 | AX-513 | M13 | cross-device causal episode | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
 | AX-514 | M13 | PC/browser/phone workflow benchmark | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
 | AX-515 | M13 | multi-device milestone acceptance | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-516 | M14 | strategy-performance evidence foundation | VERIFIED | E2 | NONE |
-| AX-517 | M14 | execution-level metrics foundation | VERIFIED | E2 | NONE |
-| AX-518 | M14 | deterministic strategy baseline | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-519 | M14 | strategy outcome history | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-520 | M14 | per-environment strategy statistics | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-521 | M14 | per-task-family strategy statistics | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-522 | M14 | strategy latency statistics | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-523 | M14 | strategy cost statistics | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-524 | M14 | strategy success statistics | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-525 | M14 | confidence calibration | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-526 | M14 | contextual-bandit experiment | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-527 | M14 | bandit safety constraints | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-528 | M14 | offline policy evaluation | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-529 | M14 | online preference-ranking experiment | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-530 | M14 | explicit user-correction dataset | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-531 | M14 | preference scoring model | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-532 | M14 | grounding-specialist dataset | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-533 | M14 | lightweight grounding model | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-534 | M14 | routing-specialist dataset | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-535 | M14 | lightweight routing model | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-536 | M14 | verifier-assistance model experiment | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-537 | M14 | model-distillation pipeline | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-538 | M14 | specialized-model benchmark | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-539 | M14 | rollbackable optimization policy | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-540 | M14 | optimization milestone acceptance | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
+| AX-516 | M14 | strategy-performance evidence foundation | VERIFIED | E3 | NONE |
+| AX-517 | M14 | execution-level metrics foundation | VERIFIED | E3 | NONE |
+| AX-518 | M14 | deterministic strategy baseline | VERIFIED | E3 | NONE |
+| AX-519 | M14 | strategy outcome history | VERIFIED | E3 | NONE |
+| AX-520 | M14 | per-environment strategy statistics | VERIFIED | E3 | NONE |
+| AX-521 | M14 | per-task-family strategy statistics | VERIFIED | E3 | NONE |
+| AX-522 | M14 | strategy latency statistics | VERIFIED | E3 | NONE |
+| AX-523 | M14 | strategy cost statistics | VERIFIED | E3 | NONE |
+| AX-524 | M14 | strategy success statistics | VERIFIED | E3 | NONE |
+| AX-525 | M14 | confidence calibration | VERIFIED | E3 | NONE |
+| AX-526 | M14 | contextual-bandit experiment | VERIFIED | E3 | NONE |
+| AX-527 | M14 | bandit safety constraints | VERIFIED | E3 | NONE |
+| AX-528 | M14 | offline policy evaluation | VERIFIED | E3 | NONE |
+| AX-529 | M14 | online preference-ranking experiment | VERIFIED | E3 | NONE |
+| AX-530 | M14 | explicit user-correction dataset | VERIFIED | E3 | NONE |
+| AX-531 | M14 | preference scoring model | VERIFIED | E3 | NONE |
+| AX-532 | M14 | grounding-specialist dataset | VERIFIED | E3 | NONE |
+| AX-533 | M14 | lightweight grounding model | VERIFIED | E3 | NONE |
+| AX-534 | M14 | routing-specialist dataset | VERIFIED | E3 | NONE |
+| AX-535 | M14 | lightweight routing model | VERIFIED | E3 | NONE |
+| AX-536 | M14 | verifier-assistance model experiment | VERIFIED | E3 | NONE |
+| AX-537 | M14 | model-distillation pipeline | VERIFIED | E3 | NONE |
+| AX-538 | M14 | specialized-model benchmark | VERIFIED | E3 | NONE |
+| AX-539 | M14 | rollbackable optimization policy | VERIFIED | E4 | NONE |
+| AX-540 | M14 | optimization milestone acceptance | VERIFIED | E4 | NONE |
 | AX-541 | M15 | missing-capability detector foundation | VERIFIED | E2 | NONE |
 | AX-542 | M15 | capability-gap record | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
 | AX-543 | M15 | capability research objective | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
