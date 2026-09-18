@@ -48,6 +48,7 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 - Browser text fill is recognized as partial N2.27 work with redaction and independent field-value readback; it does not prove complete form types, submission, a concrete browser driver, or a live multi-page workflow.
 - The concrete HTTP model adapter, secret binding, strict serialization/parsing, usage/error/timeout/cancellation behavior and bounded L5 single-acquisition path are accepted; live-provider vertical/milestone acceptance is not.
 - Foundation tasks for world state, audio/UI telemetry, event watching, device protocol, strategy evidence and capability-gap detection are accepted only at their narrow contract scope.
+- M10 was re-audited after the closure campaign. AX-422–AX-435 now have production implementations, requirement-specific tests, deterministic real filesystem mutation/restart evidence, governed runtime/security evidence, hosted-Windows screen-capture evidence where applicable, and a green complete repository regression on implementation head `cafb25c73e396abe7e98361e2408c6768b932a5d` (C1.01 run 35335216071).
 - M10 AX-422–AX-435 were independently re-audited after the screen/perception and real environment-adaptation campaign. C1.01 run #967 on implementation head `8ca74839f3a615393c4803ba56509439a1bc261a` passed Ruff, format, strict mypy, task-ledger validation, real Windows-host acceptance and the full test suite.
 
 ## Per-task audit
