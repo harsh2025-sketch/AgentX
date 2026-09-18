@@ -22,7 +22,7 @@ from __future__ import annotations
 import math
 from collections.abc import Callable, Mapping
 from types import MappingProxyType
-from typing import Any, TypeAlias
+from typing import Any
 
 from agentx.capabilities.abi import (
     CapabilityIdentity,
@@ -46,7 +46,7 @@ class CompiledSkillBindingError(ValueError):
     """Raised when inert compiled data cannot be bound safely and exactly."""
 
 
-CapabilityRequestFactory: TypeAlias = Callable[
+type CapabilityRequestFactory = Callable[
     [Mapping[str, object]], CapabilityRequest[Any]
 ]
 
