@@ -45,10 +45,7 @@ def test_compiled_skill_binding_has_no_dynamic_execution_or_authority_imports() 
         )
         for module in imported
     )
-    assert not any(
-        module in {"pickle", "importlib", "subprocess"}
-        for module in imported
-    )
+    assert not any(module in {"pickle", "importlib", "subprocess"} for module in imported)
 
 
 def test_candidate_validation_composes_executor_but_cannot_promote_or_persist() -> None:
