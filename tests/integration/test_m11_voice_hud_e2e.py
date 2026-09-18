@@ -174,9 +174,7 @@ class _Tts:
 
 def test_complete_voice_hud_milestone_path_uses_canonical_governed_runtime() -> None:
     harness = OrchestrationHarness()
-    agent_loop = harness.agent_loop(
-        {ExecutionLevel.L1_DIRECT: harness.governed_strategy()}
-    )
+    agent_loop = harness.agent_loop({ExecutionLevel.L1_DIRECT: harness.governed_strategy()})
     model = HudModel()
     events = []
 
