@@ -196,7 +196,7 @@ def test_ax422_capture_capability_honors_cancellation_without_native_read() -> N
         WindowsScreenCapture(_support(), native_surface=surface)
     )
     source = CancellationSource()
-    source.cancel("stop requested")
+    source.request_cancellation("stop requested")
     context = ExecutionContext(correlation_id=uuid4(), cancellation_token=source.token)
 
     result = capability.execute(screen_capture_request(environment_id="env-local"), context)
