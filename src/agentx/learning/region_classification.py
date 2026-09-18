@@ -953,8 +953,6 @@ def classify_regions(
         # Collect matching corroborating observations
         conflicting = False
         divergent_behavior = False
-        target_data_key = _canonical_data_key(exp.action.data)
-
         for corr in corroborating_analyses:
             if corr.source_trajectory_id == trajectory_id:
                 # Same trajectory, skip self
