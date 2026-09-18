@@ -53,7 +53,7 @@ def test_audit_contract_rejects_secret_material_objects() -> None:
 
     with pytest.raises(TypeError, match="operation must never contain a SecretValue"):
         SecurityAuditRecord.create(
-            operation=secret,  # type: ignore[arg-type]
+            operation=cast(str, secret),
             outcome=AuditOutcome.DENY,
             reason="denied",
         )
@@ -61,7 +61,7 @@ def test_audit_contract_rejects_secret_material_objects() -> None:
         SecurityAuditRecord.create(
             operation="m9.audit",
             outcome=AuditOutcome.DENY,
-            reason=secret,  # type: ignore[arg-type]
+            reason=cast(str, secret),
         )
 
 
