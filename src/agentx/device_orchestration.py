@@ -103,8 +103,7 @@ class DeviceRouter:
                 AgentXError(
                     code="device.routing.ambiguous",
                     message=(
-                        "multiple devices satisfy the requirement; "
-                        "explicit disambiguation required"
+                        "multiple devices satisfy the requirement; explicit disambiguation required"
                     ),
                     category=ErrorCategory.CONFLICT,
                     retryability=Retryability.NON_RETRYABLE,
