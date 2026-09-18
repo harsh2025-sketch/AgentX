@@ -59,24 +59,28 @@ def test_multi_field_browser_workflow_uses_shared_governed_executor_and_budget(
         task_id=second_task.task_id,
     )
 
-    result = BrowserWorkflow(harness.executor).run(
-        (
-            BrowserWorkflowStep(
-                ExecutorRequest(
-                    first_task,
-                    set_checked_request(target, checkbox, True),
-                    first_context,
-                )
-            ),
-            BrowserWorkflowStep(
-                ExecutorRequest(
-                    second_task,
-                    select_option_request(target, select, "private-option"),
-                    second_context,
-                )
-            ),
+    result = (
+        BrowserWorkflow(harness.executor)
+        .run(
+            (
+                BrowserWorkflowStep(
+                    ExecutorRequest(
+                        first_task,
+                        set_checked_request(target, checkbox, True),
+                        first_context,
+                    )
+                ),
+                BrowserWorkflowStep(
+                    ExecutorRequest(
+                        second_task,
+                        select_option_request(target, select, "private-option"),
+                        second_context,
+                    )
+                ),
+            )
         )
-    ).unwrap()
+        .unwrap()
+    )
 
     assert result.completed is True
     assert len(result.outcomes) == 2
