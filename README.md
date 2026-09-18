@@ -15,12 +15,12 @@ repair its own procedures over time.
 > or a ready-to-use desktop product. The CLI currently exposes package metadata,
 > not a natural-language agent session.
 >
-> See the [whole-project roadmap](docs/ROADMAP.md) for milestone exit criteria and
-> the [status and completion ledger](docs/STATUS.md) for evidence and remaining work.
+> See the [whole-project roadmap](docs/ROADMAP.md) for milestone exit criteria,
+> the [status and completion ledger](docs/STATUS.md), and the independent
+> [AX-001–AX-600 audit](docs/AUDIT_600.md) for evidence and remaining work.
 > The exact normalized [600-task ledger](docs/TASKS.md) is generated from
-> [machine-readable task records](docs/TASKS.json); reported status is separate
-> from verified acceptance evidence. The focused governed single-task runtime
-> audit is recorded in [M1 acceptance](docs/m1_acceptance.md).
+> [machine-readable task records](docs/TASKS.json); historical reported status
+> is separate from strict acceptance evidence.
 
 ## Requirements
 
@@ -122,9 +122,9 @@ these owners without introducing forbidden subsystem imports.
 | `agentx.kernel`          | Permissions, risk, budgets, action gating, stop, secrets and audit | implemented; hardening continues |
 | `agentx.capabilities`    | Governed filesystem, Windows and browser operations | partial capability coverage |
 | `agentx.hive`            | Knowledge, provenance, scope, preferences and retrieval contracts | implemented foundations |
-| `agentx.procedures`      | Procedure graph/runtime, applicability and lifecycle | implemented; full lifecycle proof pending |
+| `agentx.procedures`      | Procedure graph/runtime, applicability and lifecycle | implemented; compilation/reuse/repair lifecycle accepted |
 | `agentx.cognition`       | Reasoner, model roles, decomposition, routing and research contracts | implemented; concrete runtime gaps remain |
-| `agentx.learning`        | Causal extraction, parameterization, synthesis and compilation | implemented; full adaptive proof pending |
+| `agentx.learning`        | Causal extraction, parameterization, synthesis and compilation | implemented foundations; live efficiency proof remains open |
 | `agentx.infrastructure`  | Configuration, event journal, persistence and store adapters | implemented foundations |
 
 The canonical names, allowed direct top-level imports, and forbidden dependency

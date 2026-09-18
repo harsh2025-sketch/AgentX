@@ -6,7 +6,7 @@ AgentX is a Windows-first, local-first Adaptive Personal Operating Intelligence 
 
 ## Milestone 0 — Governed Architecture and Trusted Kernel
 
-**Status:** Substantially complete / hardening continues
+**Status:** Completed and acceptance-verified for the M0 task scope
 
 Establish the architectural and security substrate that all later milestones depend on.
 
@@ -20,7 +20,7 @@ Exit criteria:
 
 ## Milestone 1 — Governed Single-Task Agent Runtime
 
-**Status:** Completed and acceptance-verified
+**Status:** Mostly acceptance-verified; strict real-world/benchmark closure remains
 
 Turn the substrate into a real bounded agent loop for one task.
 
@@ -74,7 +74,7 @@ Exit criteria:
 - applicability matching and deterministic reuse selection;
 - restart-safe ACTIVE-procedure reuse.
 
-Acceptance evidence: PR #166 adds the production compiler/runtime binding and governed
+Acceptance evidence: merged PR #166 adds the production compiler/runtime binding and governed
 candidate-validation seam plus `tests/integration/test_m3_skill_compilation_acceptance.py`,
 which proves cold governed execution -> causal experience -> corroborated compilation ->
 varied validation -> explicit promotion -> persisted ACTIVE retrieval after a fresh-process
@@ -307,10 +307,18 @@ Exit criteria:
 
 ## Current canonical position
 
-Task-level acceptance is recorded for M1, M2, M3, M5 and M6, while the imported
-historical reported-status baseline remains a separate immutable dimension. The broader
-project is not complete: M4 learning-efficiency proof, governed browser completion, live
-model/research acceptance, modern cross-surface adversarial replay, later platform/product
-milestones, and release-level Windows 10/11 matrix coverage remain separate work.
+The independent AX-001–AX-600 audit against canonical main
+`bcc0692246a981be5ae15c993b0c3e6512871b92` records 380 VERIFIED,
+9 IN_PROGRESS, 7 BLOCKED and 204 NOT_IMPLEMENTED tasks. M0, M2, M3, M5 and
+M6 are fully accepted at their milestone task scope. M1 is 42/45 under the
+stricter audit because the current deterministic integration evidence does not
+by itself prove the "real-world single-task vertical slice" or one cross-strategy
+benchmark; its release proof therefore remains dependent on those gaps.
 
-Milestone completion should be judged by exit criteria and canonical evidence on `main`, not by raw PR count or historical task-number count.
+The broader project is not complete: M4 live learning-efficiency proof, governed
+browser completion, live model/research acceptance, modern cross-surface
+adversarial replay, later platform/product milestones, and release-level Windows
+10/11 matrix coverage remain separate work.
+
+Milestone completion must be judged by exact requirements and canonical evidence,
+not by raw PR count, historical task-number count, or a single readiness percentage.

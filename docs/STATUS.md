@@ -1,178 +1,94 @@
 # AgentX status and completion ledger
 
-Evidence snapshot: 2026-09-18. This ledger replaces the README's obsolete claim
-that all subsystems are empty. It does **not** turn task counts into a completion
-percentage or equate a worker report with a released product.
+Evidence snapshot: 2026-09-18.
 
-## Current continuation
+This status is synchronized to the independent AX-001–AX-600 audit on canonical
+main `bcc0692246a981be5ae15c993b0c3e6512871b92`. Historical
+`reported_status` remains immutable and separate from audited acceptance.
 
-- PR #159 integrated the worker campaign into `main` at
-  `72bf7059d64a38ed9512aedf420ec7b1d2552837`. References to unmerged workers in
-  the historical review sections below describe the earlier review point.
-- Reviewed PR #160 and its successful Windows quality gate; merged at
-  `a2952ccf53fa18e3ee7d27c7b03434907b72f7fa`. Browser fill text is redacted from
-  evidence and verification requires independent field-value readback.
-- PR #161 adds explicitly bound governed L4 plan execution, concrete-provider
-  metrics instrumentation, and the complete normalized AX task definitions.
-  The inert planner remains separate from execution. See
-  [plan execution](plan_execution.md) and [model metrics](instrumented_model_provider.md).
-- PR #163 is the focused M1 closure candidate from canonical main
-  `294cf9029e63d91b476971db79133e09264f2087`. It adds typed application and
-  procedure-leaf composition, bounded Hive-first L5 research through the canonical
-  Executor, and task-level AX-041–AX-085 acceptance evidence. See
-  [M1 acceptance](m1_acceptance.md). It remains unmerged pending review.
-- [TASKS.json](TASKS.json) is the machine-readable AX-001 through AX-600 source;
-  [TASKS.md](TASKS.md) is its generated view. Imported reported completion is
-  distinct from task-level acceptance evidence. The dependency graph is
-  explicitly partial; it is not a completed audit of all task relationships.
-- M3 procedure compilation/reuse acceptance is now closed by PR #166: a governed
-  filesystem task is solved cold, recorded as causal experience, corroborated
-  across a second verified run, compiled to a CANDIDATE, validated on distinct
-  parameter variants, promoted to ACTIVE, persisted, reopened in a fresh Python
-  process, selected through ACTIVE-only reuse, and executed through L2 with
-  independent verification. Windows C1.01 run #820 passed the full repository
-  gate on implementation head `e55d48b102de4b346faa54d1af0d3de7d35008a0`.
-- Live-model cold/warm *efficiency measurement* remains an M4 concern. The local
-  continuation environment has no configured model service credentials or
-  interactive Windows/Android environment; scripted/loopback tests do not
-  substitute for those later experiments.
+## Canonical repository state
 
-## Canonical baseline and work in this review
+- Audit starting main: `bcc0692246a981be5ae15c993b0c3e6512871b92`.
+- Audit main: `bcc0692246a981be5ae15c993b0c3e6512871b92`.
+- There were no open pull requests when the audit baseline was established.
+- Milestone PRs #162 (M2), #163 (M1), #164 (M5), #165 (M6), and #166 (M3)
+  are merged history. Older notes describing any of them as unmerged are
+  historical, not current repository state.
+- The focused audit branch is not canonical and must not be self-merged.
+  Its exact final head must pass the required C1.01 workflow before Product
+  Owner review.
 
-- Starting `main`: `760fe33e4e00e3f98b60d92ca657bec7b2cd583e`.
-- Reviewed and merged AX-040 / PR #145. Resulting `main`:
-  `cb504ed46681b08ad9b9f8248cce3ca7758363ea`.
-- AX-040 source head `2ffdf1748df24aea219a7ddea56c9e7f2352e0ab` passed
-  [Windows C1.01 run 34969197873](https://github.com/harsh2025-sketch/AgentX/actions/runs/34969197873).
-- PR #157 passed Windows C1.01 run 35086633212 and merged into the #156 worker
-  branch. It repairs formatting, strict typing and a brittle architecture check.
-- PR #158 passed Windows C1.01 run 35086498890 and merged to main at
-  `4af91722ea33031fefb3003ca86fa91d647c7997`. The concrete HTTP model adapter
-  is canonical; loopback protocol tests are not a live-model benchmark.
-- The worker integration candidate preserves individual source histories for
-  #146 through #156 and retains the already-canonical native receipt typing fix.
-  Candidate code and individual green source runs are not canonical acceptance.
+## Independent 600-task audit
 
-The 643 tracked baseline files were retrieved at pinned Git object identities;
-their content hashes were checked. Targeted code/contract review covered the
-runtime, model, secret, strategy, capability and persistence boundaries. This is
-not a claim that every one of the historical 600 AX checkboxes was fully audited.
+| Acceptance state | Count |
+| --- | ---: |
+| VERIFIED | 380 |
+| NOT_AUDITED | 0 |
+| IN_PROGRESS | 9 |
+| BLOCKED | 7 |
+| NOT_IMPLEMENTED | 204 |
+| **TOTAL** | **600** |
 
-## Milestone status
+The machine-readable record is [AUDIT_600.json](AUDIT_600.json); the complete
+human-readable audit, evidence policy, per-task decisions and readiness
+dashboard are in [AUDIT_600.md](AUDIT_600.md). [TASKS.json](TASKS.json)
+remains the canonical task ledger and [TASKS.md](TASKS.md) is generated from
+it.
 
-The [roadmap](ROADMAP.md) remains the milestone/exit-criteria authority. These
-states distinguish production code, candidate changes and missing acceptance.
+## Milestone audit status
 
-| Milestone | Evidence in the repository | Work still required |
-| --- | --- | --- |
-| M0 Kernel | Permission/risk/gate/budget/stop/audit/secret contracts; governed capability loop; AX-040 merged | Continue whole-system security review as new surfaces land |
-| M1 Single-task runtime | Governed L0-L5 composition, typed L4 capability/procedure binding, independent root verification; AX-041–AX-085 acceptance VERIFIED via merged PR #163 | M1 exit criteria satisfied; real external-model/provider work remains in later milestones |
-| M2 Persistent memory | Event journal, episodes, semantic knowledge, typed scopes; real child-process restart/corruption acceptance; AX-086–AX-125 acceptance VERIFIED | M2 exit criteria satisfied; historical reported baseline remains immutable and separate from acceptance evidence |
-| M3 Compilation and reuse | Procedure IR/interpreter, corroborated parameter generalization, candidate validation/promotion, restart-safe ACTIVE reuse, and end-to-end cold→compile→validate→promote→restart→L2 proof | No remaining M3 exit-criteria gap; live-model efficiency measurement belongs to M4 |
-| M4 Learning efficiency | Metrics, reuse evidence and experiment contracts | Real model-backed cold/warm comparison with independently verified outcomes |
-| M5 Repair | Failure classification/localization/diagnosis, bounded repair, varied shadow validation, atomic replacement, rollback/restart acceptance; AX-206–AX-245 acceptance VERIFIED | M5 exit criteria satisfied; M3 procedure lifecycle semantics remain canonical |
-| M6 Windows | Acceptance-verified Windows-native fabric: governed filesystem/app/process/window/input/clipboard/UIA paths, native mutation boundary, independent readback, and representative real-host/multi-app proof; AX-246–AX-300 acceptance VERIFIED | M6 exit criteria satisfied on canonical Windows CI; Windows Server host evidence does not by itself prove the Windows 10 + Windows 11 release matrix |
-| M7 Browser | State, DOM, target selection, navigation, click and selected-node fill | N2.27 privacy/field-type acceptance; concrete browser driver and verified multi-page workflow |
-| M8 Models/research | Canonical model/Reasoner; integrated #149; HTTP adapter and invocation metrics | N2.07 L5; configured real service/credentials; live acceptance and model-budget composition |
-| M9 Adversarial hardening | Existing suites, merged AX-040 and integrated #150 | Modern cross-surface attacks on the integrated runtime |
-| M10 World model | Canonical snapshots; integrated #146/#151 observation/cache/invalidation | Real environment-change recovery benchmark |
-| M11 Voice/product | Audio abstractions; #152 event protocol candidate | Real STT/TTS, interruption, user controls, usable application/CLI |
-| M12 Persistent operation | #153 watcher candidate | Scheduler, durable task recovery, explicit proactivity policy and resource bounds |
-| M13 Multi-device | Device protocol foundation | Actual Android provider and verified cross-device handoff |
-| M14 Optimization | #155 descriptive strategy-evidence candidate | Reproducible optimization experiments; no learned authority changes |
-| M15 Self-extension | #154 missing-capability analysis candidate | Isolated generation/validation, approval-bound installation and rollback; research remains |
-| M16 Release | Windows CI and extensive regression infrastructure | Integrated acceptance, Windows 10/11 host matrix, packaging/upgrades/privacy and release signoff |
+| Milestone | VERIFIED | Remaining audit state |
+| --- | ---: | --- |
+| M0 Trusted Kernel | 40/40 | none |
+| M1 Agent Runtime | 42/45 | AX-083/085 BLOCKED; AX-084 IN_PROGRESS |
+| M2 Hive and Memory | 40/40 | none |
+| M3 Procedure Compiler | 50/50 | none |
+| M4 Learning Efficiency | 21/30 | 6 IN_PROGRESS; 3 BLOCKED on live evidence |
+| M5 Self-Repair | 40/40 | none |
+| M6 Windows Capabilities | 55/55 | milestone scope accepted; release host matrix remains M16 |
+| M7 Browser Agent | 16/35 | 1 IN_PROGRESS; 18 NOT_IMPLEMENTED |
+| M8 Models and Research | 28/35 | 2 BLOCKED; 5 NOT_IMPLEMENTED |
+| M9 Security | 20/35 | 15 NOT_IMPLEMENTED |
+| M10 World Model | 16/30 | 14 NOT_IMPLEMENTED |
+| M11 Voice and HUD | 2/25 | 23 NOT_IMPLEMENTED |
+| M12 Scheduling | 1/25 | 24 NOT_IMPLEMENTED |
+| M13 Multi-device and Android | 2/30 | 28 NOT_IMPLEMENTED |
+| M14 Optimization | 2/25 | 23 NOT_IMPLEMENTED |
+| M15 Self-extension | 1/30 | 29 NOT_IMPLEMENTED |
+| M16 Production and Release | 4/30 | AX-574 IN_PROGRESS; 25 NOT_IMPLEMENTED |
 
-## A critical runtime distinction
+## Evidence boundaries that must not be blurred
 
-`PlanningStrategy.plan()` makes an inert validated `TaskDecomposition`; that
-class's own `attempt()` still fails closed. `GovernedPlanningStrategy` is the
-separate L4 execution adapter. It validates readiness, expands dependencies,
-preflights explicit application bindings, executes via the canonical Executor,
-and requires a separate governed goal check. It returns actual verification
-evidence to AgentLoop instead of fabricating success from a plan.
-`ApplicationActionBinder` resolves exact typed capability ids to composition-owned
-requests. `PreparedProcedureBinder` resolves exact procedure ids to the canonical
-ACTIVE/applicable compiled-procedure runtime; unknown or unavailable procedures
-fail closed. The L5 candidate performs Hive-first gap assessment and delegates
-one pre-bound acquisition through a governed capability, so permissions, risk,
-budget, stop and verification remain kernel-owned. Research observations remain
-unverified data. None of these binders parse natural-language authority claims.
-Live-model/external-provider acceptance remains a later environment-dependent proof.
+M6 has real hosted Windows evidence, but the observed acceptance host is Windows
+Server 2025 and explicitly does not claim an interactive desktop session.
+That does not prove AX-576/577 Windows 10/11 release-matrix requirements,
+multi-DPI/multi-monitor coverage, or installer/upgrade acceptance.
 
-The current CLI exposes help/version only. Installing the package does not start
-a usable natural-language agent. This is a product/composition gap as well as a
-documentation issue.
+The concrete HTTP model adapter and metrics integration are implemented and
+loopback-integrated. No configured live model/research credentials were
+available for this audit, so live cold-vs-warm efficiency and real-model
+milestone acceptance remain blocked rather than simulated.
 
-## Original open-worker evidence
+Browser foundations include page/DOM identity, deterministic target selection,
+governed navigation/click, selected-node fill, sensitive-value redaction and
+independent field-value readback. They do not establish a concrete live browser
+driver, submission/upload/download/auth/cookie coverage, or the required
+multi-page benchmark.
 
-These are source-head runs observed before integration; they do not certify a
-combined candidate. Source SHAs remain recorded in each linked PR.
+Audio/UI-event, watcher, device, strategy-evidence and missing-capability
+components are accepted only for their narrow foundation contracts. They do
+not imply microphone/speaker acceptance, a persistent scheduler, Android
+operation, adaptive optimization, or safe self-installing capabilities.
 
-| PR | Scope | Observed Windows C1.01 run | Source status |
-| --- | --- | --- | --- |
-| [146](https://github.com/harsh2025-sketch/AgentX/pull/146) | World model | 34977312365 | passed; unmerged at review |
-| [147](https://github.com/harsh2025-sketch/AgentX/pull/147) | Hive assurance/scope | 35008179993 | passed; unmerged at review |
-| [148](https://github.com/harsh2025-sketch/AgentX/pull/148) | Restart-safe L2/L3 reuse | 34998598769 | passed; unmerged at review |
-| [149](https://github.com/harsh2025-sketch/AgentX/pull/149) | Hive-first research ingestion | 35006454004 | passed; unmerged at review |
-| [150](https://github.com/harsh2025-sketch/AgentX/pull/150) | Threat catalogue | 35003744973 | passed; unmerged at review |
-| [151](https://github.com/harsh2025-sketch/AgentX/pull/151) | World freshness/DOM invalidation | 34999938745 | passed; unmerged at review |
-| [152](https://github.com/harsh2025-sketch/AgentX/pull/152) | Audio/UI event foundations | 35003601828 | passed; unmerged at review |
-| [153](https://github.com/harsh2025-sketch/AgentX/pull/153) | Event watcher | 35007348652 | passed; unmerged at review |
-| [154](https://github.com/harsh2025-sketch/AgentX/pull/154) | Missing-capability detector | 35004663688 | passed; unmerged at review |
-| [155](https://github.com/harsh2025-sketch/AgentX/pull/155) | Strategy-performance evidence | 35006512711 | passed; unmerged at review |
-| [156](https://github.com/harsh2025-sketch/AgentX/pull/156) | Filesystem/input verification | 35008219896 | 9,761 tests and lint passed; formatting failed; mypy skipped |
+## Product and release posture
 
-The previous handoff's GitHub runner restriction is not the observed blocker:
-these runs executed. The previous claim that only one or two PRs remained open
-was also stale; twelve were open at the start of this review, including #145.
+The CLI still exposes package metadata/help rather than a usable natural-language
+agent session. Voice/HUD, Android, substantial browser workflow functionality,
+persistent scheduling, adaptive optimization, safe self-extension, installer /
+upgrade / privacy controls, representative release benchmarks and AX-600
+whole-system release acceptance remain open.
 
-## Completion sequence and gates
-
-1. Verify and review the combined worker candidate, resolving shared surfaces
-   centrally. Preserve canonical migrations and history; none of these imported
-   diffs changes the migration ladder or architecture manifest.
-2. Configure a real pinned model through
-   the secret boundary. Keep operational failures and missing usage explicit.
-3. Review and merge the PR #163 M1 closure candidate; its L4 typed binding and
-   bounded Hive-first L5 composition are complete on the candidate branch.
-4. Audit and harden the existing selected-node fill against N2.27, including
-   sensitive-text redaction and independent field-value readback. N2.27 explicitly
-   forbids implicit submission. Complete a concrete browser driver and separately
-   governed multi-page workflows; authentication/upload/submission remain explicit.
-5. Demonstrate cold goal -> governed action -> independent verification -> causal
-   experience -> compile -> varied validation -> promote -> restart -> verified
-   warm reuse with measured reasoning reduction.
-6. Break the procedure; detect degradation; repair and shadow-validate; replace
-   atomically; verify reuse; demonstrate rollback on a failed replacement.
-7. Finish the remaining product/device/operations milestones against their own
-   exit criteria. Late research milestones are not implied by a working prototype.
-
-Canonical acceptance requires the candidate's current base/head, full Windows
-pytest, Ruff lint/format, strict mypy, runtime-only install and resulting-main
-verification. Existing platform-specific skips must be reported rather than
-represented as executed Windows 10/11 desktop acceptance. Hosted Windows CI is
-not a substitute for the target interactive desktop/device/model environment.
-
-The connected review workspace does not provide an authenticated local checkout,
-so no local full-suite result is fabricated. Exact repository gates run through
-the canonical Windows C1.01 workflow. PR #163 has already demonstrated a green
-implementation-head run; its final documentation/ledger head must also pass before
-the closure conclusion is recorded. No skips, exclusions, xfails or workflow
-weakening were added to evade this.
-
-## Integration review repairs (PR #159)
-
-- World cache invalidation bookkeeping is bounded as well as cache entries;
-  generation checks prevent stale refresh acceptance after tombstone rotation.
-- Scoped Hive retrieval reads at most the configured scan bound plus one row,
-  and fails explicitly on overflow instead of answering from a partial scan.
-- Missing-capability detection defaults to incomplete inventory visibility.
-  Unknown and restricted identities never become missing-capability gaps;
-  only an explicit complete snapshot can establish absence.
-- Distinct execution/verification port checks exercise all five adapters rather
-  than asserting one spelling of a source expression.
-
-These additional repairs have focused regression coverage. Acceptance still
-requires the final combined Windows gate; intermediate green runs do not
-certify later commits.
+Implementation coverage, strict acceptance coverage, external-environment
+readiness, product/UI readiness and release readiness are therefore reported
+separately in [AUDIT_600.md](AUDIT_600.md). A green core-runtime milestone is
+not treated as proof that AgentX v1 is release-ready.
