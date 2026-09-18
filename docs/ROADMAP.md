@@ -212,8 +212,8 @@ Exit criteria:
 Acceptance evidence: PR #171 implements governed Win32 screen capture, immutable frame
 identity, structured-first/OCR-free visual grounding, ambiguity and stale-frame rejection,
 DPI/multi-monitor normalization, real filesystem change detection/re-observation, restart
-behavior, governed runtime integration and layout/perception benchmarks. C1.01 run #967 on
-implementation head `8ca74839f3a615393c4803ba56509439a1bc261a` passed the real Windows-host acceptance and
+behavior, governed runtime integration and layout/perception benchmarks. C1.01 run #974 on
+implementation head `cafb25c73e396abe7e98361e2408c6768b932a5d` passed the real Windows-host acceptance and
 full repository regression. AX-406–AX-435 are recorded as acceptance VERIFIED while the
 historical reported baseline remains unchanged.
 
