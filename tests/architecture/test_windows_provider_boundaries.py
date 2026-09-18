@@ -7,7 +7,8 @@ Kernel.
 
 A5.02 introduced the isolated ``_native`` read-only Win32 discovery seam.
 A5.03 adds the isolated ``_uia_native`` read-only UI Automation seam. M6
-adds a one-shot read-only ``clipboard_native`` observation seam. M10 adds\nthe isolated ``_screen_native`` read-only desktop observation seam. N2.19 adds
+adds a one-shot read-only ``clipboard_native`` observation seam. M10 adds
+the isolated ``_screen_native`` read-only desktop observation seam. N2.19 adds
 the single controlled ``native_mutation`` Win32 mutation seam. Exactly
 those native seam modules may import :mod:`ctypes` lazily; every Windows
 module still inherits the same no-third-party and no-module-level-native-load
