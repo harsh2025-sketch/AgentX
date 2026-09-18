@@ -1,8 +1,29 @@
 # AgentX status and completion ledger
 
-Evidence snapshot: 2026-09-16. This ledger replaces the README's obsolete claim
+Evidence snapshot: 2026-09-18. This ledger replaces the README's obsolete claim
 that all subsystems are empty. It does **not** turn task counts into a completion
 percentage or equate a worker report with a released product.
+
+## Current continuation
+
+- PR #159 integrated the worker campaign into `main` at
+  `72bf7059d64a38ed9512aedf420ec7b1d2552837`. References to unmerged workers in
+  the historical review sections below describe the earlier review point.
+- Reviewed PR #160 and its successful Windows quality gate; merged at
+  `a2952ccf53fa18e3ee7d27c7b03434907b72f7fa`. Browser fill text is redacted from
+  evidence and verification requires independent field-value readback.
+- PR #161 adds explicitly bound governed L4 plan execution, concrete-provider
+  metrics instrumentation, and the complete normalized AX task definitions.
+  The inert planner remains separate from execution. See
+  [plan execution](plan_execution.md) and [model metrics](instrumented_model_provider.md).
+- [TASKS.json](TASKS.json) is the machine-readable AX-001 through AX-600 source;
+  [TASKS.md](TASKS.md) is its generated view. Imported reported completion is
+  distinct from task-level acceptance evidence. The dependency graph is
+  explicitly partial; it is not a completed audit of all task relationships.
+- Live-model cold/learn/restart/warm acceptance remains outstanding. The local
+  continuation environment has no configured model service credentials or
+  interactive Windows/Android environment. Loopback HTTP and scripted-provider
+  tests do not substitute for those experiments.
 
 ## Canonical baseline and work in this review
 
@@ -33,16 +54,16 @@ states distinguish production code, candidate changes and missing acceptance.
 | Milestone | Evidence in the repository | Work still required |
 | --- | --- | --- |
 | M0 Kernel | Permission/risk/gate/budget/stop/audit/secret contracts; governed capability loop; AX-040 merged | Continue whole-system security review as new surfaces land |
-| M1 Single-task runtime | Agent loop, L0-L4 strategy boundaries, decomposition, independent verifier | Connect accepted L4 plans to governed execution; complete L5 path |
-| M2 Persistent memory | Event journal, episodes, semantic knowledge and typed scopes | Integrate/review #147; prove combined restart and corruption behavior |
-| M3 Compilation and reuse | Procedure IR/interpreter, compiler, validation, promotion and reuse | Integrate/review #148; full cold-to-restart-to-warm acceptance |
+| M1 Single-task runtime | Agent loop, L0-L4 boundaries; explicit capability-bound L4 execution and goal checks | General application binding; procedure-leaf composition; complete L5 path; real-task acceptance |
+| M2 Persistent memory | Event journal, episodes, semantic knowledge, typed scopes and integrated #147 | Prove combined restart and corruption behavior |
+| M3 Compilation and reuse | Procedure IR/interpreter, compiler, validation, promotion, reuse and integrated #148 | Full cold-to-restart-to-warm acceptance |
 | M4 Learning efficiency | Metrics, reuse evidence and experiment contracts | Real model-backed cold/warm comparison with independently verified outcomes |
 | M5 Repair | Diagnosis, degradation, shadow validation, replacement and rollback machinery | Deliberate break/repair/reuse experiment and failed-repair rollback |
-| M6 Windows | Structured filesystem, app/window/input/UIA foundations | Integrate/review #156 and repair #157; representative Windows 10/11 workflows |
+| M6 Windows | Structured filesystem, app/window/input/UIA foundations; #156/#157 integrated | Representative Windows 10/11 workflows |
 | M7 Browser | State, DOM, target selection, navigation, click and selected-node fill | N2.27 privacy/field-type acceptance; concrete browser driver and verified multi-page workflow |
-| M8 Models/research | Canonical model/Reasoner and research contracts; #149 research candidate; #158 canonical HTTP adapter | N2.07 L5; configured real service/credentials; plan-to-action wiring and live acceptance |
-| M9 Adversarial hardening | Existing suites and merged AX-040 | Integrate/review #150; modern cross-surface attacks on the integrated runtime |
-| M10 World model | Canonical snapshots; #146/#151 candidate observation/cache/invalidation work | Combined review and real environment-change recovery benchmark |
+| M8 Models/research | Canonical model/Reasoner; integrated #149; HTTP adapter and invocation metrics | N2.07 L5; configured real service/credentials; live acceptance and model-budget composition |
+| M9 Adversarial hardening | Existing suites, merged AX-040 and integrated #150 | Modern cross-surface attacks on the integrated runtime |
+| M10 World model | Canonical snapshots; integrated #146/#151 observation/cache/invalidation | Real environment-change recovery benchmark |
 | M11 Voice/product | Audio abstractions; #152 event protocol candidate | Real STT/TTS, interruption, user controls, usable application/CLI |
 | M12 Persistent operation | #153 watcher candidate | Scheduler, durable task recovery, explicit proactivity policy and resource bounds |
 | M13 Multi-device | Device protocol foundation | Actual Android provider and verified cross-device handoff |
@@ -52,13 +73,15 @@ states distinguish production code, candidate changes and missing acceptance.
 
 ## A critical runtime distinction
 
-`PlanningStrategy.plan()` makes a validated `TaskDecomposition`. Its `attempt()`
-method deliberately fails closed because the current strategy result port has no
-plan-execution channel. Therefore, neither the existing L4 class nor a concrete
-model connection demonstrates autonomous task completion. The next runtime work
-must compose canonical decomposition/readiness, task management, governed action
-binding, budgets/stop and independent verification. It must not interpret raw model
-text as executable code or fabricate an `executed` result for a plan.
+`PlanningStrategy.plan()` makes an inert validated `TaskDecomposition`; that
+class's own `attempt()` still fails closed. `GovernedPlanningStrategy` is the
+separate L4 execution adapter. It validates readiness, expands dependencies,
+preflights explicit application bindings, executes via the canonical Executor,
+and requires a separate governed goal check. It returns actual verification
+evidence to AgentLoop instead of fabricating success from a plan. The current
+bindings cover capability-backed leaves; procedure leaves remain fail-closed.
+This supplies composition, not general natural-language binding or live-model
+acceptance. Caller-owned model-budget and application wiring remain necessary.
 
 The current CLI exposes help/version only. Installing the package does not start
 a usable natural-language agent. This is a product/composition gap as well as a
@@ -133,4 +156,3 @@ CI. No skips, exclusions, xfails or workflow weakening were added to evade this.
 These additional repairs have focused regression coverage. Acceptance still
 requires the final combined Windows gate; intermediate green runs do not
 certify later commits.
-

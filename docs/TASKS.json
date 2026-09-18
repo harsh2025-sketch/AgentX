@@ -1,0 +1,5634 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "72bf7059d64a38ed9512aedf420ec7b1d2552837",
+  "baseline_source": "User-supplied reconciliation, 2026-09-17; definitions from review-agentx-handover (4).pdf pp. 632-647.",
+  "status_policy": "reported_status preserves the supplied 349/2/249 snapshot. VERIFIED requires separately reviewed canonical implementation, tests, and acceptance evidence; no reported checkbox implies verified acceptance.",
+  "dependency_coverage": "Partial: only the explicit critical path is encoded. Empty depends_on is not a claim of independence. AX-574 remains in progress until the whole graph is reviewed.",
+  "milestones": [
+    {
+      "id": "M0",
+      "name": "Trusted Kernel",
+      "first_task": "AX-001",
+      "last_task": "AX-040"
+    },
+    {
+      "id": "M1",
+      "name": "Agent Runtime",
+      "first_task": "AX-041",
+      "last_task": "AX-085"
+    },
+    {
+      "id": "M2",
+      "name": "Hive and Memory",
+      "first_task": "AX-086",
+      "last_task": "AX-125"
+    },
+    {
+      "id": "M3",
+      "name": "Procedure Compiler",
+      "first_task": "AX-126",
+      "last_task": "AX-175"
+    },
+    {
+      "id": "M4",
+      "name": "Learning Efficiency",
+      "first_task": "AX-176",
+      "last_task": "AX-205"
+    },
+    {
+      "id": "M5",
+      "name": "Self-Repair",
+      "first_task": "AX-206",
+      "last_task": "AX-245"
+    },
+    {
+      "id": "M6",
+      "name": "Windows Capabilities",
+      "first_task": "AX-246",
+      "last_task": "AX-300"
+    },
+    {
+      "id": "M7",
+      "name": "Browser Agent",
+      "first_task": "AX-301",
+      "last_task": "AX-335"
+    },
+    {
+      "id": "M8",
+      "name": "Models and Research",
+      "first_task": "AX-336",
+      "last_task": "AX-370"
+    },
+    {
+      "id": "M9",
+      "name": "Security",
+      "first_task": "AX-371",
+      "last_task": "AX-405"
+    },
+    {
+      "id": "M10",
+      "name": "World Model",
+      "first_task": "AX-406",
+      "last_task": "AX-435"
+    },
+    {
+      "id": "M11",
+      "name": "Voice and HUD",
+      "first_task": "AX-436",
+      "last_task": "AX-460"
+    },
+    {
+      "id": "M12",
+      "name": "Scheduling",
+      "first_task": "AX-461",
+      "last_task": "AX-485"
+    },
+    {
+      "id": "M13",
+      "name": "Multi-device and Android",
+      "first_task": "AX-486",
+      "last_task": "AX-515"
+    },
+    {
+      "id": "M14",
+      "name": "Optimization",
+      "first_task": "AX-516",
+      "last_task": "AX-540"
+    },
+    {
+      "id": "M15",
+      "name": "Self-extension",
+      "first_task": "AX-541",
+      "last_task": "AX-570"
+    },
+    {
+      "id": "M16",
+      "name": "Production and Release",
+      "first_task": "AX-571",
+      "last_task": "AX-600"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "AX-001",
+      "milestone": "M0",
+      "title": "Python 3.12+ project baseline",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-002",
+      "milestone": "M0",
+      "title": "src/ package layout",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-003",
+      "milestone": "M0",
+      "title": "pyproject.toml packaging",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-004",
+      "milestone": "M0",
+      "title": "CLI/version bootstrap",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-005",
+      "milestone": "M0",
+      "title": "subsystem ownership map",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-006",
+      "milestone": "M0",
+      "title": "architecture dependency manifest",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-007",
+      "milestone": "M0",
+      "title": "architecture dependency tests",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-008",
+      "milestone": "M0",
+      "title": "canonical Task identity",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-009",
+      "milestone": "M0",
+      "title": "canonical Task lifecycle",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-010",
+      "milestone": "M0",
+      "title": "ExecutionContext contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-011",
+      "milestone": "M0",
+      "title": "canonical error/result vocabulary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-012",
+      "milestone": "M0",
+      "title": "permission vocabulary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-013",
+      "milestone": "M0",
+      "title": "Permission Engine",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-014",
+      "milestone": "M0",
+      "title": "authority-context contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-015",
+      "milestone": "M0",
+      "title": "R0–R4 risk vocabulary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-016",
+      "milestone": "M0",
+      "title": "deterministic risk assessment",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-017",
+      "milestone": "M0",
+      "title": "Action Gate",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-018",
+      "milestone": "M0",
+      "title": "confirmation-required semantics",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-019",
+      "milestone": "M0",
+      "title": "destructive-action gating",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-020",
+      "milestone": "M0",
+      "title": "Emergency Stop",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-021",
+      "milestone": "M0",
+      "title": "resource-envelope contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-022",
+      "milestone": "M0",
+      "title": "Resource Budget",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-023",
+      "milestone": "M0",
+      "title": "machine-action accounting",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-024",
+      "milestone": "M0",
+      "title": "bounded runtime budget enforcement",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-025",
+      "milestone": "M0",
+      "title": "audit-event contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-026",
+      "milestone": "M0",
+      "title": "durable audit plumbing",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-027",
+      "milestone": "M0",
+      "title": "secret-value abstraction",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-028",
+      "milestone": "M0",
+      "title": "secret-boundary rules",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-029",
+      "milestone": "M0",
+      "title": "capability ABI",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-030",
+      "milestone": "M0",
+      "title": "Capability Registry",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-031",
+      "milestone": "M0",
+      "title": "capability request validation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-032",
+      "milestone": "M0",
+      "title": "capability result validation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-033",
+      "milestone": "M0",
+      "title": "CapabilityExecutionLoop",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-034",
+      "milestone": "M0",
+      "title": "execution/verification separation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-035",
+      "milestone": "M0",
+      "title": "event bus foundation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-036",
+      "milestone": "M0",
+      "title": "persistence foundation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-037",
+      "milestone": "M0",
+      "title": "SQLite migration framework",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-038",
+      "milestone": "M0",
+      "title": "runtime-only dependency gate",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-039",
+      "milestone": "M0",
+      "title": "Windows/Python 3.12 quality workflow",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-040",
+      "milestone": "M0",
+      "title": "Trusted-Kernel whole-system security audit",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-041",
+      "milestone": "M1",
+      "title": "ExecutionLevel L0–L5 vocabulary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-042",
+      "milestone": "M1",
+      "title": "deterministic level-selection inputs",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-043",
+      "milestone": "M1",
+      "title": "routing-evidence contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-044",
+      "milestone": "M1",
+      "title": "bounded escalation model",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-045",
+      "milestone": "M1",
+      "title": "anti-loop policy",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-046",
+      "milestone": "M1",
+      "title": "AgentLoop composition boundary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-047",
+      "milestone": "M1",
+      "title": "strategy registry",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-048",
+      "milestone": "M1",
+      "title": "canonical runtime strategy assembly",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-049",
+      "milestone": "M1",
+      "title": "L0 strategy adapter",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-050",
+      "milestone": "M1",
+      "title": "L1 governed capability strategy",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-051",
+      "milestone": "M1",
+      "title": "L2 compiled-procedure strategy",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-052",
+      "milestone": "M1",
+      "title": "L3 guided-procedure strategy",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-053",
+      "milestone": "M1",
+      "title": "L4 planning boundary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-054",
+      "milestone": "M1",
+      "title": "L5 exploratory strategy clean implementation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-065",
+        "AX-364",
+        "AX-365",
+        "AX-366"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-055",
+      "milestone": "M1",
+      "title": "strategy-unavailable behavior",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-056",
+      "milestone": "M1",
+      "title": "failure escalation behavior",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-057",
+      "milestone": "M1",
+      "title": "TaskManager/runtime integration",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-058",
+      "milestone": "M1",
+      "title": "task decomposition schema",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-059",
+      "milestone": "M1",
+      "title": "decomposition DAG validation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-060",
+      "milestone": "M1",
+      "title": "decomposition readiness validator",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-061",
+      "milestone": "M1",
+      "title": "terminal-node readiness rules",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-062",
+      "milestone": "M1",
+      "title": "capability-target readiness",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-063",
+      "milestone": "M1",
+      "title": "procedure-target readiness",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-064",
+      "milestone": "M1",
+      "title": "higher-level-resolution readiness",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-065",
+      "milestone": "M1",
+      "title": "Reasoner provider-neutral boundary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-066",
+      "milestone": "M1",
+      "title": "bounded Reasoner request",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-067",
+      "milestone": "M1",
+      "title": "model-output acceptance boundary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-068",
+      "milestone": "M1",
+      "title": "model-output strict JSON handling",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-069",
+      "milestone": "M1",
+      "title": "independent task verification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-070",
+      "milestone": "M1",
+      "title": "verification-requirement contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-071",
+      "milestone": "M1",
+      "title": "requirement evaluation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-072",
+      "milestone": "M1",
+      "title": "execution success != task success invariant",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-073",
+      "milestone": "M1",
+      "title": "procedure END != task success invariant",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-074",
+      "milestone": "M1",
+      "title": "cancellation semantics",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-075",
+      "milestone": "M1",
+      "title": "timeout semantics",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-076",
+      "milestone": "M1",
+      "title": "denied-attempt semantics",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-077",
+      "milestone": "M1",
+      "title": "unverified-attempt semantics",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-078",
+      "milestone": "M1",
+      "title": "bounded strategy attempts",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-079",
+      "milestone": "M1",
+      "title": "strategy result typing",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-080",
+      "milestone": "M1",
+      "title": "hostile routing metadata inertness",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-081",
+      "milestone": "M1",
+      "title": "task/runtime adversarial tests",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-082",
+      "milestone": "M1",
+      "title": "task/runtime architecture tests",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-083",
+      "milestone": "M1",
+      "title": "real-world single-task vertical slice",
+      "reported_status": "PARTIAL",
+      "acceptance_status": "IN_PROGRESS",
+      "depends_on": [
+        "AX-053",
+        "AX-060",
+        "AX-069",
+        "AX-344"
+      ],
+      "evidence": [
+        {
+          "kind": "candidate",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/161",
+          "note": "Implementation/ledger work; canonical acceptance not yet established."
+        }
+      ]
+    },
+    {
+      "id": "AX-084",
+      "milestone": "M1",
+      "title": "cross-strategy orchestration benchmark",
+      "reported_status": "PARTIAL",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [
+        "AX-083"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-085",
+      "milestone": "M1",
+      "title": "M1 release acceptance proof",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-054",
+        "AX-083",
+        "AX-084"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-086",
+      "milestone": "M2",
+      "title": "Episode identity",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-087",
+      "milestone": "M2",
+      "title": "Episode record",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-088",
+      "milestone": "M2",
+      "title": "Episode outcome vocabulary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-089",
+      "milestone": "M2",
+      "title": "durable EpisodeStore",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-090",
+      "milestone": "M2",
+      "title": "monotonic durable episode sequence",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-091",
+      "milestone": "M2",
+      "title": "execution-episode packaging",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-092",
+      "milestone": "M2",
+      "title": "execution evidence capture",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-093",
+      "milestone": "M2",
+      "title": "verification evidence capture",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-094",
+      "milestone": "M2",
+      "title": "causal-experience contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-095",
+      "milestone": "M2",
+      "title": "causal-outcome vocabulary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-096",
+      "milestone": "M2",
+      "title": "verified causal experience",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-097",
+      "milestone": "M2",
+      "title": "failed causal experience",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-098",
+      "milestone": "M2",
+      "title": "ExperienceMemory",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-099",
+      "milestone": "M2",
+      "title": "restart-safe episode retrieval",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-100",
+      "milestone": "M2",
+      "title": "bounded episode retrieval",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-101",
+      "milestone": "M2",
+      "title": "task-based episode filtering",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-102",
+      "milestone": "M2",
+      "title": "correlation-based episode filtering",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-103",
+      "milestone": "M2",
+      "title": "outcome-based episode filtering",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-104",
+      "milestone": "M2",
+      "title": "sequence-window retrieval",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-105",
+      "milestone": "M2",
+      "title": "semantic knowledge record",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-106",
+      "milestone": "M2",
+      "title": "provenance contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-107",
+      "milestone": "M2",
+      "title": "evidence contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-108",
+      "milestone": "M2",
+      "title": "KnowledgeStore",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-109",
+      "milestone": "M2",
+      "title": "SemanticMemory",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-110",
+      "milestone": "M2",
+      "title": "explicit knowledge lifecycle",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-111",
+      "milestone": "M2",
+      "title": "unverified-by-default ingestion",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-112",
+      "milestone": "M2",
+      "title": "explicit verification promotion",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-113",
+      "milestone": "M2",
+      "title": "knowledge retrieval",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-114",
+      "milestone": "M2",
+      "title": "environmental state contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-115",
+      "milestone": "M2",
+      "title": "environmental TTL cache",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-116",
+      "milestone": "M2",
+      "title": "environment-change detection",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-117",
+      "milestone": "M2",
+      "title": "world-state snapshot",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-118",
+      "milestone": "M2",
+      "title": "Hive relationship graph",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-119",
+      "milestone": "M2",
+      "title": "explicit user preferences",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-120",
+      "milestone": "M2",
+      "title": "contradiction relationships",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-121",
+      "milestone": "M2",
+      "title": "supersession relationships",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-122",
+      "milestone": "M2",
+      "title": "evidence-confidence metadata",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-123",
+      "milestone": "M2",
+      "title": "knowledge revalidation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-124",
+      "milestone": "M2",
+      "title": "cross-scope retrieval protection",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-125",
+      "milestone": "M2",
+      "title": "full restart-memory acceptance scenario",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-120",
+        "AX-121",
+        "AX-122",
+        "AX-123",
+        "AX-124"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-126",
+      "milestone": "M3",
+      "title": "ProcedureId contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-127",
+      "milestone": "M3",
+      "title": "Procedure revision identity",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-128",
+      "milestone": "M3",
+      "title": "ProcedureStatus lifecycle vocabulary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-129",
+      "milestone": "M3",
+      "title": "Procedure Graph IR",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-130",
+      "milestone": "M3",
+      "title": "ACTION node",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-131",
+      "milestone": "M3",
+      "title": "CONDITION node",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-132",
+      "milestone": "M3",
+      "title": "END node",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-133",
+      "milestone": "M3",
+      "title": "REASON node",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-134",
+      "milestone": "M3",
+      "title": "RESEARCH node representation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-135",
+      "milestone": "M3",
+      "title": "subprocedure representation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-136",
+      "milestone": "M3",
+      "title": "recovery/error edges",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-137",
+      "milestone": "M3",
+      "title": "graph structural validation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-138",
+      "milestone": "M3",
+      "title": "deterministic graph serialization",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-139",
+      "milestone": "M3",
+      "title": "precondition representation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-140",
+      "milestone": "M3",
+      "title": "postcondition representation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-141",
+      "milestone": "M3",
+      "title": "deterministic interpreter",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-142",
+      "milestone": "M3",
+      "title": "procedure execution trace",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-143",
+      "milestone": "M3",
+      "title": "procedure execution evidence",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-144",
+      "milestone": "M3",
+      "title": "ACTION_REQUIRED transition",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-145",
+      "milestone": "M3",
+      "title": "REASON_REQUIRED transition",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-146",
+      "milestone": "M3",
+      "title": "RESEARCH_REQUIRED transition",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-147",
+      "milestone": "M3",
+      "title": "procedure run disposition",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-148",
+      "milestone": "M3",
+      "title": "procedure task-verification separation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-149",
+      "milestone": "M3",
+      "title": "trajectory normalization",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-150",
+      "milestone": "M3",
+      "title": "causal-action extraction",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-151",
+      "milestone": "M3",
+      "title": "irrelevant-action elimination",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-152",
+      "milestone": "M3",
+      "title": "parameter extraction",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-153",
+      "milestone": "M3",
+      "title": "parameter generalization",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-154",
+      "milestone": "M3",
+      "title": "determinism analysis",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-155",
+      "milestone": "M3",
+      "title": "reasoning-region classification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-156",
+      "milestone": "M3",
+      "title": "skill-compiler orchestrator",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-157",
+      "milestone": "M3",
+      "title": "verified-input compiler admission",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-158",
+      "milestone": "M3",
+      "title": "candidate-only synthesis",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-159",
+      "milestone": "M3",
+      "title": "Procedure candidate builder",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-160",
+      "milestone": "M3",
+      "title": "validation evidence policy",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-161",
+      "milestone": "M3",
+      "title": "varied-parameter validation runner",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-162",
+      "milestone": "M3",
+      "title": "exact procedure-revision validation binding",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-163",
+      "milestone": "M3",
+      "title": "distinct-variation minimum",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-164",
+      "milestone": "M3",
+      "title": "partial validation failure preservation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-165",
+      "milestone": "M3",
+      "title": "promotion eligibility decision",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-166",
+      "milestone": "M3",
+      "title": "explicit promotion transaction",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-167",
+      "milestone": "M3",
+      "title": "atomic candidate activation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-168",
+      "milestone": "M3",
+      "title": "ACTIVE-only normal reuse",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-169",
+      "milestone": "M3",
+      "title": "capability/procedure applicability matcher",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-170",
+      "milestone": "M3",
+      "title": "deterministic reuse selector",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-171",
+      "milestone": "M3",
+      "title": "ambiguous reuse rejection",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-172",
+      "milestone": "M3",
+      "title": "restart-safe active-procedure retrieval",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-173",
+      "milestone": "M3",
+      "title": "complete compiled L2 real workflow",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-174",
+      "milestone": "M3",
+      "title": "complete guided L3 real workflow",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-175",
+      "milestone": "M3",
+      "title": "end-to-end skill compilation acceptance proof",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-172",
+        "AX-173",
+        "AX-174"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-176",
+      "milestone": "M4",
+      "title": "execution metrics record",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-177",
+      "milestone": "M4",
+      "title": "elapsed-time instrumentation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-178",
+      "milestone": "M4",
+      "title": "machine-action instrumentation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-179",
+      "milestone": "M4",
+      "title": "model-call event instrumentation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-180",
+      "milestone": "M4",
+      "title": "input-token accounting",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-181",
+      "milestone": "M4",
+      "title": "output-token accounting",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-182",
+      "milestone": "M4",
+      "title": "cost accounting",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-183",
+      "milestone": "M4",
+      "title": "model-ID evidence",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-184",
+      "milestone": "M4",
+      "title": "procedure-revision evidence",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-185",
+      "milestone": "M4",
+      "title": "verified-success evidence type",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-186",
+      "milestone": "M4",
+      "title": "reuse-mode vocabulary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-187",
+      "milestone": "M4",
+      "title": "cold-run evidence",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-188",
+      "milestone": "M4",
+      "title": "warm-run evidence",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-189",
+      "milestone": "M4",
+      "title": "efficiency comparison",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-190",
+      "milestone": "M4",
+      "title": "missing-metric preservation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-191",
+      "milestone": "M4",
+      "title": "unverified warm-run rejection",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-192",
+      "milestone": "M4",
+      "title": "failed warm-run regression rule",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-193",
+      "milestone": "M4",
+      "title": "cold-vs-warm experiment harness",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-194",
+      "milestone": "M4",
+      "title": "deterministic experiment serialization",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-195",
+      "milestone": "M4",
+      "title": "evidence non-authority invariants",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-196",
+      "milestone": "M4",
+      "title": "connect metrics to real model provider",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "IN_PROGRESS",
+      "depends_on": [
+        "AX-344"
+      ],
+      "evidence": [
+        {
+          "kind": "candidate",
+          "reference": "src/agentx/instrumented_model_provider.py",
+          "note": "Concrete provider-to-metrics wiring with loopback HTTP integration tests; live-service acceptance pending."
+        }
+      ]
+    },
+    {
+      "id": "AX-197",
+      "milestone": "M4",
+      "title": "execute unknown cold task",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-083",
+        "AX-196"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-198",
+      "milestone": "M4",
+      "title": "collect real L4/L5 metrics",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-197"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-199",
+      "milestone": "M4",
+      "title": "compile cold experience",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-175",
+        "AX-197"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-200",
+      "milestone": "M4",
+      "title": "validate candidate with variations",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-199"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-201",
+      "milestone": "M4",
+      "title": "promote learned procedure",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-200"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-202",
+      "milestone": "M4",
+      "title": "restart AgentX",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-125",
+        "AX-201"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-203",
+      "milestone": "M4",
+      "title": "solve related warm task via reuse",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-202"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-204",
+      "milestone": "M4",
+      "title": "demonstrate material model-call/cost reduction",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-198",
+        "AX-203"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-205",
+      "milestone": "M4",
+      "title": "publish reproducible cold-vs-warm benchmark",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-204"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-206",
+      "milestone": "M5",
+      "title": "failure taxonomy",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-207",
+      "milestone": "M5",
+      "title": "transient-failure classification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-208",
+      "milestone": "M5",
+      "title": "environment-unavailable classification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-209",
+      "milestone": "M5",
+      "title": "precondition-failure classification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-210",
+      "milestone": "M5",
+      "title": "capability-change classification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-211",
+      "milestone": "M5",
+      "title": "UI/API-change classification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-212",
+      "milestone": "M5",
+      "title": "verification-failure classification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-213",
+      "milestone": "M5",
+      "title": "failure localization",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-214",
+      "milestone": "M5",
+      "title": "failure diagnosis",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-215",
+      "milestone": "M5",
+      "title": "repair-candidate contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-216",
+      "milestone": "M5",
+      "title": "procedure degradation detector",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-217",
+      "milestone": "M5",
+      "title": "repair-budget policy",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-218",
+      "milestone": "M5",
+      "title": "repair anti-loop",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-219",
+      "milestone": "M5",
+      "title": "repair workflow orchestrator",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-220",
+      "milestone": "M5",
+      "title": "repair proposal generation boundary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-221",
+      "milestone": "M5",
+      "title": "node-definition replacement patch",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-222",
+      "milestone": "M5",
+      "title": "repair patch materializer",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-223",
+      "milestone": "M5",
+      "title": "immutable source preservation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-224",
+      "milestone": "M5",
+      "title": "repaired candidate generation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-225",
+      "milestone": "M5",
+      "title": "repair validation evidence",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-226",
+      "milestone": "M5",
+      "title": "shadow-repair evidence",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-227",
+      "milestone": "M5",
+      "title": "shadow procedure runner",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-228",
+      "milestone": "M5",
+      "title": "source/candidate exact binding",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-229",
+      "milestone": "M5",
+      "title": "no-live-mutation shadow invariant",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-230",
+      "milestone": "M5",
+      "title": "procedure replacement eligibility",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-231",
+      "milestone": "M5",
+      "title": "replacement transaction",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-232",
+      "milestone": "M5",
+      "title": "serialized activation transaction",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-233",
+      "milestone": "M5",
+      "title": "stale-revision rejection",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-234",
+      "milestone": "M5",
+      "title": "exactly-one-ACTIVE invariant",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-235",
+      "milestone": "M5",
+      "title": "RETIRED terminal invariant",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-236",
+      "milestone": "M5",
+      "title": "rollback eligibility",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-237",
+      "milestone": "M5",
+      "title": "rollback transaction",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-238",
+      "milestone": "M5",
+      "title": "historical RETIRED-copy semantics",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-239",
+      "milestone": "M5",
+      "title": "rollback creates new revision",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-240",
+      "milestone": "M5",
+      "title": "replacement/rollback concurrency tests",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-241",
+      "milestone": "M5",
+      "title": "transaction fault-injection tests",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-242",
+      "milestone": "M5",
+      "title": "deliberately break real learned procedure",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-243",
+      "milestone": "M5",
+      "title": "detect and localize real degradation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-244",
+      "milestone": "M5",
+      "title": "repair and revalidate real procedure",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-245",
+      "milestone": "M5",
+      "title": "complete break -> repair -> rollback acceptance proof",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-246",
+      "milestone": "M6",
+      "title": "Windows platform-support contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-247",
+      "milestone": "M6",
+      "title": "Windows process discovery",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-248",
+      "milestone": "M6",
+      "title": "process identity",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-249",
+      "milestone": "M6",
+      "title": "top-level window discovery",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-250",
+      "milestone": "M6",
+      "title": "window identity",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-251",
+      "milestone": "M6",
+      "title": "UIA observation contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-252",
+      "milestone": "M6",
+      "title": "UIA tree inspection",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-253",
+      "milestone": "M6",
+      "title": "UIA element identity",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-254",
+      "milestone": "M6",
+      "title": "UIA property observation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-255",
+      "milestone": "M6",
+      "title": "UIA semantic target resolution",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-256",
+      "milestone": "M6",
+      "title": "ambiguity-preserving target resolution",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-257",
+      "milestone": "M6",
+      "title": "filesystem text-read capability",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-258",
+      "milestone": "M6",
+      "title": "filesystem text-write capability",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-259",
+      "milestone": "M6",
+      "title": "filesystem verification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-260",
+      "milestone": "M6",
+      "title": "filesystem structural risk policy",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-261",
+      "milestone": "M6",
+      "title": "governed file move",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-262",
+      "milestone": "M6",
+      "title": "governed file rename",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-263",
+      "milestone": "M6",
+      "title": "governed directory creation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-264",
+      "milestone": "M6",
+      "title": "governed file deletion",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-265",
+      "milestone": "M6",
+      "title": "governed directory deletion",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-266",
+      "milestone": "M6",
+      "title": "canonical native-mutation seam",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-267",
+      "milestone": "M6",
+      "title": "native seam isolation from public capability",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-268",
+      "milestone": "M6",
+      "title": "application-launch V2 contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-269",
+      "milestone": "M6",
+      "title": "structured executable path",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-270",
+      "milestone": "M6",
+      "title": "structured argv handling",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-271",
+      "milestone": "M6",
+      "title": "no-shell launch invariant",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-272",
+      "milestone": "M6",
+      "title": "window activation contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-273",
+      "milestone": "M6",
+      "title": "window minimization contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-274",
+      "milestone": "M6",
+      "title": "window maximization contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-275",
+      "milestone": "M6",
+      "title": "window restore contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-276",
+      "milestone": "M6",
+      "title": "bounded move/resize contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-277",
+      "milestone": "M6",
+      "title": "SetWindowPos native adapter",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-278",
+      "milestone": "M6",
+      "title": "keyboard text-entry contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-279",
+      "milestone": "M6",
+      "title": "key-combination contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-280",
+      "milestone": "M6",
+      "title": "bounded key vocabulary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-281",
+      "milestone": "M6",
+      "title": "clipboard read",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-282",
+      "milestone": "M6",
+      "title": "clipboard write",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-283",
+      "milestone": "M6",
+      "title": "clipboard clear",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-284",
+      "milestone": "M6",
+      "title": "hostile clipboard data inertness",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-285",
+      "milestone": "M6",
+      "title": "no keylogger invariant",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-286",
+      "milestone": "M6",
+      "title": "no global-hotkey capture invariant",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-287",
+      "milestone": "M6",
+      "title": "Windows transition-verification boundary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-288",
+      "milestone": "M6",
+      "title": "window-present verification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-289",
+      "milestone": "M6",
+      "title": "window-absent verification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-290",
+      "milestone": "M6",
+      "title": "window-visible verification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-291",
+      "milestone": "M6",
+      "title": "window-focus verification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-292",
+      "milestone": "M6",
+      "title": "window-bounds verification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-293",
+      "milestone": "M6",
+      "title": "process-present verification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-294",
+      "milestone": "M6",
+      "title": "executable-identity verification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-295",
+      "milestone": "M6",
+      "title": "text-field-value verification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-296",
+      "milestone": "M6",
+      "title": "clipboard independent verification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-297",
+      "milestone": "M6",
+      "title": "keyboard-action independent verification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-298",
+      "milestone": "M6",
+      "title": "real Windows host mutation suite",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-299",
+      "milestone": "M6",
+      "title": "multi-app Windows workflow benchmark",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-300",
+      "milestone": "M6",
+      "title": "Windows capability milestone acceptance",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-301",
+      "milestone": "M7",
+      "title": "browser provider abstraction",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-302",
+      "milestone": "M7",
+      "title": "page/tab identity",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-303",
+      "milestone": "M7",
+      "title": "browser-state observation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-304",
+      "milestone": "M7",
+      "title": "DOM representation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-305",
+      "milestone": "M7",
+      "title": "DOM element identity",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-306",
+      "milestone": "M7",
+      "title": "deterministic DOM selection",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-307",
+      "milestone": "M7",
+      "title": "governed browser action boundary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-308",
+      "milestone": "M7",
+      "title": "governed navigation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-309",
+      "milestone": "M7",
+      "title": "governed click",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-310",
+      "milestone": "M7",
+      "title": "navigation risk classification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-311",
+      "milestone": "M7",
+      "title": "redirect evidence",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-312",
+      "milestone": "M7",
+      "title": "independent navigation verification",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-313",
+      "milestone": "M7",
+      "title": "cross-origin redirect fail-closed policy",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-314",
+      "milestone": "M7",
+      "title": "hostile webpage content inertness",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-315",
+      "milestone": "M7",
+      "title": "governed text/form entry — N2.27",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-316",
+      "milestone": "M7",
+      "title": "text-field target binding",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-317",
+      "milestone": "M7",
+      "title": "form-field value validation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-318",
+      "milestone": "M7",
+      "title": "governed checkbox/radio interaction",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-319",
+      "milestone": "M7",
+      "title": "governed select/dropdown interaction",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-320",
+      "milestone": "M7",
+      "title": "governed submit action",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-321",
+      "milestone": "M7",
+      "title": "form-state verification",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-322",
+      "milestone": "M7",
+      "title": "submission-result verification",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-323",
+      "milestone": "M7",
+      "title": "multi-field form transaction",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-324",
+      "milestone": "M7",
+      "title": "upload contract",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-325",
+      "milestone": "M7",
+      "title": "upload verification",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-326",
+      "milestone": "M7",
+      "title": "download contract",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-327",
+      "milestone": "M7",
+      "title": "download verification",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-328",
+      "milestone": "M7",
+      "title": "cookie operation contract",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-329",
+      "milestone": "M7",
+      "title": "authentication-session boundary",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-330",
+      "milestone": "M7",
+      "title": "popup/new-tab handling",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-331",
+      "milestone": "M7",
+      "title": "browser recovery after DOM change",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-332",
+      "milestone": "M7",
+      "title": "browser capability health",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-333",
+      "milestone": "M7",
+      "title": "multi-page workflow execution",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-334",
+      "milestone": "M7",
+      "title": "hostile-page adversarial benchmark",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-335",
+      "milestone": "M7",
+      "title": "browser milestone acceptance benchmark",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-336",
+      "milestone": "M8",
+      "title": "provider-neutral ModelId",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-337",
+      "milestone": "M8",
+      "title": "provider-neutral model request",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-338",
+      "milestone": "M8",
+      "title": "model-response contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-339",
+      "milestone": "M8",
+      "title": "model-usage contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-340",
+      "milestone": "M8",
+      "title": "model-role vocabulary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-341",
+      "milestone": "M8",
+      "title": "Reasoner abstraction",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-342",
+      "milestone": "M8",
+      "title": "bounded output-token control",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-343",
+      "milestone": "M8",
+      "title": "model output treated as data",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-344",
+      "milestone": "M8",
+      "title": "concrete provider adapter — N2.28",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-345",
+      "milestone": "M8",
+      "title": "provider configuration",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-346",
+      "milestone": "M8",
+      "title": "canonical credential retrieval",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-347",
+      "milestone": "M8",
+      "title": "secret-to-provider binding",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-348",
+      "milestone": "M8",
+      "title": "HTTP transport implementation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-349",
+      "milestone": "M8",
+      "title": "provider request serialization",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-350",
+      "milestone": "M8",
+      "title": "provider response parsing",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-351",
+      "milestone": "M8",
+      "title": "usage/token extraction",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-352",
+      "milestone": "M8",
+      "title": "provider-error translation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-353",
+      "milestone": "M8",
+      "title": "rate-limit handling",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-354",
+      "milestone": "M8",
+      "title": "bounded retry policy",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-355",
+      "milestone": "M8",
+      "title": "timeout handling",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-356",
+      "milestone": "M8",
+      "title": "provider cancellation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-357",
+      "milestone": "M8",
+      "title": "fallback-provider policy",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-358",
+      "milestone": "M8",
+      "title": "provider-health tracking",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-359",
+      "milestone": "M8",
+      "title": "model-capability registry",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-360",
+      "milestone": "M8",
+      "title": "clean L5 exploratory strategy — N2.07",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-361",
+      "milestone": "M8",
+      "title": "exploratory task contract",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-362",
+      "milestone": "M8",
+      "title": "research objective generation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-363",
+      "milestone": "M8",
+      "title": "knowledge-gap detector",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-364",
+      "milestone": "M8",
+      "title": "Hive-first research lookup",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-365",
+      "milestone": "M8",
+      "title": "research provider boundary",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-366",
+      "milestone": "M8",
+      "title": "unverified research ingestion",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-367",
+      "milestone": "M8",
+      "title": "bounded research loop",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-368",
+      "milestone": "M8",
+      "title": "research -> execution handoff",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-369",
+      "milestone": "M8",
+      "title": "model-backed L4/L5 vertical",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-370",
+      "milestone": "M8",
+      "title": "real-model milestone acceptance",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-371",
+      "milestone": "M9",
+      "title": "external-content-is-data invariant",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-372",
+      "milestone": "M9",
+      "title": "verified knowledge != authority invariant",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-373",
+      "milestone": "M9",
+      "title": "permission-injection resistance",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-374",
+      "milestone": "M9",
+      "title": "risk-downgrade resistance",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-375",
+      "milestone": "M9",
+      "title": "Action-Gate bypass resistance",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-376",
+      "milestone": "M9",
+      "title": "Emergency-Stop override resistance",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-377",
+      "milestone": "M9",
+      "title": "budget-override resistance",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-378",
+      "milestone": "M9",
+      "title": "task-success fabrication resistance",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-379",
+      "milestone": "M9",
+      "title": "verification fabrication resistance",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-380",
+      "milestone": "M9",
+      "title": "procedure activation fabrication resistance",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-381",
+      "milestone": "M9",
+      "title": "arbitrary-callable rejection",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-382",
+      "milestone": "M9",
+      "title": "dynamic-code boundary tests",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-383",
+      "milestone": "M9",
+      "title": "model-output authority separation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-384",
+      "milestone": "M9",
+      "title": "clipboard hostile-content tests",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-385",
+      "milestone": "M9",
+      "title": "UI hostile-content tests",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-386",
+      "milestone": "M9",
+      "title": "browser hostile-content tests",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-387",
+      "milestone": "M9",
+      "title": "compiler hostile-history tests",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-388",
+      "milestone": "M9",
+      "title": "repair hostile-evidence tests",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-389",
+      "milestone": "M9",
+      "title": "persistence malformed-data tests",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-390",
+      "milestone": "M9",
+      "title": "threat model foundation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-391",
+      "milestone": "M9",
+      "title": "replay modern C4.10 suite",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-392",
+      "milestone": "M9",
+      "title": "research-path C4.10 tests",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-393",
+      "milestone": "M9",
+      "title": "knowledge-path C4.10 tests",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-394",
+      "milestone": "M9",
+      "title": "learning-path C4.10 tests",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-395",
+      "milestone": "M9",
+      "title": "repair-path C4.10 tests",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-396",
+      "milestone": "M9",
+      "title": "kernel-authority C4.10 tests",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-397",
+      "milestone": "M9",
+      "title": "tool-directive smuggling corpus",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-398",
+      "milestone": "M9",
+      "title": "Unicode/homoglyph adversarial corpus",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-399",
+      "milestone": "M9",
+      "title": "encoded-payload adversarial corpus",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-400",
+      "milestone": "M9",
+      "title": "SQL-shaped data poisoning tests",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-401",
+      "milestone": "M9",
+      "title": "secrets leakage audit",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-402",
+      "milestone": "M9",
+      "title": "audit-log privacy audit",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-403",
+      "milestone": "M9",
+      "title": "cross-subsystem privilege audit",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-404",
+      "milestone": "M9",
+      "title": "whole-system hostile-content chain",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-405",
+      "milestone": "M9",
+      "title": "security milestone signoff",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-406",
+      "milestone": "M10",
+      "title": "structured Windows observation foundation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-407",
+      "milestone": "M10",
+      "title": "UIA snapshot foundation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-408",
+      "milestone": "M10",
+      "title": "DOM snapshot foundation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-409",
+      "milestone": "M10",
+      "title": "screen/perception representation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-410",
+      "milestone": "M10",
+      "title": "world-state snapshot contract",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-411",
+      "milestone": "M10",
+      "title": "lazy world-state cache",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-412",
+      "milestone": "M10",
+      "title": "environment freshness semantics",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-413",
+      "milestone": "M10",
+      "title": "environment invalidation evidence",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-414",
+      "milestone": "M10",
+      "title": "application registry",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-415",
+      "milestone": "M10",
+      "title": "active-window state",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-416",
+      "milestone": "M10",
+      "title": "process-state model",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-417",
+      "milestone": "M10",
+      "title": "browser-state model",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-418",
+      "milestone": "M10",
+      "title": "filesystem-context state",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-419",
+      "milestone": "M10",
+      "title": "device-state model",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-420",
+      "milestone": "M10",
+      "title": "task-state world binding",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-421",
+      "milestone": "M10",
+      "title": "Hive/world relationship linkage",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-422",
+      "milestone": "M10",
+      "title": "screen-capture provider",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-423",
+      "milestone": "M10",
+      "title": "screen-frame identity",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-424",
+      "milestone": "M10",
+      "title": "visual-region representation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-425",
+      "milestone": "M10",
+      "title": "OCR-free primary visual grounding",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-426",
+      "milestone": "M10",
+      "title": "visual fallback router",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-427",
+      "milestone": "M10",
+      "title": "visual target proposal",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-428",
+      "milestone": "M10",
+      "title": "structured-vs-visual evidence ranking",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-429",
+      "milestone": "M10",
+      "title": "visual ambiguity handling",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-430",
+      "milestone": "M10",
+      "title": "stale-screen rejection",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-431",
+      "milestone": "M10",
+      "title": "display/DPI normalization",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-432",
+      "milestone": "M10",
+      "title": "multi-monitor awareness",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-433",
+      "milestone": "M10",
+      "title": "layout-change recovery benchmark",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-434",
+      "milestone": "M10",
+      "title": "perception accuracy benchmark",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-435",
+      "milestone": "M10",
+      "title": "world-model milestone acceptance",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-436",
+      "milestone": "M11",
+      "title": "audio abstraction foundation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-437",
+      "milestone": "M11",
+      "title": "microphone input provider",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-438",
+      "milestone": "M11",
+      "title": "speaker output provider",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-439",
+      "milestone": "M11",
+      "title": "provider-neutral STT interface",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-440",
+      "milestone": "M11",
+      "title": "concrete STT provider",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-441",
+      "milestone": "M11",
+      "title": "provider-neutral TTS interface",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-442",
+      "milestone": "M11",
+      "title": "concrete TTS provider",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-443",
+      "milestone": "M11",
+      "title": "realtime-session abstraction",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-444",
+      "milestone": "M11",
+      "title": "realtime voice provider",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-445",
+      "milestone": "M11",
+      "title": "voice activity detection",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-446",
+      "milestone": "M11",
+      "title": "turn-end detection",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-447",
+      "milestone": "M11",
+      "title": "interruption/barge-in",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-448",
+      "milestone": "M11",
+      "title": "audio cancellation handling",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-449",
+      "milestone": "M11",
+      "title": "voice-task bridge",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-450",
+      "milestone": "M11",
+      "title": "voice authorization rules",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-451",
+      "milestone": "M11",
+      "title": "spoken confirmation protocol",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-452",
+      "milestone": "M11",
+      "title": "runtime -> UI event protocol",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-453",
+      "milestone": "M11",
+      "title": "HUD state model",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-454",
+      "milestone": "M11",
+      "title": "listening telemetry",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-455",
+      "milestone": "M11",
+      "title": "reasoning telemetry",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-456",
+      "milestone": "M11",
+      "title": "execution telemetry",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-457",
+      "milestone": "M11",
+      "title": "verification telemetry",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-458",
+      "milestone": "M11",
+      "title": "recovery telemetry",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-459",
+      "milestone": "M11",
+      "title": "HUD control actions",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-460",
+      "milestone": "M11",
+      "title": "voice/HUD milestone demonstration",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-461",
+      "milestone": "M12",
+      "title": "scheduler core",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-462",
+      "milestone": "M12",
+      "title": "scheduled-task contract",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-463",
+      "milestone": "M12",
+      "title": "one-shot scheduled tasks",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-464",
+      "milestone": "M12",
+      "title": "recurring scheduled tasks",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-465",
+      "milestone": "M12",
+      "title": "event watcher framework",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-466",
+      "milestone": "M12",
+      "title": "event-triggered task launch",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-467",
+      "milestone": "M12",
+      "title": "file-change trigger",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-468",
+      "milestone": "M12",
+      "title": "process-state trigger",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-469",
+      "milestone": "M12",
+      "title": "browser-state trigger",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-470",
+      "milestone": "M12",
+      "title": "device-state trigger",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-471",
+      "milestone": "M12",
+      "title": "notification boundary",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-472",
+      "milestone": "M12",
+      "title": "proactive recommendation contract",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-473",
+      "milestone": "M12",
+      "title": "proactive confidence policy",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-474",
+      "milestone": "M12",
+      "title": "user opt-in policy",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-475",
+      "milestone": "M12",
+      "title": "quiet-hours policy",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-476",
+      "milestone": "M12",
+      "title": "attention-awareness policy",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-477",
+      "milestone": "M12",
+      "title": "background resource quota",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-478",
+      "milestone": "M12",
+      "title": "background model-call quota",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-479",
+      "milestone": "M12",
+      "title": "background machine-action quota",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-480",
+      "milestone": "M12",
+      "title": "long-running Task persistence",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-481",
+      "milestone": "M12",
+      "title": "restart recovery for scheduled work",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-482",
+      "milestone": "M12",
+      "title": "approval expiration semantics",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-483",
+      "milestone": "M12",
+      "title": "stale proactive-action rejection",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-484",
+      "milestone": "M12",
+      "title": "proactive adversarial tests",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-485",
+      "milestone": "M12",
+      "title": "proactivity milestone acceptance",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-486",
+      "milestone": "M13",
+      "title": "device abstraction foundation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-487",
+      "milestone": "M13",
+      "title": "device protocol foundation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-488",
+      "milestone": "M13",
+      "title": "Device Registry",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-489",
+      "milestone": "M13",
+      "title": "device discovery",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-490",
+      "milestone": "M13",
+      "title": "device capability advertisement",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-491",
+      "milestone": "M13",
+      "title": "device health model",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-492",
+      "milestone": "M13",
+      "title": "device environment identity",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-493",
+      "milestone": "M13",
+      "title": "Android provider",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-494",
+      "milestone": "M13",
+      "title": "ADB transport",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-495",
+      "milestone": "M13",
+      "title": "Android package discovery",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-496",
+      "milestone": "M13",
+      "title": "Android app launch",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-497",
+      "milestone": "M13",
+      "title": "accessibility-tree observation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-498",
+      "milestone": "M13",
+      "title": "Android semantic target resolution",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-499",
+      "milestone": "M13",
+      "title": "Android tap action",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-500",
+      "milestone": "M13",
+      "title": "Android text entry",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-501",
+      "milestone": "M13",
+      "title": "Android swipe action",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-502",
+      "milestone": "M13",
+      "title": "Android back/home actions",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-503",
+      "milestone": "M13",
+      "title": "Android state verification",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-504",
+      "milestone": "M13",
+      "title": "Android screen fallback",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-505",
+      "milestone": "M13",
+      "title": "Android risk policy",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-506",
+      "milestone": "M13",
+      "title": "Android permission mapping",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-507",
+      "milestone": "M13",
+      "title": "cross-device Task DAG",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-508",
+      "milestone": "M13",
+      "title": "device-target routing",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-509",
+      "milestone": "M13",
+      "title": "PC -> phone handoff",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-510",
+      "milestone": "M13",
+      "title": "phone -> PC handoff",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-511",
+      "milestone": "M13",
+      "title": "browser -> phone handoff",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-512",
+      "milestone": "M13",
+      "title": "device-specific Procedure applicability",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-513",
+      "milestone": "M13",
+      "title": "cross-device causal episode",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-514",
+      "milestone": "M13",
+      "title": "PC/browser/phone workflow benchmark",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-515",
+      "milestone": "M13",
+      "title": "multi-device milestone acceptance",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-516",
+      "milestone": "M14",
+      "title": "strategy-performance evidence foundation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-517",
+      "milestone": "M14",
+      "title": "execution-level metrics foundation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-518",
+      "milestone": "M14",
+      "title": "deterministic strategy baseline",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-519",
+      "milestone": "M14",
+      "title": "strategy outcome history",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-520",
+      "milestone": "M14",
+      "title": "per-environment strategy statistics",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-521",
+      "milestone": "M14",
+      "title": "per-task-family strategy statistics",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-522",
+      "milestone": "M14",
+      "title": "strategy latency statistics",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-523",
+      "milestone": "M14",
+      "title": "strategy cost statistics",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-524",
+      "milestone": "M14",
+      "title": "strategy success statistics",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-525",
+      "milestone": "M14",
+      "title": "confidence calibration",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-526",
+      "milestone": "M14",
+      "title": "contextual-bandit experiment",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-527",
+      "milestone": "M14",
+      "title": "bandit safety constraints",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-528",
+      "milestone": "M14",
+      "title": "offline policy evaluation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-529",
+      "milestone": "M14",
+      "title": "online preference-ranking experiment",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-530",
+      "milestone": "M14",
+      "title": "explicit user-correction dataset",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-531",
+      "milestone": "M14",
+      "title": "preference scoring model",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-532",
+      "milestone": "M14",
+      "title": "grounding-specialist dataset",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-533",
+      "milestone": "M14",
+      "title": "lightweight grounding model",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-534",
+      "milestone": "M14",
+      "title": "routing-specialist dataset",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-535",
+      "milestone": "M14",
+      "title": "lightweight routing model",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-536",
+      "milestone": "M14",
+      "title": "verifier-assistance model experiment",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-537",
+      "milestone": "M14",
+      "title": "model-distillation pipeline",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-538",
+      "milestone": "M14",
+      "title": "specialized-model benchmark",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-539",
+      "milestone": "M14",
+      "title": "rollbackable optimization policy",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-540",
+      "milestone": "M14",
+      "title": "optimization milestone acceptance",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-541",
+      "milestone": "M15",
+      "title": "missing-capability detector foundation",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-542",
+      "milestone": "M15",
+      "title": "capability-gap record",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-543",
+      "milestone": "M15",
+      "title": "capability research objective",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-544",
+      "milestone": "M15",
+      "title": "capability design proposal",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-545",
+      "milestone": "M15",
+      "title": "proposal provenance tracking",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-546",
+      "milestone": "M15",
+      "title": "generated-tool specification",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-547",
+      "milestone": "M15",
+      "title": "generated-code isolation environment",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-548",
+      "milestone": "M15",
+      "title": "generated dependency policy",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-549",
+      "milestone": "M15",
+      "title": "generated-code static analysis",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-550",
+      "milestone": "M15",
+      "title": "generated-code type checking",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-551",
+      "milestone": "M15",
+      "title": "generated-code lint gate",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-552",
+      "milestone": "M15",
+      "title": "generated unit tests",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-553",
+      "milestone": "M15",
+      "title": "generated adversarial tests",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-554",
+      "milestone": "M15",
+      "title": "sandbox execution",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-555",
+      "milestone": "M15",
+      "title": "resource-limited tool test",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-556",
+      "milestone": "M15",
+      "title": "network-isolated test mode",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-557",
+      "milestone": "M15",
+      "title": "filesystem-isolated test mode",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-558",
+      "milestone": "M15",
+      "title": "generated capability ABI validation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-559",
+      "milestone": "M15",
+      "title": "generated risk declaration validation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-560",
+      "milestone": "M15",
+      "title": "generated permission declaration validation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-561",
+      "milestone": "M15",
+      "title": "generated verification contract validation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-562",
+      "milestone": "M15",
+      "title": "repeated-success promotion threshold",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-563",
+      "milestone": "M15",
+      "title": "human review package",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-564",
+      "milestone": "M15",
+      "title": "installation approval",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-565",
+      "milestone": "M15",
+      "title": "versioned capability registration",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-566",
+      "milestone": "M15",
+      "title": "generated-capability health tracking",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-567",
+      "milestone": "M15",
+      "title": "generated-capability degradation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-568",
+      "milestone": "M15",
+      "title": "generated-capability rollback",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-569",
+      "milestone": "M15",
+      "title": "Trusted-Kernel immutability proof",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-570",
+      "milestone": "M15",
+      "title": "self-extension milestone acceptance",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-571",
+      "milestone": "M16",
+      "title": "synchronize README with live architecture",
+      "reported_status": "COMPLETE",
+      "acceptance_status": "NOT_AUDITED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-572",
+      "milestone": "M16",
+      "title": "establish canonical 600-task ledger file",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "IN_PROGRESS",
+      "depends_on": [
+        "AX-571"
+      ],
+      "evidence": [
+        {
+          "kind": "candidate",
+          "reference": "docs/TASKS.json",
+          "note": "Implementation/ledger work; canonical acceptance not yet established."
+        }
+      ]
+    },
+    {
+      "id": "AX-573",
+      "milestone": "M16",
+      "title": "machine-readable task-status ledger",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "IN_PROGRESS",
+      "depends_on": [
+        "AX-572"
+      ],
+      "evidence": [
+        {
+          "kind": "candidate",
+          "reference": "docs/TASKS.json",
+          "note": "Implementation/ledger work; canonical acceptance not yet established."
+        }
+      ]
+    },
+    {
+      "id": "AX-574",
+      "milestone": "M16",
+      "title": "dependency DAG synchronization",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "IN_PROGRESS",
+      "depends_on": [
+        "AX-573"
+      ],
+      "evidence": [
+        {
+          "kind": "candidate",
+          "reference": "docs/TASKS.json",
+          "note": "Implementation/ledger work; canonical acceptance not yet established."
+        }
+      ]
+    },
+    {
+      "id": "AX-575",
+      "milestone": "M16",
+      "title": "milestone-status automation",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "IN_PROGRESS",
+      "depends_on": [
+        "AX-573"
+      ],
+      "evidence": [
+        {
+          "kind": "candidate",
+          "reference": "docs/TASKS.json",
+          "note": "Implementation/ledger work; canonical acceptance not yet established."
+        }
+      ]
+    },
+    {
+      "id": "AX-576",
+      "milestone": "M16",
+      "title": "Windows 10 real-host test matrix",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-577",
+      "milestone": "M16",
+      "title": "Windows 11 real-host test matrix",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-578",
+      "milestone": "M16",
+      "title": "multi-DPI test matrix",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-579",
+      "milestone": "M16",
+      "title": "multi-monitor test matrix",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-580",
+      "milestone": "M16",
+      "title": "fresh-install test",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-581",
+      "milestone": "M16",
+      "title": "upgrade test",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-582",
+      "milestone": "M16",
+      "title": "configuration migration test",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-583",
+      "milestone": "M16",
+      "title": "database migration upgrade test",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-584",
+      "milestone": "M16",
+      "title": "database corruption recovery test",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-585",
+      "milestone": "M16",
+      "title": "abrupt-process-crash recovery",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-586",
+      "milestone": "M16",
+      "title": "restart-state recovery benchmark",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-587",
+      "milestone": "M16",
+      "title": "execution latency benchmark",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-588",
+      "milestone": "M16",
+      "title": "model-call benchmark",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-589",
+      "milestone": "M16",
+      "title": "token/cost benchmark",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-590",
+      "milestone": "M16",
+      "title": "Windows-action benchmark corpus",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-591",
+      "milestone": "M16",
+      "title": "browser-workflow benchmark corpus",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-592",
+      "milestone": "M16",
+      "title": "memory/retrieval benchmark corpus",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-593",
+      "milestone": "M16",
+      "title": "skill-learning benchmark corpus",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-594",
+      "milestone": "M16",
+      "title": "repair benchmark corpus",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-595",
+      "milestone": "M16",
+      "title": "security/adversarial regression corpus",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-596",
+      "milestone": "M16",
+      "title": "cold -> learn -> restart -> warm E2E proof",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-205"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-597",
+      "milestone": "M16",
+      "title": "break -> detect -> repair -> reuse E2E proof",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-245"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "AX-598",
+      "milestone": "M16",
+      "title": "privacy/data-retention controls",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-599",
+      "milestone": "M16",
+      "title": "release candidate / installer",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [],
+      "evidence": []
+    },
+    {
+      "id": "AX-600",
+      "milestone": "M16",
+      "title": "AgentX v1 whole-system acceptance and release",
+      "reported_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "NOT_IMPLEMENTED",
+      "depends_on": [
+        "AX-085",
+        "AX-125",
+        "AX-175",
+        "AX-205",
+        "AX-245",
+        "AX-300",
+        "AX-335",
+        "AX-370",
+        "AX-405",
+        "AX-435",
+        "AX-460",
+        "AX-485",
+        "AX-515",
+        "AX-540",
+        "AX-570",
+        "AX-575",
+        "AX-576",
+        "AX-577",
+        "AX-596",
+        "AX-597",
+        "AX-598",
+        "AX-599"
+      ],
+      "evidence": []
+    }
+  ]
+}
