@@ -8,7 +8,7 @@ from uuid import uuid4
 
 from agentx.agent_loop import AgentLoop
 from agentx.capabilities.executor import Executor, ExecutorRequest
-from agentx.capabilities.human_approval import HumanApprovalOutcome
+from agentx.capabilities.human_approval import HumanApprovalDecision, HumanApprovalOutcome
 from agentx.capabilities.registry import CapabilityRegistry
 from agentx.capabilities.runtime import CapabilityExecutionLoop, LoopOutcome
 from agentx.capabilities.verifier import VerificationRequirement
@@ -250,9 +250,9 @@ class _VoiceControlTarget:
 
 class _DecisionSink:
     def __init__(self) -> None:
-        self.decisions = []
+        self.decisions: list[HumanApprovalDecision] = []
 
-    def submit(self, decision: object) -> bool:
+    def submit(self, decision: HumanApprovalDecision) -> bool:
         self.decisions.append(decision)
         return True
 
