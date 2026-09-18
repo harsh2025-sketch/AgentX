@@ -19,7 +19,11 @@ from agentx.kernel.emergency_stop import EmergencyStop
 from agentx.kernel.permissions import AuthorityContext, Permission
 from agentx.kernel.resource_budget import ResourceBudget, ResourceEnvelope
 from agentx.kernel.risk import RiskLevel
-from agentx.voice_runtime import SpokenConfirmationProtocol, VoiceGovernedActionBridge
+from agentx.voice_runtime import (
+    PendingVoiceConfirmation,
+    SpokenConfirmationProtocol,
+    VoiceGovernedActionBridge,
+)
 from tests.support.demo_capability import (
     HostileMetadataCapability,
     NoteWriteParams,
@@ -27,10 +31,7 @@ from tests.support.demo_capability import (
 )
 
 
-def _pending() -> tuple[
-    SpokenConfirmationProtocol,
-    object,
-]:
+def _pending() -> tuple[SpokenConfirmationProtocol, PendingVoiceConfirmation]:
     capability = HostileMetadataCapability()
     registry = CapabilityRegistry()
     registry.register(capability)
