@@ -231,6 +231,7 @@ def test_real_browser_governed_form_session_security_and_workflow(tmp_path: Path
         provider = WebDriverBrowserProvider(
             service.endpoint,
             headless=True,
+            timeout_seconds=30.0,
             download_directory=download_dir,
         )
         try:
