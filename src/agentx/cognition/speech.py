@@ -363,9 +363,7 @@ class _HttpSpeechAdapter:
                     raise TimeoutError
                 if connection.sock is not None:
                     connection.sock.settimeout(remaining)
-                chunk = response.read1(
-                    min(65_536, self._config.max_response_bytes + 1 - total)
-                )
+                chunk = response.read1(min(65_536, self._config.max_response_bytes + 1 - total))
                 if not chunk:
                     break
                 total += len(chunk)
@@ -378,9 +376,7 @@ class _HttpSpeechAdapter:
                     )
                 chunks.append(chunk)
             decoded = json.loads(b"".join(chunks).decode("utf-8"))
-            if not isinstance(decoded, dict) or any(
-                not isinstance(key, str) for key in decoded
-            ):
+            if not isinstance(decoded, dict) or any(not isinstance(key, str) for key in decoded):
                 raise ValueError("provider response must be a JSON object")
             return Result.success(cast(dict[str, object], decoded))
         except _CancelledError:
