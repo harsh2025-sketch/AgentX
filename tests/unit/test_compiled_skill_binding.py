@@ -167,7 +167,8 @@ def test_malformed_compiler_metadata_cannot_become_runtime_action(tmp_path: Path
         path_a=str(tmp_path / "a.txt"),
         path_b=str(tmp_path / "b.txt"),
     )
-    action = graph.nodes[0]
+    action = next(node for node in graph.nodes if node.kind is ProcedureNodeKind.ACTION)
+    end = next(node for node in graph.nodes if node.kind is ProcedureNodeKind.END)
     hostile = ProcedureNode(
         id=action.id,
         kind=action.kind,
@@ -175,7 +176,7 @@ def test_malformed_compiler_metadata_cannot_become_runtime_action(tmp_path: Path
     )
     malformed = ProcedureGraph(
         entry=graph.entry,
-        nodes=(hostile, graph.nodes[1]),
+        nodes=(hostile, end),
         edges=graph.edges,
     )
 
