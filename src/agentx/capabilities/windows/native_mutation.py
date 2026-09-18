@@ -46,6 +46,8 @@ __all__ = [
     "PROCESS_LAUNCH_FAILED_ERROR_CODE",
     "WINDOW_ACTIVATION_FAILED_ERROR_CODE",
     "WINDOW_MOVE_RESIZE_FAILED_ERROR_CODE",
+    "NativeClipboardClearOutcome",
+    "NativeClipboardClearRequest",
     "NativeClipboardMutationOutcome",
     "NativeClipboardTextRequest",
     "NativeInputInjectionOutcome",
@@ -97,7 +99,7 @@ _MAX_ARG_CHARS: Final[int] = 4_096
 _MAX_COMMAND_LINE_CHARS: Final[int] = 32_767
 _MAX_TEXT_INPUT_CODE_UNITS: Final[int] = 1_024
 _MAX_KEY_STROKES: Final[int] = 64
-_MAX_INPUT_EVENTS: Final[int] = 512
+_MAX_INPUT_EVENTS: Final[int] = 16384
 _MAX_CLIPBOARD_CODE_UNITS: Final[int] = 65_536
 _MIN_WINDOW_POSITION: Final[int] = -32_768
 _MAX_WINDOW_POSITION: Final[int] = 32_767
@@ -117,13 +119,63 @@ class NativeWindowShowState(StrEnum):
 
 
 class WindowsVirtualKey(StrEnum):
-    """Small controlled key set for future governed keyboard callers."""
+    """Closed virtual-key vocabulary matching the governed keyboard contract."""
 
+    A = "a"
+    B = "b"
+    C = "c"
+    D = "d"
+    E = "e"
+    F = "f"
+    G = "g"
+    H = "h"
+    I = "i"  # noqa: E741
+    J = "j"
+    K = "k"
+    L = "l"
+    M = "m"
+    N = "n"
+    O = "o"  # noqa: E741
+    P = "p"
+    Q = "q"
+    R = "r"
+    S = "s"
+    T = "t"
+    U = "u"
+    V = "v"
+    W = "w"
+    X = "x"
+    Y = "y"
+    Z = "z"
+    DIGIT_0 = "0"
+    DIGIT_1 = "1"
+    DIGIT_2 = "2"
+    DIGIT_3 = "3"
+    DIGIT_4 = "4"
+    DIGIT_5 = "5"
+    DIGIT_6 = "6"
+    DIGIT_7 = "7"
+    DIGIT_8 = "8"
+    DIGIT_9 = "9"
+    F1 = "f1"
+    F2 = "f2"
+    F3 = "f3"
+    F4 = "f4"
+    F5 = "f5"
+    F6 = "f6"
+    F7 = "f7"
+    F8 = "f8"
+    F9 = "f9"
+    F10 = "f10"
+    F11 = "f11"
+    F12 = "f12"
     ENTER = "enter"
     TAB = "tab"
+    SPACE = "space"
     ESCAPE = "escape"
     BACKSPACE = "backspace"
     DELETE = "delete"
+    INSERT = "insert"
     LEFT = "left"
     RIGHT = "right"
     UP = "up"
@@ -132,6 +184,15 @@ class WindowsVirtualKey(StrEnum):
     END = "end"
     PAGE_UP = "page_up"
     PAGE_DOWN = "page_down"
+    COMMA = "comma"
+    PERIOD = "period"
+    SEMICOLON = "semicolon"
+    APOSTROPHE = "apostrophe"
+    MINUS = "minus"
+    EQUALS = "equals"
+    OPEN_BRACKET = "open_bracket"
+    CLOSE_BRACKET = "close_bracket"
+    BACKSLASH = "backslash"
 
 
 class WindowsKeyModifier(StrEnum):
@@ -140,6 +201,7 @@ class WindowsKeyModifier(StrEnum):
     SHIFT = "shift"
     CONTROL = "control"
     ALT = "alt"
+    WIN = "win"
 
 
 _SHOW_STATE_FLAGS: Final[dict[NativeWindowShowState, int]] = {
@@ -150,11 +212,16 @@ _SHOW_STATE_FLAGS: Final[dict[NativeWindowShowState, int]] = {
 }
 
 _VIRTUAL_KEY_CODES: Final[dict[WindowsVirtualKey, int]] = {
+    **{WindowsVirtualKey(chr(code + 32)): code for code in range(0x41, 0x5B)},
+    **{WindowsVirtualKey(str(code - 0x30)): code for code in range(0x30, 0x3A)},
+    **{WindowsVirtualKey(f"f{index}"): 0x6F + index for index in range(1, 13)},
     WindowsVirtualKey.ENTER: 0x0D,
     WindowsVirtualKey.TAB: 0x09,
+    WindowsVirtualKey.SPACE: 0x20,
     WindowsVirtualKey.ESCAPE: 0x1B,
     WindowsVirtualKey.BACKSPACE: 0x08,
     WindowsVirtualKey.DELETE: 0x2E,
+    WindowsVirtualKey.INSERT: 0x2D,
     WindowsVirtualKey.LEFT: 0x25,
     WindowsVirtualKey.UP: 0x26,
     WindowsVirtualKey.RIGHT: 0x27,
@@ -163,18 +230,29 @@ _VIRTUAL_KEY_CODES: Final[dict[WindowsVirtualKey, int]] = {
     WindowsVirtualKey.END: 0x23,
     WindowsVirtualKey.PAGE_UP: 0x21,
     WindowsVirtualKey.PAGE_DOWN: 0x22,
+    WindowsVirtualKey.COMMA: 0xBC,
+    WindowsVirtualKey.PERIOD: 0xBE,
+    WindowsVirtualKey.SEMICOLON: 0xBA,
+    WindowsVirtualKey.APOSTROPHE: 0xDE,
+    WindowsVirtualKey.MINUS: 0xBD,
+    WindowsVirtualKey.EQUALS: 0xBB,
+    WindowsVirtualKey.OPEN_BRACKET: 0xDB,
+    WindowsVirtualKey.CLOSE_BRACKET: 0xDD,
+    WindowsVirtualKey.BACKSLASH: 0xDC,
 }
 
 _MODIFIER_KEY_CODES: Final[dict[WindowsKeyModifier, int]] = {
     WindowsKeyModifier.SHIFT: 0x10,
     WindowsKeyModifier.CONTROL: 0x11,
     WindowsKeyModifier.ALT: 0x12,
+    WindowsKeyModifier.WIN: 0x5B,
 }
 
 _MODIFIER_ORDER: Final[tuple[WindowsKeyModifier, ...]] = (
     WindowsKeyModifier.CONTROL,
     WindowsKeyModifier.ALT,
     WindowsKeyModifier.SHIFT,
+    WindowsKeyModifier.WIN,
 )
 
 
@@ -339,6 +417,7 @@ class NativeProcessLaunchRequest:
 
     executable_path: str
     argv: tuple[str, ...] = ()
+    working_directory: str | None = None
 
     def __post_init__(self) -> None:
         _require_windows_absolute_path(self.executable_path, field_name="executable_path")
@@ -353,6 +432,8 @@ class NativeProcessLaunchRequest:
                 raise ValueError(f"argv[{index}] must not contain NUL")
             if len(argument) > _MAX_ARG_CHARS:
                 raise ValueError(f"argv[{index}] must not exceed {_MAX_ARG_CHARS} characters")
+        if self.working_directory is not None:
+            _require_windows_absolute_path(self.working_directory, field_name="working_directory")
         _windows_command_line(self)
 
 
@@ -461,6 +542,13 @@ class NativeKeyInputRequest:
         event_count = _key_input_event_count(self.strokes)
         if event_count > _MAX_INPUT_EVENTS:
             raise ValueError(f"key input would exceed {_MAX_INPUT_EVENTS} input events")
+
+
+@dataclass(frozen=True, slots=True)
+class NativeClipboardClearRequest:
+    """Explicit request to remove every clipboard format."""
+
+    pass
 
 
 @dataclass(frozen=True, slots=True)
@@ -585,6 +673,17 @@ class NativeInputInjectionOutcome:
             raise ValueError("accepted_events must not exceed requested_events")
         if type(self.win32_error) is not int or self.win32_error < 0:
             raise ValueError("win32_error must be a non-negative int")
+
+
+@dataclass(frozen=True, slots=True)
+class NativeClipboardClearOutcome:
+    """Low-level EmptyClipboard outcome with pre-mutation format presence."""
+
+    previous_was_empty: bool
+
+    def __post_init__(self) -> None:
+        if type(self.previous_was_empty) is not bool:
+            raise TypeError("previous_was_empty must be bool")
 
 
 @dataclass(frozen=True, slots=True)
@@ -723,6 +822,17 @@ class WindowsNativeMutationAdapter:
             lambda: _set_clipboard_text_windows(request),
         )
 
+    def clear_clipboard(
+        self,
+        request: NativeClipboardClearRequest,
+    ) -> Result[NativeClipboardClearOutcome, AgentXError]:
+        if not isinstance(request, NativeClipboardClearRequest):
+            raise TypeError("request must be a NativeClipboardClearRequest")
+        return _call_when_available(
+            "clipboard clear",
+            _clear_clipboard_windows,
+        )
+
 
 def _unsupported_error(operation: str) -> AgentXError:
     return AgentXError(
@@ -846,7 +956,7 @@ def _launch_process_windows(
         False,
         0,
         None,
-        None,
+        request.working_directory,
         ctypes.byref(startup),
         ctypes.byref(process_information),
     )
@@ -1133,6 +1243,46 @@ def _send_input_events(
             win32_error=win32_error,
         )
     )
+
+
+def _clear_clipboard_windows() -> Result[NativeClipboardClearOutcome, AgentXError]:
+    import ctypes
+    from ctypes import wintypes
+
+    ctypes_win: Any = ctypes
+    user32 = ctypes_win.WinDLL("user32", use_last_error=True)
+    user32.OpenClipboard.restype = wintypes.BOOL
+    user32.OpenClipboard.argtypes = (wintypes.HWND,)
+    user32.CountClipboardFormats.restype = ctypes.c_int
+    user32.CountClipboardFormats.argtypes = ()
+    user32.EmptyClipboard.restype = wintypes.BOOL
+    user32.EmptyClipboard.argtypes = ()
+    user32.CloseClipboard.restype = wintypes.BOOL
+    user32.CloseClipboard.argtypes = ()
+
+    ctypes_win.set_last_error(0)
+    if not user32.OpenClipboard(None):
+        return Result.failure(
+            _win32_error(
+                CLIPBOARD_MUTATION_FAILED_ERROR_CODE,
+                "OpenClipboard for clear",
+                ctypes_win.get_last_error(),
+            )
+        )
+    try:
+        previous_was_empty = user32.CountClipboardFormats() == 0
+        ctypes_win.set_last_error(0)
+        if not user32.EmptyClipboard():
+            return Result.failure(
+                _win32_error(
+                    CLIPBOARD_MUTATION_FAILED_ERROR_CODE,
+                    "EmptyClipboard for clear",
+                    ctypes_win.get_last_error(),
+                )
+            )
+        return Result.success(NativeClipboardClearOutcome(previous_was_empty=previous_was_empty))
+    finally:
+        user32.CloseClipboard()
 
 
 def _set_clipboard_text_windows(
