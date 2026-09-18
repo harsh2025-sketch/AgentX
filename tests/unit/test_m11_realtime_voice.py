@@ -292,10 +292,7 @@ def test_realtime_session_reports_turn_end_after_speech_then_silence() -> None:
     capture = _Capture()
     capture.frames = [
         _frame(capture.descriptor.stream_id, 6000, sequence=0),
-        *[
-            _frame(capture.descriptor.stream_id, 0, sequence=index)
-            for index in range(1, 62)
-        ],
+        *[_frame(capture.descriptor.stream_id, 0, sequence=index) for index in range(1, 62)],
     ]
     session = RealtimeVoiceSession(
         capture=capture,
