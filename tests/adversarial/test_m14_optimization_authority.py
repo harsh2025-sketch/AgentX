@@ -78,7 +78,7 @@ def test_adaptive_router_integrates_with_agent_loop_without_bypassing_governance
     assert outcome.verified is False
     assert harness.authority is not None
     assert harness.authority.permissions == frozenset({Permission.READ})
-    assert harness.capability.read("alpha") is None
+    assert harness.capability.state.get("alpha") is None
 
 
 def test_adaptive_router_cannot_select_cheaper_level_than_canonical_evidence() -> None:
