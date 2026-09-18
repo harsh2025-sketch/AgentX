@@ -8,7 +8,7 @@ import time
 from dataclasses import dataclass
 from enum import StrEnum
 from types import MappingProxyType
-from typing import Final, Mapping, Protocol, runtime_checkable
+from typing import Final, Protocol, runtime_checkable
 
 from agentx.cognition.speech import (
     SpeechSessionId,
@@ -242,7 +242,7 @@ class VoiceSessionEvent:
 class RealtimeVoiceProvider(Protocol):
     """Provider-neutral factory for one bounded realtime voice session."""
 
-    def open_session(self) -> Result["RealtimeVoiceSession", AgentXError]: ...
+    def open_session(self) -> Result[RealtimeVoiceSession, AgentXError]: ...
 
 
 @runtime_checkable
@@ -340,7 +340,11 @@ class RealtimeVoiceSession:
     def capture_frame(self) -> Result[TurnObservation, AgentXError]:
         if self._state is not RealtimeSessionState.LISTENING:
             return Result.failure(
-                _voice_error("not_listening", "voice session is not listening", ErrorCategory.PRECONDITION)
+                _voice_error(
+                    "not_listening",
+                    "voice session is not listening",
+                    ErrorCategory.PRECONDITION,
+                )
             )
         if self._source.token.is_cancelled:
             return Result.failure(
@@ -350,9 +354,16 @@ class RealtimeVoiceSession:
         if result.is_failure:
             return Result.failure(result.unwrap_error())
         frame = result.unwrap()
-        if len(self._frames) >= _MAX_TURN_FRAMES or self._turn_bytes + frame.byte_count > _MAX_TURN_BYTES:
+        if (
+            len(self._frames) >= _MAX_TURN_FRAMES
+            or self._turn_bytes + frame.byte_count > _MAX_TURN_BYTES
+        ):
             return Result.failure(
-                _voice_error("turn_resource_limit", "voice turn audio bound reached", ErrorCategory.RESOURCE)
+                _voice_error(
+                    "turn_resource_limit",
+                    "voice turn audio bound reached",
+                    ErrorCategory.RESOURCE,
+                )
             )
         self._frames.append(frame)
         self._turn_bytes += frame.byte_count
@@ -362,7 +373,11 @@ class RealtimeVoiceSession:
     def finish_turn(self) -> Result[SttTranscript, AgentXError]:
         if self._state is not RealtimeSessionState.LISTENING or not self._frames:
             return Result.failure(
-                _voice_error("empty_turn", "voice turn has no captured audio", ErrorCategory.PRECONDITION)
+                _voice_error(
+                    "empty_turn",
+                    "voice turn has no captured audio",
+                    ErrorCategory.PRECONDITION,
+                )
             )
         generation = self._generation
         self._transition(RealtimeSessionState.PROCESSING)
@@ -377,7 +392,11 @@ class RealtimeVoiceSession:
         self._turn_bytes = 0
         if generation != self._generation or self._source.token.is_cancelled:
             return Result.failure(
-                _voice_error("stale_result", "late STT result rejected after cancellation", ErrorCategory.CANCELLED)
+                _voice_error(
+                    "stale_result",
+                    "late STT result rejected after cancellation",
+                    ErrorCategory.CANCELLED,
+                )
             )
         if result.is_failure:
             self._transition(RealtimeSessionState.FAILED)
@@ -385,14 +404,22 @@ class RealtimeVoiceSession:
         transcript = result.unwrap()
         if not transcript.is_final:
             return Result.failure(
-                _voice_error("partial_only", "turn ended without a final transcript", ErrorCategory.DEPENDENCY)
+                _voice_error(
+                    "partial_only",
+                    "turn ended without a final transcript",
+                    ErrorCategory.DEPENDENCY,
+                )
             )
         return Result.success(transcript)
 
     def speak(self, text: str) -> Result[VoiceSessionEvent, AgentXError]:
         if self._state is not RealtimeSessionState.PROCESSING:
             return Result.failure(
-                _voice_error("not_processing", "voice session is not ready to speak", ErrorCategory.PRECONDITION)
+                _voice_error(
+                    "not_processing",
+                    "voice session is not ready to speak",
+                    ErrorCategory.PRECONDITION,
+                )
             )
         generation = self._generation
         response = self._tts.synthesize(
@@ -404,7 +431,11 @@ class RealtimeVoiceSession:
         )
         if generation != self._generation or self._source.token.is_cancelled:
             return Result.failure(
-                _voice_error("stale_result", "late TTS result rejected after cancellation", ErrorCategory.CANCELLED)
+                _voice_error(
+                    "stale_result",
+                    "late TTS result rejected after cancellation",
+                    ErrorCategory.CANCELLED,
+                )
             )
         if response.is_failure:
             self._transition(RealtimeSessionState.FAILED)
@@ -445,10 +476,12 @@ class RealtimeVoiceSession:
         self._source.request_cancellation("voice session closed")
         self._capture.cancel(reason="voice session closed")
         self._playback.cancel(reason="voice session closed")
-        if self._state not in {RealtimeSessionState.CANCELLED, RealtimeSessionState.CLOSED}:
-            if RealtimeSessionState.CANCELLING in _ALLOWED[self._state]:
-                self._transition(RealtimeSessionState.CANCELLING)
-                self._transition(RealtimeSessionState.CANCELLED)
+        if (
+            self._state not in {RealtimeSessionState.CANCELLED, RealtimeSessionState.CLOSED}
+            and RealtimeSessionState.CANCELLING in _ALLOWED[self._state]
+        ):
+            self._transition(RealtimeSessionState.CANCELLING)
+            self._transition(RealtimeSessionState.CANCELLED)
         if self._state is not RealtimeSessionState.CLOSED:
             self._transition(RealtimeSessionState.CLOSED)
         self._generation += 1
@@ -456,7 +489,11 @@ class RealtimeVoiceSession:
         self._turn_bytes = 0
         return self._event(VoiceSessionEventKind.CLOSED)
 
-    def _event(self, kind: VoiceSessionEventKind, transcript: str | None = None) -> VoiceSessionEvent:
+    def _event(
+        self,
+        kind: VoiceSessionEventKind,
+        transcript: str | None = None,
+    ) -> VoiceSessionEvent:
         event = VoiceSessionEvent(
             session_id=self._session_id,
             sequence=self._event_sequence,
