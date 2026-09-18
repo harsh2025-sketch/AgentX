@@ -289,9 +289,7 @@ class StrategyOutcomeRecord:
 
     def __post_init__(self) -> None:
         if not isinstance(self.performance, StrategyPerformanceEvidence):
-            raise AdaptiveOptimizationError(
-                "performance must be StrategyPerformanceEvidence"
-            )
+            raise AdaptiveOptimizationError("performance must be StrategyPerformanceEvidence")
         if not isinstance(self.context, StrategyContext):
             raise AdaptiveOptimizationError("context must be StrategyContext")
         _counter(self.attempt_count, name="attempt_count", minimum=1)
@@ -343,9 +341,7 @@ class StrategyOutcomeRecord:
             "context": self.context.to_dict(),
             "attempt_count": self.attempt_count,
             "predicted_confidence": (
-                None
-                if self.predicted_confidence is None
-                else str(self.predicted_confidence)
+                None if self.predicted_confidence is None else str(self.predicted_confidence)
             ),
         }
 
@@ -359,15 +355,11 @@ class StrategyOutcomeRecord:
             "predicted_confidence",
         }
         if set(raw) != expected:
-            raise AdaptiveOptimizationError(
-                "strategy outcome has missing or unknown fields"
-            )
+            raise AdaptiveOptimizationError("strategy outcome has missing or unknown fields")
         performance = raw["performance"]
         context = raw["context"]
         if not isinstance(performance, Mapping) or not isinstance(context, Mapping):
-            raise AdaptiveOptimizationError(
-                "performance and context must be objects"
-            )
+            raise AdaptiveOptimizationError("performance and context must be objects")
         confidence = _parse_decimal(
             raw["predicted_confidence"],
             name="predicted_confidence",
@@ -454,18 +446,12 @@ class StrategyOutcomeLedger:
                     )
                 value = event.payload.value
                 if not isinstance(value, Mapping):
-                    raise AdaptiveOptimizationError(
-                        "strategy outcome payload must be an object"
-                    )
+                    raise AdaptiveOptimizationError("strategy outcome payload must be an object")
                 record = StrategyOutcomeRecord.from_dict(value)
                 if record.record_event_id != event.event_id:
-                    raise AdaptiveOptimizationError(
-                        "strategy outcome identity mismatch"
-                    )
+                    raise AdaptiveOptimizationError("strategy outcome identity mismatch")
                 if record.performance.correlation_id != event.correlation_id:
-                    raise AdaptiveOptimizationError(
-                        "strategy outcome correlation mismatch"
-                    )
+                    raise AdaptiveOptimizationError("strategy outcome correlation mismatch")
                 if record.performance.task_id.to_str() != event.task_id:
                     raise AdaptiveOptimizationError("strategy outcome task mismatch")
                 results.append(record)
@@ -508,14 +494,9 @@ class StrategyStatistics:
             "stale_excluded",
         ):
             _counter(getattr(self, name), name=name)
-        if (
-            self.verified_successes + self.verified_failures + self.unverified
-            != self.samples
-        ):
+        if self.verified_successes + self.verified_failures + self.unverified != self.samples:
             raise AdaptiveOptimizationError("statistics sample partition is inconsistent")
-        if self.success_rate is not None and not (
-            Decimal(0) <= self.success_rate <= Decimal(1)
-        ):
+        if self.success_rate is not None and not (Decimal(0) <= self.success_rate <= Decimal(1)):
             raise AdaptiveOptimizationError("success_rate must be in [0, 1]")
 
 
@@ -539,9 +520,7 @@ class StrategyStatisticsEngine:
         max_age: timedelta | None,
     ) -> tuple[tuple[StrategyOutcomeRecord, ...], int]:
         current = _aware(now, name="now")
-        if max_age is not None and (
-            not isinstance(max_age, timedelta) or max_age < timedelta(0)
-        ):
+        if max_age is not None and (not isinstance(max_age, timedelta) or max_age < timedelta(0)):
             raise AdaptiveOptimizationError("max_age must be non-negative or None")
         fresh: list[StrategyOutcomeRecord] = []
         stale = 0
@@ -568,16 +547,10 @@ class StrategyStatisticsEngine:
         failures = sum(item.verified_failure for item in selected)
         unverified = len(selected) - successes - failures
         known = successes + failures
-        success_rate = (
-            None
-            if known == 0
-            else Decimal(successes) / Decimal(known)
-        )
+        success_rate = None if known == 0 else Decimal(successes) / Decimal(known)
 
         latency_values = [
-            Decimal(
-                item.performance.elapsed // timedelta(microseconds=1)
-            )
+            Decimal(item.performance.elapsed // timedelta(microseconds=1))
             for item in selected
             if item.performance.elapsed is not None
         ]
@@ -595,9 +568,7 @@ class StrategyStatisticsEngine:
         cost_units = {unit for _, unit in known_costs}
         if len(cost_units) == 1:
             cost_unit = next(iter(cost_units))
-            cost_values = [
-                value for value, _ in known_costs if value is not None
-            ]
+            cost_values = [value for value, _ in known_costs if value is not None]
             mean_cost = (
                 None
                 if not cost_values
@@ -707,14 +678,9 @@ class StrategyStatisticsEngine:
                 sufficient=False,
             )
         confidences = [
-            item.predicted_confidence
-            for item in usable
-            if item.predicted_confidence is not None
+            item.predicted_confidence for item in usable if item.predicted_confidence is not None
         ]
-        outcomes = [
-            Decimal(1) if item.verified_success else Decimal(0)
-            for item in usable
-        ]
+        outcomes = [Decimal(1) if item.verified_success else Decimal(0) for item in usable]
         brier = sum(
             (confidence - outcome) ** 2
             for confidence, outcome in zip(confidences, outcomes, strict=True)
@@ -797,9 +763,7 @@ class AdaptiveExecutionLevelRouter(ExecutionLevelRouter):
         if not isinstance(self.history, tuple) or any(
             not isinstance(item, StrategyOutcomeRecord) for item in self.history
         ):
-            raise AdaptiveOptimizationError(
-                "history must contain StrategyOutcomeRecord values"
-            )
+            raise AdaptiveOptimizationError("history must contain StrategyOutcomeRecord values")
 
     def route(self, evidence: RoutingEvidence) -> RoutingDecision:
         if not isinstance(evidence, RoutingEvidence):
@@ -918,9 +882,7 @@ class SafeContextualBandit:
         if not isinstance(self.config, BanditConfig):
             raise AdaptiveOptimizationError("config must be BanditConfig")
         if not isinstance(self.baseline, DeterministicStrategyBaseline):
-            raise AdaptiveOptimizationError(
-                "baseline must be DeterministicStrategyBaseline"
-            )
+            raise AdaptiveOptimizationError("baseline must be DeterministicStrategyBaseline")
 
     @staticmethod
     def _matches(record: StrategyOutcomeRecord, context: StrategyContext) -> bool:
@@ -937,11 +899,7 @@ class SafeContextualBandit:
         history: tuple[StrategyOutcomeRecord, ...],
     ) -> BanditDecision:
         allowed_input = _levels(available, name="available")
-        allowed = tuple(
-            level
-            for level in allowed_input
-            if level in self.config.permitted
-        )
+        allowed = tuple(level for level in allowed_input if level in self.config.permitted)
         if not allowed:
             raise AdaptiveOptimizationError(
                 "no available strategy is permitted by bandit safety constraints"
@@ -951,20 +909,14 @@ class SafeContextualBandit:
         estimates: list[ArmEstimate] = []
         for level in allowed:
             known = tuple(
-                item
-                for item in matching
-                if item.strategy is level and item.verification_known
+                item for item in matching if item.strategy is level and item.verification_known
             )
             successes = sum(item.verified_success for item in known)
             estimates.append(
                 ArmEstimate(
                     level=level,
                     verified_samples=len(known),
-                    success_rate=(
-                        None
-                        if not known
-                        else Decimal(successes) / Decimal(len(known))
-                    ),
+                    success_rate=(None if not known else Decimal(successes) / Decimal(len(known))),
                 )
             )
 
@@ -973,22 +925,15 @@ class SafeContextualBandit:
             f"{context.environment.revision}|{context.task_family}|{len(history)}"
         ).encode()
         draw = int.from_bytes(hashlib.sha256(payload).digest()[:8], "big")
-        explore = (
-            draw % self.config.exploration_denominator
-            < self.config.exploration_numerator
-        )
+        explore = draw % self.config.exploration_denominator < self.config.exploration_numerator
         under_sampled = tuple(
-            item
-            for item in estimates
-            if item.verified_samples < self.config.minimum_arm_samples
+            item for item in estimates if item.verified_samples < self.config.minimum_arm_samples
         )
         if explore and under_sampled:
             selected = under_sampled[draw % len(under_sampled)].level
             reason = "bounded-exploration"
         else:
-            scored = tuple(
-                item for item in estimates if item.success_rate is not None
-            )
+            scored = tuple(item for item in estimates if item.success_rate is not None)
             if not scored:
                 fallback = self.baseline.choose(
                     context=context,
@@ -1004,17 +949,11 @@ class SafeContextualBandit:
                     explored=False,
                     estimates=tuple(estimates),
                 )
-            rates = tuple(
-                item.success_rate for item in scored if item.success_rate is not None
-            )
+            rates = tuple(item.success_rate for item in scored if item.success_rate is not None)
             if not rates:
                 raise AdaptiveOptimizationError("bandit score set unexpectedly has no rates")
             best_rate = max(rates)
-            candidates = tuple(
-                item.level
-                for item in scored
-                if item.success_rate == best_rate
-            )
+            candidates = tuple(item.level for item in scored if item.success_rate == best_rate)
             selected = next(level for level in allowed if level in candidates)
             reason = "highest-verified-success-rate"
 
@@ -1056,9 +995,7 @@ class LoggedPolicyCase:
             _levels(self.available, name="available"),
         )
         if self.record.strategy not in self.available:
-            raise AdaptiveOptimizationError(
-                "logged strategy must be among available strategies"
-            )
+            raise AdaptiveOptimizationError("logged strategy must be among available strategies")
 
 
 class PolicyEvaluationDisposition(StrEnum):
@@ -1139,11 +1076,7 @@ class OfflinePolicyEvaluator:
                 disposition=PolicyEvaluationDisposition.INSUFFICIENT_EVIDENCE,
                 minimum_supported=minimum_supported,
             )
-        baseline_selector = (
-            DeterministicStrategyBaseline()
-            if baseline is None
-            else baseline
-        )
+        baseline_selector = DeterministicStrategyBaseline() if baseline is None else baseline
         history = [case.record for case in train]
         baseline_outcomes: list[bool] = []
         candidate_outcomes: list[bool] = []
@@ -1158,15 +1091,9 @@ class OfflinePolicyEvaluator:
                 available=case.available,
                 history=tuple(history),
             )
-            if (
-                case.record.verification_known
-                and baseline_choice.level is case.record.strategy
-            ):
+            if case.record.verification_known and baseline_choice.level is case.record.strategy:
                 baseline_outcomes.append(case.record.verified_success)
-            if (
-                case.record.verification_known
-                and candidate_choice.level is case.record.strategy
-            ):
+            if case.record.verification_known and candidate_choice.level is case.record.strategy:
                 candidate_outcomes.append(case.record.verified_success)
             history.append(case.record)
 
@@ -1268,9 +1195,7 @@ class UserCorrectionExample:
         ):
             raise AdaptiveOptimizationError("rejected must be ExecutionLevel or None")
         if self.rejected is self.preferred:
-            raise AdaptiveOptimizationError(
-                "preferred and rejected strategies must differ"
-            )
+            raise AdaptiveOptimizationError("preferred and rejected strategies must differ")
 
 
 @dataclass(frozen=True, slots=True)
@@ -1289,9 +1214,7 @@ class ExplicitCorrectionDataset:
         seen: set[UUID] = set()
         for preference in preferences:
             if not isinstance(preference, UserPreference):
-                raise AdaptiveOptimizationError(
-                    "preferences must contain UserPreference values"
-                )
+                raise AdaptiveOptimizationError("preferences must contain UserPreference values")
             if preference.preference_id in seen:
                 raise AdaptiveOptimizationError("duplicate user-correction record")
             seen.add(preference.preference_id)
@@ -1301,23 +1224,17 @@ class ExplicitCorrectionDataset:
                 continue
             value = preference.value
             if not isinstance(value, Mapping):
-                raise AdaptiveOptimizationError(
-                    "workflow correction value must be an object"
-                )
+                raise AdaptiveOptimizationError("workflow correction value must be an object")
             allowed_fields = {"preferred_strategy", "rejected_strategy", "task_family"}
             if not set(value) <= allowed_fields or "preferred_strategy" not in value:
-                raise AdaptiveOptimizationError(
-                    "workflow correction has unknown or missing fields"
-                )
+                raise AdaptiveOptimizationError("workflow correction has unknown or missing fields")
             preferred = _level(
                 value["preferred_strategy"],
                 name="preferred_strategy",
             )
             rejected_raw = value.get("rejected_strategy")
             rejected = (
-                None
-                if rejected_raw is None
-                else _level(rejected_raw, name="rejected_strategy")
+                None if rejected_raw is None else _level(rejected_raw, name="rejected_strategy")
             )
             task_family_raw = value.get("task_family")
             if task_family_raw is not None and not isinstance(task_family_raw, str):
@@ -1341,9 +1258,7 @@ class ExplicitCorrectionDataset:
                     "recorded_at": _format_time(item.recorded_at),
                     "task_family": item.task_family,
                     "preferred": item.preferred.value,
-                    "rejected": (
-                        None if item.rejected is None else item.rejected.value
-                    ),
+                    "rejected": (None if item.rejected is None else item.rejected.value),
                 }
                 for item in examples
             ],
@@ -1364,9 +1279,7 @@ class PreferenceScoringModel:
     @classmethod
     def train(cls, dataset: ExplicitCorrectionDataset) -> PreferenceScoringModel:
         if not isinstance(dataset, ExplicitCorrectionDataset):
-            raise AdaptiveOptimizationError(
-                "dataset must be ExplicitCorrectionDataset"
-            )
+            raise AdaptiveOptimizationError("dataset must be ExplicitCorrectionDataset")
         counts: dict[tuple[str | None, ExecutionLevel], int] = defaultdict(int)
         for example in dataset.examples:
             counts[(example.task_family, example.preferred)] += 1
@@ -1392,13 +1305,10 @@ class PreferenceScoringModel:
         history: tuple[StrategyOutcomeRecord, ...] = (),
     ) -> StrategySelection:
         allowed = _levels(available, name="available")
-        score_map = {
-            (family, level): score for family, level, score in self.scores
-        }
+        score_map = {(family, level): score for family, level, score in self.scores}
         ranked = [
             (
-                score_map.get((context.task_family, level), 0)
-                + score_map.get((None, level), 0),
+                score_map.get((context.task_family, level), 0) + score_map.get((None, level), 0),
                 -CANONICAL_EXECUTION_LEVELS.index(level),
                 level,
             )
@@ -1468,9 +1378,7 @@ class PreferenceRankingExperiment:
         return PreferenceRankingReport(
             samples=scored,
             correct=correct,
-            accuracy=(
-                None if scored == 0 else Decimal(correct) / Decimal(scored)
-            ),
+            accuracy=(None if scored == 0 else Decimal(correct) / Decimal(scored)),
             dataset_id=dataset.dataset_id,
         )
 
@@ -1530,9 +1438,7 @@ class OptimizationPolicy:
             "schema_version": self.schema_version,
             "policy_id": str(self.policy_id),
             "revision": self.revision,
-            "strategy_priority": [
-                level.value for level in self.strategy_priority
-            ],
+            "strategy_priority": [level.value for level in self.strategy_priority],
             "created_at": _format_time(self.created_at),
             "dataset_id": self.dataset_id,
             "model_id": self.model_id,
@@ -1634,9 +1540,7 @@ class PolicyEvent:
             "rollback_target",
         }
         if set(raw) != expected:
-            raise AdaptiveOptimizationError(
-                "policy event has missing or unknown fields"
-            )
+            raise AdaptiveOptimizationError("policy event has missing or unknown fields")
         policy = raw["policy"]
         if not isinstance(policy, Mapping):
             raise AdaptiveOptimizationError("policy event policy must be an object")
@@ -1655,14 +1559,10 @@ class PolicyEvent:
             transition=transition,
             occurred_at=_parse_time(raw["occurred_at"], name="occurred_at"),
             previous_active=(
-                None
-                if previous_raw is None
-                else _parse_uuid(previous_raw, name="previous_active")
+                None if previous_raw is None else _parse_uuid(previous_raw, name="previous_active")
             ),
             rollback_target=(
-                None
-                if target_raw is None
-                else _parse_uuid(target_raw, name="rollback_target")
+                None if target_raw is None else _parse_uuid(target_raw, name="rollback_target")
             ),
         )
 
@@ -1713,23 +1613,15 @@ class OptimizationPolicyStore:
                 ):
                     continue
                 if not isinstance(event.payload, ObservationPayload):
-                    raise AdaptiveOptimizationError(
-                        "optimization policy event has wrong payload"
-                    )
+                    raise AdaptiveOptimizationError("optimization policy event has wrong payload")
                 value = event.payload.value
                 if not isinstance(value, Mapping):
-                    raise AdaptiveOptimizationError(
-                        "optimization policy payload must be an object"
-                    )
+                    raise AdaptiveOptimizationError("optimization policy payload must be an object")
                 item = PolicyEvent.from_dict(value)
                 if item.event_id != event.event_id:
-                    raise AdaptiveOptimizationError(
-                        "optimization policy event identity mismatch"
-                    )
+                    raise AdaptiveOptimizationError("optimization policy event identity mismatch")
                 if item.policy.policy_id != event.correlation_id:
-                    raise AdaptiveOptimizationError(
-                        "optimization policy correlation mismatch"
-                    )
+                    raise AdaptiveOptimizationError("optimization policy correlation mismatch")
                 results.append(item)
         return tuple(results)
 
@@ -1750,10 +1642,7 @@ class OptimizationPolicyStore:
                 active_id = item.policy.policy_id
             elif item.transition is PolicyTransition.ROLLED_BACK:
                 active_id = item.rollback_target
-            elif (
-                item.transition is PolicyTransition.RETIRED
-                and active_id == item.policy.policy_id
-            ):
+            elif item.transition is PolicyTransition.RETIRED and active_id == item.policy.policy_id:
                 active_id = None
         return None if active_id is None else policies.get(active_id)
 
@@ -1784,9 +1673,7 @@ class OptimizationPolicyStore:
         current = self.active_policy()
         current_id = None if current is None else current.policy_id
         if current_id != expected_active:
-            raise AdaptiveOptimizationError(
-                "active policy changed; promotion must be retried"
-            )
+            raise AdaptiveOptimizationError("active policy changed; promotion must be retried")
         candidate = self.staged_policy(policy_id)
         if candidate is None:
             raise AdaptiveOptimizationError("candidate policy is not staged")
@@ -1809,9 +1696,7 @@ class OptimizationPolicyStore:
     ) -> int:
         current = self.active_policy()
         if current is None or current.policy_id != expected_active:
-            raise AdaptiveOptimizationError(
-                "active policy changed; rollback must be retried"
-            )
+            raise AdaptiveOptimizationError("active policy changed; rollback must be retried")
         target = self.staged_policy(target_policy_id)
         if target is None:
             raise AdaptiveOptimizationError("rollback target does not exist")
@@ -1842,9 +1727,7 @@ class OptimizationPolicyStore:
                 transition=PolicyTransition.RETIRED,
                 occurred_at=occurred_at,
                 previous_active=(
-                    None
-                    if self.active_policy() is None
-                    else self.active_policy().policy_id
+                    None if self.active_policy() is None else self.active_policy().policy_id
                 ),
             )
         )
