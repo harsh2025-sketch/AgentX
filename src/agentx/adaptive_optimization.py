@@ -971,7 +971,7 @@ class SafeContextualBandit:
         payload = (
             f"{self.config.seed}|{context.environment.environment_id}|"
             f"{context.environment.revision}|{context.task_family}|{len(history)}"
-        ).encode("utf-8")
+        ).encode()
         draw = int.from_bytes(hashlib.sha256(payload).digest()[:8], "big")
         explore = (
             draw % self.config.exploration_denominator
