@@ -485,8 +485,8 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | AX-428 | M10 | structured-vs-visual evidence ranking | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
 | AX-429 | M10 | visual ambiguity handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
 | AX-430 | M10 | stale-screen rejection | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-431 | M10 | display/DPI normalization | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-432 | M10 | multi-monitor awareness | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-431 | M10 | display/DPI normalization | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-432 | M10 | multi-monitor awareness | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
 | AX-433 | M10 | layout-change recovery benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
 | AX-434 | M10 | perception accuracy benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
 | AX-435 | M10 | world-model milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
