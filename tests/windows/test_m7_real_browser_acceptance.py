@@ -23,7 +23,6 @@ from urllib.parse import urlsplit
 import pytest
 
 from agentx.capabilities.abi import CapabilityRequest
-from agentx.capabilities.verifier import VerificationRequirement
 from agentx.capabilities.browser_actions import (
     BrowserClickPostcondition,
     click_selected_request,
@@ -59,6 +58,7 @@ from agentx.capabilities.human_approval import (
     HumanApprovalOutcome,
 )
 from agentx.capabilities.runtime import ClosedLoopOutcome, LoopOutcome
+from agentx.capabilities.verifier import VerificationRequirement
 from agentx.capabilities.webdriver_browser_driver import (
     ChromeDriverService,
     WebDriverBrowserProvider,
