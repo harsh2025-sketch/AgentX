@@ -41,7 +41,7 @@ The fresh request id also means two otherwise identical requests are distinct ap
 - create or strengthen an `AuthorityContext`;
 - grant any `Permission`;
 - bypass or replace `ActionGate`;
-- turn `REQUIRE_CONFIRMATION` into `ALLOW`;
+- change the `ActionGate` result itself from `REQUIRE_CONFIRMATION` into `ALLOW`;
 - lower `RiskLevel` or effective risk;
 - widen or reset a `ResourceEnvelope`;
 - clear `EmergencyStop`;
@@ -53,7 +53,7 @@ The fresh request id also means two otherwise identical requests are distinct ap
 - promote `Knowledge`;
 - invoke models or mutate Hive state.
 
-`ActionGate` remains authoritative and is unchanged by A6.08. A future policy/orchestration owner may evaluate bounded approval evidence alongside the canonical gate result, authority context, risk, budget, stop state, and other required policy inputs. A6.08 itself performs no such authorization.
+`ActionGate` remains authoritative and is unchanged by A6.08. The canonical `CapabilityExecutionLoop` now composes this evidence with the unchanged gate result through an exact-binding confirmation policy. A matching `APPROVED` decision satisfies only the separate human-confirmation requirement for that exact request; permission, risk, budget, emergency stop, cancellation/deadline and independent verification are still enforced normally. `DENY` remains terminal and hostile strings are never parsed as approval. A6.08 itself remains an inert evidence contract and performs no execution or authorization.
 
 ## Explicit human source only
 
@@ -89,3 +89,19 @@ This separation is intentional: durable recording remains an audit/runtime respo
 `HumanApprovalRequest.to_json()` and `HumanApprovalDecision.to_json()` return deterministic JSON using sorted keys, compact separators, ASCII escaping, finite JSON numbers, canonical UUID strings, canonical permission/risk/capability values, and the canonicalized parameter object.
 
 The serialized form is transport/audit data only. Deserializing and trusting persisted approval evidence is not implemented by A6.08.
+
+## Runtime confirmation composition
+
+`CapabilityExecutionLoop.approval_requests()` is an inert preflight that returns the exact
+typed approval request(s) produced by the canonical permission/risk/gate facts. It consumes no
+budget, mutates no Task and executes nothing. A trusted human-control boundary may turn those
+request objects into explicit `HumanApprovalDecision` values.
+
+`CapabilityExecutionLoop.run(..., approvals=(...))` re-evaluates the canonical
+`ActionGate`. For a `REQUIRE_CONFIRMATION` result it accepts only an exactly bound
+`MATCHING_APPROVED` decision. Missing, mismatched or denied evidence fails closed before
+budget consumption or capability execution. The gate result remains
+`REQUIRE_CONFIRMATION` in audit evidence; a separate `runtime.human_approval` audit fact
+records whether the confirmation requirement was satisfied. This prevents approval evidence
+from becoming a permission grant, risk downgrade, unlimited budget, stop reset or
+verification shortcut.
