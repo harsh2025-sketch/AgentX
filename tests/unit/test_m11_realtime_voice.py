@@ -12,6 +12,7 @@ from agentx.cognition.realtime_voice import (
     RealtimeVoiceSession,
     TurnEndDetector,
     VoiceActivity,
+    VoiceSessionEvent,
 )
 from agentx.cognition.speech import (
     SpeechProviderId,
@@ -224,7 +225,7 @@ def test_barge_in_cancels_stale_playback_without_orphan() -> None:
     session.capture_frame().unwrap()
     session.finish_turn().unwrap()
 
-    result: list[Result[object, AgentXError]] = []
+    result: list[Result[VoiceSessionEvent, AgentXError]] = []
 
     def speak() -> None:
         result.append(session.speak("long response"))
