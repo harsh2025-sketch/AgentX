@@ -83,7 +83,7 @@ class VoiceTaskPlan:
 class VoiceRuntimeTelemetry:
     """Sequenced, redacted runtime-to-HUD telemetry using the AX-452 envelope."""
 
-    __slots__ = ("_runtime_instance_id", "_sequence", "_sink")
+    __slots__ = ("_dropped", "_runtime_instance_id", "_sequence", "_sink")
 
     def __init__(
         self,
@@ -98,10 +98,15 @@ class VoiceRuntimeTelemetry:
         if not isinstance(self._runtime_instance_id, UUID) or self._runtime_instance_id.int == 0:
             raise ValueError("runtime_instance_id must be a non-nil UUID")
         self._sequence = 0
+        self._dropped = 0
 
     @property
     def runtime_instance_id(self) -> UUID:
         return self._runtime_instance_id
+
+    @property
+    def dropped_events(self) -> int:
+        return self._dropped
 
     def state(
         self,
@@ -122,7 +127,10 @@ class VoiceRuntimeTelemetry:
             payload={} if payload is None else payload,
         )
         self._sequence += 1
-        self._sink(event)
+        try:
+            self._sink(event)
+        except Exception:
+            self._dropped += 1
         return event
 
     def canonical(self, event: Event) -> RuntimeUiEvent:
@@ -132,7 +140,10 @@ class VoiceRuntimeTelemetry:
             sequence=self._sequence,
         )
         self._sequence += 1
-        self._sink(projected)
+        try:
+            self._sink(projected)
+        except Exception:
+            self._dropped += 1
         return projected
 
 
@@ -210,6 +221,11 @@ class VoiceTaskBridge:
         )
         if reasoning:
             self._telemetry.state("voice.reasoning", context=context, task=task)
+        self._telemetry.state(
+            "voice.executing",
+            context=context,
+            task=task,
+        )
         try:
             outcome = self._agent_loop.run(
                 OrchestrationRequest(
@@ -224,6 +240,13 @@ class VoiceTaskBridge:
                 self._telemetry.state("voice.failed", context=context, task=task)
                 return outcome
             value = outcome.unwrap()
+            if value.attempt_count > 1:
+                self._telemetry.state(
+                    "voice.recovering",
+                    context=context,
+                    task=value.task,
+                    payload={"attempt_count": value.attempt_count},
+                )
             self._telemetry.state("voice.verifying", context=context, task=value.task)
             self._telemetry.state(
                 "voice.verified" if value.verified else "voice.failed",
