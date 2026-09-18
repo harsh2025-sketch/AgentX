@@ -178,8 +178,8 @@ class WebDriverBrowserProvider:
         "_capabilities",
         "_connected",
         "_download_directory",
-        "_headless",
         "_endpoint",
+        "_headless",
         "_session_id",
         "_timeout",
     )
