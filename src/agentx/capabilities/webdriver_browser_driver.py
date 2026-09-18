@@ -207,7 +207,7 @@ class WebDriverBrowserProvider:
             download_directory=download_directory,
         )
         self._connected = True
-        self._capabilities = (
+        capabilities: tuple[Capability[Any], ...] = (
             BrowserActionsCapability(
                 operation=BrowserActionOperation.NAVIGATE,
                 provider=self,
@@ -232,6 +232,7 @@ class WebDriverBrowserProvider:
                 for operation in BrowserSessionOperation
             ),
         )
+        self._capabilities = capabilities
 
     @property
     def descriptor(self) -> BrowserProviderDescriptor:
