@@ -20,10 +20,17 @@ percentage or equate a worker report with a released product.
   [TASKS.md](TASKS.md) is its generated view. Imported reported completion is
   distinct from task-level acceptance evidence. The dependency graph is
   explicitly partial; it is not a completed audit of all task relationships.
-- Live-model cold/learn/restart/warm acceptance remains outstanding. The local
+- M3 procedure compilation/reuse acceptance is now closed by PR #166: a governed
+  filesystem task is solved cold, recorded as causal experience, corroborated
+  across a second verified run, compiled to a CANDIDATE, validated on distinct
+  parameter variants, promoted to ACTIVE, persisted, reopened in a fresh Python
+  process, selected through ACTIVE-only reuse, and executed through L2 with
+  independent verification. Windows C1.01 run #820 passed the full repository
+  gate on implementation head `e55d48b102de4b346faa54d1af0d3de7d35008a0`.
+- Live-model cold/warm *efficiency measurement* remains an M4 concern. The local
   continuation environment has no configured model service credentials or
-  interactive Windows/Android environment. Loopback HTTP and scripted-provider
-  tests do not substitute for those experiments.
+  interactive Windows/Android environment; scripted/loopback tests do not
+  substitute for those later experiments.
 
 ## Canonical baseline and work in this review
 
@@ -56,7 +63,7 @@ states distinguish production code, candidate changes and missing acceptance.
 | M0 Kernel | Permission/risk/gate/budget/stop/audit/secret contracts; governed capability loop; AX-040 merged | Continue whole-system security review as new surfaces land |
 | M1 Single-task runtime | Agent loop, L0-L4 boundaries; explicit capability-bound L4 execution and goal checks | General application binding; procedure-leaf composition; complete L5 path; real-task acceptance |
 | M2 Persistent memory | Event journal, episodes, semantic knowledge, typed scopes and integrated #147 | Prove combined restart and corruption behavior |
-| M3 Compilation and reuse | Procedure IR/interpreter, compiler, validation, promotion, reuse and integrated #148 | Full cold-to-restart-to-warm acceptance |
+| M3 Compilation and reuse | Procedure IR/interpreter, corroborated parameter generalization, candidate validation/promotion, restart-safe ACTIVE reuse, and end-to-end cold→compile→validate→promote→restart→L2 proof | No remaining M3 exit-criteria gap; live-model efficiency measurement belongs to M4 |
 | M4 Learning efficiency | Metrics, reuse evidence and experiment contracts | Real model-backed cold/warm comparison with independently verified outcomes |
 | M5 Repair | Diagnosis, degradation, shadow validation, replacement and rollback machinery | Deliberate break/repair/reuse experiment and failed-repair rollback |
 | M6 Windows | Structured filesystem, app/window/input/UIA foundations; #156/#157 integrated | Representative Windows 10/11 workflows |
