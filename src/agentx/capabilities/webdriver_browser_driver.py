@@ -56,16 +56,16 @@ from agentx.capabilities.browser_forms import (
     BrowserFormOperation,
     BrowserFormsCapability,
 )
-from agentx.capabilities.browser_session_actions import (
-    BrowserDownloadObservation,
-    BrowserSessionCapability,
-    BrowserSessionOperation,
-)
 from agentx.capabilities.browser_provider import (
     BrowserProviderAvailability,
     BrowserProviderDescriptor,
     BrowserProviderId,
     BrowserProviderStatus,
+)
+from agentx.capabilities.browser_session_actions import (
+    BrowserDownloadObservation,
+    BrowserSessionCapability,
+    BrowserSessionOperation,
 )
 from agentx.core.errors import AgentXError, ErrorCategory, Retryability
 from agentx.core.result import Result
