@@ -56,9 +56,7 @@ def _validation_error(code: str, message: str) -> AgentXError:
 
 def _validated_candidate_graph(candidate: ProcedureRecord) -> ProcedureGraph:
     if candidate.status is not ProcedureStatus.CANDIDATE:
-        raise CompiledSkillBindingError(
-            "validation execution requires ProcedureStatus.CANDIDATE"
-        )
+        raise CompiledSkillBindingError("validation execution requires ProcedureStatus.CANDIDATE")
     if candidate.payload.kind is not ProcedurePayloadKind.CANONICAL_JSON:
         raise CompiledSkillBindingError(
             "validation execution requires an inline CANONICAL_JSON ProcedureGraph"
@@ -108,18 +106,14 @@ class GovernedCompiledSkillValidationHarness:
         request_factories: Mapping[CapabilityIdentity, CapabilityRequestFactory],
     ) -> None:
         if not isinstance(candidate, ProcedureRecord):
-            raise TypeError(
-                f"candidate must be a ProcedureRecord, got {type(candidate).__name__}"
-            )
+            raise TypeError(f"candidate must be a ProcedureRecord, got {type(candidate).__name__}")
         if not isinstance(executor, Executor):
             raise TypeError(f"executor must be an Executor, got {type(executor).__name__}")
         if not isinstance(request_factories, Mapping):
             raise TypeError("request_factories must be a mapping")
         for identity, factory in request_factories.items():
             if not isinstance(identity, CapabilityIdentity):
-                raise TypeError(
-                    "request_factories keys must be CapabilityIdentity values"
-                )
+                raise TypeError("request_factories keys must be CapabilityIdentity values")
             if not callable(factory):
                 raise TypeError("request_factories values must be callable")
 
@@ -138,8 +132,7 @@ class GovernedCompiledSkillValidationHarness:
     ) -> Result[ClosedLoopOutcome, AgentXError]:
         if not isinstance(request, ProcedureValidationRunRequest):
             raise TypeError(
-                "request must be a ProcedureValidationRunRequest, "
-                f"got {type(request).__name__}"
+                f"request must be a ProcedureValidationRunRequest, got {type(request).__name__}"
             )
 
         expected = ProcedureCandidateIdentity(
