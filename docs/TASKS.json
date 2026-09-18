@@ -1267,454 +1267,1504 @@
       "milestone": "M3",
       "title": "ProcedureId contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/ids.py; src/agentx/core/procedures.py",
+          "note": "Reviewed implementation for AX-126 (ProcedureId contract) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_core_procedures.py; tests/unit/test_procedure_lifecycle.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-127",
       "milestone": "M3",
       "title": "Procedure revision identity",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/ids.py; src/agentx/core/procedures.py",
+          "note": "Reviewed implementation for AX-127 (Procedure revision identity) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_core_procedures.py; tests/unit/test_procedure_lifecycle.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-128",
       "milestone": "M3",
       "title": "ProcedureStatus lifecycle vocabulary",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/ids.py; src/agentx/core/procedures.py",
+          "note": "Reviewed implementation for AX-128 (ProcedureStatus lifecycle vocabulary) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_core_procedures.py; tests/unit/test_procedure_lifecycle.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-129",
       "milestone": "M3",
       "title": "Procedure Graph IR",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/graph.py; src/agentx/procedures/nodes.py; src/agentx/procedures/conditions.py; src/agentx/procedures/recovery.py",
+          "note": "Reviewed implementation for AX-129 (Procedure Graph IR) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_graph.py; tests/unit/test_procedure_node_contracts.py; tests/unit/test_procedure_conditions.py; tests/adversarial/test_recovery_edges_authority.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-130",
       "milestone": "M3",
       "title": "ACTION node",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/graph.py; src/agentx/procedures/nodes.py; src/agentx/procedures/conditions.py; src/agentx/procedures/recovery.py",
+          "note": "Reviewed implementation for AX-130 (ACTION node) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_graph.py; tests/unit/test_procedure_node_contracts.py; tests/unit/test_procedure_conditions.py; tests/adversarial/test_recovery_edges_authority.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-131",
       "milestone": "M3",
       "title": "CONDITION node",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/graph.py; src/agentx/procedures/nodes.py; src/agentx/procedures/conditions.py; src/agentx/procedures/recovery.py",
+          "note": "Reviewed implementation for AX-131 (CONDITION node) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_graph.py; tests/unit/test_procedure_node_contracts.py; tests/unit/test_procedure_conditions.py; tests/adversarial/test_recovery_edges_authority.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-132",
       "milestone": "M3",
       "title": "END node",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/graph.py; src/agentx/procedures/nodes.py; src/agentx/procedures/conditions.py; src/agentx/procedures/recovery.py",
+          "note": "Reviewed implementation for AX-132 (END node) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_graph.py; tests/unit/test_procedure_node_contracts.py; tests/unit/test_procedure_conditions.py; tests/adversarial/test_recovery_edges_authority.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-133",
       "milestone": "M3",
       "title": "REASON node",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/graph.py; src/agentx/procedures/nodes.py; src/agentx/procedures/conditions.py; src/agentx/procedures/recovery.py",
+          "note": "Reviewed implementation for AX-133 (REASON node) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_graph.py; tests/unit/test_procedure_node_contracts.py; tests/unit/test_procedure_conditions.py; tests/adversarial/test_recovery_edges_authority.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-134",
       "milestone": "M3",
       "title": "RESEARCH node representation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/graph.py; src/agentx/procedures/nodes.py; src/agentx/procedures/conditions.py; src/agentx/procedures/recovery.py",
+          "note": "Reviewed implementation for AX-134 (RESEARCH node representation) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_graph.py; tests/unit/test_procedure_node_contracts.py; tests/unit/test_procedure_conditions.py; tests/adversarial/test_recovery_edges_authority.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-135",
       "milestone": "M3",
       "title": "subprocedure representation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/graph.py; src/agentx/procedures/nodes.py; src/agentx/procedures/conditions.py; src/agentx/procedures/recovery.py",
+          "note": "Reviewed implementation for AX-135 (subprocedure representation) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_graph.py; tests/unit/test_procedure_node_contracts.py; tests/unit/test_procedure_conditions.py; tests/adversarial/test_recovery_edges_authority.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-136",
       "milestone": "M3",
       "title": "recovery/error edges",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/graph.py; src/agentx/procedures/nodes.py; src/agentx/procedures/conditions.py; src/agentx/procedures/recovery.py",
+          "note": "Reviewed implementation for AX-136 (recovery/error edges) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_graph.py; tests/unit/test_procedure_node_contracts.py; tests/unit/test_procedure_conditions.py; tests/adversarial/test_recovery_edges_authority.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-137",
       "milestone": "M3",
       "title": "graph structural validation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/graph.py; src/agentx/procedures/nodes.py; src/agentx/procedures/conditions.py; src/agentx/procedures/recovery.py",
+          "note": "Reviewed implementation for AX-137 (graph structural validation) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_graph.py; tests/unit/test_procedure_node_contracts.py; tests/unit/test_procedure_conditions.py; tests/adversarial/test_recovery_edges_authority.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-138",
       "milestone": "M3",
       "title": "deterministic graph serialization",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/graph.py; src/agentx/procedures/nodes.py; src/agentx/procedures/conditions.py; src/agentx/procedures/recovery.py",
+          "note": "Reviewed implementation for AX-138 (deterministic graph serialization) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_graph.py; tests/unit/test_procedure_node_contracts.py; tests/unit/test_procedure_conditions.py; tests/adversarial/test_recovery_edges_authority.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-139",
       "milestone": "M3",
       "title": "precondition representation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/graph.py; src/agentx/procedures/nodes.py; src/agentx/procedures/conditions.py; src/agentx/procedures/recovery.py",
+          "note": "Reviewed implementation for AX-139 (precondition representation) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_graph.py; tests/unit/test_procedure_node_contracts.py; tests/unit/test_procedure_conditions.py; tests/adversarial/test_recovery_edges_authority.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-140",
       "milestone": "M3",
       "title": "postcondition representation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/graph.py; src/agentx/procedures/nodes.py; src/agentx/procedures/conditions.py; src/agentx/procedures/recovery.py",
+          "note": "Reviewed implementation for AX-140 (postcondition representation) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_graph.py; tests/unit/test_procedure_node_contracts.py; tests/unit/test_procedure_conditions.py; tests/adversarial/test_recovery_edges_authority.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-141",
       "milestone": "M3",
       "title": "deterministic interpreter",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/interpreter.py; src/agentx/core/procedure_execution.py; src/agentx/compiled_procedure_strategy.py; src/agentx/guided_procedure_strategy.py",
+          "note": "Reviewed implementation for AX-141 (deterministic interpreter) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_interpreter.py; tests/unit/test_procedure_execution_contract.py; tests/unit/test_compiled_procedure_strategy.py; tests/unit/test_guided_procedure_strategy.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-142",
       "milestone": "M3",
       "title": "procedure execution trace",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/interpreter.py; src/agentx/core/procedure_execution.py; src/agentx/compiled_procedure_strategy.py; src/agentx/guided_procedure_strategy.py",
+          "note": "Reviewed implementation for AX-142 (procedure execution trace) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_interpreter.py; tests/unit/test_procedure_execution_contract.py; tests/unit/test_compiled_procedure_strategy.py; tests/unit/test_guided_procedure_strategy.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-143",
       "milestone": "M3",
       "title": "procedure execution evidence",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/interpreter.py; src/agentx/core/procedure_execution.py; src/agentx/compiled_procedure_strategy.py; src/agentx/guided_procedure_strategy.py",
+          "note": "Reviewed implementation for AX-143 (procedure execution evidence) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_interpreter.py; tests/unit/test_procedure_execution_contract.py; tests/unit/test_compiled_procedure_strategy.py; tests/unit/test_guided_procedure_strategy.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-144",
       "milestone": "M3",
       "title": "ACTION_REQUIRED transition",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/interpreter.py; src/agentx/core/procedure_execution.py; src/agentx/compiled_procedure_strategy.py; src/agentx/guided_procedure_strategy.py",
+          "note": "Reviewed implementation for AX-144 (ACTION_REQUIRED transition) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_interpreter.py; tests/unit/test_procedure_execution_contract.py; tests/unit/test_compiled_procedure_strategy.py; tests/unit/test_guided_procedure_strategy.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-145",
       "milestone": "M3",
       "title": "REASON_REQUIRED transition",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/interpreter.py; src/agentx/core/procedure_execution.py; src/agentx/compiled_procedure_strategy.py; src/agentx/guided_procedure_strategy.py",
+          "note": "Reviewed implementation for AX-145 (REASON_REQUIRED transition) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_interpreter.py; tests/unit/test_procedure_execution_contract.py; tests/unit/test_compiled_procedure_strategy.py; tests/unit/test_guided_procedure_strategy.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-146",
       "milestone": "M3",
       "title": "RESEARCH_REQUIRED transition",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/interpreter.py; src/agentx/core/procedure_execution.py; src/agentx/compiled_procedure_strategy.py; src/agentx/guided_procedure_strategy.py",
+          "note": "Reviewed implementation for AX-146 (RESEARCH_REQUIRED transition) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_interpreter.py; tests/unit/test_procedure_execution_contract.py; tests/unit/test_compiled_procedure_strategy.py; tests/unit/test_guided_procedure_strategy.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-147",
       "milestone": "M3",
       "title": "procedure run disposition",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/interpreter.py; src/agentx/core/procedure_execution.py; src/agentx/compiled_procedure_strategy.py; src/agentx/guided_procedure_strategy.py",
+          "note": "Reviewed implementation for AX-147 (procedure run disposition) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_interpreter.py; tests/unit/test_procedure_execution_contract.py; tests/unit/test_compiled_procedure_strategy.py; tests/unit/test_guided_procedure_strategy.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-148",
       "milestone": "M3",
       "title": "procedure task-verification separation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedures/interpreter.py; src/agentx/core/procedure_execution.py; src/agentx/compiled_procedure_strategy.py; src/agentx/guided_procedure_strategy.py",
+          "note": "Reviewed implementation for AX-148 (procedure task-verification separation) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_interpreter.py; tests/unit/test_procedure_execution_contract.py; tests/unit/test_compiled_procedure_strategy.py; tests/unit/test_guided_procedure_strategy.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-149",
       "milestone": "M3",
       "title": "trajectory normalization",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/learning/trajectory.py; src/agentx/learning/causal_actions.py; src/agentx/learning/irrelevant_actions.py; src/agentx/learning/parameter_extraction.py; src/agentx/learning/parameter_generalization.py; src/agentx/learning/region_classification.py",
+          "note": "Reviewed implementation for AX-149 (trajectory normalization) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_trajectory_normalization.py; tests/unit/test_causal_action_extraction.py; tests/unit/test_irrelevant_action_elimination.py; tests/unit/test_parameter_extraction.py; tests/unit/test_parameter_generalization.py; tests/unit/test_region_classification.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-150",
       "milestone": "M3",
       "title": "causal-action extraction",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/learning/trajectory.py; src/agentx/learning/causal_actions.py; src/agentx/learning/irrelevant_actions.py; src/agentx/learning/parameter_extraction.py; src/agentx/learning/parameter_generalization.py; src/agentx/learning/region_classification.py",
+          "note": "Reviewed implementation for AX-150 (causal-action extraction) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_trajectory_normalization.py; tests/unit/test_causal_action_extraction.py; tests/unit/test_irrelevant_action_elimination.py; tests/unit/test_parameter_extraction.py; tests/unit/test_parameter_generalization.py; tests/unit/test_region_classification.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-151",
       "milestone": "M3",
       "title": "irrelevant-action elimination",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/learning/trajectory.py; src/agentx/learning/causal_actions.py; src/agentx/learning/irrelevant_actions.py; src/agentx/learning/parameter_extraction.py; src/agentx/learning/parameter_generalization.py; src/agentx/learning/region_classification.py",
+          "note": "Reviewed implementation for AX-151 (irrelevant-action elimination) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_trajectory_normalization.py; tests/unit/test_causal_action_extraction.py; tests/unit/test_irrelevant_action_elimination.py; tests/unit/test_parameter_extraction.py; tests/unit/test_parameter_generalization.py; tests/unit/test_region_classification.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-152",
       "milestone": "M3",
       "title": "parameter extraction",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/learning/trajectory.py; src/agentx/learning/causal_actions.py; src/agentx/learning/irrelevant_actions.py; src/agentx/learning/parameter_extraction.py; src/agentx/learning/parameter_generalization.py; src/agentx/learning/region_classification.py",
+          "note": "Reviewed implementation for AX-152 (parameter extraction) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_trajectory_normalization.py; tests/unit/test_causal_action_extraction.py; tests/unit/test_irrelevant_action_elimination.py; tests/unit/test_parameter_extraction.py; tests/unit/test_parameter_generalization.py; tests/unit/test_region_classification.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-153",
       "milestone": "M3",
       "title": "parameter generalization",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/learning/trajectory.py; src/agentx/learning/causal_actions.py; src/agentx/learning/irrelevant_actions.py; src/agentx/learning/parameter_extraction.py; src/agentx/learning/parameter_generalization.py; src/agentx/learning/region_classification.py",
+          "note": "Reviewed implementation for AX-153 (parameter generalization) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_trajectory_normalization.py; tests/unit/test_causal_action_extraction.py; tests/unit/test_irrelevant_action_elimination.py; tests/unit/test_parameter_extraction.py; tests/unit/test_parameter_generalization.py; tests/unit/test_region_classification.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-154",
       "milestone": "M3",
       "title": "determinism analysis",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/learning/trajectory.py; src/agentx/learning/causal_actions.py; src/agentx/learning/irrelevant_actions.py; src/agentx/learning/parameter_extraction.py; src/agentx/learning/parameter_generalization.py; src/agentx/learning/region_classification.py",
+          "note": "Reviewed implementation for AX-154 (determinism analysis) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_trajectory_normalization.py; tests/unit/test_causal_action_extraction.py; tests/unit/test_irrelevant_action_elimination.py; tests/unit/test_parameter_extraction.py; tests/unit/test_parameter_generalization.py; tests/unit/test_region_classification.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-155",
       "milestone": "M3",
       "title": "reasoning-region classification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/learning/trajectory.py; src/agentx/learning/causal_actions.py; src/agentx/learning/irrelevant_actions.py; src/agentx/learning/parameter_extraction.py; src/agentx/learning/parameter_generalization.py; src/agentx/learning/region_classification.py",
+          "note": "Reviewed implementation for AX-155 (reasoning-region classification) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_trajectory_normalization.py; tests/unit/test_causal_action_extraction.py; tests/unit/test_irrelevant_action_elimination.py; tests/unit/test_parameter_extraction.py; tests/unit/test_parameter_generalization.py; tests/unit/test_region_classification.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-156",
       "milestone": "M3",
       "title": "skill-compiler orchestrator",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/skill_compiler.py; src/agentx/procedure_synthesis.py; src/agentx/compiled_skill_binding.py",
+          "note": "Reviewed implementation for AX-156 (skill-compiler orchestrator) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_skill_compiler.py; tests/adversarial/test_skill_compiler_authority.py; tests/integration/test_skill_compiler.py; tests/unit/test_compiled_skill_binding.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-157",
       "milestone": "M3",
       "title": "verified-input compiler admission",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/skill_compiler.py; src/agentx/procedure_synthesis.py; src/agentx/compiled_skill_binding.py",
+          "note": "Reviewed implementation for AX-157 (verified-input compiler admission) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_skill_compiler.py; tests/adversarial/test_skill_compiler_authority.py; tests/integration/test_skill_compiler.py; tests/unit/test_compiled_skill_binding.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-158",
       "milestone": "M3",
       "title": "candidate-only synthesis",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/skill_compiler.py; src/agentx/procedure_synthesis.py; src/agentx/compiled_skill_binding.py",
+          "note": "Reviewed implementation for AX-158 (candidate-only synthesis) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_skill_compiler.py; tests/adversarial/test_skill_compiler_authority.py; tests/integration/test_skill_compiler.py; tests/unit/test_compiled_skill_binding.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-159",
       "milestone": "M3",
       "title": "Procedure candidate builder",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/skill_compiler.py; src/agentx/procedure_synthesis.py; src/agentx/compiled_skill_binding.py",
+          "note": "Reviewed implementation for AX-159 (Procedure candidate builder) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_skill_compiler.py; tests/adversarial/test_skill_compiler_authority.py; tests/integration/test_skill_compiler.py; tests/unit/test_compiled_skill_binding.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-160",
       "milestone": "M3",
       "title": "validation evidence policy",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_validation.py; src/agentx/procedure_validation_runner.py; src/agentx/compiled_skill_validation.py",
+          "note": "Reviewed implementation for AX-160 (validation evidence policy) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_validation_policy.py; tests/unit/test_procedure_validation_runner.py; tests/adversarial/test_procedure_validation_adversarial.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-161",
       "milestone": "M3",
       "title": "varied-parameter validation runner",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_validation.py; src/agentx/procedure_validation_runner.py; src/agentx/compiled_skill_validation.py",
+          "note": "Reviewed implementation for AX-161 (varied-parameter validation runner) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_validation_policy.py; tests/unit/test_procedure_validation_runner.py; tests/adversarial/test_procedure_validation_adversarial.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-162",
       "milestone": "M3",
       "title": "exact procedure-revision validation binding",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_validation.py; src/agentx/procedure_validation_runner.py; src/agentx/compiled_skill_validation.py",
+          "note": "Reviewed implementation for AX-162 (exact procedure-revision validation binding) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_validation_policy.py; tests/unit/test_procedure_validation_runner.py; tests/adversarial/test_procedure_validation_adversarial.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-163",
       "milestone": "M3",
       "title": "distinct-variation minimum",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_validation.py; src/agentx/procedure_validation_runner.py; src/agentx/compiled_skill_validation.py",
+          "note": "Reviewed implementation for AX-163 (distinct-variation minimum) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_validation_policy.py; tests/unit/test_procedure_validation_runner.py; tests/adversarial/test_procedure_validation_adversarial.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-164",
       "milestone": "M3",
       "title": "partial validation failure preservation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_validation.py; src/agentx/procedure_validation_runner.py; src/agentx/compiled_skill_validation.py",
+          "note": "Reviewed implementation for AX-164 (partial validation failure preservation) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_validation_policy.py; tests/unit/test_procedure_validation_runner.py; tests/adversarial/test_procedure_validation_adversarial.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-165",
       "milestone": "M3",
       "title": "promotion eligibility decision",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_validation.py; src/agentx/procedure_validation_runner.py; src/agentx/compiled_skill_validation.py",
+          "note": "Reviewed implementation for AX-165 (promotion eligibility decision) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_validation_policy.py; tests/unit/test_procedure_validation_runner.py; tests/adversarial/test_procedure_validation_adversarial.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-166",
       "milestone": "M3",
       "title": "explicit promotion transaction",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_promotion.py; src/agentx/core/procedure_lifecycle.py; src/agentx/infrastructure/procedure_store.py",
+          "note": "Reviewed implementation for AX-166 (explicit promotion transaction) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_promotion.py; tests/adversarial/test_procedure_promotion_authority.py; tests/integration/test_procedure_promotion.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-167",
       "milestone": "M3",
       "title": "atomic candidate activation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_promotion.py; src/agentx/core/procedure_lifecycle.py; src/agentx/infrastructure/procedure_store.py",
+          "note": "Reviewed implementation for AX-167 (atomic candidate activation) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_promotion.py; tests/adversarial/test_procedure_promotion_authority.py; tests/integration/test_procedure_promotion.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-168",
       "milestone": "M3",
       "title": "ACTIVE-only normal reuse",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/procedure_matching.py; src/agentx/procedure_reuse_selector.py; src/agentx/active_procedure_reuse.py; src/agentx/infrastructure/active_procedure_reader.py",
+          "note": "Reviewed implementation for AX-168 (ACTIVE-only normal reuse) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_matching.py; tests/unit/test_procedure_reuse_selector.py; tests/unit/test_active_procedure_reuse.py; tests/integration/test_procedure_reuse_selector.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-169",
       "milestone": "M3",
       "title": "capability/procedure applicability matcher",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/procedure_matching.py; src/agentx/procedure_reuse_selector.py; src/agentx/active_procedure_reuse.py; src/agentx/infrastructure/active_procedure_reader.py",
+          "note": "Reviewed implementation for AX-169 (capability/procedure applicability matcher) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_matching.py; tests/unit/test_procedure_reuse_selector.py; tests/unit/test_active_procedure_reuse.py; tests/integration/test_procedure_reuse_selector.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-170",
       "milestone": "M3",
       "title": "deterministic reuse selector",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/procedure_matching.py; src/agentx/procedure_reuse_selector.py; src/agentx/active_procedure_reuse.py; src/agentx/infrastructure/active_procedure_reader.py",
+          "note": "Reviewed implementation for AX-170 (deterministic reuse selector) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_matching.py; tests/unit/test_procedure_reuse_selector.py; tests/unit/test_active_procedure_reuse.py; tests/integration/test_procedure_reuse_selector.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-171",
       "milestone": "M3",
       "title": "ambiguous reuse rejection",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/procedure_matching.py; src/agentx/procedure_reuse_selector.py; src/agentx/active_procedure_reuse.py; src/agentx/infrastructure/active_procedure_reader.py",
+          "note": "Reviewed implementation for AX-171 (ambiguous reuse rejection) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_matching.py; tests/unit/test_procedure_reuse_selector.py; tests/unit/test_active_procedure_reuse.py; tests/integration/test_procedure_reuse_selector.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-172",
       "milestone": "M3",
       "title": "restart-safe active-procedure retrieval",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/procedure_matching.py; src/agentx/procedure_reuse_selector.py; src/agentx/active_procedure_reuse.py; src/agentx/infrastructure/active_procedure_reader.py",
+          "note": "Reviewed implementation for AX-172 (restart-safe active-procedure retrieval) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_matching.py; tests/unit/test_procedure_reuse_selector.py; tests/unit/test_active_procedure_reuse.py; tests/integration/test_procedure_reuse_selector.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-173",
       "milestone": "M3",
       "title": "complete compiled L2 real workflow",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/compiled_procedure_strategy.py; src/agentx/compiled_skill_binding.py",
+          "note": "Reviewed implementation for AX-173 (complete compiled L2 real workflow) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_compiled_procedure_strategy.py; tests/adversarial/test_compiled_procedure_strategy_authority.py; tests/integration/test_m3_skill_compilation_acceptance.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-174",
       "milestone": "M3",
       "title": "complete guided L3 real workflow",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/guided_procedure_strategy.py",
+          "note": "Reviewed implementation for AX-174 (complete guided L3 real workflow) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_guided_procedure_strategy.py; tests/adversarial/test_guided_procedure_strategy_authority.py; tests/integration/test_guided_procedure_strategy.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-175",
       "milestone": "M3",
       "title": "end-to-end skill compilation acceptance proof",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [
         "AX-172",
         "AX-173",
         "AX-174"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/skill_compiler.py; src/agentx/compiled_skill_binding.py; src/agentx/compiled_skill_validation.py; src/agentx/procedure_promotion.py; src/agentx/active_procedure_reuse.py",
+          "note": "Reviewed implementation for AX-175 (end-to-end skill compilation acceptance proof) on the focused M3 branch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m3_skill_compilation_acceptance.py",
+          "note": "Task-relevant unit/integration/adversarial coverage executed by the canonical full-suite Windows gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "e55d48b102de4b346faa54d1af0d3de7d35008a0",
+          "note": "Focused M3 implementation head accepted by Windows C1.01 run #820."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35313247023",
+          "note": "Windows C1.01 #820 passed runtime-only install, Ruff lint/format, strict mypy, and full pytest on the accepted implementation head."
+        }
+      ]
     },
     {
       "id": "AX-176",
