@@ -7,8 +7,8 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 ## Audit result
 
 - BEFORE: VERIFIED 230, NOT_AUDITED 132, IN_PROGRESS 5, BLOCKED 0, NOT_IMPLEMENTED 233.
-- AFTER: VERIFIED 379, NOT_AUDITED 0, IN_PROGRESS 10, BLOCKED 7, NOT_IMPLEMENTED 204.
-- Strict acceptance coverage: **379/600 (63.2%)**.
+- AFTER: VERIFIED 380, NOT_AUDITED 0, IN_PROGRESS 9, BLOCKED 7, NOT_IMPLEMENTED 204.
+- Strict acceptance coverage: **380/600 (63.3%)**.
 - This is not a release-readiness percentage. Real-host/provider/device/product/release requirements remain separate.
 
 ## Milestone dashboard
@@ -31,7 +31,7 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | M13 Multi-device and Android | 2/30 | `█░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 28 |
 | M14 Optimization | 2/25 | `██░░░░░░░░░░░░░░░░░░` | 0 | 0 | 23 |
 | M15 Self-extension | 1/30 | `█░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 29 |
-| M16 Production and Release | 3/30 | `██░░░░░░░░░░░░░░░░░░` | 2 | 0 | 25 |
+| M16 Production and Release | 4/30 | `███░░░░░░░░░░░░░░░░░` | 1 | 0 | 25 |
 
 ## Evidence policy
 
@@ -627,7 +627,7 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | AX-572 | M16 | establish canonical 600-task ledger file | NOT_IMPLEMENTED | IN_PROGRESS | VERIFIED | E2 | NONE |  |
 | AX-573 | M16 | machine-readable task-status ledger | NOT_IMPLEMENTED | IN_PROGRESS | VERIFIED | E2 | NONE |  |
 | AX-574 | M16 | dependency DAG synchronization | NOT_IMPLEMENTED | IN_PROGRESS | IN_PROGRESS | E2 | INTEGRATION MISSING |  |
-| AX-575 | M16 | milestone-status automation | NOT_IMPLEMENTED | IN_PROGRESS | IN_PROGRESS | E2 | INTEGRATION MISSING |  |
+| AX-575 | M16 | milestone-status automation | NOT_IMPLEMENTED | IN_PROGRESS | VERIFIED | E3 | NONE |  |
 | AX-576 | M16 | Windows 10 real-host test matrix | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | REAL ENVIRONMENT REQUIRED | target Windows 10/11, DPI, and/or multi-monitor host environment |
 | AX-577 | M16 | Windows 11 real-host test matrix | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | REAL ENVIRONMENT REQUIRED | target Windows 10/11, DPI, and/or multi-monitor host environment |
 | AX-578 | M16 | multi-DPI test matrix | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | REAL ENVIRONMENT REQUIRED | target Windows 10/11, DPI, and/or multi-monitor host environment |
@@ -654,6 +654,23 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | AX-599 | M16 | release candidate / installer | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
 | AX-600 | M16 | AgentX v1 whole-system acceptance and release | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
 
+## Remaining non-VERIFIED tasks by primary gap
+
+- **IMPLEMENTATION MISSING:** AX-318..AX-335, AX-354, AX-357..AX-359, AX-368, AX-422..AX-435, AX-437..AX-451, AX-453..AX-464, AX-466..AX-485, AX-488..AX-515, AX-518..AX-540, AX-542..AX-568, AX-570, AX-580..AX-594, AX-596..AX-597, AX-599..AX-600
+- **INTEGRATION MISSING:** AX-197, AX-199..AX-203, AX-315, AX-574
+- **TEST/EVIDENCE MISSING:** AX-084
+- **REAL ENVIRONMENT REQUIRED:** AX-083, AX-198, AX-204..AX-205, AX-369..AX-370, AX-576..AX-579
+- **SECURITY GAP:** AX-391..AX-405, AX-569, AX-595, AX-598
+- **BLOCKED BY DEPENDENCY:** AX-085
+
+## Readiness dimensions
+
+- **Implementation coverage:** at least 396/600 tasks (66.0%) have enough current implementation/evidence to avoid `NOT_IMPLEMENTED`; this is a lower-bound implementation measure, not release readiness.
+- **Strict acceptance coverage:** 380/600 tasks (63.3%) are `VERIFIED` under the audit policy.
+- **Core-runtime readiness:** strong but incomplete. M0, M2, M3, M5 and M6 are fully accepted; M1 is 42/45 and M4 still lacks live cold-vs-warm efficiency proof.
+- **External-environment readiness:** incomplete. Live model/provider, real browser, Windows 10/11 matrix, voice hardware and Android/device evidence are not all available/proven.
+- **Product/UI readiness:** partial. Runtime/UI telemetry foundations exist, but voice/HUD and a usable natural-language product surface are not accepted.
+- **Release readiness:** not accepted. Installer/upgrade/privacy/benchmark/matrix work and AX-600 whole-system release acceptance remain open.
 ## Machine-readable detail
 
 `docs/AUDIT_600.json` contains all 600 records with implementation path, test path, acceptance path, external dependency, gap, remediation, and final conclusion fields.
