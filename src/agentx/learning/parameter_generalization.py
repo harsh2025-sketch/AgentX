@@ -196,6 +196,23 @@ class ParameterGeneralization:
             )
         if not isinstance(self.groups, tuple):
             raise TypeError("groups must be a tuple of ParameterObservationGroup values")
+        if not isinstance(self.corroborating_extractions, tuple):
+            raise TypeError(
+                "corroborating_extractions must be a tuple of ParameterExtraction values"
+            )
+        seen_trajectory_ids = {self.source_extraction.source_trajectory_id}
+        for index, extraction in enumerate(self.corroborating_extractions):
+            if not isinstance(extraction, ParameterExtraction):
+                raise TypeError(
+                    "corroborating_extractions must contain only ParameterExtraction values; "
+                    f"index {index} is {type(extraction).__name__}"
+                )
+            trajectory_id = extraction.source_trajectory_id
+            if trajectory_id in seen_trajectory_ids:
+                raise ParameterGeneralizationError(
+                    "corroborating_extractions must reference distinct non-target trajectories"
+                )
+            seen_trajectory_ids.add(trajectory_id)
         if not isinstance(self.supporting_extractions, tuple):
             raise TypeError("supporting_extractions must be a tuple of ParameterExtraction values")
         seen_trajectory_ids = {self.source_extraction.source_trajectory_id}
@@ -245,6 +262,10 @@ class ParameterGeneralization:
             "supporting_trajectory_ids": [
                 str(item.source_trajectory_id) for item in self.supporting_extractions
             ],
+            "corroborating_source_trajectory_ids": [
+                str(extraction.source_trajectory_id)
+                for extraction in self.corroborating_extractions
+            ],
             "groups": [group.to_dict() for group in self.groups],
         }
 
@@ -261,20 +282,22 @@ class ParameterGeneralization:
 
 def _build_groups(
     candidates: tuple[ParameterCandidate, ...],
+    *corroborating_candidates: tuple[ParameterCandidate, ...],
 ) -> tuple[ParameterObservationGroup, ...]:
     ordered_keys: list[tuple[str, str]] = []
     grouped: dict[tuple[str, str], list[ParameterCandidate]] = {}
-    for candidate in candidates:
-        if not isinstance(candidate, ParameterCandidate):
-            raise TypeError(
-                "C3.04 candidates must contain only ParameterCandidate values, "
-                f"got {type(candidate).__name__}"
-            )
-        key = _group_key(candidate)
-        if key not in grouped:
-            grouped[key] = []
-            ordered_keys.append(key)
-        grouped[key].append(candidate)
+    for source in (candidates, *corroborating_candidates):
+        for candidate in source:
+            if not isinstance(candidate, ParameterCandidate):
+                raise TypeError(
+                    "C3.04 candidates must contain only ParameterCandidate values, "
+                    f"got {type(candidate).__name__}"
+                )
+            key = _group_key(candidate)
+            if key not in grouped:
+                grouped[key] = []
+                ordered_keys.append(key)
+            grouped[key].append(candidate)
 
     result: list[ParameterObservationGroup] = []
     for action_name, field_name in ordered_keys:
@@ -295,14 +318,12 @@ def analyze_parameter_generalization(
     *,
     corroborating: tuple[ParameterExtraction, ...] = (),
 ) -> ParameterGeneralization:
-    """Produce observation-only variation evidence from canonical C3.04 outputs.
+    """Produce conservative variation evidence from target and corroborating C3.04 data.
 
-    The target extraction remains the canonical source trajectory. Optional
-    corroborating extractions contribute only additional provenance-bearing
-    observations; they cannot replace the target, grant authority, or change
-    verification truth. Groups preserve target observations first followed by
-    corroborating runs in caller order. No value or provenance entry is
-    deduplicated.
+    Groups are created in first-observation order using only exact structured
+    action-name/field-name equality. Target observations come first, followed
+    by corroborating extractions in caller order. Values and provenance are
+    never deduplicated. The target source_extraction remains the derivation anchor.
     """
     if not isinstance(extraction, ParameterExtraction):
         raise TypeError(
@@ -310,17 +331,17 @@ def analyze_parameter_generalization(
         )
     if not isinstance(corroborating, tuple):
         raise TypeError("corroborating must be a tuple of ParameterExtraction values")
-    for index, supporting in enumerate(corroborating):
-        if not isinstance(supporting, ParameterExtraction):
+    for index, item in enumerate(corroborating):
+        if not isinstance(item, ParameterExtraction):
             raise TypeError(
                 "corroborating must contain only ParameterExtraction values; "
-                f"index {index} is {type(supporting).__name__}"
+                f"index {index} is {type(item).__name__}"
             )
-    candidates = extraction.candidates + tuple(
-        candidate for supporting in corroborating for candidate in supporting.candidates
-    )
     return ParameterGeneralization(
         source_extraction=extraction,
-        groups=_build_groups(candidates),
-        supporting_extractions=corroborating,
+        corroborating_extractions=corroborating,
+        groups=_build_groups(
+            extraction.candidates,
+            *tuple(item.candidates for item in corroborating),
+        ),
     )
