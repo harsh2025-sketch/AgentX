@@ -13,7 +13,7 @@ import time
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from threading import Lock
-from typing import Any, Callable
+from typing import Any
 from uuid import UUID, uuid4
 
 from agentx.agent_loop import (
@@ -31,13 +31,13 @@ from agentx.capabilities.human_approval import (
 )
 from agentx.capabilities.runtime import CapabilityExecutionLoop, ClosedLoopOutcome
 from agentx.capabilities.verifier import VerificationRequirement
-from agentx.cognition.router import ExecutionLevel, RoutingEvidence
+from agentx.cognition.router import RoutingEvidence
 from agentx.cognition.task_manager import TaskManager
 from agentx.core.errors import AgentXError, ErrorCategory, Retryability
 from agentx.core.events import Event
 from agentx.core.execution import CancellationSource, ExecutionContext
 from agentx.core.result import Result
-from agentx.core.runtime_ui_events import RuntimeUiEvent, project_event_for_ui
+from agentx.core.runtime_ui_events import RuntimeUiEvent, RuntimeUiEventKind, project_event_for_ui
 from agentx.core.tasks import Task
 
 __all__ = [
@@ -114,10 +114,7 @@ class VoiceRuntimeTelemetry:
             runtime_instance_id=self._runtime_instance_id,
             sequence=self._sequence,
             timestamp=datetime.now(UTC),
-            kind=__import__(
-                "agentx.core.runtime_ui_events",
-                fromlist=["RuntimeUiEventKind"],
-            ).RuntimeUiEventKind.EVENT,
+            kind=RuntimeUiEventKind.EVENT,
             state=state,
             correlation_id=None if context is None else context.correlation_id,
             task_id=None if task is None else task.task_id.to_str(),
@@ -168,10 +165,18 @@ class VoiceTaskBridge:
         plan: VoiceTaskPlan,
     ) -> Result[OrchestrationOutcome, AgentXError]:
         if not isinstance(transcript, str) or not transcript.strip():
-            return Result.failure(_error("empty_transcript", "voice transcript is empty", ErrorCategory.VALIDATION))
+            return Result.failure(_error(
+                    "empty_transcript",
+                    "voice transcript is empty",
+                    ErrorCategory.VALIDATION,
+                ))
         if len(transcript) > 64_000:
             return Result.failure(
-                _error("transcript_too_large", "voice transcript exceeds bound", ErrorCategory.RESOURCE)
+                _error(
+                    "transcript_too_large",
+                    "voice transcript exceeds bound",
+                    ErrorCategory.RESOURCE,
+                )
             )
         if not isinstance(plan, VoiceTaskPlan):
             raise TypeError("plan must be VoiceTaskPlan")
@@ -307,18 +312,30 @@ class SpokenConfirmationProtocol:
         with self._lock:
             if pending.nonce in self._consumed:
                 return Result.failure(
-                    _error("confirmation_replay", "spoken confirmation was already consumed", ErrorCategory.CONFLICT)
+                    _error(
+                        "confirmation_replay",
+                        "spoken confirmation was already consumed",
+                        ErrorCategory.CONFLICT,
+                    )
                 )
             active = self._active.get(pending.nonce)
             if active != pending:
                 return Result.failure(
-                    _error("confirmation_stale", "spoken confirmation is no longer active", ErrorCategory.CONFLICT)
+                    _error(
+                        "confirmation_stale",
+                        "spoken confirmation is no longer active",
+                        ErrorCategory.CONFLICT,
+                    )
                 )
             if current > pending.expires_monotonic:
                 self._active.pop(pending.nonce, None)
                 self._consumed.add(pending.nonce)
                 return Result.failure(
-                    _error("confirmation_expired", "spoken confirmation expired", ErrorCategory.TIMEOUT)
+                    _error(
+                        "confirmation_expired",
+                        "spoken confirmation expired",
+                        ErrorCategory.TIMEOUT,
+                    )
                 )
             approve_phrase = f"confirm {pending.nonce}".casefold()
             deny_phrase = f"reject {pending.nonce}".casefold()
