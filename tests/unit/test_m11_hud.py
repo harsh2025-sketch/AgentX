@@ -64,23 +64,27 @@ def _event(
     )
 
 
+def _state(model: HudModel) -> HudState:
+    return model.snapshot.state
+
+
 def test_hud_reflects_ordered_runtime_truth_and_rejects_late_events() -> None:
     runtime = uuid4()
     model = HudModel()
     assert model.apply(_event(runtime, 0, "voice.listening"))
-    assert model.snapshot.state is HudState.LISTENING
+    assert _state(model) is HudState.LISTENING
     assert model.apply(_event(runtime, 1, "voice.reasoning"))
-    assert model.snapshot.state is HudState.REASONING
+    assert _state(model) is HudState.REASONING
     assert model.apply(_event(runtime, 2, "action.requested"))
-    assert model.snapshot.state is HudState.EXECUTING
+    assert _state(model) is HudState.EXECUTING
     assert model.apply(_event(runtime, 3, "voice.verifying"))
-    assert model.snapshot.state is HudState.VERIFYING
+    assert _state(model) is HudState.VERIFYING
     assert model.apply(_event(runtime, 4, "voice.verified", verified=True))
-    assert model.snapshot.state is HudState.IDLE
+    assert _state(model) is HudState.IDLE
     assert model.snapshot.verified is True
 
     assert not model.apply(_event(runtime, 2, "voice.failed"))
-    assert model.snapshot.state is HudState.IDLE
+    assert _state(model) is HudState.IDLE
     assert model.snapshot.verified is True
 
 
