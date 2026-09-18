@@ -58,6 +58,7 @@ from agentx.capabilities.webdriver_browser_driver import (
     WebDriverBrowserProvider,
 )
 from agentx.kernel.permissions import Permission
+from agentx.kernel.risk import RiskLevel
 from tests.support.orchestration_harness import OrchestrationHarness, make_envelope
 
 pytestmark = pytest.mark.skipif(
@@ -224,7 +225,7 @@ def test_real_browser_governed_form_session_security_and_workflow(tmp_path: Path
                 ),
                 envelope=make_envelope(
                     max_machine_actions=64,
-                    max_risk_level=__import__("agentx.kernel.risk", fromlist=["RiskLevel"]).RiskLevel.R4,
+                    max_risk_level=RiskLevel.R4,
                 ),
                 register_capability=False,
             )
