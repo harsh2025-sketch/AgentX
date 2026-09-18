@@ -16,6 +16,7 @@ from uuid import UUID
 
 from agentx.agent_loop import OrchestrationStatus
 from agentx.capabilities.filesystem import (
+    FILESYSTEM_READ_TEXT_IDENTITY,
     FilesystemReadTextCapability,
     read_text_request,
 )
@@ -36,7 +37,8 @@ from agentx.cognition.reasoner import Reasoner
 from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.core.causal_experience import CausalExperience, CausalOutcome, ExperienceState
 from agentx.core.events import ActionPayload, ObservationPayload, VerificationPayload
-from agentx.core.ids import EpisodeId
+from agentx.core.errors import AgentXError, ErrorCategory, Retryability
+from agentx.core.ids import EpisodeId, TaskId
 from agentx.core.procedure_lifecycle import (
     ProcedureLifecycleReason,
     assess_procedure_transition,
@@ -56,7 +58,7 @@ from agentx.execution_metrics import (
 from agentx.instrumented_model_provider import InstrumentedModelProvider
 from agentx.infrastructure.persistence import SQLiteDatabase
 from agentx.infrastructure.procedure_store import ProcedureStore
-from agentx.kernel.permissions import Permission
+from agentx.kernel.permissions import AuthorityContext, Permission
 from agentx.plan_execution import BoundPlanAction, GovernedPlanExecutor, GovernedPlanningStrategy
 from agentx.planning_strategy import PlanningStrategy
 from agentx.procedure_promotion import (
@@ -94,11 +96,9 @@ class _ReadBinder:
         self.expected = expected
         self.calls: list[str] = []
 
-    def bind(self, node: DecompositionNode) -> Result[BoundPlanAction, object]:
+    def bind(self, node: DecompositionNode) -> Result[BoundPlanAction, AgentXError]:
         self.calls.append(node.objective)
         if node.objective != "read-input":
-            from agentx.core.errors import AgentXError, ErrorCategory, Retryability
-
             return Result.failure(
                 AgentXError(
                     code="m4.unsupported_plan_node",
@@ -162,9 +162,7 @@ class _ColdPlanProvider:
         )
 
 
-def _plan(task_id, objective: str) -> TaskDecomposition:
-    from agentx.core.ids import TaskId
-
+def _plan(task_id: TaskId, objective: str) -> TaskDecomposition:
     child = TaskId.create()
     return TaskDecomposition.create(
         root_task_id=task_id,
@@ -369,11 +367,7 @@ def test_m4_cold_l4_compile_validate_promote_restart_and_warm_l2(tmp_path: Path)
     parameter_name = _parameter_name(compilation.graph)
     runtime_graph = materialize_compiled_procedure_graph(
         compilation.graph,
-        {
-            "filesystem.read_text@1.0.0": (
-                FilesystemReadTextCapability().descriptor.identity
-            )
-        },
+        {"filesystem.read_text@1.0.0": FILESYSTEM_READ_TEXT_IDENTITY},
     )
     candidate = ProcedureRecord.create(
         procedure_id=_PROCEDURE_ID,
@@ -394,17 +388,10 @@ def test_m4_cold_l4_compile_validate_promote_restart_and_warm_l2(tmp_path: Path)
         harness=GovernedCompiledSkillValidationHarness(
             candidate=candidate,
             executor=_executor(
-                authority=__import__(
-                    "agentx.kernel.permissions",
-                    fromlist=["AuthorityContext"],
-                ).AuthorityContext(
-                    permissions=frozenset({Permission.READ})
-                ),
+                authority=AuthorityContext(permissions=frozenset({Permission.READ})),
                 max_actions=8,
             ),
-            request_factories={
-                FilesystemReadTextCapability().descriptor.identity: _read_factory
-            },
+            request_factories={FILESYSTEM_READ_TEXT_IDENTITY: _read_factory},
         ),
         policy=ValidationPolicy(
             min_verified_successes=2,
@@ -416,9 +403,7 @@ def test_m4_cold_l4_compile_validate_promote_restart_and_warm_l2(tmp_path: Path)
         (
             ProcedureValidationCase(
                 case_id="m4-variant-gamma",
-                run_id=__import__("agentx.core.ids", fromlist=["TaskId"]).TaskId(
-                    UUID("43000000-0000-4000-8000-000000000001")
-                ),
+                run_id=TaskId(UUID("43000000-0000-4000-8000-000000000001")),
                 parameter_binding={parameter_name: str(validate_c)},
                 environment="m3-filesystem",
                 verification=VerificationRequirement(
@@ -427,9 +412,7 @@ def test_m4_cold_l4_compile_validate_promote_restart_and_warm_l2(tmp_path: Path)
             ),
             ProcedureValidationCase(
                 case_id="m4-variant-delta",
-                run_id=__import__("agentx.core.ids", fromlist=["TaskId"]).TaskId(
-                    UUID("43000000-0000-4000-8000-000000000002")
-                ),
+                run_id=TaskId(UUID("43000000-0000-4000-8000-000000000002")),
                 parameter_binding={parameter_name: str(validate_d)},
                 environment="m3-filesystem",
                 verification=VerificationRequirement(
@@ -463,7 +446,9 @@ def test_m4_cold_l4_compile_validate_promote_restart_and_warm_l2(tmp_path: Path)
         ),
     )
     assert promotion.outcome is ProcedurePromotionOutcome.PROMOTED
-    assert store.get(_PROCEDURE_ID, 1).status is ProcedureStatus.ACTIVE
+    stored = store.get(_PROCEDURE_ID, 1)
+    assert stored is not None
+    assert stored.status is ProcedureStatus.ACTIVE
 
     # Fresh interpreter/process proves restart-safe durable ACTIVE reuse.
     child = subprocess.run(
