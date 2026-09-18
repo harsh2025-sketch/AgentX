@@ -244,23 +244,27 @@ def _cold_l4_read(
             max_actions=2,
         ),
     )
-    result = harness.agent_loop({ExecutionLevel.L4_PLANNED: strategy}).run(
-        harness.make_request(
-            task=task,
-            context=context,
-            routing_evidence=RoutingEvidence(known_composition_required=True),
-            requirement=VerificationRequirement(
-                {
-                    "text": expected,
-                    "byte_count": len(expected.encode("utf-8")),
-                }
-            ),
-            limits=default_limits(
-                max_total_attempts=1,
-                escalation_permitted=False,
-            ),
+    result = (
+        harness.agent_loop({ExecutionLevel.L4_PLANNED: strategy})
+        .run(
+            harness.make_request(
+                task=task,
+                context=context,
+                routing_evidence=RoutingEvidence(known_composition_required=True),
+                requirement=VerificationRequirement(
+                    {
+                        "text": expected,
+                        "byte_count": len(expected.encode("utf-8")),
+                    }
+                ),
+                limits=default_limits(
+                    max_total_attempts=1,
+                    escalation_permitted=False,
+                ),
+            )
         )
-    ).unwrap()
+        .unwrap()
+    )
 
     assert result.status is OrchestrationStatus.SUCCEEDED
     assert result.final_level is ExecutionLevel.L4_PLANNED
@@ -283,9 +287,7 @@ def _cold_l4_read(
         verification_source="m4.cold.l4.independent_readback",
         verification_reference=correlation_id,
     )
-    record = metrics.finish(
-        ended_at=_T0 + timedelta(minutes=offset, seconds=1)
-    )
+    record = metrics.finish(ended_at=_T0 + timedelta(minutes=offset, seconds=1))
     assert record.model_calls == 1
     assert record.model_tokens == 18
     assert record.machine_actions == harness.budget.snapshot().machine_actions
@@ -406,18 +408,14 @@ def test_m4_cold_l4_compile_validate_promote_restart_and_warm_l2(tmp_path: Path)
                 run_id=TaskId(UUID("43000000-0000-4000-8000-000000000001")),
                 parameter_binding={parameter_name: str(validate_c)},
                 environment="m3-filesystem",
-                verification=VerificationRequirement(
-                    {"text": "gamma", "byte_count": 5}
-                ),
+                verification=VerificationRequirement({"text": "gamma", "byte_count": 5}),
             ),
             ProcedureValidationCase(
                 case_id="m4-variant-delta",
                 run_id=TaskId(UUID("43000000-0000-4000-8000-000000000002")),
                 parameter_binding={parameter_name: str(validate_d)},
                 environment="m3-filesystem",
-                verification=VerificationRequirement(
-                    {"text": "delta", "byte_count": 5}
-                ),
+                verification=VerificationRequirement({"text": "delta", "byte_count": 5}),
             ),
         ),
     )
