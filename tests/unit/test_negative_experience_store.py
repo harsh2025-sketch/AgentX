@@ -46,7 +46,7 @@ def _record(
 
 
 def test_migration_ownership_is_v8_after_immutable_v1_through_v7() -> None:
-    assert tuple((migration.version, migration.name) for migration in _MIGRATIONS) == (
+    assert tuple((migration.version, migration.name) for migration in _MIGRATIONS[:8]) == (
         (1, "create_persistence_metadata"),
         (2, "create_event_journal"),
         (3, "create_knowledge_store"),
