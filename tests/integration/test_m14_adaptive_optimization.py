@@ -92,9 +92,7 @@ def _record(
     if cost is None:
         cost_unit = None
     evidence_id = (
-        UUID(int=evidence_int)
-        if evidence_int is not None
-        else UUID(int=int(at.timestamp()) + 1)
+        UUID(int=evidence_int) if evidence_int is not None else UUID(int=int(at.timestamp()) + 1)
     )
     performance = StrategyPerformanceEvidence(
         evidence_id=evidence_id,
@@ -650,9 +648,7 @@ def test_corrupt_active_policy_fails_back_to_deterministic_baseline(tmp_path: Pa
             ("{corrupt-policy-event",),
         )
 
-    selection = OptimizationPolicyRuntime(
-        OptimizationPolicyStore(_journal(path))
-    ).choose(
+    selection = OptimizationPolicyRuntime(OptimizationPolicyStore(_journal(path))).choose(
         context=_context(),
         available=(ExecutionLevel.L1_DIRECT, ExecutionLevel.L4_PLANNED),
     )
