@@ -51,6 +51,7 @@ from agentx.kernel.risk import RiskLevel
 
 __all__ = [
     "BoundedModelGateway",
+    "GovernedGatewayModelProvider",
     "FallbackPolicy",
     "ModelAttemptReservation",
     "ModelCapabilityRegistry",
@@ -316,6 +317,85 @@ def _stop_failure(context: ExecutionContext, *, clock: MonotonicClock | None) ->
     return None
 
 
+class GovernedGatewayModelProvider:
+    """Run-bound ModelProvider adapter over the governed gateway.
+
+    This is the canonical bridge for existing Reasoner composition. The
+    execution context, reservation, retry policy, and fallback policy are
+    trusted composition inputs fixed at construction; prompt/model output
+    cannot mutate them.
+    """
+
+    __slots__ = (
+        "_context",
+        "_descriptor",
+        "_fallback",
+        "_gateway",
+        "_primary_model",
+        "_reservation",
+        "_retry",
+    )
+
+    def __init__(
+        self,
+        *,
+        gateway: BoundedModelGateway,
+        primary_model: ModelId,
+        context: ExecutionContext,
+        reservation: ModelAttemptReservation,
+        retry: RetryPolicy | None = None,
+        fallback: FallbackPolicy | None = None,
+    ) -> None:
+        if not isinstance(gateway, BoundedModelGateway):
+            raise TypeError("gateway must be a BoundedModelGateway")
+        if not isinstance(primary_model, ModelId):
+            raise TypeError("primary_model must be a ModelId")
+        if not isinstance(context, ExecutionContext):
+            raise TypeError("context must be an ExecutionContext")
+        if not isinstance(reservation, ModelAttemptReservation):
+            raise TypeError("reservation must be a ModelAttemptReservation")
+        descriptor = gateway.provider_descriptor_for(primary_model)
+        if descriptor is None:
+            raise ValueError("primary_model must be registered in the model gateway")
+        self._gateway = gateway
+        self._primary_model = primary_model
+        self._context = context
+        self._reservation = reservation
+        self._retry = RetryPolicy() if retry is None else retry
+        self._fallback = FallbackPolicy() if fallback is None else fallback
+        self._descriptor = ProviderDescriptor(
+            provider_id=descriptor.provider_id,
+            capabilities=descriptor.capabilities,
+            models=(
+                model
+                for model in descriptor.models
+                if model.model_id == primary_model
+            ),
+        )
+
+    @property
+    def descriptor(self) -> ProviderDescriptor:
+        return self._descriptor
+
+    def invoke(self, request: ModelRequest) -> Result[ModelResponse, AgentXError]:
+        if not isinstance(request, ModelRequest) or request.model_id != self._primary_model:
+            return Result.failure(
+                provider_failure(
+                    ProviderFailureKind.INVALID_REQUEST,
+                    provider_id=self._primary_model.provider_id,
+                    model_id=self._primary_model,
+                    message="gateway provider received a request for a different model",
+                )
+            )
+        return self._gateway.invoke(
+            request,
+            self._context,
+            reservation=self._reservation,
+            retry=self._retry,
+            fallback=self._fallback,
+        )
+
+
 class BoundedModelGateway:
     """Explicit bounded multi-provider composition for one canonical run."""
 
@@ -343,6 +423,10 @@ class BoundedModelGateway:
     @property
     def health(self) -> ProviderHealthTracker:
         return self._health
+
+    def provider_descriptor_for(self, model_id: ModelId) -> ProviderDescriptor | None:
+        provider = self._registry.provider_for(model_id)
+        return None if provider is None else provider.descriptor
 
     def invoke(
         self,
