@@ -138,9 +138,7 @@ class _Surface:
         self.values[node.node_id.value] = option_value
         return Result.success(BrowserActionOutcome(True, "selected"))
 
-    def submit_selected(
-        self, node: BrowserDomNodeRef
-    ) -> Result[BrowserActionOutcome, AgentXError]:
+    def submit_selected(self, node: BrowserDomNodeRef) -> Result[BrowserActionOutcome, AgentXError]:
         self.calls.append("submit_selected")
         self.target = _target("https://example.invalid/success")
         return Result.success(BrowserActionOutcome(True, "submitted"))
