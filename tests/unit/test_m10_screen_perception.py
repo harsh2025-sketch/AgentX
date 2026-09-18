@@ -6,7 +6,11 @@ from uuid import uuid4
 import pytest
 
 from agentx.capabilities.windows import _screen_native
-from agentx.capabilities.windows.provider import (\n    PlatformFacts,\n    WindowsSupport,\n    evaluate_windows_support,\n)
+from agentx.capabilities.windows.provider import (
+    PlatformFacts,
+    WindowsSupport,
+    evaluate_windows_support,
+)
 from agentx.capabilities.windows.screen_capture import (
     ScreenFrame,
     ScreenRect,
@@ -14,7 +18,8 @@ from agentx.capabilities.windows.screen_capture import (
     WindowsScreenCaptureCapability,
     screen_capture_request,
 )
-from agentx.core.errors import AgentXError\nfrom agentx.core.execution import CancellationSource, ExecutionContext
+from agentx.core.errors import AgentXError
+from agentx.core.execution import CancellationSource, ExecutionContext
 from agentx.core.knowledge import ProvenanceKind, ProvenanceReference
 from agentx.core.result import Result
 from agentx.kernel.permissions import Permission
@@ -62,7 +67,9 @@ class FakeScreenSurface:
         self.raw = raw
         self.calls = 0
 
-    def capture(\n        self, *, max_pixels: int\n    ) -> Result[_screen_native.RawScreenFrame, AgentXError]:
+    def capture(
+        self, *, max_pixels: int
+    ) -> Result[_screen_native.RawScreenFrame, AgentXError]:
         self.calls += 1
         assert self.raw.width * self.raw.height <= max_pixels
         return Result.success(self.raw)
