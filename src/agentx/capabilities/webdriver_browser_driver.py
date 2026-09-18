@@ -56,6 +56,11 @@ from agentx.capabilities.browser_forms import (
     BrowserFormOperation,
     BrowserFormsCapability,
 )
+from agentx.capabilities.browser_session_actions import (
+    BrowserDownloadObservation,
+    BrowserSessionCapability,
+    BrowserSessionOperation,
+)
 from agentx.capabilities.browser_provider import (
     BrowserProviderAvailability,
     BrowserProviderDescriptor,
@@ -171,6 +176,7 @@ class WebDriverBrowserProvider:
     __slots__ = (
         "_capabilities",
         "_connected",
+        "_download_directory",
         "_endpoint",
         "_session_id",
         "_timeout",
@@ -194,6 +200,7 @@ class WebDriverBrowserProvider:
             raise ValueError("download_directory must be an absolute Path or None")
         self._endpoint = endpoint.rstrip("/")
         self._timeout = float(timeout_seconds)
+        self._download_directory = download_directory
         self._connected = False
         self._session_id = self._create_session(
             headless=headless,
@@ -219,6 +226,10 @@ class WebDriverBrowserProvider:
             *(
                 BrowserFormsCapability(operation=operation, provider=self, driver=self)
                 for operation in BrowserFormOperation
+            ),
+            *(
+                BrowserSessionCapability(operation=operation, provider=self, driver=self)
+                for operation in BrowserSessionOperation
             ),
         )
 
@@ -544,6 +555,70 @@ class WebDriverBrowserProvider:
                     category=ErrorCategory.DEPENDENCY,
                 )
             )
+
+    def download_selected(
+        self, node: BrowserDomNodeRef, expected_filename: str
+    ) -> Result[BrowserActionOutcome, AgentXError]:
+        if self._download_directory is None:
+            return Result.failure(
+                _error(
+                    "browser.webdriver.download_directory_missing",
+                    "WebDriver download directory is not configured",
+                    category=ErrorCategory.PRECONDITION,
+                )
+            )
+        destination = self._download_directory / expected_filename
+        if destination.exists():
+            destination.unlink()
+        clicked = self.click_selected(node)
+        if clicked.is_failure:
+            return clicked
+        deadline = time.monotonic() + self._timeout
+        while time.monotonic() < deadline:
+            if destination.is_file() and destination.stat().st_size > 0:
+                return Result.success(
+                    BrowserActionOutcome(
+                        succeeded=True,
+                        message="WebDriver download completed",
+                    )
+                )
+            time.sleep(0.05)
+        return Result.failure(
+            _error(
+                "browser.webdriver.download_timeout",
+                "download artifact did not appear within the bounded timeout",
+                category=ErrorCategory.TIMEOUT,
+            )
+        )
+
+    def observe_download(
+        self, expected_filename: str
+    ) -> Result[BrowserDownloadObservation, AgentXError]:
+        if self._download_directory is None:
+            return Result.failure(
+                _error(
+                    "browser.webdriver.download_directory_missing",
+                    "WebDriver download directory is not configured",
+                    category=ErrorCategory.PRECONDITION,
+                )
+            )
+        path = self._download_directory / expected_filename
+        if not path.is_file():
+            return Result.failure(
+                _error(
+                    "browser.webdriver.download_missing",
+                    "download artifact was not found",
+                    category=ErrorCategory.NOT_FOUND,
+                )
+            )
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        return Result.success(
+            BrowserDownloadObservation(
+                filename=expected_filename,
+                size_bytes=path.stat().st_size,
+                sha256=digest,
+            )
+        )
 
     def window_handles(self) -> Result[tuple[str, ...], AgentXError]:
         try:
