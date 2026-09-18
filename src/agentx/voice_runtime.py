@@ -123,9 +123,7 @@ class VoiceRuntimeTelemetry:
             and context.correlation_id != correlation_id
         ):
             raise ValueError("context and explicit correlation_id disagree")
-        event_correlation_id = (
-            context.correlation_id if context is not None else correlation_id
-        )
+        event_correlation_id = context.correlation_id if context is not None else correlation_id
         event = RuntimeUiEvent(
             runtime_instance_id=self._runtime_instance_id,
             sequence=self._sequence,
