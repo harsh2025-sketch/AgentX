@@ -49,10 +49,10 @@ from agentx.kernel.risk import assess_risk
 __all__ = [
     "BrowserCookie",
     "BrowserDownloadObservation",
+    "BrowserSessionCapability",
     "BrowserSessionDriver",
     "BrowserSessionOperation",
     "BrowserSessionParams",
-    "BrowserSessionCapability",
     "delete_cookie_request",
     "download_selected_request",
     "set_cookie_request",
@@ -195,30 +195,27 @@ class BrowserSessionParams(CapabilityParams):
                 raise TypeError("selected_node must be BrowserDomNodeRef")
             if self.selected_node.target.target_id != self.target.target_id:
                 raise ValueError("selected_node must belong to the exact target")
-        if self.expected_filename is not None:
-            if (
-                not isinstance(self.expected_filename, str)
-                or not self.expected_filename
-                or PurePath(self.expected_filename).name != self.expected_filename
-                or len(self.expected_filename) > _MAX_FILENAME_LENGTH
-            ):
-                raise ValueError("expected_filename must be one bounded basename")
+        if self.expected_filename is not None and (
+            not isinstance(self.expected_filename, str)
+            or not self.expected_filename
+            or PurePath(self.expected_filename).name != self.expected_filename
+            or len(self.expected_filename) > _MAX_FILENAME_LENGTH
+        ):
+            raise ValueError("expected_filename must be one bounded basename")
         if self.cookie is not None and not isinstance(self.cookie, BrowserCookie):
             raise TypeError("cookie must be BrowserCookie")
-        if self.cookie_name is not None:
-            if (
-                not isinstance(self.cookie_name, str)
-                or not self.cookie_name
-                or self.cookie_name != self.cookie_name.strip()
-            ):
-                raise ValueError("cookie_name must be non-empty and trimmed")
-        if self.window_handle is not None:
-            if (
-                not isinstance(self.window_handle, str)
-                or not self.window_handle
-                or self.window_handle != self.window_handle.strip()
-            ):
-                raise ValueError("window_handle must be non-empty and trimmed")
+        if self.cookie_name is not None and (
+            not isinstance(self.cookie_name, str)
+            or not self.cookie_name
+            or self.cookie_name != self.cookie_name.strip()
+        ):
+            raise ValueError("cookie_name must be non-empty and trimmed")
+        if self.window_handle is not None and (
+            not isinstance(self.window_handle, str)
+            or not self.window_handle
+            or self.window_handle != self.window_handle.strip()
+        ):
+            raise ValueError("window_handle must be non-empty and trimmed")
 
     def to_dict(self) -> dict[str, JsonValue]:
         return {
