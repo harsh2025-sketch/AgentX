@@ -1,29 +1,32 @@
 # Independent AX-001–AX-600 Acceptance Audit
 
 Repository: `harsh2025-sketch/AgentX`  
-AUDIT_MAIN_SHA: `bcc0692246a981be5ae15c993b0c3e6512871b92`  
+AUDIT_MAIN_SHA: `5eb3c35598bddf6142523a8a0e34c23abcbb7f67`  
+Core-intelligence second-pass campaign: PR #173  
 Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved; audited acceptance is independent.
 
 ## Audit result
 
-- BEFORE: VERIFIED 230, NOT_AUDITED 132, IN_PROGRESS 5, BLOCKED 0, NOT_IMPLEMENTED 233.
-- AFTER: VERIFIED 380, NOT_AUDITED 0, IN_PROGRESS 9, BLOCKED 7, NOT_IMPLEMENTED 204.
-- Strict acceptance coverage: **380/600 (63.3%)**.
-- This is not a release-readiness percentage. Real-host/provider/device/product/release requirements remain separate.
+- BEFORE whole-project audit: VERIFIED 230, NOT_AUDITED 132, IN_PROGRESS 5, BLOCKED 0, NOT_IMPLEMENTED 233.
+- Baseline before this M1/M4/M7/M8 campaign: VERIFIED 380, NOT_AUDITED 0, IN_PROGRESS 9, BLOCKED 7, NOT_IMPLEMENTED 204.
+- AFTER this campaign: VERIFIED 411, NOT_AUDITED 0, IN_PROGRESS 1, BLOCKED 7, NOT_IMPLEMENTED 181.
+- Strict acceptance coverage: **411/600 (68.5%)**.
+- Target M1/M4/M7/M8 acceptance: **138/145 VERIFIED**.
+- This is not a release-readiness percentage. Real-provider/product/release requirements remain separate.
 
 ## Milestone dashboard
 
 | Milestone | Strict acceptance | Visual | In progress | Blocked | Not implemented |
 | --- | ---: | --- | ---: | ---: | ---: |
 | M0 Trusted Kernel | 40/40 | `████████████████████` | 0 | 0 | 0 |
-| M1 Agent Runtime | 42/45 | `███████████████████░` | 1 | 2 | 0 |
+| M1 Agent Runtime | 43/45 | `███████████████████░` | 0 | 2 | 0 |
 | M2 Hive and Memory | 40/40 | `████████████████████` | 0 | 0 | 0 |
 | M3 Procedure Compiler | 50/50 | `████████████████████` | 0 | 0 | 0 |
-| M4 Learning Efficiency | 21/30 | `██████████████░░░░░░` | 6 | 3 | 0 |
+| M4 Learning Efficiency | 27/30 | `██████████████████░░` | 0 | 3 | 0 |
 | M5 Self-Repair | 40/40 | `████████████████████` | 0 | 0 | 0 |
 | M6 Windows Capabilities | 55/55 | `████████████████████` | 0 | 0 | 0 |
-| M7 Browser Agent | 16/35 | `█████████░░░░░░░░░░░` | 1 | 0 | 18 |
-| M8 Models and Research | 28/35 | `████████████████░░░░` | 0 | 2 | 5 |
+| M7 Browser Agent | 35/35 | `████████████████████` | 0 | 0 | 0 |
+| M8 Models and Research | 33/35 | `███████████████████░` | 0 | 2 | 0 |
 | M9 Security | 20/35 | `███████████░░░░░░░░░` | 0 | 0 | 15 |
 | M10 World Model | 16/30 | `███████████░░░░░░░░░` | 0 | 0 | 14 |
 | M11 Voice and HUD | 2/25 | `██░░░░░░░░░░░░░░░░░░` | 0 | 0 | 23 |
@@ -37,17 +40,17 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 
 - **E0** assertion/documentation only or no implementation; **E1** implementation; **E2** unit-tested; **E3** integrated production path; **E4** end-to-end with independent verification; **E5** required real-host/provider/device proof.
 - A mock, fixture, loopback provider, API success return, PR text, or historical green run is not silently upgraded into real-environment acceptance.
-- M6 E5 evidence is specifically hosted Windows Server 2025 CI with independent Win32/process readback; it is **not** an interactive Windows desktop and is **not** the Windows 10/11 release matrix.
-- Live-model efficiency and real-model milestone acceptance remain blocked without configured real provider credentials. Browser/device/voice/release milestones are not inferred from contract foundations.
+- M6 E5 evidence remains hosted Windows Server 2025 and is not the Windows 10/11 release matrix.
+- M7 E5 evidence is actual headless Chrome on the hosted Windows runner against a deterministic localhost fixture. It proves real-browser mechanics, not arbitrary third-party account compatibility.
+- Live-model efficiency and real-model milestone acceptance remain BLOCKED without configured real provider credentials.
 
-## Key audit corrections
+## Core-intelligence second-pass corrections
 
-- M0 moved from NOT_AUDITED to task-level VERIFIED because the current Trusted-Kernel implementation, structural tests, concurrency checks, AX-040 adversarial audit, and governed capability path provide requirement-appropriate evidence.
-- AX-083, AX-084 and AX-085 do not retain blanket M1 release closure: the existing deterministic harness does not prove a real-world single-task vertical slice, and separate strategy tests are not by themselves one cross-strategy benchmark.
-- M4 metrics/reuse contracts and the concrete-provider metrics connection are accepted, but no scripted/loopback run is represented as live-model cold-vs-warm efficiency proof.
-- Browser text fill is recognized as partial N2.27 work with redaction and independent field-value readback; it does not prove complete form types, submission, a concrete browser driver, or a live multi-page workflow.
-- The concrete HTTP model adapter, secret binding, strict serialization/parsing, usage/error/timeout/cancellation behavior and bounded L5 single-acquisition path are accepted; live-provider vertical/milestone acceptance is not.
-- Foundation tasks for world state, audio/UI telemetry, event watching, device protocol, strategy evidence and capability-gap detection are accepted only at their narrow contract scope.
+- **M1:** AX-084 is now VERIFIED by one L0–L5 cross-strategy AgentLoop benchmark. AX-083 remains BLOCKED because the real-Chrome L1 slice is not a substitute for the strict full natural-goal/live model-research vertical; AX-085 remains blocked on AX-083.
+- **M4:** AX-197 and AX-199–AX-203 are VERIFIED by a cold L4 → causal experience → compile → varied validation → ACTIVE promotion → persistence → fresh-process restart → related L2 warm-reuse chain. AX-198/204/205 remain BLOCKED pending genuine real-provider measurements.
+- **M7:** AX-315 and AX-318–AX-335 are now VERIFIED. Production supports governed forms, explicit submission, upload/download, cookies/session state, tabs, recovery, health and bounded multi-page workflows; actual Chrome acceptance proves independent readback, privacy redaction and hostile-page authority isolation.
+- **M8:** AX-354, AX-357–AX-359 and AX-368 are VERIFIED. The bounded model gateway integrates retry/fallback/health/capability selection with canonical Reasoner/ResourceBudget, and verified research can enter execution context only as inert data. AX-369/370 remain BLOCKED on a genuine external provider.
+- The second pass also caught and removed a production `subprocess` launch seam from the WebDriver adapter. ChromeDriver lifecycle now exists only in test support, preserving AX-040's production dynamic-execution boundary.
 
 ## Per-task audit
 
@@ -135,9 +138,9 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | AX-080 | M1 | hostile routing metadata inertness | COMPLETE | VERIFIED | VERIFIED | E3 | NONE |  |
 | AX-081 | M1 | task/runtime adversarial tests | COMPLETE | VERIFIED | VERIFIED | E3 | NONE |  |
 | AX-082 | M1 | task/runtime architecture tests | COMPLETE | VERIFIED | VERIFIED | E3 | NONE |  |
-| AX-083 | M1 | real-world single-task vertical slice | PARTIAL | VERIFIED | BLOCKED | E3 | REAL ENVIRONMENT REQUIRED | configured real model/research provider credentials and a reproducible live environment |
-| AX-084 | M1 | cross-strategy orchestration benchmark | PARTIAL | VERIFIED | IN_PROGRESS | E3 | TEST/EVIDENCE MISSING |  |
-| AX-085 | M1 | M1 release acceptance proof | NOT_IMPLEMENTED | VERIFIED | BLOCKED | E3 | BLOCKED BY DEPENDENCY | depends on unresolved AX-083/AX-084 strict acceptance |
+| AX-083 | M1 | real-world single-task vertical slice | PARTIAL | BLOCKED | BLOCKED | E4 | REAL ENVIRONMENT REQUIRED | configured real model/research provider credentials and a reproducible live natural-goal environment |
+| AX-084 | M1 | cross-strategy orchestration benchmark | PARTIAL | IN_PROGRESS | VERIFIED | E4 | NONE |  |
+| AX-085 | M1 | M1 release acceptance proof | NOT_IMPLEMENTED | BLOCKED | BLOCKED | E4 | REAL ENVIRONMENT REQUIRED | depends on unresolved AX-083 strict acceptance |
 | AX-086 | M2 | Episode identity | COMPLETE | VERIFIED | VERIFIED | E3 | NONE |  |
 | AX-087 | M2 | Episode record | COMPLETE | VERIFIED | VERIFIED | E3 | NONE |  |
 | AX-088 | M2 | Episode outcome vocabulary | COMPLETE | VERIFIED | VERIFIED | E3 | NONE |  |
@@ -249,15 +252,15 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | AX-194 | M4 | deterministic experiment serialization | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-195 | M4 | evidence non-authority invariants | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-196 | M4 | connect metrics to real model provider | NOT_IMPLEMENTED | IN_PROGRESS | VERIFIED | E3 | NONE |  |
-| AX-197 | M4 | execute unknown cold task | NOT_IMPLEMENTED | NOT_IMPLEMENTED | IN_PROGRESS | E2 | INTEGRATION MISSING |  |
-| AX-198 | M4 | collect real L4/L5 metrics | NOT_IMPLEMENTED | NOT_IMPLEMENTED | BLOCKED | E2 | REAL ENVIRONMENT REQUIRED | configured real model/research provider credentials and a reproducible live environment |
-| AX-199 | M4 | compile cold experience | NOT_IMPLEMENTED | NOT_IMPLEMENTED | IN_PROGRESS | E2 | INTEGRATION MISSING |  |
-| AX-200 | M4 | validate candidate with variations | NOT_IMPLEMENTED | NOT_IMPLEMENTED | IN_PROGRESS | E2 | INTEGRATION MISSING |  |
-| AX-201 | M4 | promote learned procedure | NOT_IMPLEMENTED | NOT_IMPLEMENTED | IN_PROGRESS | E2 | INTEGRATION MISSING |  |
-| AX-202 | M4 | restart AgentX | NOT_IMPLEMENTED | NOT_IMPLEMENTED | IN_PROGRESS | E2 | INTEGRATION MISSING |  |
-| AX-203 | M4 | solve related warm task via reuse | NOT_IMPLEMENTED | NOT_IMPLEMENTED | IN_PROGRESS | E2 | INTEGRATION MISSING |  |
-| AX-204 | M4 | demonstrate material model-call/cost reduction | NOT_IMPLEMENTED | NOT_IMPLEMENTED | BLOCKED | E2 | REAL ENVIRONMENT REQUIRED | configured real model/research provider credentials and a reproducible live environment |
-| AX-205 | M4 | publish reproducible cold-vs-warm benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | BLOCKED | E2 | REAL ENVIRONMENT REQUIRED | configured real model/research provider credentials and a reproducible live environment |
+| AX-197 | M4 | execute unknown cold task | NOT_IMPLEMENTED | IN_PROGRESS | VERIFIED | E4 | NONE |  |
+| AX-198 | M4 | collect real L4/L5 metrics | NOT_IMPLEMENTED | BLOCKED | BLOCKED | E4 | REAL ENVIRONMENT REQUIRED | configured real model provider credentials and reproducible cold/warm live environment |
+| AX-199 | M4 | compile cold experience | NOT_IMPLEMENTED | IN_PROGRESS | VERIFIED | E4 | NONE |  |
+| AX-200 | M4 | validate candidate with variations | NOT_IMPLEMENTED | IN_PROGRESS | VERIFIED | E4 | NONE |  |
+| AX-201 | M4 | promote learned procedure | NOT_IMPLEMENTED | IN_PROGRESS | VERIFIED | E4 | NONE |  |
+| AX-202 | M4 | restart AgentX | NOT_IMPLEMENTED | IN_PROGRESS | VERIFIED | E4 | NONE |  |
+| AX-203 | M4 | solve related warm task via reuse | NOT_IMPLEMENTED | IN_PROGRESS | VERIFIED | E4 | NONE |  |
+| AX-204 | M4 | demonstrate material model-call/cost reduction | NOT_IMPLEMENTED | BLOCKED | BLOCKED | E4 | REAL ENVIRONMENT REQUIRED | configured real model provider credentials and reproducible cold/warm live environment |
+| AX-205 | M4 | publish reproducible cold-vs-warm benchmark | NOT_IMPLEMENTED | BLOCKED | BLOCKED | E4 | REAL ENVIRONMENT REQUIRED | configured real model provider credentials and reproducible cold/warm live environment |
 | AX-206 | M5 | failure taxonomy | COMPLETE | VERIFIED | VERIFIED | E3 | NONE |  |
 | AX-207 | M5 | transient-failure classification | COMPLETE | VERIFIED | VERIFIED | E3 | NONE |  |
 | AX-208 | M5 | environment-unavailable classification | COMPLETE | VERIFIED | VERIFIED | E3 | NONE |  |
@@ -367,27 +370,27 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | AX-312 | M7 | independent navigation verification | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-313 | M7 | cross-origin redirect fail-closed policy | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-314 | M7 | hostile webpage content inertness | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
-| AX-315 | M7 | governed text/form entry — N2.27 | NOT_IMPLEMENTED | NOT_IMPLEMENTED | IN_PROGRESS | E3 | INTEGRATION MISSING |  |
+| AX-315 | M7 | governed text/form entry — N2.27 | NOT_IMPLEMENTED | IN_PROGRESS | VERIFIED | E5 | NONE |  |
 | AX-316 | M7 | text-field target binding | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
 | AX-317 | M7 | form-field value validation | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-318 | M7 | governed checkbox/radio interaction | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-319 | M7 | governed select/dropdown interaction | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-320 | M7 | governed submit action | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-321 | M7 | form-state verification | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-322 | M7 | submission-result verification | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-323 | M7 | multi-field form transaction | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-324 | M7 | upload contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | concrete real browser driver/environment where the exact requirement needs it |
-| AX-325 | M7 | upload verification | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | concrete real browser driver/environment where the exact requirement needs it |
-| AX-326 | M7 | download contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | concrete real browser driver/environment where the exact requirement needs it |
-| AX-327 | M7 | download verification | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | concrete real browser driver/environment where the exact requirement needs it |
-| AX-328 | M7 | cookie operation contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | concrete real browser driver/environment where the exact requirement needs it |
-| AX-329 | M7 | authentication-session boundary | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | concrete real browser driver/environment where the exact requirement needs it |
-| AX-330 | M7 | popup/new-tab handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | concrete real browser driver/environment where the exact requirement needs it |
-| AX-331 | M7 | browser recovery after DOM change | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | concrete real browser driver/environment where the exact requirement needs it |
-| AX-332 | M7 | browser capability health | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | concrete real browser driver/environment where the exact requirement needs it |
-| AX-333 | M7 | multi-page workflow execution | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | concrete real browser driver/environment where the exact requirement needs it |
-| AX-334 | M7 | hostile-page adversarial benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | concrete real browser driver/environment where the exact requirement needs it |
-| AX-335 | M7 | browser milestone acceptance benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | concrete real browser driver/environment where the exact requirement needs it |
+| AX-318 | M7 | governed checkbox/radio interaction | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-319 | M7 | governed select/dropdown interaction | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-320 | M7 | governed submit action | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-321 | M7 | form-state verification | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-322 | M7 | submission-result verification | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-323 | M7 | multi-field form transaction | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-324 | M7 | upload contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-325 | M7 | upload verification | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-326 | M7 | download contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-327 | M7 | download verification | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-328 | M7 | cookie operation contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-329 | M7 | authentication-session boundary | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-330 | M7 | popup/new-tab handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-331 | M7 | browser recovery after DOM change | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-332 | M7 | browser capability health | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-333 | M7 | multi-page workflow execution | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-334 | M7 | hostile-page adversarial benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-335 | M7 | browser milestone acceptance benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
 | AX-336 | M8 | provider-neutral ModelId | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-337 | M8 | provider-neutral model request | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-338 | M8 | model-response contract | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
@@ -406,12 +409,12 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | AX-351 | M8 | usage/token extraction | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
 | AX-352 | M8 | provider-error translation | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
 | AX-353 | M8 | rate-limit handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-354 | M8 | bounded retry policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-354 | M8 | bounded retry policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
 | AX-355 | M8 | timeout handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
 | AX-356 | M8 | provider cancellation | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-357 | M8 | fallback-provider policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-358 | M8 | provider-health tracking | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-359 | M8 | model-capability registry | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-357 | M8 | fallback-provider policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-358 | M8 | provider-health tracking | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-359 | M8 | model-capability registry | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
 | AX-360 | M8 | clean L5 exploratory strategy — N2.07 | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
 | AX-361 | M8 | exploratory task contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
 | AX-362 | M8 | research objective generation | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
@@ -420,9 +423,9 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | AX-365 | M8 | research provider boundary | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-366 | M8 | unverified research ingestion | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-367 | M8 | bounded research loop | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-368 | M8 | research -> execution handoff | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-369 | M8 | model-backed L4/L5 vertical | NOT_IMPLEMENTED | NOT_IMPLEMENTED | BLOCKED | E3 | REAL ENVIRONMENT REQUIRED | configured real model/research provider credentials and a reproducible live environment |
-| AX-370 | M8 | real-model milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED | BLOCKED | E3 | REAL ENVIRONMENT REQUIRED | configured real model/research provider credentials and a reproducible live environment |
+| AX-368 | M8 | research -> execution handoff | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-369 | M8 | model-backed L4/L5 vertical | NOT_IMPLEMENTED | BLOCKED | BLOCKED | E3 | REAL ENVIRONMENT REQUIRED | configured real model/research provider credentials and reproducible live environment |
+| AX-370 | M8 | real-model milestone acceptance | NOT_IMPLEMENTED | BLOCKED | BLOCKED | E3 | REAL ENVIRONMENT REQUIRED | configured real model/research provider credentials and reproducible live environment |
 | AX-371 | M9 | external-content-is-data invariant | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-372 | M9 | verified knowledge != authority invariant | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-373 | M9 | permission-injection resistance | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
@@ -656,25 +659,27 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 
 ## Remaining non-VERIFIED tasks by primary gap
 
-- **IMPLEMENTATION MISSING:** AX-318..AX-335, AX-354, AX-357..AX-359, AX-368, AX-422..AX-435, AX-437..AX-451, AX-453..AX-464, AX-466..AX-485, AX-488..AX-515, AX-518..AX-540, AX-542..AX-568, AX-570, AX-580..AX-594, AX-596..AX-597, AX-599..AX-600
-- **INTEGRATION MISSING:** AX-197, AX-199..AX-203, AX-315, AX-574
-- **TEST/EVIDENCE MISSING:** AX-084
-- **REAL ENVIRONMENT REQUIRED:** AX-083, AX-198, AX-204..AX-205, AX-369..AX-370, AX-576..AX-579
-- **SECURITY GAP:** AX-391..AX-405, AX-569, AX-595, AX-598
-- **BLOCKED BY DEPENDENCY:** AX-085
+- **IMPLEMENTATION MISSING:** AX-422, AX-423, AX-424, AX-425, AX-426, AX-427, AX-428, AX-429, AX-430, AX-431, AX-432, AX-433, AX-434, AX-435, AX-437, AX-438, AX-439, AX-440, AX-441, AX-442, AX-443, AX-444, AX-445, AX-446, AX-447, AX-448, AX-449, AX-450, AX-451, AX-453, AX-454, AX-455, AX-456, AX-457, AX-458, AX-459, AX-460, AX-461, AX-462, AX-463, AX-464, AX-466, AX-467, AX-468, AX-469, AX-470, AX-471, AX-472, AX-473, AX-474, AX-475, AX-476, AX-477, AX-478, AX-479, AX-480, AX-481, AX-482, AX-483, AX-484, AX-485, AX-488, AX-489, AX-490, AX-491, AX-492, AX-493, AX-494, AX-495, AX-496, AX-497, AX-498, AX-499, AX-500, AX-501, AX-502, AX-503, AX-504, AX-505, AX-506, AX-507, AX-508, AX-509, AX-510, AX-511, AX-512, AX-513, AX-514, AX-515, AX-518, AX-519, AX-520, AX-521, AX-522, AX-523, AX-524, AX-525, AX-526, AX-527, AX-528, AX-529, AX-530, AX-531, AX-532, AX-533, AX-534, AX-535, AX-536, AX-537, AX-538, AX-539, AX-540, AX-542, AX-543, AX-544, AX-545, AX-546, AX-547, AX-548, AX-549, AX-550, AX-551, AX-552, AX-553, AX-554, AX-555, AX-556, AX-557, AX-558, AX-559, AX-560, AX-561, AX-562, AX-563, AX-564, AX-565, AX-566, AX-567, AX-568, AX-570, AX-580, AX-581, AX-582, AX-583, AX-584, AX-585, AX-586, AX-587, AX-588, AX-589, AX-590, AX-591, AX-592, AX-593, AX-594, AX-596, AX-597, AX-599, AX-600
+- **INTEGRATION MISSING:** AX-574
+- **REAL ENVIRONMENT REQUIRED:** AX-083, AX-085, AX-198, AX-204, AX-205, AX-369, AX-370, AX-576, AX-577, AX-578, AX-579
+- **SECURITY GAP:** AX-391, AX-392, AX-393, AX-394, AX-395, AX-396, AX-397, AX-398, AX-399, AX-400, AX-401, AX-402, AX-403, AX-404, AX-405, AX-569, AX-595, AX-598
 
 ## Readiness dimensions
 
-- **Implementation coverage:** at least 396/600 tasks (66.0%) have enough current implementation/evidence to avoid `NOT_IMPLEMENTED`; this is a lower-bound implementation measure, not release readiness.
-- **Strict acceptance coverage:** 380/600 tasks (63.3%) are `VERIFIED` under the audit policy.
-- **Core-runtime readiness:** strong but incomplete. M0, M2, M3, M5 and M6 are fully accepted; M1 is 42/45 and M4 still lacks live cold-vs-warm efficiency proof.
-- **External-environment readiness:** incomplete. Live model/provider, real browser, Windows 10/11 matrix, voice hardware and Android/device evidence are not all available/proven.
-- **Product/UI readiness:** partial. Runtime/UI telemetry foundations exist, but voice/HUD and a usable natural-language product surface are not accepted.
-- **Release readiness:** not accepted. Installer/upgrade/privacy/benchmark/matrix work and AX-600 whole-system release acceptance remain open.
+- **Implementation coverage:** at least 419/600 tasks (69.8%) have enough current implementation/evidence to avoid `NOT_IMPLEMENTED`; this is a lower-bound implementation measure, not release readiness.
+- **Strict acceptance coverage:** 411/600 tasks (68.5%) are `VERIFIED` under the audit policy.
+- **Core-runtime readiness:** strong. M1 is 43/45; the remaining gap is the strict live natural-goal/model-research vertical and dependent release proof.
+- **Learning-efficiency readiness:** deterministic cold-to-warm learning/restart/reuse is accepted; material real-model call/cost reduction remains unproven without a configured provider.
+- **Real-model readiness:** provider-independent implementation is integrated and fail-closed; live acceptance is BLOCKED because no genuine external credential/service was available.
+- **Browser readiness:** deterministic real Chrome mechanics are accepted at M7 scope; external third-party account/site compatibility is not inferred from the localhost fixture.
+- **Security implications:** hostile model/web/research text remains inert, sensitive browser data is redacted, and the production WebDriver layer exposes neither JavaScript/CDP nor process-launch authority.
+- **Product readiness:** partial; other milestones outside this campaign still contain unimplemented work.
+- **Release readiness:** not accepted. M16 installer/upgrade/matrix/privacy/benchmark and AX-600 whole-system release work remain open.
+
 ## Machine-readable detail
 
 `docs/AUDIT_600.json` contains all 600 records with implementation path, test path, acceptance path, external dependency, gap, remediation, and final conclusion fields.
 
 ## Final-gate rule
 
-The audit PR must pass the canonical required workflow on its exact final head before review. This audit report intentionally does not embed a self-referential final head SHA or workflow run ID; those are reported on the PR/final handoff after the exact-head run. The PR must not be self-merged.
+The campaign PR must pass the canonical required workflow on its exact final head before review. The PR must not be self-merged.
