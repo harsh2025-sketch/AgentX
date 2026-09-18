@@ -12,6 +12,7 @@ from __future__ import annotations
 import os
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from datetime import timedelta
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -236,6 +237,7 @@ def test_real_browser_governed_form_session_security_and_workflow(tmp_path: Path
                     }
                 ),
                 envelope=make_envelope(
+                    max_wall_clock=timedelta(minutes=5),
                     max_machine_actions=64,
                     max_risk_level=RiskLevel.R4,
                 ),
@@ -360,6 +362,7 @@ def test_real_browser_governed_form_session_security_and_workflow(tmp_path: Path
             denied_harness = OrchestrationHarness(
                 authority=frozenset({Permission.READ}),
                 envelope=make_envelope(
+                    max_wall_clock=timedelta(minutes=1),
                     max_machine_actions=4,
                     max_risk_level=RiskLevel.R4,
                 ),
