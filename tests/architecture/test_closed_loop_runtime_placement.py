@@ -95,6 +95,8 @@ def test_runtime_loop_imports_only_canonical_contracts() -> None:
 
     allowed = {
         "agentx.capabilities.abi",
+        "agentx.capabilities.human_approval",
+        "agentx.capabilities.human_approval_evaluation",
         "agentx.capabilities.registry",
     }
     for module in agentx_imports:
