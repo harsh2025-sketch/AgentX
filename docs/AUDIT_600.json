@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "audit_main_sha": "bd7be90f2eab877fffcb353b675ffd7795b485d3",
+  "audit_main_sha": "7fe73850224160fdbd12883185e91e19a2d35991",
   "repository": "harsh2025-sketch/AgentX",
   "audited_task_count": 600,
   "before": {
@@ -9860,7 +9860,7 @@
     "initial_main_sha": "174dbdd2845e2dd01d36d5705ce08cd4a6764641",
     "m10_merge_sha": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
     "core_pr": 173,
-    "state": "Reconciled integration candidate; final independent main audit and exact-head CI still required.",
+    "state": "Historical core-integration campaign completed; its former candidate state is superseded by later accepted milestone integrations.",
     "conflict_policy": "Preserve current-main M9 evidence; merge only M1/M4/M7/M8 task evidence from PR #173; restore M10 from merged implementation; never rewrite reported_status."
   },
   "m11_campaign": {
@@ -9896,5 +9896,15 @@
       "interactive_hud_desktop": "NOT_RUN",
       "note": "Separate runnable entry points exist; these real-environment classes are not fabricated and are not required by the exact canonical M11 task titles."
     }
+  },
+  "final_m14_integration": {
+    "pr": 176,
+    "task_range": "AX-516..AX-540",
+    "reconciled_head_sha": "471446ece27bee9b0937f9c3a02034201d63e910",
+    "reconciled_head_quality_run": 35377935062,
+    "implementation_merge_sha": "7fe73850224160fdbd12883185e91e19a2d35991",
+    "post_merge_main_quality_run": 35379021464,
+    "post_merge_main_quality": "SUCCESS",
+    "note": "This SHA is the audited implementation baseline before the documentation-only final reconciliation PR; task acceptance counts are unchanged by that documentation reconciliation."
   }
 }
