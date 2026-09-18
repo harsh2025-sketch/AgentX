@@ -172,6 +172,41 @@ def test_repeated_verified_runs_are_classified_deterministic() -> None:
     )
 
 
+def test_corroborating_verified_runs_can_parameterize_a_single_action() -> None:
+    target: tuple[_Spec, ...] = (
+        (
+            "filesystem.read_text@1.0.0",
+            {"path": "train-a.txt", "max_bytes": 256},
+            CausalOutcome.VERIFIED,
+        ),
+    )
+    support: tuple[_Spec, ...] = (
+        (
+            "filesystem.read_text@1.0.0",
+            {"path": "train-b.txt", "max_bytes": 256},
+            CausalOutcome.VERIFIED,
+        ),
+    )
+
+    result = _compile(target, support=((_CORR_SUPPORT, support),))
+
+    assert result.outcome is SkillCompilationOutcome.CANDIDATE
+    assert {action.classification for action in result.regions.actions} == {
+        RegionClassification.DETERMINISTIC
+    }
+    assert result.graph is not None
+    action = next(
+        node for node in result.graph.nodes if node.kind.value == "action"
+    )
+    parameters = action.params["parameters"]
+    assert isinstance(parameters, dict)
+    descriptor = parameters["path"]
+    assert isinstance(descriptor, dict)
+    assert descriptor["observed_values"] == ["train-a.txt", "train-b.txt"]
+    assert descriptor["observation_count"] == 2
+    assert action.params["constants"] == {"max_bytes": 256}
+
+
 def test_pipeline_is_deterministic_across_independent_invocations() -> None:
     """Identical canonical history compiles to a byte-identical report."""
     first = _compile()
