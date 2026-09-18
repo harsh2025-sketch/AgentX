@@ -164,9 +164,9 @@ def test_m14_controlled_e2e_history_experiment_promotion_degradation_rollback(
     )
     assert OptimizationPolicyStore(_journal(path)).active_policy() == candidate
 
-    selected = OptimizationPolicyRuntime(
-        OptimizationPolicyStore(_journal(path))
-    ).choose(context=context, available=available)
+    selected = OptimizationPolicyRuntime(OptimizationPolicyStore(_journal(path))).choose(
+        context=context, available=available
+    )
     assert selected.level is ExecutionLevel.L4_PLANNED
 
     # A later controlled regression does not auto-promote or mutate authority.
@@ -174,11 +174,7 @@ def test_m14_controlled_e2e_history_experiment_promotion_degradation_rollback(
         LoggedPolicyCase(
             record=_outcome(
                 ident=200 + index,
-                level=(
-                    ExecutionLevel.L4_PLANNED
-                    if index % 2
-                    else ExecutionLevel.L1_DIRECT
-                ),
+                level=(ExecutionLevel.L4_PLANNED if index % 2 else ExecutionLevel.L1_DIRECT),
                 success=index % 2 == 0,
                 context=context,
             ),
