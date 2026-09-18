@@ -10,7 +10,10 @@ repair its own procedures over time.
 >
 > Implemented code includes the Trusted Kernel, bounded agent/runtime strategies,
 > persistent experience and semantic memory, procedure compilation/validation,
-> reuse and repair machinery, an acceptance-verified Windows-native capability fabric, and browser capability foundations.
+> reuse and repair machinery, an acceptance-verified Windows-native capability fabric,
+> an acceptance-verified governed browser layer, and a provider-independent bounded
+> model/research runtime. The strict audit currently records **411/600 VERIFIED** tasks;
+> M1/M4/M7/M8 together are **138/145 VERIFIED**.
 > These components do not yet establish the complete adaptive-learning workflow
 > or a ready-to-use desktop product. The CLI currently exposes package metadata,
 > not a natural-language agent session.
@@ -135,11 +138,11 @@ these owners without introducing forbidden subsystem imports.
 | ------------------------ | -------------------------------------------------------------- | --------------- |
 | `agentx.core`            | Shared contracts, task/execution state, evidence and world-state representations | implemented foundations |
 | `agentx.kernel`          | Permissions, risk, budgets, action gating, stop, secrets and audit | implemented; hardening continues |
-| `agentx.capabilities`    | Governed filesystem, Windows and browser operations | partial capability coverage |
+| `agentx.capabilities`    | Governed filesystem, Windows and browser operations | Windows + M7 browser milestone accepted |
 | `agentx.hive`            | Knowledge, provenance, scope, preferences and retrieval contracts | implemented foundations |
 | `agentx.procedures`      | Procedure graph/runtime, applicability and lifecycle | implemented; compilation/reuse/repair lifecycle accepted |
-| `agentx.cognition`       | Reasoner, model roles, decomposition, routing and research contracts | implemented; concrete runtime gaps remain |
-| `agentx.learning`        | Causal extraction, parameterization, synthesis and compilation | implemented foundations; live efficiency proof remains open |
+| `agentx.cognition`       | Reasoner, model roles, decomposition, routing and research contracts | provider-independent runtime integrated; live-provider acceptance remains blocked |
+| `agentx.learning`        | Causal extraction, parameterization, synthesis and compilation | cold-to-warm lifecycle accepted; genuine live-model efficiency proof remains open |
 | `agentx.infrastructure`  | Configuration, event journal, persistence and store adapters | implemented foundations |
 
 The canonical names, allowed direct top-level imports, and forbidden dependency
