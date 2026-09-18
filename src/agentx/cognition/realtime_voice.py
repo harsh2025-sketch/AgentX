@@ -278,6 +278,9 @@ class RealtimeVoiceSession:
         "_stt",
         "_tts",
         "_turn_bytes",
+        "_turn_elapsed",
+        "_silence_elapsed",
+        "_turn_end",
         "_vad",
     )
 
@@ -289,6 +292,7 @@ class RealtimeVoiceSession:
         stt: SpeechToTextProvider,
         tts: TextToSpeechProvider,
         vad: EnergyVoiceActivityDetector | None = None,
+        turn_end: TurnEndDetector | None = None,
     ) -> None:
         if not isinstance(capture, AudioCaptureStream):
             raise TypeError("capture must satisfy AudioCaptureStream")
@@ -302,12 +306,17 @@ class RealtimeVoiceSession:
         self._playback = playback
         self._stt = stt
         self._tts = tts
+        if turn_end is not None and not isinstance(turn_end, TurnEndDetector):
+            raise TypeError("turn_end must be TurnEndDetector or None")
         self._vad = EnergyVoiceActivityDetector() if vad is None else vad
+        self._turn_end = TurnEndDetector() if turn_end is None else turn_end
         self._session_id = SpeechSessionId.create()
         self._state = RealtimeSessionState.IDLE
         self._source = CancellationSource()
         self._frames: list[AudioFrame] = []
         self._turn_bytes = 0
+        self._turn_elapsed = 0.0
+        self._silence_elapsed = 0.0
         self._generation = 0
         self._event_sequence = 0
 
@@ -340,6 +349,9 @@ class RealtimeVoiceSession:
         self._source = CancellationSource()
         self._frames.clear()
         self._turn_bytes = 0
+        self._turn_elapsed = 0.0
+        self._silence_elapsed = 0.0
+        self._turn_end.reset()
         self._generation += 1
         return self._event(VoiceSessionEventKind.LISTENING)
 
@@ -374,7 +386,25 @@ class RealtimeVoiceSession:
         self._frames.append(frame)
         self._turn_bytes += frame.byte_count
         activity, rms = self._vad.classify(frame)
-        return Result.success(TurnObservation(activity=activity, rms=rms, turn_ended=False))
+        duration = frame.duration
+        frame_seconds = 0.0 if duration is None else duration.total_seconds()
+        self._turn_elapsed += frame_seconds
+        if activity is VoiceActivity.SPEECH:
+            self._silence_elapsed = 0.0
+        else:
+            self._silence_elapsed += frame_seconds
+        turn_ended = self._turn_end.observe(
+            activity,
+            elapsed_silence=self._silence_elapsed,
+            now=self._turn_elapsed,
+        )
+        return Result.success(
+            TurnObservation(
+                activity=activity,
+                rms=rms,
+                turn_ended=turn_ended,
+            )
+        )
 
     def finish_turn(self) -> Result[SttTranscript, AgentXError]:
         if self._state is not RealtimeSessionState.LISTENING or not self._frames:
@@ -472,6 +502,9 @@ class RealtimeVoiceSession:
         self._generation += 1
         self._frames.clear()
         self._turn_bytes = 0
+        self._turn_elapsed = 0.0
+        self._silence_elapsed = 0.0
+        self._turn_end.reset()
         return self._event(VoiceSessionEventKind.INTERRUPTED)
 
     def close(self) -> VoiceSessionEvent:
@@ -490,6 +523,9 @@ class RealtimeVoiceSession:
         self._generation += 1
         self._frames.clear()
         self._turn_bytes = 0
+        self._turn_elapsed = 0.0
+        self._silence_elapsed = 0.0
+        self._turn_end.reset()
         return self._event(VoiceSessionEventKind.CLOSED)
 
     def _event(
