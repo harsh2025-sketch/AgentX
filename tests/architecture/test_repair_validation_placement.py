@@ -272,7 +272,7 @@ def test_no_persistence_or_migration_surface() -> None:
         int(match) for match in re.findall(r"^\s*version=(\d+),", persistence_source, re.MULTILINE)
     ]
     assert migration_versions == sorted(migration_versions)
-    assert max(migration_versions) == 8
+    assert max(migration_versions) == 9
     assert "repair_validation" not in persistence_source
     assert "agentx_repair_validation" not in persistence_source
 
