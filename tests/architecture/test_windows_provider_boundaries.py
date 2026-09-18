@@ -8,7 +8,8 @@ Kernel.
 A5.02 introduced the isolated ``_native`` read-only Win32 discovery seam.
 A5.03 adds the isolated ``_uia_native`` read-only UI Automation seam. M6
 adds a one-shot read-only ``clipboard_native`` observation seam. M10 adds
-the isolated ``_screen_native`` read-only desktop observation seam. N2.19 adds
+the isolated ``_screen_native`` read-only desktop observation seam. M11 adds
+the isolated ``_audio_native`` WinMM device seam. N2.19 adds
 the single controlled ``native_mutation`` Win32 mutation seam. Exactly
 those native seam modules may import :mod:`ctypes` lazily; every Windows
 module still inherits the same no-third-party and no-module-level-native-load
@@ -37,8 +38,16 @@ _UIA_NATIVE = _WINDOWS_PKG / "_uia_native.py"
 _CLIPBOARD_NATIVE = _WINDOWS_PKG / "clipboard_native.py"
 _NATIVE_MUTATION = _WINDOWS_PKG / "native_mutation.py"
 _SCREEN_NATIVE = _WINDOWS_PKG / "_screen_native.py"
+_AUDIO_NATIVE = _WINDOWS_PKG / "_audio_native.py"
 _NATIVE_SEAMS = frozenset(
-    {_NATIVE, _UIA_NATIVE, _CLIPBOARD_NATIVE, _NATIVE_MUTATION, _SCREEN_NATIVE}
+    {
+        _NATIVE,
+        _UIA_NATIVE,
+        _CLIPBOARD_NATIVE,
+        _NATIVE_MUTATION,
+        _SCREEN_NATIVE,
+        _AUDIO_NATIVE,
+    }
 )
 
 # Native/automation imports banned in every Windows-package module except the
