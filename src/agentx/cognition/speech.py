@@ -251,7 +251,7 @@ class HttpSpeechConfig:
                 raise ValueError(f"{name} must be a bounded positive integer")
 
 
-class _Cancelled(Exception):
+class _CancelledError(Exception):
     pass
 
 
@@ -323,7 +323,7 @@ class _HttpSpeechAdapter:
             connection = connection_type(parsed.hostname, parsed.port, timeout=remaining)
             connection.request("POST", parsed.path, body=body, headers=headers)
             if token.is_cancelled:
-                raise _Cancelled
+                raise _CancelledError
             response = connection.getresponse()
             if response.status in {401, 403}:
                 return Result.failure(
@@ -357,7 +357,7 @@ class _HttpSpeechAdapter:
             total = 0
             while True:
                 if token.is_cancelled:
-                    raise _Cancelled
+                    raise _CancelledError
                 remaining = deadline - time.monotonic()
                 if remaining <= 0:
                     raise TimeoutError
@@ -383,7 +383,7 @@ class _HttpSpeechAdapter:
             ):
                 raise ValueError("provider response must be a JSON object")
             return Result.success(cast(dict[str, object], decoded))
-        except _Cancelled:
+        except _CancelledError:
             return Result.failure(
                 speech_failure(SpeechFailureKind.CANCELLED, "speech call cancelled")
             )
