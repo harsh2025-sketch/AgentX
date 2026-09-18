@@ -159,7 +159,7 @@ def test_full_lifecycle_write_reopen_assess_is_healthy(tmp_path: Path) -> None:
     assert assessment.disposition is RecoveryDisposition.HEALTHY
     assert assessment.startup_recommendation is StartupRecommendation.CONTINUE
     assert assessment.issues == ()
-    assert assessment.applied_schema_version == 8
+    assert assessment.applied_schema_version == 9
     by_store = {probe.store: probe for probe in assessment.probes}
     assert by_store["knowledge_store"].rows_checked == 1
     assert by_store["procedure_store"].rows_checked == 1
@@ -275,4 +275,4 @@ def test_tampered_migration_history_blocks_after_restart(tmp_path: Path) -> None
     )
     # The migration metadata table still physically holds the tampered state:
     # no assessment rewrote it.
-    assert _raw_value(path, "SELECT COUNT(*) FROM agentx_schema_migrations") == 7
+    assert _raw_value(path, "SELECT COUNT(*) FROM agentx_schema_migrations") == 8
