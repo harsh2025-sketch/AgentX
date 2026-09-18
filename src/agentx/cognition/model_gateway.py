@@ -366,9 +366,7 @@ class GovernedGatewayModelProvider:
         self._descriptor = ProviderDescriptor(
             provider_id=descriptor.provider_id,
             capabilities=descriptor.capabilities,
-            models=tuple(
-                model for model in descriptor.models if model.model_id == primary_model
-            ),
+            models=tuple(model for model in descriptor.models if model.model_id == primary_model),
         )
 
     @property
