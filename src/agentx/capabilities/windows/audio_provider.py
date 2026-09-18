@@ -14,6 +14,7 @@ from datetime import UTC, datetime
 from threading import Lock
 from typing import Protocol, runtime_checkable
 
+from agentx.capabilities.windows._audio_native import WinMmAudioSurface
 from agentx.core.audio import (
     AudioAdmissionDecision,
     AudioCaptureStream,
@@ -34,7 +35,6 @@ from agentx.core.audio import (
 from agentx.core.errors import AgentXError
 from agentx.core.execution import CancellationSource, CancellationToken, Deadline
 from agentx.core.result import Result
-from agentx.capabilities.windows._audio_native import WinMmAudioSurface
 
 __all__ = ["WinMmAudioProvider"]
 
