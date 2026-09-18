@@ -176,9 +176,7 @@ class ProviderHealthSnapshot:
                 raise ValueError(f"{name} must be a non-negative int")
         if self.successes + self.failures != self.attempts:
             raise ValueError("attempts must equal successes + failures")
-        if self.last_failure is not None and not isinstance(
-            self.last_failure, ProviderFailureKind
-        ):
+        if self.last_failure is not None and not isinstance(self.last_failure, ProviderFailureKind):
             raise TypeError("last_failure must be ProviderFailureKind or None")
 
 
@@ -277,18 +275,14 @@ class ModelCapabilityRegistry:
             raise TypeError("model_id must be a ModelId")
         return self._models.get(model_id)
 
-    def models_with(
-        self, required: frozenset[ModelCapability]
-    ) -> tuple[ModelDescriptor, ...]:
+    def models_with(self, required: frozenset[ModelCapability]) -> tuple[ModelDescriptor, ...]:
         if not isinstance(required, frozenset):
             raise TypeError("required must be a frozenset")
         if any(not isinstance(item, ModelCapability) for item in required):
             raise TypeError("required must contain ModelCapability values")
         return tuple(
             descriptor
-            for _, descriptor in sorted(
-                self._models.items(), key=lambda item: str(item[0])
-            )
+            for _, descriptor in sorted(self._models.items(), key=lambda item: str(item[0]))
             if required.issubset(descriptor.capabilities)
         )
 
