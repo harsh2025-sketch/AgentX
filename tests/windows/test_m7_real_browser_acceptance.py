@@ -21,7 +21,6 @@ import pytest
 from agentx.capabilities.abi import CapabilityRequest
 from agentx.capabilities.browser_actions import (
     BrowserClickPostcondition,
-    BrowserActionOperation,
     click_selected_request,
     fill_selected_request,
     navigate_request,
@@ -149,7 +148,7 @@ class _FixtureSite:
         host, port = self._server.server_address
         return f"http://{host}:{port}"
 
-    def __enter__(self) -> "_FixtureSite":
+    def __enter__(self) -> _FixtureSite:
         self._thread.start()
         return self
 
