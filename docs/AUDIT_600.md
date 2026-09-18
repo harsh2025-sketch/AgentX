@@ -1,16 +1,16 @@
 #||||||||||||||||||||||||| AX-460 | M11 | voice/HUD milestone demonstration | VERIFIED | E4 | NONE |
 
-Repository: `harsh2025-sketch/AgentX`. Integration baseline: `9b2ecd350e24833860fbd1cbf7bde1e2f549bad5`.
+Repository: `harsh2025-sketch/AgentX`. Reconciled M12 candidate is based on canonical M11-integrated main `a030066885f3a674849fb0512db6b9adc66ffabc`.
 
 PR #169 security and PR #171 world-model implementation are merged. This reconciliation incorporates PR #173's core-intelligence evidence; its exact new head must pass canonical CI before merge. The final whole-project audit follows integration. Historical `reported_status` remains unchanged. Counts below are calculated from TASKS.json, not added from PR summaries.
 
 | State | Tasks | Percentage |
 | --- | ---: | ---: |
-| VERIFIED | 463 | 77.17% |
+| VERIFIED | 487 | 81.17% |
 | NOT_AUDITED | 0 | 0.00% |
 | IN_PROGRESS | 1 | 0.17% |
 | BLOCKED | 7 | 1.17% |
-| NOT_IMPLEMENTED | 129 | 21.50% |
+| NOT_IMPLEMENTED | 105 | 17.50% |
 | TOTAL | 600 | 100.00% |
 
 ## Milestones
@@ -29,7 +29,7 @@ PR #169 security and PR #171 world-model implementation are merged. This reconci
 | M9 | AX-371–AX-405 | 35 | 35 | 100.00% | none | COMPLETE |
 | M10 | AX-406–AX-435 | 30 | 30 | 100.00% | none | COMPLETE |
 | M11 | AX-436–AX-460 | 25 | 25 | 100.00% | none | COMPLETE |
-| M12 | AX-461–AX-485 | 1 | 25 | 4.00% | NOT_IMPLEMENTED=24 | PARTIAL |
+| M12 | AX-461–AX-485 | 25 | 25 | 100.00% | none | COMPLETE |
 | M13 | AX-486–AX-515 | 2 | 30 | 6.67% | NOT_IMPLEMENTED=28 | PARTIAL |
 | M14 | AX-516–AX-540 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
 | M15 | AX-541–AX-570 | 1 | 30 | 3.33% | NOT_IMPLEMENTED=29 | PARTIAL |
@@ -503,31 +503,31 @@ M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 releas
 | AX-458 | M11 | recovery telemetry | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
 | AX-459 | M11 | HUD control actions | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
 | AX-460 | M11 | voice/HUD milestone demonstration | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-461 | M12 | scheduler core | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-462 | M12 | scheduled-task contract | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-463 | M12 | one-shot scheduled tasks | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-464 | M12 | recurring scheduled tasks | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
+| AX-461 | M12 | scheduler core | VERIFIED | E4 | NONE |
+| AX-462 | M12 | scheduled-task contract | VERIFIED | E3 | NONE |
+| AX-463 | M12 | one-shot scheduled tasks | VERIFIED | E4 | NONE |
+| AX-464 | M12 | recurring scheduled tasks | VERIFIED | E4 | NONE |
 | AX-465 | M12 | event watcher framework | VERIFIED | E2 | NONE |
-| AX-466 | M12 | event-triggered task launch | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-467 | M12 | file-change trigger | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-468 | M12 | process-state trigger | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-469 | M12 | browser-state trigger | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-470 | M12 | device-state trigger | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-471 | M12 | notification boundary | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-472 | M12 | proactive recommendation contract | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-473 | M12 | proactive confidence policy | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-474 | M12 | user opt-in policy | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-475 | M12 | quiet-hours policy | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-476 | M12 | attention-awareness policy | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-477 | M12 | background resource quota | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-478 | M12 | background model-call quota | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-479 | M12 | background machine-action quota | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-480 | M12 | long-running Task persistence | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-481 | M12 | restart recovery for scheduled work | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-482 | M12 | approval expiration semantics | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-483 | M12 | stale proactive-action rejection | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-484 | M12 | proactive adversarial tests | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-485 | M12 | proactivity milestone acceptance | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
+| AX-466 | M12 | event-triggered task launch | VERIFIED | E4 | NONE |
+| AX-467 | M12 | file-change trigger | VERIFIED | E4 | NONE |
+| AX-468 | M12 | process-state trigger | VERIFIED | E5 | NONE |
+| AX-469 | M12 | browser-state trigger | VERIFIED | E4 | NONE |
+| AX-470 | M12 | device-state trigger | VERIFIED | E3 | NONE |
+| AX-471 | M12 | notification boundary | VERIFIED | E3 | NONE |
+| AX-472 | M12 | proactive recommendation contract | VERIFIED | E3 | NONE |
+| AX-473 | M12 | proactive confidence policy | VERIFIED | E3 | NONE |
+| AX-474 | M12 | user opt-in policy | VERIFIED | E3 | NONE |
+| AX-475 | M12 | quiet-hours policy | VERIFIED | E3 | NONE |
+| AX-476 | M12 | attention-awareness policy | VERIFIED | E3 | NONE |
+| AX-477 | M12 | background resource quota | VERIFIED | E3 | NONE |
+| AX-478 | M12 | background model-call quota | VERIFIED | E3 | NONE |
+| AX-479 | M12 | background machine-action quota | VERIFIED | E3 | NONE |
+| AX-480 | M12 | long-running Task persistence | VERIFIED | E4 | NONE |
+| AX-481 | M12 | restart recovery for scheduled work | VERIFIED | E4 | NONE |
+| AX-482 | M12 | approval expiration semantics | VERIFIED | E3 | NONE |
+| AX-483 | M12 | stale proactive-action rejection | VERIFIED | E4 | NONE |
+| AX-484 | M12 | proactive adversarial tests | VERIFIED | E3 | NONE |
+| AX-485 | M12 | proactivity milestone acceptance | VERIFIED | E4 | NONE |
 | AX-486 | M13 | device abstraction foundation | VERIFIED | E2 | NONE |
 | AX-487 | M13 | device protocol foundation | VERIFIED | E2 | NONE |
 | AX-488 | M13 | Device Registry | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
