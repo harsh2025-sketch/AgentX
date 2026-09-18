@@ -414,7 +414,9 @@ class DeviceDiscovery:
                 if descriptor.provider_id != provider.provider_id:
                     errors[provider.provider_id] = AgentXError(
                         code="device.discovery.identity_mismatch",
-                        message="provider returned a descriptor from a different provider namespace",
+                        message=(
+                            "provider returned a descriptor from a different provider namespace"
+                        ),
                         category=ErrorCategory.VALIDATION,
                         retryability=Retryability.NON_RETRYABLE,
                     )
