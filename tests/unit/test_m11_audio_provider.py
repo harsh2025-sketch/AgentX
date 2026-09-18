@@ -8,9 +8,11 @@ from datetime import UTC, datetime
 from agentx.capabilities.windows.audio_provider import WinMmAudioProvider
 from agentx.core.audio import (
     AudioBufferPolicy,
+    AudioCaptureStream,
     AudioEndpointKind,
     AudioFormat,
     AudioFrame,
+    AudioPlaybackStream,
     AudioStreamDescriptor,
     AudioStreamState,
 )
@@ -70,6 +72,8 @@ def test_concrete_provider_capture_playback_and_cancellation(monkeypatch: object
     provider = WinMmAudioProvider(surface)
     capture = provider.open(_descriptor(provider, AudioEndpointKind.SOURCE)).unwrap()
     playback = provider.open(_descriptor(provider, AudioEndpointKind.SINK)).unwrap()
+    assert isinstance(capture, AudioCaptureStream)
+    assert isinstance(playback, AudioPlaybackStream)
 
     assert capture.status.state is AudioStreamState.OPEN
     captured = capture.read().unwrap()
