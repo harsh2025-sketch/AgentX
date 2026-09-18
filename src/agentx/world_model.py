@@ -1138,12 +1138,34 @@ class LazyWorldStateCache:
                     invalidated=entry.invalidated,
                 )
                 if freshness is WorldFreshness.FRESH:
-                    return CacheLookup(
-                        entity_id,
-                        WorldFreshness.FRESH,
-                        CacheRefreshState.FRESH_HIT,
-                        entry.value,
-                    )
+                    validator = None if provider is None else getattr(provider, "is_current", None)
+                    if validator is None:
+                        return CacheLookup(
+                            entity_id,
+                            WorldFreshness.FRESH,
+                            CacheRefreshState.FRESH_HIT,
+                            entry.value,
+                        )
+                    try:
+                        still_current = validator(entry.value)
+                    except Exception as exc:
+                        return CacheLookup(
+                            entity_id,
+                            WorldFreshness.STALE,
+                            CacheRefreshState.REFRESH_FAILURE,
+                            entry.value,
+                            f"freshness validation failed: {type(exc).__name__}: {exc}",
+                        )
+                    if still_current is True:
+                        return CacheLookup(
+                            entity_id,
+                            WorldFreshness.FRESH,
+                            CacheRefreshState.FRESH_HIT,
+                            entry.value,
+                        )
+                    entry.invalidated = True
+                    entry.invalidated_reason = "provider detected external environment change"
+                    self._bump_epoch_locked(entity_id)
                 stale_value = entry.value
                 stale_state = (
                     CacheRefreshState.INVALIDATED
@@ -1957,6 +1979,36 @@ class _NativeFilesystemProvider:
         self._correlation_id = correlation_id
         self._original_paths = original_paths
 
+    def is_current(self, value: WorldStateValue) -> bool:
+        """Cheaply validate a fresh filesystem cache entry against the real OS.
+
+        This does not update the world model and does not consume the provider's
+        observation result. It only answers whether the cached fingerprint still
+        matches so an external mutation can invalidate a nominally fresh entry.
+        """
+        if not isinstance(value, FilesystemState):
+            return False
+        path = self._original_paths.get(value.entity_id)
+        if path is None:
+            return False
+        try:
+            stat_result = Path(path).stat()
+        except FileNotFoundError:
+            return value.existence is FilesystemExistence.MISSING
+        except (PermissionError, OSError):
+            return value.existence is FilesystemExistence.INACCESSIBLE
+        entity_type = FilesystemEntityType.OTHER
+        if stat.S_ISREG(stat_result.st_mode):
+            entity_type = FilesystemEntityType.FILE
+        elif stat.S_ISDIR(stat_result.st_mode):
+            entity_type = FilesystemEntityType.DIRECTORY
+        return (
+            value.existence is FilesystemExistence.EXISTS
+            and value.entity_type is entity_type
+            and value.size_bytes == stat_result.st_size
+            and value.modified_ns == stat_result.st_mtime_ns
+        )
+
     def observe(self, entity_id: WorldEntityId) -> WorldStateValue | None:
         path = self._original_paths.get(entity_id)
         if path is None:
@@ -2189,6 +2241,28 @@ class WorldModel:
             active_state = replace(active_window, entity_id=active_id, is_foreground=True)
             self.cache.put(active_state)
         return tuple(process_states), tuple(window_states)
+
+    def ingest_perception_observation(
+        self,
+        observation: PerceptionObservation,
+    ) -> PerceptionObservation:
+        """Register one fresh perception observation and selectively retire older frames."""
+        if not isinstance(observation, PerceptionObservation):
+            raise TypeError("observation must be PerceptionObservation")
+        previous = self.cache.invalidate_where(
+            lambda entity_id, value: (
+                entity_id.kind is WorldEntityKind.PERCEPTION
+                and entity_id != observation.entity_id
+                and entity_id.environment_id == observation.entity_id.environment_id
+                and isinstance(value, PerceptionObservation)
+                and value.surface_id == observation.surface_id
+            ),
+            reason="newer perception frame replaced surface observation",
+        )
+        if previous:
+            self.tasks.invalidate_entities(previous)
+        self.cache.put(observation)
+        return observation
 
     def ingest_browser_observation(
         self,
