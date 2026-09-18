@@ -304,8 +304,8 @@ python -m pytest -q tests/windows/test_m10_screen_capture_real_host.py
 
 The second-pass audit records **AX-406 through AX-435 = 30/30 VERIFIED** while
 preserving historical `reported_status`. Implementation head
-`8ca74839f3a615393c4803ba56509439a1bc261a` passed canonical C1.01 run
-`35334559204` (#967), including runtime-only installation, Ruff lint, Ruff
+`cafb25c73e396abe7e98361e2408c6768b932a5d` passed canonical C1.01 run
+`35335216071` (#974), including runtime-only installation, Ruff lint, Ruff
 format, strict mypy, task-ledger validation, real Windows-host acceptance and
 the complete pytest regression.
 
