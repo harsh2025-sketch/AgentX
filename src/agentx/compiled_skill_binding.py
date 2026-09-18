@@ -46,9 +46,7 @@ class CompiledSkillBindingError(ValueError):
     """Raised when inert compiled data cannot be bound safely and exactly."""
 
 
-type CapabilityRequestFactory = Callable[
-    [Mapping[str, object]], CapabilityRequest[Any]
-]
+type CapabilityRequestFactory = Callable[[Mapping[str, object]], CapabilityRequest[Any]]
 
 _COMPILER_ACTION_FIELDS = frozenset(
     {
@@ -81,13 +79,8 @@ def _copy_json(value: object, *, path: str) -> object:
             copied[key] = _copy_json(item, path=f"{path}.{key}")
         return copied
     if isinstance(value, tuple | list):
-        return [
-            _copy_json(item, path=f"{path}[{index}]")
-            for index, item in enumerate(value)
-        ]
-    raise CompiledSkillBindingError(
-        f"{path} contains non-JSON data of type {type(value).__name__}"
-    )
+        return [_copy_json(item, path=f"{path}[{index}]") for index, item in enumerate(value)]
+    raise CompiledSkillBindingError(f"{path} contains non-JSON data of type {type(value).__name__}")
 
 
 def _json_object(value: object, *, path: str) -> dict[str, object]:
@@ -124,9 +117,7 @@ def _compiler_action_metadata(raw: Mapping[str, object]) -> dict[str, object]:
     if not isinstance(single, list):
         raise CompiledSkillBindingError("single_observation_fields must be a JSON array")
     if not all(isinstance(item, str) and item for item in single):
-        raise CompiledSkillBindingError(
-            "single_observation_fields must contain non-empty strings"
-        )
+        raise CompiledSkillBindingError("single_observation_fields must contain non-empty strings")
     if len(single) != len(set(single)):
         raise CompiledSkillBindingError("single_observation_fields must not contain duplicates")
 
@@ -304,8 +295,7 @@ def resolve_compiled_action_data(
         if unknown:
             details.append(f"unknown={unknown}")
         raise CompiledSkillBindingError(
-            "parameter binding does not exactly match compiled requirements: "
-            + ", ".join(details)
+            "parameter binding does not exactly match compiled requirements: " + ", ".join(details)
         )
 
     resolved_by_node: dict[str, Mapping[str, object]] = {}
@@ -375,9 +365,7 @@ def build_compiled_action_requests(
         identity = _identity_from_spec(spec)
         factory = request_factories.get(identity)
         if factory is None:
-            raise CompiledSkillBindingError(
-                f"no trusted request factory for capability {identity}"
-            )
+            raise CompiledSkillBindingError(f"no trusted request factory for capability {identity}")
         if not callable(factory):
             raise TypeError("request factory values must be callable")
 
