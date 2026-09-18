@@ -61,7 +61,7 @@ def _required(name: str) -> str:
 def main() -> int:
     missing = [name for name in _REQUIRED_ENV if not os.environ.get(name)]
     if missing:
-        print(
+        sys.stdout.write(
             json.dumps(
                 {
                     "accepted": False,
@@ -70,6 +70,7 @@ def main() -> int:
                 },
                 sort_keys=True,
             )
+            + "\n"
         )
         return 2
 
@@ -78,7 +79,7 @@ def main() -> int:
     endpoint = _required("AGENTX_LIVE_MODEL_ENDPOINT")
     parsed = urlsplit(endpoint)
     if parsed.scheme != "https" or parsed.hostname in {"127.0.0.1", "::1", "localhost"}:
-        print(
+        sys.stdout.write(
             json.dumps(
                 {
                     "accepted": False,
@@ -86,6 +87,7 @@ def main() -> int:
                 },
                 sort_keys=True,
             )
+            + "\n"
         )
         return 2
 
@@ -117,7 +119,7 @@ def main() -> int:
     completed_at = datetime.now(UTC)
     if result.is_failure:
         error = result.unwrap_error()
-        print(
+        sys.stdout.write(
             json.dumps(
                 {
                     "accepted": False,
@@ -129,6 +131,7 @@ def main() -> int:
                 },
                 sort_keys=True,
             )
+            + "\n"
         )
         return 1
 
@@ -154,7 +157,7 @@ def main() -> int:
         "response_text_exposed": False,
         "credential_exposed": False,
     }
-    print(json.dumps(evidence, sort_keys=True))
+    sys.stdout.write(json.dumps(evidence, sort_keys=True) + "\n")
     return 0
 
 
