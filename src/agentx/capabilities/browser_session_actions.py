@@ -344,7 +344,9 @@ class BrowserSessionCapability:
     ) -> ExecutionResult:
         params = request.params
         if request.identity != self._descriptor.identity:
-            return self._failed("browser.session.invalid_request", "invalid session request", params)
+            return self._failed(
+                "browser.session.invalid_request", "invalid session request", params
+            )
         if params.operation is not self._operation:
             return self._failed(
                 "browser.session.invalid_operation",
