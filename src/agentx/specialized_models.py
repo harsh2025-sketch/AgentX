@@ -289,7 +289,9 @@ class LightweightGroundingModel:
     ) -> GroundingPrediction:
         if type(minimum_margin) is not int or minimum_margin < 0:
             raise SpecialistModelError("minimum_margin must be non-negative integer")
-        text = f"{_text(claim, name='claim')} {_text(evidence_text, name='evidence_text', max_length=4096)}"
+        claim_text = _text(claim, name="claim")
+        evidence = _text(evidence_text, name="evidence_text", max_length=4096)
+        text = f"{claim_text} {evidence}"
         positive, negative = self.token_model.score(text)
         total = positive + negative
         if total == 0 or abs(positive - negative) < minimum_margin:
