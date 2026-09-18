@@ -91,7 +91,7 @@ def _budget_failure() -> StrategyResult:
     return StrategyResult.executed(
         Result.failure(
             AgentXError(
-                code="exploratory_strategy.research_budget_denied",
+                code="runtime.budget_denied",
                 message="research query would exceed the canonical resource budget",
                 category=ErrorCategory.RESOURCE,
             )
