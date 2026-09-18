@@ -24,6 +24,16 @@ class TaskLedgerTests(unittest.TestCase):
             (ROOT / "docs" / "TASKS.md").read_text(encoding="utf-8"),
         )
 
+    def test_milestone_summary_reports_every_acceptance_state(self) -> None:
+        rendered = self.script["render"](self.data)
+        self.assertIn(
+            "| Milestone | Reported complete | Reported partial | Reported remaining | "
+            "Verified | Not audited | In progress | Blocked | Not implemented |",
+            rendered,
+        )
+        self.assertIn("| M16 Production and Release |", rendered)
+        self.assertIn("| 3 | 0 | 2 | 0 | 25 |", rendered)
+
     def test_duplicate_or_missing_task_is_rejected(self) -> None:
         self.data["tasks"][1] = copy.deepcopy(self.data["tasks"][0])
         with self.assertRaisesRegex(ValueError, "exactly once"):
