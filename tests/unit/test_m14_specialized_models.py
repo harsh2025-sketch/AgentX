@@ -236,7 +236,6 @@ def test_routing_model_is_constrained_to_available_strategies_and_round_trips() 
         available=(ExecutionLevel.L4_PLANNED,),
     )
     assert constrained.level is None or constrained.level is ExecutionLevel.L4_PLANNED
-    assert constrained.level is not ExecutionLevel.L2_COMPILED
 
     unknown = restored.predict(
         task_family="unknown-family",
