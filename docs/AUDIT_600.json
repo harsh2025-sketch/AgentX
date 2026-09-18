@@ -11,10 +11,10 @@
   },
   "after": {
     "NOT_AUDITED": 0,
-    "VERIFIED": 394,
+    "VERIFIED": 408,
     "IN_PROGRESS": 9,
     "BLOCKED": 7,
-    "NOT_IMPLEMENTED": 190
+    "NOT_IMPLEMENTED": 176
   },
   "milestones": {
     "M0": {
@@ -6910,13 +6910,13 @@
       "previous_acceptance_status": "NOT_IMPLEMENTED",
       "audited_acceptance_status": "VERIFIED",
       "evidence_level": "E5",
-      "implementation_path": "src/agentx/capabilities/windows/_screen_native.py; src/agentx/capabilities/windows/screen_capture.py",
+      "implementation_path": "src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
       "test_path": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_screen_capture_governed.py; tests/windows/test_m10_screen_capture_real_host.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "screen-capture provider accepted at E5 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-422 accepted at E5 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-423",
@@ -6928,11 +6928,11 @@
       "evidence_level": "E3",
       "implementation_path": "src/agentx/capabilities/windows/screen_capture.py",
       "test_path": "tests/unit/test_m10_screen_perception.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "screen-frame identity accepted at E3 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-423 accepted at E3 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-424",
@@ -6943,12 +6943,12 @@
       "audited_acceptance_status": "VERIFIED",
       "evidence_level": "E3",
       "implementation_path": "src/agentx/world_model.py; src/agentx/perception.py",
-      "test_path": "tests/unit/test_world_model.py; tests/unit/test_m10_screen_perception.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "test_path": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_screen_capture_governed.py",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "visual-region representation accepted at E3 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-424 accepted at E3 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-425",
@@ -6960,11 +6960,11 @@
       "evidence_level": "E3",
       "implementation_path": "src/agentx/perception.py",
       "test_path": "tests/unit/test_m10_screen_perception.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "OCR-free primary visual grounding accepted at E3 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-425 accepted at E3 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-426",
@@ -6976,11 +6976,11 @@
       "evidence_level": "E3",
       "implementation_path": "src/agentx/perception.py",
       "test_path": "tests/unit/test_m10_screen_perception.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "visual fallback router accepted at E3 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-426 accepted at E3 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-427",
@@ -6992,11 +6992,11 @@
       "evidence_level": "E3",
       "implementation_path": "src/agentx/perception.py",
       "test_path": "tests/unit/test_m10_screen_perception.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "visual target proposal accepted at E3 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-427 accepted at E3 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-428",
@@ -7008,11 +7008,11 @@
       "evidence_level": "E3",
       "implementation_path": "src/agentx/perception.py",
       "test_path": "tests/unit/test_m10_screen_perception.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "structured-vs-visual evidence ranking accepted at E3 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-428 accepted at E3 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-429",
@@ -7024,11 +7024,11 @@
       "evidence_level": "E3",
       "implementation_path": "src/agentx/perception.py",
       "test_path": "tests/unit/test_m10_screen_perception.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "visual ambiguity handling accepted at E3 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-429 accepted at E3 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-430",
@@ -7040,11 +7040,11 @@
       "evidence_level": "E3",
       "implementation_path": "src/agentx/perception.py",
       "test_path": "tests/unit/test_m10_screen_perception.py; tests/benchmarks/test_m10_perception_benchmarks.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "stale-screen rejection accepted at E3 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-430 accepted at E3 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-431",
@@ -7053,14 +7053,14 @@
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
       "audited_acceptance_status": "VERIFIED",
-      "evidence_level": "E3",
-      "implementation_path": "src/agentx/capabilities/windows/_screen_native.py; src/agentx/capabilities/windows/screen_capture.py",
+      "evidence_level": "E5",
+      "implementation_path": "src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
       "test_path": "tests/unit/test_m10_screen_perception.py; tests/windows/test_m10_screen_capture_real_host.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "display/DPI normalization accepted at E3 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-431 accepted at E5 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-432",
@@ -7069,14 +7069,14 @@
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
       "audited_acceptance_status": "VERIFIED",
-      "evidence_level": "E3",
-      "implementation_path": "src/agentx/capabilities/windows/_screen_native.py; src/agentx/capabilities/windows/screen_capture.py",
+      "evidence_level": "E5",
+      "implementation_path": "src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
       "test_path": "tests/unit/test_m10_screen_perception.py; tests/windows/test_m10_screen_capture_real_host.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "multi-monitor awareness accepted at E3 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-432 accepted at E5 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-433",
@@ -7088,11 +7088,11 @@
       "evidence_level": "E3",
       "implementation_path": "src/agentx/perception.py",
       "test_path": "tests/benchmarks/test_m10_perception_benchmarks.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "layout-change recovery benchmark accepted at E3 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-433 accepted at E3 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-434",
@@ -7104,11 +7104,11 @@
       "evidence_level": "E3",
       "implementation_path": "src/agentx/perception.py",
       "test_path": "tests/benchmarks/test_m10_perception_benchmarks.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "perception accuracy benchmark accepted at E3 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-434 accepted at E3 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-435",
@@ -7119,12 +7119,12 @@
       "audited_acceptance_status": "VERIFIED",
       "evidence_level": "E5",
       "implementation_path": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py",
-      "test_path": "tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/windows/test_m10_screen_capture_real_host.py",
-      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; .github/workflows/quality.yml run 35334559204",
+      "test_path": "tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+      "acceptance_path": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; C1.01 run 35335216071",
       "external_dependency": null,
       "gap": "NONE",
-      "remediation_performed": "M10 campaign implemented the missing production path, added requirement-specific deterministic/real-environment acceptance, remediated CI findings, and re-audited the requirement.",
-      "final_conclusion": "world-model milestone acceptance accepted at E5 on M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a; C1.01 run 35334559204 passed all canonical gates."
+      "remediation_performed": "Implemented the missing M10 production path and requirement-specific tests; independently re-audited after real environment-change, authority, hosted-Windows and full-regression evidence.",
+      "final_conclusion": "AX-435 accepted at E5 on M10 implementation head cafb25c73e396abe7e98361e2408c6768b932a5d; final PR-head CI is rerun after documentation synchronization."
     },
     {
       "id": "AX-436",
@@ -9768,5 +9768,12 @@
     }
   ],
   "m10_reaudit_head_sha": "8ca74839f3a615393c4803ba56509439a1bc261a",
-  "m10_reaudit_ci_run": 35334559204
+  "m10_reaudit_ci_run": 35334559204,
+  "m10_closure": {
+    "starting_main_sha": "509f13d44a42f1803e22c85b0602083bfa1e1183",
+    "canonical_base_sha": "5eb3c35598bddf6142523a8a0e34c23abcbb7f67",
+    "implementation_head_sha": "cafb25c73e396abe7e98361e2408c6768b932a5d",
+    "implementation_ci_run": 35335216071,
+    "conclusion": "AX-406 through AX-435 independently re-audited; AX-422 through AX-435 promoted only after implementation, real environment mutation evidence, hosted Windows screen-capture evidence, security/governance coverage and a green full canonical regression."
+  }
 }
