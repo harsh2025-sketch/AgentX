@@ -215,9 +215,7 @@ def test_hud_subscriber_failure_cannot_change_runtime_authority() -> None:
     telemetry = VoiceRuntimeTelemetry(failing_sink)
     bridge = VoiceTaskBridge(
         task_manager=harness.task_manager,
-        agent_loop=harness.agent_loop(
-            {ExecutionLevel.L1_DIRECT: harness.governed_strategy()}
-        ),
+        agent_loop=harness.agent_loop({ExecutionLevel.L1_DIRECT: harness.governed_strategy()}),
         telemetry=telemetry,
     )
     outcome = bridge.ingest(
