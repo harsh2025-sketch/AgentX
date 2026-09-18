@@ -302,5 +302,12 @@ python -m pytest -q tests/windows/test_m10_screen_capture_real_host.py
 
 ## Final acceptance recording
 
-The final section is updated only after exact-head CI. The PR must remain open
-and unmerged for Product Owner review.
+The second-pass audit records **AX-406 through AX-435 = 30/30 VERIFIED** while
+preserving historical `reported_status`. Implementation head
+`8ca74839f3a615393c4803ba56509439a1bc261a` passed canonical C1.01 run
+`35334559204` (#967), including runtime-only installation, Ruff lint, Ruff
+format, strict mypy, task-ledger validation, real Windows-host acceptance and
+the complete pytest regression.
+
+The final documentation/ledger head must independently pass the same canonical
+workflow before Product Owner review. The PR remains open and unmerged.
