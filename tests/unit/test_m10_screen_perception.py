@@ -67,9 +67,7 @@ class FakeScreenSurface:
         self.raw = raw
         self.calls = 0
 
-    def capture(
-        self, *, max_pixels: int
-    ) -> Result[_screen_native.RawScreenFrame, AgentXError]:
+    def capture(self, *, max_pixels: int) -> Result[_screen_native.RawScreenFrame, AgentXError]:
         self.calls += 1
         assert self.raw.width * self.raw.height <= max_pixels
         return Result.success(self.raw)
