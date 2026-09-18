@@ -161,10 +161,10 @@ def test_l5_hive_gap_runs_one_local_research_call_through_agent_loop(tmp_path: P
     assert outcome.final_level is ExecutionLevel.L5_EXPLORATORY
     assert port.calls == 1
     assert harness.budget.snapshot().research_queries == 1
-    observation = outcome.attempts[0].outcome
-    assert observation is not None
-    assert observation.unwrap().observation is not None
-    assert observation.unwrap().observation.data["research_verified"] is False
+    attempt_outcome = outcome.attempts[0].outcome
+    assert attempt_outcome is not None
+    assert attempt_outcome.observation is not None
+    assert attempt_outcome.observation.data["research_verified"] is False
 
 
 def test_external_l5_research_remains_confirmation_gated(tmp_path: Path) -> None:
@@ -219,6 +219,5 @@ def test_external_l5_research_remains_confirmation_gated(tmp_path: Path) -> None
     assert result.verified is False
     assert port.calls == 0
     attempted = result.attempts[0].outcome
-    assert attempted is not None and attempted.is_success
-    closed = attempted.unwrap()
-    assert closed.error is not None and closed.error.code == "runtime.gate_denied"
+    assert attempted is not None
+    assert attempted.error is not None and attempted.error.code == "runtime.gate_denied"
