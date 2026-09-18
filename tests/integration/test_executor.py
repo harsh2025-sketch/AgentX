@@ -32,6 +32,7 @@ from agentx.capabilities.executor import (
 )
 from agentx.capabilities.registry import CapabilityRegistry
 from agentx.capabilities.runtime import (
+    ApprovalDecisions,
     CapabilityExecutionLoop,
     ClosedLoopOutcome,
     LoopOutcome,
@@ -185,9 +186,11 @@ class RecordingLoop(CapabilityExecutionLoop):
         task: Task,
         request: CapabilityRequest[Any],
         context: ExecutionContext,
+        *,
+        approvals: ApprovalDecisions = (),
     ) -> Result[ClosedLoopOutcome, AgentXError]:
         self.calls.append((task, request, context))
-        return super().run(task, request, context)
+        return super().run(task, request, context, approvals=approvals)
 
 
 def test_valid_request_delegates_to_the_canonical_a110_loop() -> None:
