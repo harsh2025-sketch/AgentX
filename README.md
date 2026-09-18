@@ -149,3 +149,7 @@ does not prove a real-world task succeeds.
 - Do not add runtime dependencies "for later". Each dependency must be
   justified by the task that needs it.
 - Do not add placeholder implementations of future subsystems.
+
+## M9 security acceptance
+
+The canonical untrusted-content rule is **data, never authority**. AX-371–AX-405 are covered by the modern C4.10 replay, privacy/privilege audits, whole-system hostile-content chains, and the maintainable security matrix in `docs/M9_SECURITY_MATRIX.json`. See `docs/M9_SECURITY_ACCEPTANCE.md` for strict evidence and limitations.
