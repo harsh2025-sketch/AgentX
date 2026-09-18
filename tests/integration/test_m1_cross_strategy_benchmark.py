@@ -43,7 +43,6 @@ from agentx.cognition.research_provider import (
 )
 from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.cognition.task_manager import TaskManager
-from agentx.compiled_procedure_strategy import GovernedCompiledProcedureStrategy
 from agentx.core.errors import AgentXError
 from agentx.core.ids import KnowledgeId
 from agentx.core.knowledge import KnowledgeScope, KnowledgeStatus, ScopeDimension
