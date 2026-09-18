@@ -32,7 +32,7 @@ class TaskLedgerTests(unittest.TestCase):
             rendered,
         )
         self.assertIn("| M16 Production and Release |", rendered)
-        self.assertIn("| 3 | 0 | 2 | 0 | 25 |", rendered)
+        self.assertIn("| 4 | 0 | 1 | 0 | 25 |", rendered)
 
     def test_duplicate_or_missing_task_is_rejected(self) -> None:
         self.data["tasks"][1] = copy.deepcopy(self.data["tasks"][0])
