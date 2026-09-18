@@ -25,6 +25,7 @@ from agentx.capabilities.device_registry import (
     DeviceRegistry,
     evaluate_device_health,
 )
+from agentx.core.errors import AgentXError
 from agentx.core.execution import CancellationSource, ExecutionContext
 from agentx.core.result import Result
 from agentx.device_orchestration import DeviceRequirement, DeviceRouter
@@ -53,7 +54,7 @@ class FakeAdbRunner:
         args: tuple[str, ...],
         timeout_seconds: float,
         max_output_bytes: int,
-    ) -> Result[AdbCommandResult, object]:
+    ) -> Result[AdbCommandResult, AgentXError]:
         del timeout_seconds, max_output_bytes
         self.calls.append(args)
         stdout = b""
