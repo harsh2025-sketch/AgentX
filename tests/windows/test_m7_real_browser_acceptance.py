@@ -204,7 +204,7 @@ def _run(
         context,
         approvals=approvals,
     ).unwrap()
-    assert result.kind is LoopOutcome.VERIFIED
+    assert result.kind is LoopOutcome.VERIFIED, (result.error, harness.audit_records[-4:])
     assert result.verification is not None and result.verification.passed
     return result
 
