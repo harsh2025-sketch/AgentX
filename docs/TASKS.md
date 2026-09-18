@@ -2,7 +2,7 @@
 
 Generated from `docs/TASKS.json` by `python scripts/task_ledger.py --write`.
 
-reported_status preserves the supplied 349/2/249 historical snapshot. acceptance_status is independent audited truth; M10 AX-406–AX-435 was re-audited on the M10 closure branch after implementation and full canonical CI. VERIFIED requires requirement-appropriate implementation and behavioral/security/integration/real-environment evidence and does not imply whole-product release readiness.
+reported_status preserves the supplied 349/2/249 historical snapshot. acceptance_status is the independent AX-001–AX-600 audit against canonical main bcc0692246a981be5ae15c993b0c3e6512871b92; VERIFIED requires exact requirement evidence and does not imply release readiness.
 
 Partial: only the explicit critical path is encoded. Empty depends_on is not a claim of independence. AX-574 remains IN_PROGRESS because the whole dependency DAG has not been synchronized.
 
@@ -19,8 +19,8 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | M6 Windows Capabilities | 52 | 0 | 3 | 55 | 0 | 0 | 0 | 0 |
 | M7 Browser Agent | 14 | 0 | 21 | 16 | 0 | 1 | 0 | 18 |
 | M8 Models and Research | 13 | 0 | 22 | 28 | 0 | 0 | 2 | 5 |
-| M9 Security | 20 | 0 | 15 | 20 | 0 | 0 | 0 | 15 |
-| M10 World Model | 16 | 0 | 14 | 30 | 0 | 0 | 0 | 0 |
+| M9 Security | 20 | 0 | 15 | 35 | 0 | 0 | 0 | 0 |
+| M10 World Model | 16 | 0 | 14 | 16 | 0 | 0 | 0 | 14 |
 | M11 Voice and HUD | 2 | 0 | 23 | 2 | 0 | 0 | 0 | 23 |
 | M12 Scheduling | 1 | 0 | 24 | 1 | 0 | 0 | 0 | 24 |
 | M13 Multi-device and Android | 2 | 0 | 28 | 2 | 0 | 0 | 0 | 28 |
@@ -423,21 +423,21 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-388 | repair hostile-evidence tests | COMPLETE | VERIFIED |  |
 | AX-389 | persistence malformed-data tests | COMPLETE | VERIFIED |  |
 | AX-390 | threat model foundation | COMPLETE | VERIFIED |  |
-| AX-391 | replay modern C4.10 suite | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-392 | research-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-393 | knowledge-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-394 | learning-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-395 | repair-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-396 | kernel-authority C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-397 | tool-directive smuggling corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-398 | Unicode/homoglyph adversarial corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-399 | encoded-payload adversarial corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-400 | SQL-shaped data poisoning tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-401 | secrets leakage audit | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-402 | audit-log privacy audit | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-403 | cross-subsystem privilege audit | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-404 | whole-system hostile-content chain | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-405 | security milestone signoff | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-391 | replay modern C4.10 suite | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-392 | research-path C4.10 tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-393 | knowledge-path C4.10 tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-394 | learning-path C4.10 tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-395 | repair-path C4.10 tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-396 | kernel-authority C4.10 tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-397 | tool-directive smuggling corpus | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-398 | Unicode/homoglyph adversarial corpus | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-399 | encoded-payload adversarial corpus | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-400 | SQL-shaped data poisoning tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-401 | secrets leakage audit | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-402 | audit-log privacy audit | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-403 | cross-subsystem privilege audit | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-404 | whole-system hostile-content chain | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-405 | security milestone signoff | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-406 | structured Windows observation foundation | COMPLETE | VERIFIED |  |
 | AX-407 | UIA snapshot foundation | COMPLETE | VERIFIED |  |
 | AX-408 | DOM snapshot foundation | COMPLETE | VERIFIED |  |
@@ -454,20 +454,20 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-419 | device-state model | COMPLETE | VERIFIED |  |
 | AX-420 | task-state world binding | COMPLETE | VERIFIED |  |
 | AX-421 | Hive/world relationship linkage | COMPLETE | VERIFIED |  |
-| AX-422 | screen-capture provider | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-423 | screen-frame identity | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-424 | visual-region representation | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-425 | OCR-free primary visual grounding | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-426 | visual fallback router | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-427 | visual target proposal | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-428 | structured-vs-visual evidence ranking | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-429 | visual ambiguity handling | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-430 | stale-screen rejection | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-431 | display/DPI normalization | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-432 | multi-monitor awareness | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-433 | layout-change recovery benchmark | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-434 | perception accuracy benchmark | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-435 | world-model milestone acceptance | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-422 | screen-capture provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-423 | screen-frame identity | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-424 | visual-region representation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-425 | OCR-free primary visual grounding | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-426 | visual fallback router | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-427 | visual target proposal | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-428 | structured-vs-visual evidence ranking | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-429 | visual ambiguity handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-430 | stale-screen rejection | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-431 | display/DPI normalization | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-432 | multi-monitor awareness | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-433 | layout-change recovery benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-434 | perception accuracy benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-435 | world-model milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-436 | audio abstraction foundation | COMPLETE | VERIFIED |  |
 | AX-437 | microphone input provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-438 | speaker output provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |

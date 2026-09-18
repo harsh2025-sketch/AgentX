@@ -7,8 +7,8 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 ## Audit result
 
 - BEFORE: VERIFIED 230, NOT_AUDITED 132, IN_PROGRESS 5, BLOCKED 0, NOT_IMPLEMENTED 233.
-- AFTER: VERIFIED 394, NOT_AUDITED 0, IN_PROGRESS 9, BLOCKED 7, NOT_IMPLEMENTED 190.
-- Strict acceptance coverage: **394/600 (65.7%)**.
+- AFTER (including M9 closure campaign): VERIFIED 395, NOT_AUDITED 0, IN_PROGRESS 9, BLOCKED 7, NOT_IMPLEMENTED 189.
+- Strict acceptance coverage after M9 closure: **395/600 (65.8%)**.
 - This is not a release-readiness percentage. Real-host/provider/device/product/release requirements remain separate.
 
 ## Milestone dashboard
@@ -24,8 +24,8 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | M6 Windows Capabilities | 55/55 | `████████████████████` | 0 | 0 | 0 |
 | M7 Browser Agent | 16/35 | `█████████░░░░░░░░░░░` | 1 | 0 | 18 |
 | M8 Models and Research | 28/35 | `████████████████░░░░` | 0 | 2 | 5 |
-| M9 Security | 20/35 | `███████████░░░░░░░░░` | 0 | 0 | 15 |
-| M10 World Model | 30/30 | `████████████████████` | 0 | 0 | 0 |
+| M9 Security | 35/35 | `████████████████████` | 0 | 0 | 0 |
+| M10 World Model | 16/30 | `███████████░░░░░░░░░` | 0 | 0 | 14 |
 | M11 Voice and HUD | 2/25 | `██░░░░░░░░░░░░░░░░░░` | 0 | 0 | 23 |
 | M12 Scheduling | 1/25 | `█░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 24 |
 | M13 Multi-device and Android | 2/30 | `█░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 28 |
@@ -48,8 +48,6 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 - Browser text fill is recognized as partial N2.27 work with redaction and independent field-value readback; it does not prove complete form types, submission, a concrete browser driver, or a live multi-page workflow.
 - The concrete HTTP model adapter, secret binding, strict serialization/parsing, usage/error/timeout/cancellation behavior and bounded L5 single-acquisition path are accepted; live-provider vertical/milestone acceptance is not.
 - Foundation tasks for world state, audio/UI telemetry, event watching, device protocol, strategy evidence and capability-gap detection are accepted only at their narrow contract scope.
-- M10 was re-audited after the closure campaign. AX-422–AX-435 now have production implementations, requirement-specific tests, deterministic real filesystem mutation/restart evidence, governed runtime/security evidence, hosted-Windows screen-capture evidence where applicable, and a green complete repository regression on implementation head `cafb25c73e396abe7e98361e2408c6768b932a5d` (C1.01 run 35335216071).
-- M10 AX-422–AX-435 were independently re-audited after the screen/perception and real environment-adaptation campaign. C1.01 run #974 on implementation head `cafb25c73e396abe7e98361e2408c6768b932a5d` passed Ruff, format, strict mypy, task-ledger validation, real Windows-host acceptance and the full test suite.
 
 ## Per-task audit
 
@@ -445,21 +443,21 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | AX-388 | M9 | repair hostile-evidence tests | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-389 | M9 | persistence malformed-data tests | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-390 | M9 | threat model foundation | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
-| AX-391 | M9 | replay modern C4.10 suite | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-392 | M9 | research-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-393 | M9 | knowledge-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-394 | M9 | learning-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-395 | M9 | repair-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-396 | M9 | kernel-authority C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-397 | M9 | tool-directive smuggling corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-398 | M9 | Unicode/homoglyph adversarial corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-399 | M9 | encoded-payload adversarial corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-400 | M9 | SQL-shaped data poisoning tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-401 | M9 | secrets leakage audit | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-402 | M9 | audit-log privacy audit | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-403 | M9 | cross-subsystem privilege audit | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-404 | M9 | whole-system hostile-content chain | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-405 | M9 | security milestone signoff | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
+| AX-391 | M9 | replay modern C4.10 suite| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-392 | M9 | research-path C4.10 tests| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-393 | M9 | knowledge-path C4.10 tests| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-394 | M9 | learning-path C4.10 tests| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-395 | M9 | repair-path C4.10 tests| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-396 | M9 | kernel-authority C4.10 tests| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-397 | M9 | tool-directive smuggling corpus| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-398 | M9 | Unicode/homoglyph adversarial corpus| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-399 | M9 | encoded-payload adversarial corpus| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-400 | M9 | SQL-shaped data poisoning tests| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-401 | M9 | secrets leakage audit| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-402 | M9 | audit-log privacy audit| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-403 | M9 | cross-subsystem privilege audit| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-404 | M9 | whole-system hostile-content chain| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-405 | M9 | security milestone signoff| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E4 | NONE |  |
 | AX-406 | M10 | structured Windows observation foundation | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-407 | M10 | UIA snapshot foundation | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-408 | M10 | DOM snapshot foundation | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
@@ -476,20 +474,20 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | AX-419 | M10 | device-state model | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-420 | M10 | task-state world binding | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-421 | M10 | Hive/world relationship linkage | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
-| AX-422 | M10 | screen-capture provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
-| AX-423 | M10 | screen-frame identity | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-424 | M10 | visual-region representation | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-425 | M10 | OCR-free primary visual grounding | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-426 | M10 | visual fallback router | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-427 | M10 | visual target proposal | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-428 | M10 | structured-vs-visual evidence ranking | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-429 | M10 | visual ambiguity handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-430 | M10 | stale-screen rejection | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-431 | M10 | display/DPI normalization | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
-| AX-432 | M10 | multi-monitor awareness | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
-| AX-433 | M10 | layout-change recovery benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-434 | M10 | perception accuracy benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
-| AX-435 | M10 | world-model milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-422 | M10 | screen-capture provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-423 | M10 | screen-frame identity | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-424 | M10 | visual-region representation | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-425 | M10 | OCR-free primary visual grounding | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-426 | M10 | visual fallback router | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-427 | M10 | visual target proposal | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-428 | M10 | structured-vs-visual evidence ranking | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-429 | M10 | visual ambiguity handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-430 | M10 | stale-screen rejection | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-431 | M10 | display/DPI normalization | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-432 | M10 | multi-monitor awareness | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-433 | M10 | layout-change recovery benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-434 | M10 | perception accuracy benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-435 | M10 | world-model milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
 | AX-436 | M11 | audio abstraction foundation | COMPLETE | NOT_AUDITED | VERIFIED | E2 | NONE |  |
 | AX-437 | M11 | microphone input provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | real microphone/speaker and/or STT/TTS/realtime product environment where the exact requirement needs it |
 | AX-438 | M11 | speaker output provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | real microphone/speaker and/or STT/TTS/realtime product environment where the exact requirement needs it |
@@ -680,3 +678,7 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 ## Final-gate rule
 
 The audit PR must pass the canonical required workflow on its exact final head before review. This audit report intentionally does not embed a self-referential final head SHA or workflow run ID; those are reported on the PR/final handoff after the exact-head run. The PR must not be self-merged.
+
+## M9 closure addendum
+
+The M9 campaign rooted at `509f13d44a42f1803e22c85b0602083bfa1e1183` ported and modernized the historical C4.10 adversarial suite, extended encoded-payload coverage, added secrets/audit/privacy/privilege audits, and independently re-audited AX-371–AX-405. Detailed evidence is in `docs/M9_SECURITY_ACCEPTANCE.md` and `docs/M9_SECURITY_MATRIX.json`. PR #169 exact-head C1.01 is the final branch-wide acceptance gate.

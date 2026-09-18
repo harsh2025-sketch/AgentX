@@ -2,9 +2,9 @@
 
 Evidence snapshot: 2026-09-18.
 
-This status is synchronized to the independent AX-001–AX-600 audit plus the focused M10
-re-audit on implementation head `cafb25c73e396abe7e98361e2408c6768b932a5d`.
-Historical `reported_status` remains immutable and separate from audited acceptance.
+This status is synchronized to the independent AX-001–AX-600 audit on canonical
+main `bcc0692246a981be5ae15c993b0c3e6512871b92`. Historical
+`reported_status` remains immutable and separate from audited acceptance.
 
 ## Canonical repository state
 
@@ -22,11 +22,11 @@ Historical `reported_status` remains immutable and separate from audited accepta
 
 | Acceptance state | Count |
 | --- | ---: |
-| VERIFIED | 394 |
+| VERIFIED | 395 |
 | NOT_AUDITED | 0 |
 | IN_PROGRESS | 9 |
 | BLOCKED | 7 |
-| NOT_IMPLEMENTED | 190 |
+| NOT_IMPLEMENTED | 189 |
 | **TOTAL** | **600** |
 
 The machine-readable record is [AUDIT_600.json](AUDIT_600.json); the complete
@@ -48,8 +48,8 @@ it.
 | M6 Windows Capabilities | 55/55 | milestone scope accepted; release host matrix remains M16 |
 | M7 Browser Agent | 16/35 | 1 IN_PROGRESS; 18 NOT_IMPLEMENTED |
 | M8 Models and Research | 28/35 | 2 BLOCKED; 5 NOT_IMPLEMENTED |
-| M9 Security | 20/35 | 15 NOT_IMPLEMENTED |
-| M10 World Model | 30/30 | none |
+| M9 Security | 35/35 | Complete / task-level acceptance verified |
+| M10 World Model | 16/30 | 14 NOT_IMPLEMENTED |
 | M11 Voice and HUD | 2/25 | 23 NOT_IMPLEMENTED |
 | M12 Scheduling | 1/25 | 24 NOT_IMPLEMENTED |
 | M13 Multi-device and Android | 2/30 | 28 NOT_IMPLEMENTED |
@@ -92,3 +92,7 @@ Implementation coverage, strict acceptance coverage, external-environment
 readiness, product/UI readiness and release readiness are therefore reported
 separately in [AUDIT_600.md](AUDIT_600.md). A green core-runtime milestone is
 not treated as proof that AgentX v1 is release-ready.
+
+## M9 security closure
+
+AX-371 through AX-405 have been independently re-audited on the M9 campaign branch. The modern C4.10 replay, encoded/tool/Unicode/SQL hostile corpora, secrets/audit/privacy checks and whole-system authority invariants are recorded in `docs/M9_SECURITY_ACCEPTANCE.md`. Final acceptance remains bound to PR #169 exact-head C1.01.
