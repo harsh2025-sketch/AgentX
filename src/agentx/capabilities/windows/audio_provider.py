@@ -56,6 +56,11 @@ def _failure(kind: AudioFailureKind, message: str) -> AgentXError:
     return audio_failure(kind, message=message)
 
 
+def _is_cancelled(token: CancellationToken) -> bool:
+    """Observe cancellation without relying on type-checker flow narrowing."""
+    return token.is_cancelled
+
+
 @runtime_checkable
 class _NativeAudioSurface(Protocol):
     def capture(
@@ -98,7 +103,7 @@ class WinMmAudioSurface:
             return Result.failure(
                 _failure(AudioFailureKind.PROVIDER_UNAVAILABLE, "WinMM capture requires Windows")
             )
-        if cancellation_token.is_cancelled:
+        if _is_cancelled(cancellation_token):
             return Result.failure(_failure(AudioFailureKind.CANCELLED, "audio capture cancelled"))
         if not 10 <= milliseconds <= 1000:
             return Result.failure(
@@ -182,7 +187,7 @@ class WinMmAudioSurface:
             deadline = time.monotonic() + max(2.0, milliseconds / 1000.0 + 1.0)
             whdr_done = 0x00000001
             while not (int(header.dwFlags) & whdr_done):
-                if cancellation_token.is_cancelled:
+                if _is_cancelled(cancellation_token):
                     winmm.waveInReset(handle)
                     return Result.failure(
                         _failure(AudioFailureKind.CANCELLED, "audio capture cancelled")
@@ -217,7 +222,7 @@ class WinMmAudioSurface:
             return Result.failure(
                 _failure(AudioFailureKind.PROVIDER_UNAVAILABLE, "WinMM playback requires Windows")
             )
-        if cancellation_token.is_cancelled:
+        if _is_cancelled(cancellation_token):
             return Result.failure(_failure(AudioFailureKind.CANCELLED, "audio playback cancelled"))
         if not payload:
             return Result.failure(
@@ -285,7 +290,7 @@ class WinMmAudioSurface:
             deadline = time.monotonic() + max(2.0, duration + 1.0)
             whdr_done = 0x00000001
             while not (int(header.dwFlags) & whdr_done):
-                if cancellation_token.is_cancelled:
+                if _is_cancelled(cancellation_token):
                     winmm.waveOutReset(handle)
                     return Result.failure(
                         _failure(AudioFailureKind.CANCELLED, "audio playback cancelled")
