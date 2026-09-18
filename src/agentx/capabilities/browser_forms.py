@@ -393,9 +393,7 @@ class BrowserFormsCapability:
             expected = "true" if params.checked else None
             observed_checked = _attribute(node, "checked")
             passed = (
-                observed_checked is not None
-                if expected is not None
-                else observed_checked is None
+                observed_checked is not None if expected is not None else observed_checked is None
             )
             return VerificationResult(
                 passed=passed,
@@ -420,8 +418,7 @@ class BrowserFormsCapability:
         observed_value = _attribute(node, "value") or ""
         normalized_value = observed_value.replace("\\", "/")
         passed = bool(expected_name) and (
-            normalized_value == expected_name
-            or normalized_value.endswith(f"/{expected_name}")
+            normalized_value == expected_name or normalized_value.endswith(f"/{expected_name}")
         )
         return VerificationResult(
             passed=passed,
@@ -432,9 +429,7 @@ class BrowserFormsCapability:
             ),
         )
 
-    def _observe(
-        self, target: BrowserTargetRef
-    ) -> Result[BrowserDomObservation, AgentXError]:
+    def _observe(self, target: BrowserTargetRef) -> Result[BrowserDomObservation, AgentXError]:
         try:
             return self._driver.observe_dom(BrowserDomReadRequest(target=target))
         except Exception:
@@ -446,9 +441,7 @@ class BrowserFormsCapability:
                 )
             )
 
-    def _validate(
-        self, request: CapabilityRequest[BrowserFormParams]
-    ) -> AgentXError | None:
+    def _validate(self, request: CapabilityRequest[BrowserFormParams]) -> AgentXError | None:
         if request.identity != self._descriptor.identity:
             return _error(
                 "browser.forms.invalid_operation",
@@ -499,9 +492,7 @@ class BrowserFormsCapability:
             )
         return None
 
-    def _failed(
-        self, error: AgentXError, params: BrowserFormParams | None
-    ) -> ExecutionResult:
+    def _failed(self, error: AgentXError, params: BrowserFormParams | None) -> ExecutionResult:
         data: dict[str, JsonValue] = {
             "operation": self._operation.value,
             "executed": False,
