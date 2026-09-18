@@ -10,13 +10,14 @@ bound to their real-world/live dependencies.
 from __future__ import annotations
 
 import json
-from datetime import UTC, datetime
 from pathlib import Path
 
 from agentx.agent_loop import AgentLoop, OrchestrationStatus, StrategyRegistry
-from agentx.application_binding import ApplicationActionBinder
-from agentx.cache_strategy import VerifiedCacheStrategy
-from agentx.capabilities.filesystem import FilesystemReadTextCapability, FilesystemWriteTextCapability
+from agentx.capabilities.filesystem import (
+    FilesystemReadTextCapability,
+    FilesystemWriteTextCapability,
+    read_text_request,
+)
 from agentx.capabilities.verifier import VerificationRequirement
 from agentx.capability_strategy import CapabilityStrategyBinding, GovernedCapabilityStrategy
 from agentx.cognition.gap_detector import KnowledgeGapRequirement
@@ -43,6 +44,7 @@ from agentx.cognition.research_provider import (
 from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.cognition.task_manager import TaskManager
 from agentx.compiled_procedure_strategy import GovernedCompiledProcedureStrategy
+from agentx.core.errors import AgentXError
 from agentx.core.ids import KnowledgeId
 from agentx.core.knowledge import KnowledgeScope, KnowledgeStatus, ScopeDimension
 from agentx.core.result import Result
@@ -73,7 +75,6 @@ from tests.support.orchestration_harness import (
     make_envelope,
 )
 
-_T0 = datetime(2026, 9, 18, 10, 0, tzinfo=UTC)
 _SCOPE = KnowledgeScope({ScopeDimension.PROJECT: "AgentX"})
 
 
@@ -101,7 +102,7 @@ class _PlanProvider:
             }
         )
 
-    def invoke(self, request: ModelRequest) -> Result[ModelResponse, object]:
+    def invoke(self, request: ModelRequest) -> Result[ModelResponse, AgentXError]:
         self.calls += 1
         return Result.success(
             ModelResponse(
@@ -215,10 +216,7 @@ def test_ax084_cross_strategy_production_benchmark(tmp_path: Path) -> None:
         executor=planned.executor,
         binder=binder,
         goal_check=BoundPlanAction(
-            request=__import__(
-                "agentx.capabilities.filesystem",
-                fromlist=["read_text_request"],
-            ).read_text_request(str(planned_path)),
+            request=read_text_request(str(planned_path)),
             requirement=VerificationRequirement({"text": "finished"}),
         ),
         max_actions=3,
