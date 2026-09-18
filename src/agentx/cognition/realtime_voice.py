@@ -6,7 +6,7 @@ import math
 import struct
 import time
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import StrEnum
 from types import MappingProxyType
 from typing import Final, Protocol, runtime_checkable
@@ -229,7 +229,7 @@ class VoiceSessionEvent:
     session_id: SpeechSessionId
     sequence: int
     kind: VoiceSessionEventKind
-    transcript: str | None = None
+    transcript: str | None = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
         if not isinstance(self.session_id, SpeechSessionId):
