@@ -42,12 +42,8 @@ _MAX_PACKAGE: Final[int] = 255
 _MAX_COMPONENT: Final[int] = 512
 
 _SERIAL_PATTERN: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9._:-]+")
-_PACKAGE_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"[A-Za-z][A-Za-z0-9_]*(?:\.[A-Za-z0-9_]+)+"
-)
-_COMPONENT_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"[A-Za-z][A-Za-z0-9_.]*/[A-Za-z0-9_.$]+"
-)
+_PACKAGE_PATTERN: Final[re.Pattern[str]] = re.compile(r"[A-Za-z][A-Za-z0-9_]*(?:\.[A-Za-z0-9_]+)+")
+_COMPONENT_PATTERN: Final[re.Pattern[str]] = re.compile(r"[A-Za-z][A-Za-z0-9_.]*/[A-Za-z0-9_.$]+")
 
 
 class AdbDeviceState(StrEnum):
@@ -113,8 +109,7 @@ class AdbRunner(Protocol):
         args: tuple[str, ...],
         timeout_seconds: float,
         max_output_bytes: int,
-    ) -> Result[AdbCommandResult, AgentXError]:
-        ...
+    ) -> Result[AdbCommandResult, AgentXError]: ...
 
 
 def _validate_argument(value: object, *, field_name: str) -> str:
