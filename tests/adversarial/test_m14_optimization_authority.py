@@ -6,6 +6,8 @@ import ast
 from datetime import UTC, datetime
 from pathlib import Path
 
+from tests.support.orchestration_harness import OrchestrationHarness, default_limits
+
 from agentx.adaptive_optimization import (
     AdaptiveExecutionLevelRouter,
     DeterministicStrategyBaseline,
@@ -16,7 +18,6 @@ from agentx.adaptive_optimization import (
 )
 from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.kernel.permissions import Permission
-from tests.support.orchestration_harness import OrchestrationHarness, default_limits
 
 _NOW = datetime(2026, 9, 18, 12, 0, tzinfo=UTC)
 
