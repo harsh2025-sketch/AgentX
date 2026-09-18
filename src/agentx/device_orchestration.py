@@ -258,47 +258,26 @@ class DeviceHandoffExecutor:
 def procedure_requirement_for_device(
     *,
     descriptor: DeviceDescriptor,
-    capability: CapabilityIdentity | None = None,
+    capability: CapabilityRequirement | None = None,
     base_scope: ProcedureScope | None = None,
 ) -> ProcedureRequirement:
-    """Bind procedure applicability to the exact stable device environment identity."""
+    """Bind applicability to exact device environment plus an optional canonical binding."""
     if not isinstance(descriptor, DeviceDescriptor):
         raise TypeError("descriptor must be DeviceDescriptor")
     scope = ProcedureScope() if base_scope is None else base_scope
     if not isinstance(scope, ProcedureScope):
         raise TypeError("base_scope must be ProcedureScope or None")
+    if capability is not None and not isinstance(capability, CapabilityRequirement):
+        raise TypeError("capability must be CapabilityRequirement or None")
     environment = DeviceEnvironmentIdentity.from_descriptor(descriptor).to_key()
     existing = scope.value_for(ProcedureScopeDimension.ENVIRONMENT)
     if existing is not None and existing != environment:
         raise ValueError("base procedure scope conflicts with target device environment")
     dimensions = dict(scope.dimensions)
     dimensions[ProcedureScopeDimension.ENVIRONMENT] = environment
-    requirement_capability = (
-        None
-        if capability is None
-        else CapabilityRequirement(capability_id=_capability_id(capability), version=str(capability.version))
-    )
     return ProcedureRequirement(
         scope=ProcedureScope(dimensions=dimensions),
-        capability=requirement_capability,
-    )
-
-
-def _capability_id(identity: CapabilityIdentity) -> object:
-    """Convert ABI identity name/version to an existing registered UUID is impossible here.
-
-    Device applicability is primarily represented through the canonical ENVIRONMENT
-    scope. Capability identity matching remains the responsibility of callers that
-    already possess the canonical CapabilityId binding.
-    """
-    from agentx.core.ids import CapabilityId
-
-    # This helper is intentionally unreachable for now because ABI identities are
-    # names/versions whereas ProcedureRequirement uses registry UUID identity.
-    # Fail closed instead of fabricating an ID from external text.
-    raise ValueError(
-        "capability applicability requires the caller's canonical CapabilityId binding; "
-        f"cannot derive one from {identity}"
+        capability=capability,
     )
 
 
