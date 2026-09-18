@@ -166,11 +166,13 @@ class VoiceTaskBridge:
         plan: VoiceTaskPlan,
     ) -> Result[OrchestrationOutcome, AgentXError]:
         if not isinstance(transcript, str) or not transcript.strip():
-            return Result.failure(_error(
+            return Result.failure(
+                _error(
                     "empty_transcript",
                     "voice transcript is empty",
                     ErrorCategory.VALIDATION,
-                ))
+                )
+            )
         if len(transcript) > 64_000:
             return Result.failure(
                 _error(
