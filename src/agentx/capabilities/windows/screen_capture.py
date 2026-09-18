@@ -425,7 +425,7 @@ class WindowsScreenCaptureCapability:
                 preconditions=(
                     CapabilityPrecondition(
                         name="windows.supported_host",
-                        description="A supported Windows host with an observable desktop is required.",
+                        description=(\n                            "A supported Windows host with an observable desktop is required."\n                        ),
                     ),
                 ),
                 rollback=RollbackDeclaration(
@@ -531,7 +531,7 @@ class WindowsScreenCaptureCapability:
             or row_stride < width * 4
             or pixel_bytes != row_stride * height
         ):
-            return VerificationResult(passed=False, detail="screen frame dimensions are inconsistent")
+            return VerificationResult(\n                passed=False, detail="screen frame dimensions are inconsistent"\n            )
         return VerificationResult(
             passed=True,
             detail="screen observation descriptor is structurally consistent",
