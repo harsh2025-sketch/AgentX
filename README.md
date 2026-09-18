@@ -19,7 +19,8 @@ repair its own procedures over time.
 > the [status and completion ledger](docs/STATUS.md) for evidence and remaining work.
 > The exact normalized [600-task ledger](docs/TASKS.md) is generated from
 > [machine-readable task records](docs/TASKS.json); reported status is separate
-> from verified acceptance evidence.
+> from verified acceptance evidence. The focused governed single-task runtime
+> audit is recorded in [M1 acceptance](docs/m1_acceptance.md).
 
 ## Requirements
 

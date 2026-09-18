@@ -20,14 +20,15 @@ Exit criteria:
 
 ## Milestone 1 — Governed Single-Task Agent Runtime
 
-**Status:** Substantially implemented
+**Status:** Closure candidate complete in PR #163; pending review/merge
 
 Turn the substrate into a real bounded agent loop for one task.
 
 Exit criteria:
 - deterministic L0–L5 execution-level vocabulary and selection;
 - runtime strategy assembly;
-- L0 cache, L1 deterministic capability, L2 compiled procedure, L3 guided procedure and L4 planning paths;
+- L0 cache, L1 deterministic capability, L2 compiled procedure, L3 guided procedure, L4 planning and bounded L5 exploratory paths;
+- Hive-first L5 gap handling with research kept untrusted and governed through the Trusted Kernel;
 - task decomposition/readiness validation;
 - governed capability execution only through the Trusted Kernel;
 - independent task-level verification; procedure END or API success never equals task success;
@@ -285,6 +286,13 @@ Exit criteria:
 
 ## Current canonical position
 
-As of the Wave-2 integration ending at main commit `5969340b2efac244bebf4a86ed85df1bb630a377`, the project has substantial implementation across Milestones 0–7, with the central learning/reuse/repair architecture largely present. The immediate core gaps are the clean L5 exploratory strategy boundary, governed browser form/text entry, a concrete model-provider adapter, modern C4.10 adversarial replay, and the final integrated adaptive-flywheel experiment.
+Canonical main at the start of the M1 closure review was
+`294cf9029e63d91b476971db79133e09264f2087`. PR #163 is the unmerged M1
+closure candidate: it supplies typed L4 application/procedure composition, the
+clean bounded Hive-first L5 strategy boundary, and AX-041–AX-085 acceptance
+evidence. The broader project still needs real external model/research
+configuration and acceptance, governed browser completion, modern C4.10
+adversarial replay, the adaptive-flywheel experiment, and the later
+platform/product milestones.
 
 Milestone completion should be judged by exit criteria and canonical evidence on `main`, not by raw PR count or historical task-number count.
