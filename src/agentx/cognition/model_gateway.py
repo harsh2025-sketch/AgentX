@@ -51,8 +51,8 @@ from agentx.kernel.risk import RiskLevel
 
 __all__ = [
     "BoundedModelGateway",
-    "GovernedGatewayModelProvider",
     "FallbackPolicy",
+    "GovernedGatewayModelProvider",
     "ModelAttemptReservation",
     "ModelCapabilityRegistry",
     "ProviderHealthSnapshot",
