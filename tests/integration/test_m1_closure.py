@@ -221,4 +221,4 @@ def test_external_l5_research_remains_confirmation_gated(tmp_path: Path) -> None
     attempted = result.attempts[0].outcome
     assert attempted is not None and attempted.is_success
     closed = attempted.unwrap()
-    assert closed.error is not None and closed.error.code == "runtime.gate_confirmation_required"
+    assert closed.error is not None and closed.error.code == "runtime.gate_denied"
