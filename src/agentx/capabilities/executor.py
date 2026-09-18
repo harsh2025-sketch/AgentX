@@ -6,6 +6,7 @@ already-selected capability. It is deliberately the smallest possible
 component:
 
     ExecutorRequest(task, capability_request, context)
+        -> Executor.execute(..., approvals=(...))
         -> CapabilityExecutionLoop.run(...)   # canonical A1.10
         -> ClosedLoopOutcome                  # canonical A1.10 result
 
@@ -38,8 +39,11 @@ budget usage are all canonical A1.10 values.
 Authority boundary
 ------------------
 
-The Executor holds no authority and can manufacture none. It does not accept,
-build, or widen an :class:`~agentx.kernel.permissions.AuthorityContext`; it
+The Executor holds no authority and can manufacture none. Its execute method
+may transport already-issued exact-binding human approval evidence as a
+separate keyword-only argument, but it cannot create or interpret that evidence
+as authority. ExecutorRequest itself remains authority-free. It does not accept, build, or widen an
+:class:`~agentx.kernel.permissions.AuthorityContext`; it
 does not construct a gate request; it cannot lower effective risk, enlarge a
 :class:`~agentx.kernel.resource_budget.ResourceEnvelope`, or clear an
 :class:`~agentx.kernel.emergency_stop.EmergencyStop`. Those collaborators are
@@ -87,7 +91,11 @@ from dataclasses import dataclass
 from typing import Any, Final
 
 from agentx.capabilities.abi import CapabilityRequest
-from agentx.capabilities.runtime import CapabilityExecutionLoop, ClosedLoopOutcome
+from agentx.capabilities.runtime import (
+    ApprovalDecisions,
+    CapabilityExecutionLoop,
+    ClosedLoopOutcome,
+)
 from agentx.core.errors import AgentXError
 from agentx.core.execution import ExecutionContext
 from agentx.core.result import Result
@@ -118,16 +126,10 @@ class ExecutorRequestError(ValueError):
 class ExecutorRequest:
     """The smallest typed execution request the Executor accepts.
 
-    It carries exactly the three canonical values the governed path needs and
-    nothing else: the canonical :class:`~agentx.core.tasks.Task`, the canonical
-    :class:`~agentx.capabilities.abi.CapabilityRequest` naming the
-    already-selected capability, and the canonical
-    :class:`~agentx.core.execution.ExecutionContext`.
-
-    There is deliberately no mutable metadata mapping, no permission field, no
-    risk or budget override, no strategy/level hint, no retry policy, and no
-    verification field. Anything of that shape would be an authority decision
-    smuggled into a data object.
+    It carries exactly the canonical Task, selected CapabilityRequest and
+    ExecutionContext. There is deliberately no mutable metadata mapping, no
+    permission or approval field, no risk or budget override, no strategy/level
+    hint, no retry policy, and no verification field.
 
     Validation is structural only: types must be canonical, and when the
     context declares a ``task_id`` it must be the requested Task's identity.
@@ -188,7 +190,12 @@ class Executor:
         """The canonical A1.10 path this Executor delegates to."""
         return self._execution_loop
 
-    def execute(self, request: ExecutorRequest) -> Result[ClosedLoopOutcome, AgentXError]:
+    def execute(
+        self,
+        request: ExecutorRequest,
+        *,
+        approvals: ApprovalDecisions = (),
+    ) -> Result[ClosedLoopOutcome, AgentXError]:
         """Delegate one explicit execution request to the canonical A1.10 path.
 
         The canonical loop is invoked exactly once with the exact canonical
@@ -204,8 +211,11 @@ class Executor:
         if not isinstance(request, ExecutorRequest):
             raise TypeError(f"request must be an ExecutorRequest, got {type(request).__name__}")
 
+        if type(approvals) is not tuple:
+            raise TypeError("approvals must be a tuple")
         return self._execution_loop.run(
             request.task,
             request.capability_request,
             request.context,
+            approvals=approvals,
         )
