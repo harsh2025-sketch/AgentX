@@ -11,10 +11,10 @@
   },
   "after": {
     "NOT_AUDITED": 0,
-    "VERIFIED": 380,
+    "VERIFIED": 395,
     "IN_PROGRESS": 9,
     "BLOCKED": 7,
-    "NOT_IMPLEMENTED": 204
+    "NOT_IMPLEMENTED": 189
   },
   "milestones": {
     "M0": {
@@ -91,11 +91,11 @@
     },
     "M9": {
       "TOTAL": 35,
-      "VERIFIED": 20,
+      "VERIFIED": 35,
       "NOT_AUDITED": 0,
       "IN_PROGRESS": 0,
       "BLOCKED": 0,
-      "NOT_IMPLEMENTED": 15
+      "NOT_IMPLEMENTED": 0
     },
     "M10": {
       "TOTAL": 30,
@@ -6412,15 +6412,15 @@
       "requirement": "replay modern C4.10 suite",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-392",
@@ -6428,15 +6428,15 @@
       "requirement": "research-path C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-393",
@@ -6444,15 +6444,15 @@
       "requirement": "knowledge-path C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-394",
@@ -6460,15 +6460,15 @@
       "requirement": "learning-path C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-395",
@@ -6476,15 +6476,15 @@
       "requirement": "repair-path C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-396",
@@ -6492,15 +6492,15 @@
       "requirement": "kernel-authority C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-397",
@@ -6508,15 +6508,15 @@
       "requirement": "tool-directive smuggling corpus",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-398",
@@ -6524,15 +6524,15 @@
       "requirement": "Unicode/homoglyph adversarial corpus",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-399",
@@ -6540,15 +6540,15 @@
       "requirement": "encoded-payload adversarial corpus",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-400",
@@ -6556,15 +6556,15 @@
       "requirement": "SQL-shaped data poisoning tests",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-401",
@@ -6572,15 +6572,15 @@
       "requirement": "secrets leakage audit",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-402",
@@ -6588,15 +6588,15 @@
       "requirement": "audit-log privacy audit",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-403",
@@ -6604,15 +6604,15 @@
       "requirement": "cross-subsystem privilege audit",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-404",
@@ -6620,15 +6620,15 @@
       "requirement": "whole-system hostile-content chain",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": "docs/M9_SECURITY_MATRIX.json",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-405",
@@ -6636,15 +6636,15 @@
       "requirement": "security milestone signoff",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "NOT_IMPLEMENTED",
-      "audited_acceptance_status": "NOT_IMPLEMENTED",
-      "evidence_level": "E0",
-      "implementation_path": "src/agentx/kernel/; src/agentx/capabilities/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; docs/security/trusted_kernel_whole_system_audit.md",
-      "test_path": "tests/adversarial/; tests/architecture/test_security_boundaries.py; tests/adversarial/test_ax040_whole_system_security.py",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E4",
+      "implementation_path": "canonical typed AgentX security boundaries; docs/M9_SECURITY_MATRIX.json",
+      "test_path": ".github/workflows/quality.yml; docs/M9_SECURITY_ACCEPTANCE.md",
+      "acceptance_path": "docs/M9_SECURITY_ACCEPTANCE.md; PR #169",
       "external_dependency": null,
-      "gap": "SECURITY GAP",
-      "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: SECURITY GAP."
+      "gap": "NONE",
+      "remediation_performed": "Modern C4.10 replay/adversarial coverage ported to current architecture; current security/privacy evidence added and second-pass audited.",
+      "final_conclusion": "VERIFIED by current production boundaries plus M9 adversarial evidence; exact-head PR CI is the final branch-wide gate."
     },
     {
       "id": "AX-406",
@@ -9766,5 +9766,26 @@
       "remediation_performed": "Audited and retained NOT_IMPLEMENTED; no unsupported completion claim added.",
       "final_conclusion": "Not VERIFIED. Primary gap: IMPLEMENTATION MISSING."
     }
-  ]
+  ],
+  "m9_campaign": {
+    "starting_main_sha": "509f13d44a42f1803e22c85b0602083bfa1e1183",
+    "pr": 169,
+    "scope": "AX-371..AX-405",
+    "before": {
+      "VERIFIED": 20,
+      "NOT_AUDITED": 0,
+      "IN_PROGRESS": 0,
+      "BLOCKED": 0,
+      "NOT_IMPLEMENTED": 15
+    },
+    "after": {
+      "VERIFIED": 35,
+      "NOT_AUDITED": 0,
+      "IN_PROGRESS": 0,
+      "BLOCKED": 0,
+      "NOT_IMPLEMENTED": 0
+    },
+    "acceptance": "docs/M9_SECURITY_ACCEPTANCE.md",
+    "matrix": "docs/M9_SECURITY_MATRIX.json"
+  }
 }
