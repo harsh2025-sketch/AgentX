@@ -15,7 +15,7 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | M2 Hive and Memory | 39 | 0 | 1 | 40 |
 | M3 Procedure Compiler | 49 | 0 | 1 | 50 |
 | M4 Learning Efficiency | 20 | 0 | 10 | 0 |
-| M5 Self-Repair | 36 | 0 | 4 | 0 |
+| M5 Self-Repair | 36 | 0 | 4 | 40 |
 | M6 Windows Capabilities | 52 | 0 | 3 | 0 |
 | M7 Browser Agent | 14 | 0 | 21 | 0 |
 | M8 Models and Research | 13 | 0 | 22 | 0 |
@@ -238,46 +238,46 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-203 | solve related warm task via reuse | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-202 |
 | AX-204 | demonstrate material model-call/cost reduction | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-198, AX-203 |
 | AX-205 | publish reproducible cold-vs-warm benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-204 |
-| AX-206 | failure taxonomy | COMPLETE | NOT_AUDITED |  |
-| AX-207 | transient-failure classification | COMPLETE | NOT_AUDITED |  |
-| AX-208 | environment-unavailable classification | COMPLETE | NOT_AUDITED |  |
-| AX-209 | precondition-failure classification | COMPLETE | NOT_AUDITED |  |
-| AX-210 | capability-change classification | COMPLETE | NOT_AUDITED |  |
-| AX-211 | UI/API-change classification | COMPLETE | NOT_AUDITED |  |
-| AX-212 | verification-failure classification | COMPLETE | NOT_AUDITED |  |
-| AX-213 | failure localization | COMPLETE | NOT_AUDITED |  |
-| AX-214 | failure diagnosis | COMPLETE | NOT_AUDITED |  |
-| AX-215 | repair-candidate contract | COMPLETE | NOT_AUDITED |  |
-| AX-216 | procedure degradation detector | COMPLETE | NOT_AUDITED |  |
-| AX-217 | repair-budget policy | COMPLETE | NOT_AUDITED |  |
-| AX-218 | repair anti-loop | COMPLETE | NOT_AUDITED |  |
-| AX-219 | repair workflow orchestrator | COMPLETE | NOT_AUDITED |  |
-| AX-220 | repair proposal generation boundary | COMPLETE | NOT_AUDITED |  |
-| AX-221 | node-definition replacement patch | COMPLETE | NOT_AUDITED |  |
-| AX-222 | repair patch materializer | COMPLETE | NOT_AUDITED |  |
-| AX-223 | immutable source preservation | COMPLETE | NOT_AUDITED |  |
-| AX-224 | repaired candidate generation | COMPLETE | NOT_AUDITED |  |
-| AX-225 | repair validation evidence | COMPLETE | NOT_AUDITED |  |
-| AX-226 | shadow-repair evidence | COMPLETE | NOT_AUDITED |  |
-| AX-227 | shadow procedure runner | COMPLETE | NOT_AUDITED |  |
-| AX-228 | source/candidate exact binding | COMPLETE | NOT_AUDITED |  |
-| AX-229 | no-live-mutation shadow invariant | COMPLETE | NOT_AUDITED |  |
-| AX-230 | procedure replacement eligibility | COMPLETE | NOT_AUDITED |  |
-| AX-231 | replacement transaction | COMPLETE | NOT_AUDITED |  |
-| AX-232 | serialized activation transaction | COMPLETE | NOT_AUDITED |  |
-| AX-233 | stale-revision rejection | COMPLETE | NOT_AUDITED |  |
-| AX-234 | exactly-one-ACTIVE invariant | COMPLETE | NOT_AUDITED |  |
-| AX-235 | RETIRED terminal invariant | COMPLETE | NOT_AUDITED |  |
-| AX-236 | rollback eligibility | COMPLETE | NOT_AUDITED |  |
-| AX-237 | rollback transaction | COMPLETE | NOT_AUDITED |  |
-| AX-238 | historical RETIRED-copy semantics | COMPLETE | NOT_AUDITED |  |
-| AX-239 | rollback creates new revision | COMPLETE | NOT_AUDITED |  |
-| AX-240 | replacement/rollback concurrency tests | COMPLETE | NOT_AUDITED |  |
-| AX-241 | transaction fault-injection tests | COMPLETE | NOT_AUDITED |  |
-| AX-242 | deliberately break real learned procedure | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-243 | detect and localize real degradation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-244 | repair and revalidate real procedure | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-245 | complete break -> repair -> rollback acceptance proof | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-206 | failure taxonomy | COMPLETE | VERIFIED |  |
+| AX-207 | transient-failure classification | COMPLETE | VERIFIED |  |
+| AX-208 | environment-unavailable classification | COMPLETE | VERIFIED |  |
+| AX-209 | precondition-failure classification | COMPLETE | VERIFIED |  |
+| AX-210 | capability-change classification | COMPLETE | VERIFIED |  |
+| AX-211 | UI/API-change classification | COMPLETE | VERIFIED |  |
+| AX-212 | verification-failure classification | COMPLETE | VERIFIED |  |
+| AX-213 | failure localization | COMPLETE | VERIFIED |  |
+| AX-214 | failure diagnosis | COMPLETE | VERIFIED |  |
+| AX-215 | repair-candidate contract | COMPLETE | VERIFIED |  |
+| AX-216 | procedure degradation detector | COMPLETE | VERIFIED |  |
+| AX-217 | repair-budget policy | COMPLETE | VERIFIED |  |
+| AX-218 | repair anti-loop | COMPLETE | VERIFIED |  |
+| AX-219 | repair workflow orchestrator | COMPLETE | VERIFIED |  |
+| AX-220 | repair proposal generation boundary | COMPLETE | VERIFIED |  |
+| AX-221 | node-definition replacement patch | COMPLETE | VERIFIED |  |
+| AX-222 | repair patch materializer | COMPLETE | VERIFIED |  |
+| AX-223 | immutable source preservation | COMPLETE | VERIFIED |  |
+| AX-224 | repaired candidate generation | COMPLETE | VERIFIED |  |
+| AX-225 | repair validation evidence | COMPLETE | VERIFIED |  |
+| AX-226 | shadow-repair evidence | COMPLETE | VERIFIED |  |
+| AX-227 | shadow procedure runner | COMPLETE | VERIFIED |  |
+| AX-228 | source/candidate exact binding | COMPLETE | VERIFIED |  |
+| AX-229 | no-live-mutation shadow invariant | COMPLETE | VERIFIED |  |
+| AX-230 | procedure replacement eligibility | COMPLETE | VERIFIED |  |
+| AX-231 | replacement transaction | COMPLETE | VERIFIED |  |
+| AX-232 | serialized activation transaction | COMPLETE | VERIFIED |  |
+| AX-233 | stale-revision rejection | COMPLETE | VERIFIED |  |
+| AX-234 | exactly-one-ACTIVE invariant | COMPLETE | VERIFIED |  |
+| AX-235 | RETIRED terminal invariant | COMPLETE | VERIFIED |  |
+| AX-236 | rollback eligibility | COMPLETE | VERIFIED |  |
+| AX-237 | rollback transaction | COMPLETE | VERIFIED |  |
+| AX-238 | historical RETIRED-copy semantics | COMPLETE | VERIFIED |  |
+| AX-239 | rollback creates new revision | COMPLETE | VERIFIED |  |
+| AX-240 | replacement/rollback concurrency tests | COMPLETE | VERIFIED |  |
+| AX-241 | transaction fault-injection tests | COMPLETE | VERIFIED |  |
+| AX-242 | deliberately break real learned procedure | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-243 | detect and localize real degradation | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-244 | repair and revalidate real procedure | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-245 | complete break -> repair -> rollback acceptance proof | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-246 | Windows platform-support contract | COMPLETE | NOT_AUDITED |  |
 | AX-247 | Windows process discovery | COMPLETE | NOT_AUDITED |  |
 | AX-248 | process identity | COMPLETE | NOT_AUDITED |  |

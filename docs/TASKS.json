@@ -4850,360 +4850,1200 @@
       "milestone": "M5",
       "title": "failure taxonomy",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/failure_taxonomy.py",
+          "note": "Production implementation audited for AX-206 failure taxonomy."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_failure_taxonomy.py; tests/adversarial/test_failure_taxonomy_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-206."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/unit/test_failure_taxonomy.py",
+          "note": "Acceptance evidence reviewed against the exact AX-206 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-207",
       "milestone": "M5",
       "title": "transient-failure classification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/failure_taxonomy.py",
+          "note": "Production implementation audited for AX-207 transient-failure classification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_failure_taxonomy.py; tests/adversarial/test_failure_taxonomy_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-207."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/unit/test_failure_taxonomy.py",
+          "note": "Acceptance evidence reviewed against the exact AX-207 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-208",
       "milestone": "M5",
       "title": "environment-unavailable classification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/failure_taxonomy.py",
+          "note": "Production implementation audited for AX-208 environment-unavailable classification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_failure_taxonomy.py; tests/adversarial/test_failure_taxonomy_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-208."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/unit/test_failure_taxonomy.py",
+          "note": "Acceptance evidence reviewed against the exact AX-208 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-209",
       "milestone": "M5",
       "title": "precondition-failure classification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/failure_taxonomy.py",
+          "note": "Production implementation audited for AX-209 precondition-failure classification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_failure_taxonomy.py; tests/adversarial/test_failure_taxonomy_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-209."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/unit/test_failure_taxonomy.py",
+          "note": "Acceptance evidence reviewed against the exact AX-209 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-210",
       "milestone": "M5",
       "title": "capability-change classification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/failure_taxonomy.py",
+          "note": "Production implementation audited for AX-210 capability-change classification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_failure_taxonomy.py; tests/adversarial/test_failure_taxonomy_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-210."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/unit/test_failure_taxonomy.py",
+          "note": "Acceptance evidence reviewed against the exact AX-210 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-211",
       "milestone": "M5",
       "title": "UI/API-change classification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/failure_taxonomy.py",
+          "note": "Production implementation audited for AX-211 UI/API-change classification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_failure_taxonomy.py; tests/adversarial/test_failure_taxonomy_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-211."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/unit/test_failure_taxonomy.py",
+          "note": "Acceptance evidence reviewed against the exact AX-211 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-212",
       "milestone": "M5",
       "title": "verification-failure classification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/failure_taxonomy.py",
+          "note": "Production implementation audited for AX-212 verification-failure classification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_failure_taxonomy.py; tests/adversarial/test_failure_taxonomy_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-212."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/unit/test_failure_taxonomy.py",
+          "note": "Acceptance evidence reviewed against the exact AX-212 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-213",
       "milestone": "M5",
       "title": "failure localization",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/failure_localization.py",
+          "note": "Production implementation audited for AX-213 failure localization."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_failure_localization.py; tests/adversarial/test_failure_localization_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-213."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/adversarial/test_failure_localization_authority.py",
+          "note": "Acceptance evidence reviewed against the exact AX-213 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-214",
       "milestone": "M5",
       "title": "failure diagnosis",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/failure_diagnosis.py",
+          "note": "Production implementation audited for AX-214 failure diagnosis."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_failure_diagnosis.py; tests/adversarial/test_failure_diagnosis_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-214."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/adversarial/test_failure_diagnosis_authority.py",
+          "note": "Acceptance evidence reviewed against the exact AX-214 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-215",
       "milestone": "M5",
       "title": "repair-candidate contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/repair_candidates.py",
+          "note": "Production implementation audited for AX-215 repair-candidate contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_repair_candidates.py; tests/adversarial/test_repair_candidates_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-215."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/adversarial/test_repair_candidates_authority.py",
+          "note": "Acceptance evidence reviewed against the exact AX-215 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-216",
       "milestone": "M5",
       "title": "procedure degradation detector",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_degradation.py",
+          "note": "Production implementation audited for AX-216 procedure degradation detector."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_degradation.py; tests/integration/test_procedure_degradation_evidence.py; tests/adversarial/test_procedure_degradation_adversarial.py",
+          "note": "Focused positive/negative coverage audited for AX-216."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-216 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-217",
       "milestone": "M5",
       "title": "repair-budget policy",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/repair_budget.py",
+          "note": "Production implementation audited for AX-217 repair-budget policy."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_repair_budget.py; tests/adversarial/test_repair_budget_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-217."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/adversarial/test_repair_budget_authority.py",
+          "note": "Acceptance evidence reviewed against the exact AX-217 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-218",
       "milestone": "M5",
       "title": "repair anti-loop",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/repair_budget.py",
+          "note": "Production implementation audited for AX-218 repair anti-loop."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_repair_budget.py; tests/adversarial/test_repair_budget_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-218."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/adversarial/test_repair_budget_authority.py",
+          "note": "Acceptance evidence reviewed against the exact AX-218 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-219",
       "milestone": "M5",
       "title": "repair workflow orchestrator",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/repair_workflow.py",
+          "note": "Production implementation audited for AX-219 repair workflow orchestrator."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_repair_workflow.py; tests/integration/test_repair_workflow.py; tests/adversarial/test_repair_workflow_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-219."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-219 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-220",
       "milestone": "M5",
       "title": "repair proposal generation boundary",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/repair_candidates.py; src/agentx/core/repair_patch.py",
+          "note": "Production implementation audited for AX-220 repair proposal generation boundary."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_repair_candidates.py; tests/unit/test_repair_patch.py",
+          "note": "Focused positive/negative coverage audited for AX-220."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/adversarial/test_repair_patch_authority.py",
+          "note": "Acceptance evidence reviewed against the exact AX-220 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-221",
       "milestone": "M5",
       "title": "node-definition replacement patch",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/repair_patch.py",
+          "note": "Production implementation audited for AX-221 node-definition replacement patch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_repair_patch.py; tests/adversarial/test_repair_patch_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-221."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/adversarial/test_repair_patch_authority.py",
+          "note": "Acceptance evidence reviewed against the exact AX-221 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-222",
       "milestone": "M5",
       "title": "repair patch materializer",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/repair_patch_materializer.py",
+          "note": "Production implementation audited for AX-222 repair patch materializer."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_repair_patch_materializer.py; tests/integration/test_repair_patch_materializer.py; tests/adversarial/test_repair_patch_materializer_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-222."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-222 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-223",
       "milestone": "M5",
       "title": "immutable source preservation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/repair_patch_materializer.py",
+          "note": "Production implementation audited for AX-223 immutable source preservation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_repair_patch_materializer.py; tests/integration/test_repair_patch_materializer.py; tests/adversarial/test_repair_patch_materializer_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-223."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-223 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-224",
       "milestone": "M5",
       "title": "repaired candidate generation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/repair_patch_materializer.py",
+          "note": "Production implementation audited for AX-224 repaired candidate generation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_repair_patch_materializer.py; tests/integration/test_repair_patch_materializer.py; tests/adversarial/test_repair_patch_materializer_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-224."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-224 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-225",
       "milestone": "M5",
       "title": "repair validation evidence",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/repair_validation.py",
+          "note": "Production implementation audited for AX-225 repair validation evidence."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_repair_validation.py; tests/adversarial/test_repair_validation_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-225."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-225 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-226",
       "milestone": "M5",
       "title": "shadow-repair evidence",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/shadow_repair.py",
+          "note": "Production implementation audited for AX-226 shadow-repair evidence."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_shadow_repair.py; tests/adversarial/test_shadow_repair_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-226."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-226 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-227",
       "milestone": "M5",
       "title": "shadow procedure runner",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/shadow_procedure_runner.py",
+          "note": "Production implementation audited for AX-227 shadow procedure runner."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_shadow_procedure_runner.py; tests/architecture/test_shadow_repair_placement.py",
+          "note": "Focused positive/negative coverage audited for AX-227."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-227 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-228",
       "milestone": "M5",
       "title": "source/candidate exact binding",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/shadow_procedure_runner.py",
+          "note": "Production implementation audited for AX-228 source/candidate exact binding."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_shadow_procedure_runner.py; tests/architecture/test_shadow_repair_placement.py",
+          "note": "Focused positive/negative coverage audited for AX-228."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-228 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-229",
       "milestone": "M5",
       "title": "no-live-mutation shadow invariant",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/shadow_procedure_runner.py",
+          "note": "Production implementation audited for AX-229 no-live-mutation shadow invariant."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_shadow_procedure_runner.py; tests/architecture/test_shadow_repair_placement.py",
+          "note": "Focused positive/negative coverage audited for AX-229."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-229 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-230",
       "milestone": "M5",
       "title": "procedure replacement eligibility",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/procedure_replacement.py",
+          "note": "Production implementation audited for AX-230 procedure replacement eligibility."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_replacement.py; tests/adversarial/test_procedure_replacement_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-230."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-230 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-231",
       "milestone": "M5",
       "title": "replacement transaction",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_replacement_transaction.py",
+          "note": "Production implementation audited for AX-231 replacement transaction."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_replacement_transaction.py; tests/integration/test_procedure_replacement_transaction.py; tests/adversarial/test_procedure_replacement_transaction_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-231."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-231 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-232",
       "milestone": "M5",
       "title": "serialized activation transaction",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/infrastructure/procedure_activation.py; src/agentx/infrastructure/active_procedure_reader.py",
+          "note": "Production implementation audited for AX-232 serialized activation transaction."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_procedure_activation_races.py; tests/unit/test_active_procedure_reuse.py",
+          "note": "Focused positive/negative coverage audited for AX-232."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-232 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-233",
       "milestone": "M5",
       "title": "stale-revision rejection",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_replacement_transaction.py",
+          "note": "Production implementation audited for AX-233 stale-revision rejection."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_replacement_transaction.py; tests/integration/test_procedure_replacement_transaction.py; tests/adversarial/test_procedure_replacement_transaction_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-233."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-233 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-234",
       "milestone": "M5",
       "title": "exactly-one-ACTIVE invariant",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/infrastructure/procedure_activation.py; src/agentx/infrastructure/active_procedure_reader.py",
+          "note": "Production implementation audited for AX-234 exactly-one-ACTIVE invariant."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_procedure_activation_races.py; tests/unit/test_active_procedure_reuse.py",
+          "note": "Focused positive/negative coverage audited for AX-234."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-234 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-235",
       "milestone": "M5",
       "title": "RETIRED terminal invariant",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/infrastructure/procedure_activation.py; src/agentx/infrastructure/active_procedure_reader.py",
+          "note": "Production implementation audited for AX-235 RETIRED terminal invariant."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_procedure_activation_races.py; tests/unit/test_active_procedure_reuse.py",
+          "note": "Focused positive/negative coverage audited for AX-235."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-235 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-236",
       "milestone": "M5",
       "title": "rollback eligibility",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/procedure_replacement.py",
+          "note": "Production implementation audited for AX-236 rollback eligibility."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_replacement.py; tests/adversarial/test_procedure_replacement_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-236."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-236 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-237",
       "milestone": "M5",
       "title": "rollback transaction",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_rollback.py",
+          "note": "Production implementation audited for AX-237 rollback transaction."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_rollback.py; tests/integration/test_procedure_rollback.py; tests/adversarial/test_procedure_rollback_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-237."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-237 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-238",
       "milestone": "M5",
       "title": "historical RETIRED-copy semantics",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_rollback.py",
+          "note": "Production implementation audited for AX-238 historical RETIRED-copy semantics."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_rollback.py; tests/integration/test_procedure_rollback.py; tests/adversarial/test_procedure_rollback_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-238."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-238 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-239",
       "milestone": "M5",
       "title": "rollback creates new revision",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/procedure_rollback.py",
+          "note": "Production implementation audited for AX-239 rollback creates new revision."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_procedure_rollback.py; tests/integration/test_procedure_rollback.py; tests/adversarial/test_procedure_rollback_authority.py",
+          "note": "Focused positive/negative coverage audited for AX-239."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Acceptance evidence reviewed against the exact AX-239 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-240",
       "milestone": "M5",
       "title": "replacement/rollback concurrency tests",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/infrastructure/procedure_activation.py; src/agentx/procedure_replacement_transaction.py; src/agentx/procedure_rollback.py",
+          "note": "Production implementation audited for AX-240 replacement/rollback concurrency tests."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_procedure_activation_races.py",
+          "note": "Focused positive/negative coverage audited for AX-240."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/adversarial/test_procedure_activation_races.py",
+          "note": "Acceptance evidence reviewed against the exact AX-240 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-241",
       "milestone": "M5",
       "title": "transaction fault-injection tests",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/infrastructure/procedure_activation.py; src/agentx/procedure_replacement_transaction.py; src/agentx/procedure_rollback.py",
+          "note": "Production implementation audited for AX-241 transaction fault-injection tests."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_procedure_activation_races.py",
+          "note": "Focused positive/negative coverage audited for AX-241."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "294cf9029e63d91b476971db79133e09264f2087",
+          "note": "Canonical main commit from which this M5 acceptance audit started; implementation was already present there."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/adversarial/test_procedure_activation_races.py",
+          "note": "Acceptance evidence reviewed against the exact AX-241 requirement; full Windows suite also passed at 2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d."
+        }
+      ]
     },
     {
       "id": "AX-242",
       "milestone": "M5",
       "title": "deliberately break real learned procedure",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Production implementation audited for AX-242 deliberately break real learned procedure."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Focused positive/negative coverage audited for AX-242."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d",
+          "note": "Exact M5 acceptance implementation commit that passed Windows C1.01 run 35310763170."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Real filesystem break/repair/reuse and failed-repair/rollback acceptance on production components."
+        }
+      ]
     },
     {
       "id": "AX-243",
       "milestone": "M5",
       "title": "detect and localize real degradation",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Production implementation audited for AX-243 detect and localize real degradation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Focused positive/negative coverage audited for AX-243."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d",
+          "note": "Exact M5 acceptance implementation commit that passed Windows C1.01 run 35310763170."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Real filesystem break/repair/reuse and failed-repair/rollback acceptance on production components."
+        }
+      ]
     },
     {
       "id": "AX-244",
       "milestone": "M5",
       "title": "repair and revalidate real procedure",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Production implementation audited for AX-244 repair and revalidate real procedure."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Focused positive/negative coverage audited for AX-244."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d",
+          "note": "Exact M5 acceptance implementation commit that passed Windows C1.01 run 35310763170."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Real filesystem break/repair/reuse and failed-repair/rollback acceptance on production components."
+        }
+      ]
     },
     {
       "id": "AX-245",
       "milestone": "M5",
       "title": "complete break -> repair -> rollback acceptance proof",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Production implementation audited for AX-245 complete break -> repair -> rollback acceptance proof."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Focused positive/negative coverage audited for AX-245."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "2f56a6bd5821c35ebf52c149e0ebddb8b3727f8d",
+          "note": "Exact M5 acceptance implementation commit that passed Windows C1.01 run 35310763170."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+          "note": "Real filesystem break/repair/reuse and failed-repair/rollback acceptance on production components."
+        }
+      ]
     },
     {
       "id": "AX-246",

@@ -70,7 +70,7 @@ states distinguish production code, candidate changes and missing acceptance.
 | M2 Persistent memory | Event journal, episodes, semantic knowledge, typed scopes; real child-process restart/corruption acceptance; AX-086–AX-125 acceptance VERIFIED | M2 exit criteria satisfied; historical reported baseline remains immutable and separate from acceptance evidence |
 | M3 Compilation and reuse | Procedure IR/interpreter, corroborated parameter generalization, candidate validation/promotion, restart-safe ACTIVE reuse, and end-to-end cold→compile→validate→promote→restart→L2 proof | No remaining M3 exit-criteria gap; live-model efficiency measurement belongs to M4 |
 | M4 Learning efficiency | Metrics, reuse evidence and experiment contracts | Real model-backed cold/warm comparison with independently verified outcomes |
-| M5 Repair | Diagnosis, degradation, shadow validation, replacement and rollback machinery | Deliberate break/repair/reuse experiment and failed-repair rollback |
+| M5 Repair | Failure classification/localization/diagnosis, bounded repair, varied shadow validation, atomic replacement, rollback/restart acceptance; AX-206–AX-245 acceptance VERIFIED | M5 exit criteria satisfied; M3 procedure lifecycle semantics remain canonical |
 | M6 Windows | Structured filesystem, app/window/input/UIA foundations; #156/#157 integrated | Representative Windows 10/11 workflows |
 | M7 Browser | State, DOM, target selection, navigation, click and selected-node fill | N2.27 privacy/field-type acceptance; concrete browser driver and verified multi-page workflow |
 | M8 Models/research | Canonical model/Reasoner; integrated #149; HTTP adapter and invocation metrics | N2.07 L5; configured real service/credentials; live acceptance and model-budget composition |

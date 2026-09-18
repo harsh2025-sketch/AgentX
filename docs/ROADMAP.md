@@ -99,7 +99,7 @@ Exit criteria:
 
 ## Milestone 5 — Failure-Driven Self-Repair and Procedure Lifecycle
 
-**Status:** Mostly implemented structurally; end-to-end break/repair proof still required
+**Status:** Completed and acceptance-verified
 
 Detect when learned procedures stop working and repair them conservatively.
 
@@ -114,6 +114,12 @@ Exit criteria:
 - exactly one ACTIVE revision after successful lifecycle mutation;
 - deliberate procedure break -> detection -> diagnosis -> repair -> shadow validation -> new revision -> verified reuse;
 - rollback proof when repaired revision fails.
+
+Acceptance evidence: PR #164 adds the deliberate break -> independently verified failure ->
+typed localization/diagnosis -> bounded repair -> CANDIDATE -> varied shadow validation ->
+atomic replacement -> restart -> verified reuse lifecycle, plus a bad-repair path that
+fails validation and preserves/restores the known-good ACTIVE revision. AX-206–AX-245
+are recorded as acceptance VERIFIED without rewriting the protected historical baseline.
 
 ## Milestone 6 — Windows-Native Capability Fabric
 
