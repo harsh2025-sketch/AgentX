@@ -25,6 +25,7 @@ from agentx.cognition.speech import (
 from agentx.core.audio import (
     AudioAdmissionDecision,
     AudioBufferPolicy,
+    AudioCaptureStream,
     AudioEndpoint,
     AudioEndpointId,
     AudioEndpointKind,
@@ -32,6 +33,7 @@ from agentx.core.audio import (
     AudioFormat,
     AudioFormatSupport,
     AudioFrame,
+    AudioPlaybackStream,
     AudioProviderId,
     AudioStreamDescriptor,
     AudioStreamState,
@@ -39,7 +41,7 @@ from agentx.core.audio import (
     audio_failure,
 )
 from agentx.core.errors import AgentXError
-from agentx.core.execution import CancellationSource, CancellationToken
+from agentx.core.execution import CancellationSource, CancellationToken, Deadline
 from agentx.core.ids import AudioStreamId
 from agentx.core.result import Result
 
@@ -264,8 +266,8 @@ class _AudioProvider:
         self,
         descriptor: AudioStreamDescriptor,
         *,
-        deadline: object | None = None,
-    ) -> Result[object, AgentXError]:
+        deadline: Deadline | None = None,
+    ) -> Result[AudioCaptureStream | AudioPlaybackStream, AgentXError]:
         del deadline
         if descriptor.kind is AudioEndpointKind.SOURCE:
             return Result.success(self.capture)
