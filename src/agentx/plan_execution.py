@@ -89,7 +89,9 @@ def terminal_order(plan: TaskDecomposition) -> Result[tuple[DecompositionNode, .
         while current is not None:
             descendants[current.task_id].add(leaf.task_id)
             current = (
-                None if current.parent_task_id is None else plan.require_node(current.parent_task_id)
+                None
+                if current.parent_task_id is None
+                else plan.require_node(current.parent_task_id)
             )
     dependencies: dict[TaskId, set[TaskId]] = {}
     for leaf in leaves:
@@ -99,7 +101,9 @@ def terminal_order(plan: TaskDecomposition) -> Result[tuple[DecompositionNode, .
             for dependency in current.depends_on:
                 required.update(descendants[dependency])
             current = (
-                None if current.parent_task_id is None else plan.require_node(current.parent_task_id)
+                None
+                if current.parent_task_id is None
+                else plan.require_node(current.parent_task_id)
             )
         dependencies[leaf.task_id] = required
     ordered: list[DecompositionNode] = []
@@ -257,10 +261,14 @@ class GovernedPlanningStrategy:
     def attempt(
         self, task: Task, context: ExecutionContext, level: ExecutionLevel
     ) -> StrategyResult:
+        if not isinstance(task, Task) or not isinstance(context, ExecutionContext):
+            raise TypeError("task and context must be canonical contracts")
         if not isinstance(level, ExecutionLevel):
             raise TypeError("level must be an ExecutionLevel")
         if level is not ExecutionLevel.L4_PLANNED:
             return StrategyResult.unavailable("governed planning requires L4_PLANNED")
+        if context.task_id is not None and context.task_id != task.task_id:
+            return StrategyResult.executed(_failure("context_mismatch"))
         plan = self._planner.plan(task, context)
         if plan.is_failure:
             return StrategyResult.executed(Result.failure(plan.unwrap_error()))

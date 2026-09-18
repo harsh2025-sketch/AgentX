@@ -468,8 +468,12 @@ class PlanningStrategy:
             "first), and metadata (a JSON object or null). Constraints: at most "
             f"{PLANNING_MAX_NODES} nodes including the root, at most {PLANNING_MAX_DEPTH} "
             f"levels including the root, at most {PLANNING_MAX_SUCCESS_CRITERIA} success "
-            "criteria per node. Do not include any permission, risk, budget, authority, "
-            "verification, execution, or success fields. Do not include any text outside "
+            "criteria per node. Every terminal node must have at least one success "
+            "criterion and metadata.execution equal to {\"kind\":\"higher_level\"}. "
+            "This is an inert resolution requirement, not executable authority. "
+            "Non-terminal nodes must not have metadata.execution. Do not include any "
+            "permission, risk, budget, authority, verification, or success fields. "
+            "Do not include any text outside "
             "the JSON object. Context: "
         ) + context_json
         if len(instruction) > self._limits.max_instruction_chars:

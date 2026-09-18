@@ -86,9 +86,13 @@ class FileBinder:
 class ScriptedProvider:
     def __init__(self, plan: TaskDecomposition) -> None:
         provider_id = ProviderId("plan-test")
-        caps = frozenset({ModelCapability("content.text.input"), ModelCapability("content.text.output")})
+        caps = frozenset(
+            {ModelCapability("content.text.input"), ModelCapability("content.text.output")}
+        )
         model = ModelDescriptor(model_id=ModelId(provider_id, "scripted"), capabilities=caps)
-        self.descriptor = ProviderDescriptor(provider_id=provider_id, capabilities=caps, models=(model,))
+        self.descriptor = ProviderDescriptor(
+            provider_id=provider_id, capabilities=caps, models=(model,)
+        )
         self.calls = 0
         self.output = json.dumps(
             {
@@ -203,16 +207,18 @@ class PlanExecutionTests(unittest.TestCase):
     def test_shared_budget_stops_mid_plan_without_goal_check(self) -> None:
         self.harness = self.make_harness(actions=2)
         result = self.executor().execute(self.plan, self.task, self.context)
-        assert result.unwrap().error is not None
-        self.assertEqual(result.unwrap().error.code, "runtime.budget_denied")
+        error = result.unwrap().error
+        assert error is not None
+        self.assertEqual(error.code, "runtime.budget_denied")
         self.assertEqual(self.path.read_text(), "draft")
         self.assertEqual(self.harness.budget.snapshot().machine_actions, 2)
 
     def test_emergency_stop_reaches_kernel(self) -> None:
         self.harness.emergency_stop.request_stop()
         result = self.executor().execute(self.plan, self.task, self.context)
-        assert result.unwrap().error is not None
-        self.assertEqual(result.unwrap().error.code, "runtime.emergency_stop_active")
+        error = result.unwrap().error
+        assert error is not None
+        self.assertEqual(error.code, "runtime.emergency_stop_active")
         self.assertFalse(self.path.exists())
 
     def test_cancel_before_binding(self) -> None:
