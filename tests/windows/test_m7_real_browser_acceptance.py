@@ -27,8 +27,8 @@ from agentx.capabilities.browser_actions import (
 )
 from agentx.capabilities.browser_connection import BrowserTargetRef
 from agentx.capabilities.browser_dom import (
-    BrowserDomNodeRef,
     BrowserDomAttribute,
+    BrowserDomNodeRef,
     BrowserDomReadRequest,
 )
 from agentx.capabilities.browser_forms import (
