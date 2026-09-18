@@ -16,7 +16,7 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | M3 Procedure Compiler | 49 | 0 | 1 | 50 |
 | M4 Learning Efficiency | 20 | 0 | 10 | 0 |
 | M5 Self-Repair | 36 | 0 | 4 | 40 |
-| M6 Windows Capabilities | 52 | 0 | 3 | 0 |
+| M6 Windows Capabilities | 52 | 0 | 3 | 55 |
 | M7 Browser Agent | 14 | 0 | 21 | 0 |
 | M8 Models and Research | 13 | 0 | 22 | 0 |
 | M9 Security | 20 | 0 | 15 | 0 |
@@ -278,61 +278,61 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-243 | detect and localize real degradation | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-244 | repair and revalidate real procedure | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-245 | complete break -> repair -> rollback acceptance proof | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-246 | Windows platform-support contract | COMPLETE | NOT_AUDITED |  |
-| AX-247 | Windows process discovery | COMPLETE | NOT_AUDITED |  |
-| AX-248 | process identity | COMPLETE | NOT_AUDITED |  |
-| AX-249 | top-level window discovery | COMPLETE | NOT_AUDITED |  |
-| AX-250 | window identity | COMPLETE | NOT_AUDITED |  |
-| AX-251 | UIA observation contract | COMPLETE | NOT_AUDITED |  |
-| AX-252 | UIA tree inspection | COMPLETE | NOT_AUDITED |  |
-| AX-253 | UIA element identity | COMPLETE | NOT_AUDITED |  |
-| AX-254 | UIA property observation | COMPLETE | NOT_AUDITED |  |
-| AX-255 | UIA semantic target resolution | COMPLETE | NOT_AUDITED |  |
-| AX-256 | ambiguity-preserving target resolution | COMPLETE | NOT_AUDITED |  |
-| AX-257 | filesystem text-read capability | COMPLETE | NOT_AUDITED |  |
-| AX-258 | filesystem text-write capability | COMPLETE | NOT_AUDITED |  |
-| AX-259 | filesystem verification | COMPLETE | NOT_AUDITED |  |
-| AX-260 | filesystem structural risk policy | COMPLETE | NOT_AUDITED |  |
-| AX-261 | governed file move | COMPLETE | NOT_AUDITED |  |
-| AX-262 | governed file rename | COMPLETE | NOT_AUDITED |  |
-| AX-263 | governed directory creation | COMPLETE | NOT_AUDITED |  |
-| AX-264 | governed file deletion | COMPLETE | NOT_AUDITED |  |
-| AX-265 | governed directory deletion | COMPLETE | NOT_AUDITED |  |
-| AX-266 | canonical native-mutation seam | COMPLETE | NOT_AUDITED |  |
-| AX-267 | native seam isolation from public capability | COMPLETE | NOT_AUDITED |  |
-| AX-268 | application-launch V2 contract | COMPLETE | NOT_AUDITED |  |
-| AX-269 | structured executable path | COMPLETE | NOT_AUDITED |  |
-| AX-270 | structured argv handling | COMPLETE | NOT_AUDITED |  |
-| AX-271 | no-shell launch invariant | COMPLETE | NOT_AUDITED |  |
-| AX-272 | window activation contract | COMPLETE | NOT_AUDITED |  |
-| AX-273 | window minimization contract | COMPLETE | NOT_AUDITED |  |
-| AX-274 | window maximization contract | COMPLETE | NOT_AUDITED |  |
-| AX-275 | window restore contract | COMPLETE | NOT_AUDITED |  |
-| AX-276 | bounded move/resize contract | COMPLETE | NOT_AUDITED |  |
-| AX-277 | SetWindowPos native adapter | COMPLETE | NOT_AUDITED |  |
-| AX-278 | keyboard text-entry contract | COMPLETE | NOT_AUDITED |  |
-| AX-279 | key-combination contract | COMPLETE | NOT_AUDITED |  |
-| AX-280 | bounded key vocabulary | COMPLETE | NOT_AUDITED |  |
-| AX-281 | clipboard read | COMPLETE | NOT_AUDITED |  |
-| AX-282 | clipboard write | COMPLETE | NOT_AUDITED |  |
-| AX-283 | clipboard clear | COMPLETE | NOT_AUDITED |  |
-| AX-284 | hostile clipboard data inertness | COMPLETE | NOT_AUDITED |  |
-| AX-285 | no keylogger invariant | COMPLETE | NOT_AUDITED |  |
-| AX-286 | no global-hotkey capture invariant | COMPLETE | NOT_AUDITED |  |
-| AX-287 | Windows transition-verification boundary | COMPLETE | NOT_AUDITED |  |
-| AX-288 | window-present verification | COMPLETE | NOT_AUDITED |  |
-| AX-289 | window-absent verification | COMPLETE | NOT_AUDITED |  |
-| AX-290 | window-visible verification | COMPLETE | NOT_AUDITED |  |
-| AX-291 | window-focus verification | COMPLETE | NOT_AUDITED |  |
-| AX-292 | window-bounds verification | COMPLETE | NOT_AUDITED |  |
-| AX-293 | process-present verification | COMPLETE | NOT_AUDITED |  |
-| AX-294 | executable-identity verification | COMPLETE | NOT_AUDITED |  |
-| AX-295 | text-field-value verification | COMPLETE | NOT_AUDITED |  |
-| AX-296 | clipboard independent verification | COMPLETE | NOT_AUDITED |  |
-| AX-297 | keyboard-action independent verification | COMPLETE | NOT_AUDITED |  |
-| AX-298 | real Windows host mutation suite | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-299 | multi-app Windows workflow benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-300 | Windows capability milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-246 | Windows platform-support contract | COMPLETE | VERIFIED |  |
+| AX-247 | Windows process discovery | COMPLETE | VERIFIED |  |
+| AX-248 | process identity | COMPLETE | VERIFIED |  |
+| AX-249 | top-level window discovery | COMPLETE | VERIFIED |  |
+| AX-250 | window identity | COMPLETE | VERIFIED |  |
+| AX-251 | UIA observation contract | COMPLETE | VERIFIED |  |
+| AX-252 | UIA tree inspection | COMPLETE | VERIFIED |  |
+| AX-253 | UIA element identity | COMPLETE | VERIFIED |  |
+| AX-254 | UIA property observation | COMPLETE | VERIFIED |  |
+| AX-255 | UIA semantic target resolution | COMPLETE | VERIFIED |  |
+| AX-256 | ambiguity-preserving target resolution | COMPLETE | VERIFIED |  |
+| AX-257 | filesystem text-read capability | COMPLETE | VERIFIED |  |
+| AX-258 | filesystem text-write capability | COMPLETE | VERIFIED |  |
+| AX-259 | filesystem verification | COMPLETE | VERIFIED |  |
+| AX-260 | filesystem structural risk policy | COMPLETE | VERIFIED |  |
+| AX-261 | governed file move | COMPLETE | VERIFIED |  |
+| AX-262 | governed file rename | COMPLETE | VERIFIED |  |
+| AX-263 | governed directory creation | COMPLETE | VERIFIED |  |
+| AX-264 | governed file deletion | COMPLETE | VERIFIED |  |
+| AX-265 | governed directory deletion | COMPLETE | VERIFIED |  |
+| AX-266 | canonical native-mutation seam | COMPLETE | VERIFIED |  |
+| AX-267 | native seam isolation from public capability | COMPLETE | VERIFIED |  |
+| AX-268 | application-launch V2 contract | COMPLETE | VERIFIED |  |
+| AX-269 | structured executable path | COMPLETE | VERIFIED |  |
+| AX-270 | structured argv handling | COMPLETE | VERIFIED |  |
+| AX-271 | no-shell launch invariant | COMPLETE | VERIFIED |  |
+| AX-272 | window activation contract | COMPLETE | VERIFIED |  |
+| AX-273 | window minimization contract | COMPLETE | VERIFIED |  |
+| AX-274 | window maximization contract | COMPLETE | VERIFIED |  |
+| AX-275 | window restore contract | COMPLETE | VERIFIED |  |
+| AX-276 | bounded move/resize contract | COMPLETE | VERIFIED |  |
+| AX-277 | SetWindowPos native adapter | COMPLETE | VERIFIED |  |
+| AX-278 | keyboard text-entry contract | COMPLETE | VERIFIED |  |
+| AX-279 | key-combination contract | COMPLETE | VERIFIED |  |
+| AX-280 | bounded key vocabulary | COMPLETE | VERIFIED |  |
+| AX-281 | clipboard read | COMPLETE | VERIFIED |  |
+| AX-282 | clipboard write | COMPLETE | VERIFIED |  |
+| AX-283 | clipboard clear | COMPLETE | VERIFIED |  |
+| AX-284 | hostile clipboard data inertness | COMPLETE | VERIFIED |  |
+| AX-285 | no keylogger invariant | COMPLETE | VERIFIED |  |
+| AX-286 | no global-hotkey capture invariant | COMPLETE | VERIFIED |  |
+| AX-287 | Windows transition-verification boundary | COMPLETE | VERIFIED |  |
+| AX-288 | window-present verification | COMPLETE | VERIFIED |  |
+| AX-289 | window-absent verification | COMPLETE | VERIFIED |  |
+| AX-290 | window-visible verification | COMPLETE | VERIFIED |  |
+| AX-291 | window-focus verification | COMPLETE | VERIFIED |  |
+| AX-292 | window-bounds verification | COMPLETE | VERIFIED |  |
+| AX-293 | process-present verification | COMPLETE | VERIFIED |  |
+| AX-294 | executable-identity verification | COMPLETE | VERIFIED |  |
+| AX-295 | text-field-value verification | COMPLETE | VERIFIED |  |
+| AX-296 | clipboard independent verification | COMPLETE | VERIFIED |  |
+| AX-297 | keyboard-action independent verification | COMPLETE | VERIFIED |  |
+| AX-298 | real Windows host mutation suite | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-299 | multi-app Windows workflow benchmark | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-300 | Windows capability milestone acceptance | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-301 | browser provider abstraction | COMPLETE | NOT_AUDITED |  |
 | AX-302 | page/tab identity | COMPLETE | NOT_AUDITED |  |
 | AX-303 | browser-state observation | COMPLETE | NOT_AUDITED |  |
