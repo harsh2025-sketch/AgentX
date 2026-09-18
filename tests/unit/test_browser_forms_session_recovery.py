@@ -69,7 +69,10 @@ _CONNECTION = BrowserConnectionRef(
 )
 
 
-def _target(url: str = "https://example.invalid/form", handle: str = "window-1") -> BrowserTargetRef:
+def _target(
+    url: str = "https://example.invalid/form",
+    handle: str = "window-1",
+) -> BrowserTargetRef:
     return BrowserTargetRef(
         connection=_CONNECTION,
         target_id=BrowserTargetId(_SESSION, handle),
