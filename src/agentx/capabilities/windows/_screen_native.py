@@ -27,9 +27,7 @@ __all__ = [
 SCREEN_NATIVE_UNAVAILABLE_ERROR_CODE: Final[str] = (
     "capabilities.windows.screen_capture.native_unavailable"
 )
-SCREEN_CAPTURE_FAILED_ERROR_CODE: Final[str] = (
-    "capabilities.windows.screen_capture.capture_failed"
-)
+SCREEN_CAPTURE_FAILED_ERROR_CODE: Final[str] = "capabilities.windows.screen_capture.capture_failed"
 
 _WIN32_PLATFORM: Final[str] = "win32"
 _SM_XVIRTUALSCREEN: Final[int] = 76
