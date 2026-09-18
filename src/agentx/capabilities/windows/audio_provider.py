@@ -17,7 +17,6 @@ from typing import Any, Protocol, runtime_checkable
 
 from agentx.core.audio import (
     AudioAdmissionDecision,
-    AudioBufferPolicy,
     AudioCaptureStream,
     AudioEndpoint,
     AudioEndpointId,
