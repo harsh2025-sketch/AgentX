@@ -51,7 +51,7 @@ Exit criteria:
 
 ## Milestone 3 — Procedure Runtime and Verified Skill Compilation
 
-**Status:** Mostly implemented; final integration proof still required
+**Status:** Completed and acceptance-verified
 
 Convert verified experience into reusable procedures without conflating one success with general validity.
 
@@ -66,6 +66,13 @@ Exit criteria:
 - explicit promotion transaction from CANDIDATE to ACTIVE;
 - applicability matching and deterministic reuse selection;
 - restart-safe ACTIVE-procedure reuse.
+
+Acceptance evidence: PR #166 adds the production compiler/runtime binding and governed
+candidate-validation seam plus `tests/integration/test_m3_skill_compilation_acceptance.py`,
+which proves cold governed execution -> causal experience -> corroborated compilation ->
+varied validation -> explicit promotion -> persisted ACTIVE retrieval after a fresh-process
+restart -> verified L2 reuse. Windows C1.01 run #820 passed the canonical repository gate
+on implementation head `e55d48b102de4b346faa54d1af0d3de7d35008a0`.
 
 ## Milestone 4 — Learning Efficiency Proof
 

@@ -415,6 +415,53 @@ def test_parameter_generalization_variation_causes_reasoning_required() -> None:
         assert action.reason is RegionClassificationReason.UNRESOLVED_VARIATION
 
 
+def test_corroborated_parameterized_variation_is_deterministic() -> None:
+    target = _trajectory(
+        _experience(
+            correlation_id=_CORRELATION_1,
+            offset=0,
+            action_name="api.call",
+            data={"port": 8000, "protocol": "https"},
+        ),
+        _experience(
+            correlation_id=_CORRELATION_1,
+            offset=10,
+            action_name="api.call",
+            data={"port": 8080, "protocol": "https"},
+        ),
+    )
+    corroborating = _trajectory(
+        _experience(
+            correlation_id=_CORRELATION_2,
+            offset=0,
+            action_name="api.call",
+            data={"port": 9000, "protocol": "https"},
+        ),
+        _experience(
+            correlation_id=_CORRELATION_2,
+            offset=10,
+            action_name="api.call",
+            data={"port": 9090, "protocol": "https"},
+        ),
+    )
+    retained = analyze_irrelevant_actions(extract_causal_action_candidates(target))
+    generalization = analyze_parameter_generalization(extract_parameter_candidates(retained))
+
+    result = classify_regions(
+        target,
+        corroborating=[corroborating],
+        generalization=generalization,
+    )
+
+    assert {action.classification for action in result.actions} == {
+        RegionClassification.DETERMINISTIC
+    }
+    assert all(
+        action.reason is RegionClassificationReason.REPEATED_VERIFIED_SUCCESS
+        for action in result.actions
+    )
+
+
 def test_type_sensitive_values_detected_as_variation() -> None:
     # Run 1: port is int 8080; Run 2: port is float 8080.0
     traj1 = _trajectory(

@@ -206,11 +206,15 @@ def test_every_stage_runs_exactly_once_in_canonical_order(
 
     result = _compile()
 
-    # Normalization is the one stage applied to every supplied run; the rest of
-    # the chain runs exactly once, in canonical order.
+    # Target and corroborating runs each traverse the canonical evidence stages
+    # needed to produce provenance-bearing C3.04 observations. Generalization,
+    # classification and synthesis remain single target-level stages.
     assert calls == [
         "normalize_trajectory",
         "normalize_trajectory",
+        "extract_causal_action_candidates",
+        "analyze_irrelevant_actions",
+        "extract_parameter_candidates",
         "extract_causal_action_candidates",
         "analyze_irrelevant_actions",
         "extract_parameter_candidates",
@@ -230,10 +234,17 @@ def test_compiler_delegates_and_duplicates_no_stage_logic() -> None:
     extraction = extract_causal_action_candidates(trajectory)
     elimination = analyze_irrelevant_actions(extraction)
     parameters = extract_parameter_candidates(elimination)
-    generalization = analyze_parameter_generalization(parameters)
+    support_trajectory = normalize_trajectory(support)
+    support_extraction = extract_causal_action_candidates(support_trajectory)
+    support_elimination = analyze_irrelevant_actions(support_extraction)
+    support_parameters = extract_parameter_candidates(support_elimination)
+    generalization = analyze_parameter_generalization(
+        parameters,
+        corroborating=(support_parameters,),
+    )
     regions = classify_regions(
         trajectory,
-        corroborating=(normalize_trajectory(support),),
+        corroborating=(support_trajectory,),
         generalization=generalization,
     )
     synthesis = synthesize_procedure_candidate(

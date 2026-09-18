@@ -1171,6 +1171,10 @@ def _check_generalization_groups(
     step_count: int,
 ) -> _Failure | None:
     """Validate group evidence enums, names, and observation provenance."""
+    allowed_analyses = (
+        elimination,
+        *tuple(item.source_analysis for item in generalization.supporting_extractions),
+    )
     for index, group in enumerate(generalization.groups):
         if type(group.evidence) is not ParameterVariationEvidence:
             return _Failure(
@@ -1203,14 +1207,26 @@ def _check_generalization_groups(
             if (
                 type(sequence) is not int
                 or sequence < 1
-                or sequence > step_count
                 or type(decision) is not ActionEliminationDecision
-                or elimination.decisions[sequence - 1].disposition is not ActionDisposition.RETAIN
             ):
                 return _Failure(
                     reason=SynthesisRejectionReason.EVIDENCE_MISMATCH,
                     detail=(
                         f"parameter group {index}: observation does not reference retained evidence"
+                    ),
+                )
+            valid_source = any(
+                sequence <= len(analysis.decisions)
+                and analysis.decisions[sequence - 1] == decision
+                and decision.disposition is ActionDisposition.RETAIN
+                for analysis in allowed_analyses
+            )
+            if not valid_source:
+                return _Failure(
+                    reason=SynthesisRejectionReason.EVIDENCE_MISMATCH,
+                    detail=(
+                        f"parameter group {index}: observation does not reference retained "
+                        "target/corroborating evidence"
                     ),
                 )
     return None

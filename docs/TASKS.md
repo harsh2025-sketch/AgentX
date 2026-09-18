@@ -13,7 +13,7 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | M0 Trusted Kernel | 40 | 0 | 0 | 0 |
 | M1 Agent Runtime | 41 | 2 | 2 | 0 |
 | M2 Hive and Memory | 39 | 0 | 1 | 0 |
-| M3 Procedure Compiler | 49 | 0 | 1 | 0 |
+| M3 Procedure Compiler | 49 | 0 | 1 | 50 |
 | M4 Learning Efficiency | 20 | 0 | 10 | 0 |
 | M5 Self-Repair | 36 | 0 | 4 | 0 |
 | M6 Windows Capabilities | 52 | 0 | 3 | 0 |
@@ -158,56 +158,56 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-123 | knowledge revalidation | COMPLETE | NOT_AUDITED |  |
 | AX-124 | cross-scope retrieval protection | COMPLETE | NOT_AUDITED |  |
 | AX-125 | full restart-memory acceptance scenario | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-120, AX-121, AX-122, AX-123, AX-124 |
-| AX-126 | ProcedureId contract | COMPLETE | NOT_AUDITED |  |
-| AX-127 | Procedure revision identity | COMPLETE | NOT_AUDITED |  |
-| AX-128 | ProcedureStatus lifecycle vocabulary | COMPLETE | NOT_AUDITED |  |
-| AX-129 | Procedure Graph IR | COMPLETE | NOT_AUDITED |  |
-| AX-130 | ACTION node | COMPLETE | NOT_AUDITED |  |
-| AX-131 | CONDITION node | COMPLETE | NOT_AUDITED |  |
-| AX-132 | END node | COMPLETE | NOT_AUDITED |  |
-| AX-133 | REASON node | COMPLETE | NOT_AUDITED |  |
-| AX-134 | RESEARCH node representation | COMPLETE | NOT_AUDITED |  |
-| AX-135 | subprocedure representation | COMPLETE | NOT_AUDITED |  |
-| AX-136 | recovery/error edges | COMPLETE | NOT_AUDITED |  |
-| AX-137 | graph structural validation | COMPLETE | NOT_AUDITED |  |
-| AX-138 | deterministic graph serialization | COMPLETE | NOT_AUDITED |  |
-| AX-139 | precondition representation | COMPLETE | NOT_AUDITED |  |
-| AX-140 | postcondition representation | COMPLETE | NOT_AUDITED |  |
-| AX-141 | deterministic interpreter | COMPLETE | NOT_AUDITED |  |
-| AX-142 | procedure execution trace | COMPLETE | NOT_AUDITED |  |
-| AX-143 | procedure execution evidence | COMPLETE | NOT_AUDITED |  |
-| AX-144 | ACTION_REQUIRED transition | COMPLETE | NOT_AUDITED |  |
-| AX-145 | REASON_REQUIRED transition | COMPLETE | NOT_AUDITED |  |
-| AX-146 | RESEARCH_REQUIRED transition | COMPLETE | NOT_AUDITED |  |
-| AX-147 | procedure run disposition | COMPLETE | NOT_AUDITED |  |
-| AX-148 | procedure task-verification separation | COMPLETE | NOT_AUDITED |  |
-| AX-149 | trajectory normalization | COMPLETE | NOT_AUDITED |  |
-| AX-150 | causal-action extraction | COMPLETE | NOT_AUDITED |  |
-| AX-151 | irrelevant-action elimination | COMPLETE | NOT_AUDITED |  |
-| AX-152 | parameter extraction | COMPLETE | NOT_AUDITED |  |
-| AX-153 | parameter generalization | COMPLETE | NOT_AUDITED |  |
-| AX-154 | determinism analysis | COMPLETE | NOT_AUDITED |  |
-| AX-155 | reasoning-region classification | COMPLETE | NOT_AUDITED |  |
-| AX-156 | skill-compiler orchestrator | COMPLETE | NOT_AUDITED |  |
-| AX-157 | verified-input compiler admission | COMPLETE | NOT_AUDITED |  |
-| AX-158 | candidate-only synthesis | COMPLETE | NOT_AUDITED |  |
-| AX-159 | Procedure candidate builder | COMPLETE | NOT_AUDITED |  |
-| AX-160 | validation evidence policy | COMPLETE | NOT_AUDITED |  |
-| AX-161 | varied-parameter validation runner | COMPLETE | NOT_AUDITED |  |
-| AX-162 | exact procedure-revision validation binding | COMPLETE | NOT_AUDITED |  |
-| AX-163 | distinct-variation minimum | COMPLETE | NOT_AUDITED |  |
-| AX-164 | partial validation failure preservation | COMPLETE | NOT_AUDITED |  |
-| AX-165 | promotion eligibility decision | COMPLETE | NOT_AUDITED |  |
-| AX-166 | explicit promotion transaction | COMPLETE | NOT_AUDITED |  |
-| AX-167 | atomic candidate activation | COMPLETE | NOT_AUDITED |  |
-| AX-168 | ACTIVE-only normal reuse | COMPLETE | NOT_AUDITED |  |
-| AX-169 | capability/procedure applicability matcher | COMPLETE | NOT_AUDITED |  |
-| AX-170 | deterministic reuse selector | COMPLETE | NOT_AUDITED |  |
-| AX-171 | ambiguous reuse rejection | COMPLETE | NOT_AUDITED |  |
-| AX-172 | restart-safe active-procedure retrieval | COMPLETE | NOT_AUDITED |  |
-| AX-173 | complete compiled L2 real workflow | COMPLETE | NOT_AUDITED |  |
-| AX-174 | complete guided L3 real workflow | COMPLETE | NOT_AUDITED |  |
-| AX-175 | end-to-end skill compilation acceptance proof | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-172, AX-173, AX-174 |
+| AX-126 | ProcedureId contract | COMPLETE | VERIFIED |  |
+| AX-127 | Procedure revision identity | COMPLETE | VERIFIED |  |
+| AX-128 | ProcedureStatus lifecycle vocabulary | COMPLETE | VERIFIED |  |
+| AX-129 | Procedure Graph IR | COMPLETE | VERIFIED |  |
+| AX-130 | ACTION node | COMPLETE | VERIFIED |  |
+| AX-131 | CONDITION node | COMPLETE | VERIFIED |  |
+| AX-132 | END node | COMPLETE | VERIFIED |  |
+| AX-133 | REASON node | COMPLETE | VERIFIED |  |
+| AX-134 | RESEARCH node representation | COMPLETE | VERIFIED |  |
+| AX-135 | subprocedure representation | COMPLETE | VERIFIED |  |
+| AX-136 | recovery/error edges | COMPLETE | VERIFIED |  |
+| AX-137 | graph structural validation | COMPLETE | VERIFIED |  |
+| AX-138 | deterministic graph serialization | COMPLETE | VERIFIED |  |
+| AX-139 | precondition representation | COMPLETE | VERIFIED |  |
+| AX-140 | postcondition representation | COMPLETE | VERIFIED |  |
+| AX-141 | deterministic interpreter | COMPLETE | VERIFIED |  |
+| AX-142 | procedure execution trace | COMPLETE | VERIFIED |  |
+| AX-143 | procedure execution evidence | COMPLETE | VERIFIED |  |
+| AX-144 | ACTION_REQUIRED transition | COMPLETE | VERIFIED |  |
+| AX-145 | REASON_REQUIRED transition | COMPLETE | VERIFIED |  |
+| AX-146 | RESEARCH_REQUIRED transition | COMPLETE | VERIFIED |  |
+| AX-147 | procedure run disposition | COMPLETE | VERIFIED |  |
+| AX-148 | procedure task-verification separation | COMPLETE | VERIFIED |  |
+| AX-149 | trajectory normalization | COMPLETE | VERIFIED |  |
+| AX-150 | causal-action extraction | COMPLETE | VERIFIED |  |
+| AX-151 | irrelevant-action elimination | COMPLETE | VERIFIED |  |
+| AX-152 | parameter extraction | COMPLETE | VERIFIED |  |
+| AX-153 | parameter generalization | COMPLETE | VERIFIED |  |
+| AX-154 | determinism analysis | COMPLETE | VERIFIED |  |
+| AX-155 | reasoning-region classification | COMPLETE | VERIFIED |  |
+| AX-156 | skill-compiler orchestrator | COMPLETE | VERIFIED |  |
+| AX-157 | verified-input compiler admission | COMPLETE | VERIFIED |  |
+| AX-158 | candidate-only synthesis | COMPLETE | VERIFIED |  |
+| AX-159 | Procedure candidate builder | COMPLETE | VERIFIED |  |
+| AX-160 | validation evidence policy | COMPLETE | VERIFIED |  |
+| AX-161 | varied-parameter validation runner | COMPLETE | VERIFIED |  |
+| AX-162 | exact procedure-revision validation binding | COMPLETE | VERIFIED |  |
+| AX-163 | distinct-variation minimum | COMPLETE | VERIFIED |  |
+| AX-164 | partial validation failure preservation | COMPLETE | VERIFIED |  |
+| AX-165 | promotion eligibility decision | COMPLETE | VERIFIED |  |
+| AX-166 | explicit promotion transaction | COMPLETE | VERIFIED |  |
+| AX-167 | atomic candidate activation | COMPLETE | VERIFIED |  |
+| AX-168 | ACTIVE-only normal reuse | COMPLETE | VERIFIED |  |
+| AX-169 | capability/procedure applicability matcher | COMPLETE | VERIFIED |  |
+| AX-170 | deterministic reuse selector | COMPLETE | VERIFIED |  |
+| AX-171 | ambiguous reuse rejection | COMPLETE | VERIFIED |  |
+| AX-172 | restart-safe active-procedure retrieval | COMPLETE | VERIFIED |  |
+| AX-173 | complete compiled L2 real workflow | COMPLETE | VERIFIED |  |
+| AX-174 | complete guided L3 real workflow | COMPLETE | VERIFIED |  |
+| AX-175 | end-to-end skill compilation acceptance proof | NOT_IMPLEMENTED | VERIFIED | AX-172, AX-173, AX-174 |
 | AX-176 | execution metrics record | COMPLETE | NOT_AUDITED |  |
 | AX-177 | elapsed-time instrumentation | COMPLETE | NOT_AUDITED |  |
 | AX-178 | machine-action instrumentation | COMPLETE | NOT_AUDITED |  |
