@@ -171,6 +171,10 @@ class VoiceTaskBridge:
         self._lock = Lock()
         self._active: CancellationSource | None = None
 
+    @property
+    def telemetry(self) -> VoiceRuntimeTelemetry:
+        return self._telemetry
+
     def ingest(
         self,
         transcript: str,
