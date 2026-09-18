@@ -16,6 +16,11 @@ percentage or equate a worker report with a released product.
   metrics instrumentation, and the complete normalized AX task definitions.
   The inert planner remains separate from execution. See
   [plan execution](plan_execution.md) and [model metrics](instrumented_model_provider.md).
+- PR #163 is the focused M1 closure candidate from canonical main
+  `294cf9029e63d91b476971db79133e09264f2087`. It adds typed application and
+  procedure-leaf composition, bounded Hive-first L5 research through the canonical
+  Executor, and task-level AX-041–AX-085 acceptance evidence. See
+  [M1 acceptance](m1_acceptance.md). It remains unmerged pending review.
 - [TASKS.json](TASKS.json) is the machine-readable AX-001 through AX-600 source;
   [TASKS.md](TASKS.md) is its generated view. Imported reported completion is
   distinct from task-level acceptance evidence. The dependency graph is
@@ -54,7 +59,7 @@ states distinguish production code, candidate changes and missing acceptance.
 | Milestone | Evidence in the repository | Work still required |
 | --- | --- | --- |
 | M0 Kernel | Permission/risk/gate/budget/stop/audit/secret contracts; governed capability loop; AX-040 merged | Continue whole-system security review as new surfaces land |
-| M1 Single-task runtime | Agent loop, L0-L4 boundaries; explicit capability-bound L4 execution and goal checks | General application binding; procedure-leaf composition; complete L5 path; real-task acceptance |
+| M1 Single-task runtime | PR #163 candidate: governed L0-L5 composition, typed L4 capability/procedure binding, independent root verification and 45-task acceptance audit | Review/merge #163; real external-model/provider and interactive-host experiments remain later-milestone work |
 | M2 Persistent memory | Event journal, episodes, semantic knowledge, typed scopes and integrated #147 | Prove combined restart and corruption behavior |
 | M3 Compilation and reuse | Procedure IR/interpreter, compiler, validation, promotion, reuse and integrated #148 | Full cold-to-restart-to-warm acceptance |
 | M4 Learning efficiency | Metrics, reuse evidence and experiment contracts | Real model-backed cold/warm comparison with independently verified outcomes |
@@ -78,10 +83,15 @@ class's own `attempt()` still fails closed. `GovernedPlanningStrategy` is the
 separate L4 execution adapter. It validates readiness, expands dependencies,
 preflights explicit application bindings, executes via the canonical Executor,
 and requires a separate governed goal check. It returns actual verification
-evidence to AgentLoop instead of fabricating success from a plan. The current
-bindings cover capability-backed leaves; procedure leaves remain fail-closed.
-This supplies composition, not general natural-language binding or live-model
-acceptance. Caller-owned model-budget and application wiring remain necessary.
+evidence to AgentLoop instead of fabricating success from a plan.
+`ApplicationActionBinder` resolves exact typed capability ids to composition-owned
+requests. `PreparedProcedureBinder` resolves exact procedure ids to the canonical
+ACTIVE/applicable compiled-procedure runtime; unknown or unavailable procedures
+fail closed. The L5 candidate performs Hive-first gap assessment and delegates
+one pre-bound acquisition through a governed capability, so permissions, risk,
+budget, stop and verification remain kernel-owned. Research observations remain
+unverified data. None of these binders parse natural-language authority claims.
+Live-model/external-provider acceptance remains a later environment-dependent proof.
 
 The current CLI exposes help/version only. Installing the package does not start
 a usable natural-language agent. This is a product/composition gap as well as a
@@ -117,7 +127,8 @@ was also stale; twelve were open at the start of this review, including #145.
    diffs changes the migration ladder or architecture manifest.
 2. Configure a real pinned model through
    the secret boundary. Keep operational failures and missing usage explicit.
-3. Complete L4 plan-to-action composition and N2.07 bounded Hive-first exploration.
+3. Review and merge the PR #163 M1 closure candidate; its L4 typed binding and
+   bounded Hive-first L5 composition are complete on the candidate branch.
 4. Audit and harden the existing selected-node fill against N2.27, including
    sensitive-text redaction and independent field-value readback. N2.27 explicitly
    forbids implicit submission. Complete a concrete browser driver and separately
@@ -136,10 +147,12 @@ verification. Existing platform-specific skips must be reported rather than
 represented as executed Windows 10/11 desktop acceptance. Hosted Windows CI is
 not a substitute for the target interactive desktop/device/model environment.
 
-Local review environment: Python 3.12.14, Linux. Runtime-only editable install and
-the provider's stdlib HTTP tests work. pytest/Ruff/mypy are absent and downloading
-their dependencies is blocked here; full gates therefore run in existing Windows
-CI. No skips, exclusions, xfails or workflow weakening were added to evade this.
+The connected review workspace does not provide an authenticated local checkout,
+so no local full-suite result is fabricated. Exact repository gates run through
+the canonical Windows C1.01 workflow. PR #163 has already demonstrated a green
+implementation-head run; its final documentation/ledger head must also pass before
+the closure conclusion is recorded. No skips, exclusions, xfails or workflow
+weakening were added to evade this.
 
 ## Integration review repairs (PR #159)
 
