@@ -1,4 +1,4 @@
-# AgentX 600-task acceptance record
+#||||||||||||||||||||||||| AX-460 | M11 | voice/HUD milestone demonstration | VERIFIED | E4 | NONE |
 
 Repository: `harsh2025-sketch/AgentX`. Integration baseline: `9b2ecd350e24833860fbd1cbf7bde1e2f549bad5`.
 
@@ -6,11 +6,11 @@ PR #169 security and PR #171 world-model implementation are merged. This reconci
 
 | State | Tasks | Percentage |
 | --- | ---: | ---: |
-| VERIFIED | 440 | 73.33% |
+| VERIFIED | 463 | 77.17% |
 | NOT_AUDITED | 0 | 0.00% |
 | IN_PROGRESS | 1 | 0.17% |
 | BLOCKED | 7 | 1.17% |
-| NOT_IMPLEMENTED | 152 | 25.33% |
+| NOT_IMPLEMENTED | 129 | 21.50% |
 | TOTAL | 600 | 100.00% |
 
 ## Milestones
@@ -28,7 +28,7 @@ PR #169 security and PR #171 world-model implementation are merged. This reconci
 | M8 | AX-336–AX-370 | 33 | 35 | 94.29% | BLOCKED=2 | PARTIAL |
 | M9 | AX-371–AX-405 | 35 | 35 | 100.00% | none | COMPLETE |
 | M10 | AX-406–AX-435 | 30 | 30 | 100.00% | none | COMPLETE |
-| M11 | AX-436–AX-460 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
+| M11 | AX-436–AX-460 | 25 | 25 | 100.00% | none | COMPLETE |
 | M12 | AX-461–AX-485 | 1 | 25 | 4.00% | NOT_IMPLEMENTED=24 | PARTIAL |
 | M13 | AX-486–AX-515 | 2 | 30 | 6.67% | NOT_IMPLEMENTED=28 | PARTIAL |
 | M14 | AX-516–AX-540 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
@@ -37,7 +37,7 @@ PR #169 security and PR #171 world-model implementation are merged. This reconci
 
 ## Evidence boundaries
 
-M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 release matrix or a user desktop hardware matrix. M7 uses actual headless Chrome against controlled localhost pages. This proves browser mechanics and governance, not compatibility with arbitrary external sites/accounts. M10 DPI/multi-monitor and visual accuracy evidence uses bounded deterministic fixtures in addition to real native capture. Real model/research credentials were unavailable; controlled-provider metrics do not satisfy live-efficiency acceptance. The CLI exposes metadata/help, not a complete natural-language product session.
+M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 release matrix or a user desktop hardware matrix. M7 uses actual headless Chrome against controlled localhost pages. This proves browser mechanics and governance, not compatibility with arbitrary external sites/accounts. M10 DPI/multi-monitor and visual accuracy evidence uses bounded deterministic fixtures in addition to real native capture. Real model/research credentials were unavailable; controlled-provider metrics do not satisfy live-efficiency acceptance. M11 has deterministic production-path acceptance and separate real-device/live-provider/interactive-HUD entry points; those three real-environment entry points were not run and are not represented as such. The CLI exposes metadata/help, not a complete natural-language product session.
 
 ## Task decisions
 
@@ -655,7 +655,7 @@ M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 releas
 | Model/research | HTTP adapter, bounded gateway and inert verified-research handoff implemented; external model vertical/signoff remain blocked. |
 | Security | M9 hostile-content, restart, privacy and authority suites retained; untrusted content remains data. |
 | World model | Freshness/invalidation, real filesystem change, bounded frame capture and grounding accepted within documented environment limits. |
-| Voice/HUD | Narrow contracts only; audio hardware and product interaction remain unimplemented. |
+| Voice/HUD | M11 production voice/HUD path, governed authorization, interruption, telemetry/control and deterministic end-to-end acceptance are complete for AX-436–AX-460. Real microphone/speaker, live STT/TTS credentials and interactive desktop entry points remain separately not run and are not claimed as release-matrix evidence. |
 | Scheduling | Event-watcher foundation only; persistent scheduler and policy execution remain open. |
 | Multi-device/Android | Protocol contracts only; real devices, transport and Android execution remain open. |
 | Optimization | Strategy/performance evidence foundations; adaptive policies and acceptance remain open. |
