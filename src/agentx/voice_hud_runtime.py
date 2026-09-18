@@ -65,14 +65,17 @@ class VoiceHudRuntime:
         if type(max_capture_frames) is not int or not 1 <= max_capture_frames <= 512:
             raise ValueError("max_capture_frames must be in [1, 512]")
 
+        self._task_bridge.telemetry.state("voice.listening")
         self._session.start_turn()
         speech_seen = False
         for _ in range(max_capture_frames):
             observed = self._session.capture_frame()
             if observed.is_failure:
                 return Result.failure(observed.unwrap_error())
-            if observed.unwrap().activity is VoiceActivity.SPEECH:
+            observation = observed.unwrap()
+            if observation.activity is VoiceActivity.SPEECH:
                 speech_seen = True
+            if observation.turn_ended:
                 break
         if not speech_seen:
             self._session.barge_in(reason="bounded capture ended without speech")
@@ -94,11 +97,21 @@ class VoiceHudRuntime:
             return Result.failure(governed.unwrap_error())
         outcome = governed.unwrap()
 
+        self._task_bridge.telemetry.state(
+            "voice.speaking",
+            task=outcome.task,
+            payload={"verified": outcome.verified},
+        )
         spoken = self._session.speak(
             "Task verified." if outcome.verified else "Task could not be verified."
         )
         if spoken.is_failure:
             return Result.failure(spoken.unwrap_error())
+        self._task_bridge.telemetry.state(
+            "voice.idle",
+            task=outcome.task,
+            payload={"verified": outcome.verified},
+        )
         return Result.success(
             VoiceTurnResult(
                 transcript_received=True,
@@ -111,8 +124,11 @@ class VoiceHudRuntime:
         """Cancel both realtime audio and the active canonical task, idempotently."""
 
         self._session.barge_in(reason="user barge-in")
-        return self._task_bridge.barge_in()
+        cancelled = self._task_bridge.barge_in()
+        self._task_bridge.telemetry.state("voice.cancelled")
+        return cancelled
 
     def close(self) -> None:
         self._task_bridge.cancel("voice/HUD runtime closed")
         self._session.close()
+        self._task_bridge.telemetry.state("voice.idle")
