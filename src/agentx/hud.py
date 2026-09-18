@@ -65,7 +65,10 @@ class HudModel:
         if not isinstance(event, RuntimeUiEvent):
             raise TypeError("event must be RuntimeUiEvent")
         current = self._snapshot
-        if current.runtime_instance_id is not None and event.runtime_instance_id != current.runtime_instance_id:
+        if (
+            current.runtime_instance_id is not None
+            and event.runtime_instance_id != current.runtime_instance_id
+        ):
             if event.kind is not RuntimeUiEventKind.RUNTIME_RESTARTED:
                 return False
             current = HudSnapshot(
@@ -75,7 +78,10 @@ class HudModel:
                 task_id=None,
                 verified=None,
             )
-        if event.runtime_instance_id == current.runtime_instance_id and event.sequence <= current.last_sequence:
+        if (
+            event.runtime_instance_id == current.runtime_instance_id
+            and event.sequence <= current.last_sequence
+        ):
             return False
 
         state = self._state_for(event.state, current.state)
