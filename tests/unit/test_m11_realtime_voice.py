@@ -177,9 +177,7 @@ class _Tts:
             TtsResponse(
                 session_id=request.session_id,
                 provider_id=self.provider_id,
-                frames=(
-                    _frame(AudioStreamId.create(), 1000),
-                ),
+                frames=(_frame(AudioStreamId.create(), 1000),),
             )
         )
 
