@@ -195,9 +195,7 @@ def test_corroborating_verified_runs_can_parameterize_a_single_action() -> None:
         RegionClassification.DETERMINISTIC
     }
     assert result.graph is not None
-    action = next(
-        node for node in result.graph.nodes if node.kind.value == "action"
-    )
+    action = next(node for node in result.graph.nodes if node.kind.value == "action")
     parameters = action.params["parameters"]
     assert isinstance(parameters, dict)
     descriptor = parameters["path"]
