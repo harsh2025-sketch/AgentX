@@ -221,9 +221,7 @@ class BrowserSessionParams(CapabilityParams):
         return {
             "operation": self.operation.value,
             "target": self.target.to_dict(),
-            "selected_node": (
-                None if self.selected_node is None else self.selected_node.to_dict()
-            ),
+            "selected_node": (None if self.selected_node is None else self.selected_node.to_dict()),
             "expected_filename": self.expected_filename,
             "cookie": None if self.cookie is None else self.cookie.to_dict(),
             "cookie_name": self.cookie_name,
@@ -451,19 +449,13 @@ class BrowserSessionCapability:
                 if params.operation is BrowserSessionOperation.SET_COOKIE:
                     assert params.cookie is not None
                     match = next(
-                        (
-                            item
-                            for item in cookies
-                            if item.get("name") == params.cookie.name
-                        ),
+                        (item for item in cookies if item.get("name") == params.cookie.name),
                         None,
                     )
                     passed = match is not None and match.get("value") == params.cookie.value
                 else:
                     assert params.cookie_name is not None
-                    passed = all(
-                        item.get("name") != params.cookie_name for item in cookies
-                    )
+                    passed = all(item.get("name") != params.cookie_name for item in cookies)
                 return VerificationResult(
                     passed=passed,
                     detail=(
@@ -474,10 +466,7 @@ class BrowserSessionCapability:
                 )
             assert params.window_handle is not None
             target = self._driver.target_ref()
-            passed = (
-                target.is_success
-                and target.unwrap().target_id.value == params.window_handle
-            )
+            passed = target.is_success and target.unwrap().target_id.value == params.window_handle
             return VerificationResult(
                 passed=passed,
                 detail=(
