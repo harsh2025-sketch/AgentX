@@ -335,9 +335,7 @@ class WebDriverBrowserProvider:
         except Exception:
             return self._action_failure("navigation")
 
-    def click_selected(
-        self, node: BrowserDomNodeRef
-    ) -> Result[BrowserActionOutcome, AgentXError]:
+    def click_selected(self, node: BrowserDomNodeRef) -> Result[BrowserActionOutcome, AgentXError]:
         try:
             self._switch_target(node.target)
             self._request("POST", f"/element/{quote(node.node_id.value, safe='')}/click", {})
@@ -421,9 +419,7 @@ class WebDriverBrowserProvider:
         except Exception:
             return self._action_failure("option-selection")
 
-    def submit_selected(
-        self, node: BrowserDomNodeRef
-    ) -> Result[BrowserActionOutcome, AgentXError]:
+    def submit_selected(self, node: BrowserDomNodeRef) -> Result[BrowserActionOutcome, AgentXError]:
         return self.click_selected(node)
 
     def upload_selected(
@@ -482,21 +478,11 @@ class WebDriverBrowserProvider:
                     state=BrowserDomNodeState.AVAILABLE,
                 )
                 encoded = quote(element_id, safe="")
-                tag = self._string_value(
-                    self._request("GET", f"/element/{encoded}/name")
-                )
-                text = self._string_value(
-                    self._request("GET", f"/element/{encoded}/text")
-                )
-                displayed = self._bool_value(
-                    self._request("GET", f"/element/{encoded}/displayed")
-                )
-                enabled = self._bool_value(
-                    self._request("GET", f"/element/{encoded}/enabled")
-                )
-                selected = self._bool_value(
-                    self._request("GET", f"/element/{encoded}/selected")
-                )
+                tag = self._string_value(self._request("GET", f"/element/{encoded}/name"))
+                text = self._string_value(self._request("GET", f"/element/{encoded}/text"))
+                displayed = self._bool_value(self._request("GET", f"/element/{encoded}/displayed"))
+                enabled = self._bool_value(self._request("GET", f"/element/{encoded}/enabled"))
+                selected = self._bool_value(self._request("GET", f"/element/{encoded}/selected"))
                 attributes: list[BrowserDomAttribute] = []
                 for name in _OBSERVED_ATTRIBUTES:
                     value = self._value(
@@ -693,9 +679,7 @@ class WebDriverBrowserProvider:
                 )
             )
 
-    def _create_session(
-        self, *, headless: bool, download_directory: Path | None
-    ) -> str:
+    def _create_session(self, *, headless: bool, download_directory: Path | None) -> str:
         arguments = ["--disable-gpu", "--window-size=1280,900"]
         if headless:
             arguments.append("--headless=new")
