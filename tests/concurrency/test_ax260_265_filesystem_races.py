@@ -60,9 +60,7 @@ def test_concurrent_move_same_source_cannot_duplicate_file_identity(tmp_path: Pa
     assert not source.exists()
 
 
-def test_concurrent_move_serializes_native_rename(
-    tmp_path: Path, monkeypatch: MonkeyPatch
-) -> None:
+def test_concurrent_move_serializes_native_rename(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:
     source = tmp_path / "source.txt"
     destinations = (tmp_path / "a.txt", tmp_path / "b.txt")
     source.write_bytes(b"one-source-only")
