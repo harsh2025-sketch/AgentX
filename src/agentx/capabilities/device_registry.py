@@ -333,16 +333,14 @@ class DeviceDiscoveryProvider(Protocol):
     """Narrow discovery port. Returned descriptors remain untrusted evidence."""
 
     @property
-    def provider_id(self) -> DeviceProviderId:
-        ...
+    def provider_id(self) -> DeviceProviderId: ...
 
     def discover(
         self,
         *,
         context: ExecutionContext,
         observed_at: datetime,
-    ) -> Result[tuple[DeviceDescriptor, ...], AgentXError]:
-        ...
+    ) -> Result[tuple[DeviceDescriptor, ...], AgentXError]: ...
 
 
 @dataclass(frozen=True, slots=True)
@@ -398,9 +396,9 @@ class DeviceDiscovery:
                 category=ErrorCategory.CANCELLED,
                 retryability=Retryability.NON_RETRYABLE,
             )
-            return DeviceDiscoveryReport((), MappingProxyType({
-                provider.provider_id: error for provider in self._providers
-            }))
+            return DeviceDiscoveryReport(
+                (), MappingProxyType({provider.provider_id: error for provider in self._providers})
+            )
         all_found: list[DeviceDescriptor] = []
         errors: dict[DeviceProviderId, AgentXError] = {}
         for provider in self._providers:
