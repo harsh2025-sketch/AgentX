@@ -9,7 +9,6 @@ propagates to both the realtime audio owner and the governed task owner.
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
@@ -18,7 +17,6 @@ from agentx.capabilities.human_approval import HumanApprovalDecision
 from agentx.cognition.realtime_voice import RealtimeVoiceSession, VoiceActivity
 from agentx.core.errors import AgentXError, ErrorCategory, Retryability
 from agentx.core.result import Result
-from agentx.hud import HudController
 from agentx.voice_runtime import (
     PendingVoiceConfirmation,
     SpokenConfirmationProtocol,
@@ -157,7 +155,7 @@ class RetryCommandTarget(Protocol):
     def retry(self, task_id: str | None) -> bool: ...
 
 
-class VoiceHudController(HudController):
+class VoiceHudController:
     """Bind typed HUD controls to existing runtime and approval owners.
 
     The controller never mutates Task, ActionGate, risk, permission, budget, or
