@@ -2,77 +2,77 @@
 
 Generated from `docs/TASKS.json` by `python scripts/task_ledger.py --write`.
 
-reported_status preserves the supplied 349/2/249 snapshot. VERIFIED requires separately reviewed canonical implementation, tests, and acceptance evidence; no reported checkbox implies verified acceptance.
+reported_status preserves the supplied 349/2/249 historical snapshot. acceptance_status is the independent AX-001–AX-600 audit against canonical main bcc0692246a981be5ae15c993b0c3e6512871b92; VERIFIED requires exact requirement evidence and does not imply release readiness.
 
-Partial: only the explicit critical path is encoded. Empty depends_on is not a claim of independence. AX-574 remains in progress until the whole graph is reviewed.
+Partial: only the explicit critical path is encoded. Empty depends_on is not a claim of independence. AX-574 remains IN_PROGRESS because the whole dependency DAG has not been synchronized.
 
 Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliation, 2026-09-17; definitions from review-agentx-handover (4).pdf pp. 632-647.
 
 | Milestone | Reported complete | Reported partial | Reported remaining | Verified acceptance |
 | --- | ---: | ---: | ---: | ---: |
-| M0 Trusted Kernel | 40 | 0 | 0 | 0 |
-| M1 Agent Runtime | 41 | 2 | 2 | 45 |
+| M0 Trusted Kernel | 40 | 0 | 0 | 40 |
+| M1 Agent Runtime | 41 | 2 | 2 | 42 |
 | M2 Hive and Memory | 39 | 0 | 1 | 40 |
 | M3 Procedure Compiler | 49 | 0 | 1 | 50 |
-| M4 Learning Efficiency | 20 | 0 | 10 | 0 |
+| M4 Learning Efficiency | 20 | 0 | 10 | 21 |
 | M5 Self-Repair | 36 | 0 | 4 | 40 |
 | M6 Windows Capabilities | 52 | 0 | 3 | 55 |
-| M7 Browser Agent | 14 | 0 | 21 | 0 |
-| M8 Models and Research | 13 | 0 | 22 | 0 |
-| M9 Security | 20 | 0 | 15 | 0 |
-| M10 World Model | 16 | 0 | 14 | 0 |
-| M11 Voice and HUD | 2 | 0 | 23 | 0 |
-| M12 Scheduling | 1 | 0 | 24 | 0 |
-| M13 Multi-device and Android | 2 | 0 | 28 | 0 |
-| M14 Optimization | 2 | 0 | 23 | 0 |
-| M15 Self-extension | 1 | 0 | 29 | 0 |
-| M16 Production and Release | 1 | 0 | 29 | 0 |
+| M7 Browser Agent | 14 | 0 | 21 | 16 |
+| M8 Models and Research | 13 | 0 | 22 | 28 |
+| M9 Security | 20 | 0 | 15 | 20 |
+| M10 World Model | 16 | 0 | 14 | 16 |
+| M11 Voice and HUD | 2 | 0 | 23 | 2 |
+| M12 Scheduling | 1 | 0 | 24 | 1 |
+| M13 Multi-device and Android | 2 | 0 | 28 | 2 |
+| M14 Optimization | 2 | 0 | 23 | 2 |
+| M15 Self-extension | 1 | 0 | 29 | 1 |
+| M16 Production and Release | 1 | 0 | 29 | 3 |
 
 A zero verified-acceptance count means this ledger has not yet recorded a task-level
 acceptance audit; it does not mean the existing implementation is absent.
 
 | Task | Requirement | Reported baseline | Acceptance audit | Known dependencies |
 | --- | --- | --- | --- | --- |
-| AX-001 | Python 3.12+ project baseline | COMPLETE | NOT_AUDITED |  |
-| AX-002 | src/ package layout | COMPLETE | NOT_AUDITED |  |
-| AX-003 | pyproject.toml packaging | COMPLETE | NOT_AUDITED |  |
-| AX-004 | CLI/version bootstrap | COMPLETE | NOT_AUDITED |  |
-| AX-005 | subsystem ownership map | COMPLETE | NOT_AUDITED |  |
-| AX-006 | architecture dependency manifest | COMPLETE | NOT_AUDITED |  |
-| AX-007 | architecture dependency tests | COMPLETE | NOT_AUDITED |  |
-| AX-008 | canonical Task identity | COMPLETE | NOT_AUDITED |  |
-| AX-009 | canonical Task lifecycle | COMPLETE | NOT_AUDITED |  |
-| AX-010 | ExecutionContext contract | COMPLETE | NOT_AUDITED |  |
-| AX-011 | canonical error/result vocabulary | COMPLETE | NOT_AUDITED |  |
-| AX-012 | permission vocabulary | COMPLETE | NOT_AUDITED |  |
-| AX-013 | Permission Engine | COMPLETE | NOT_AUDITED |  |
-| AX-014 | authority-context contract | COMPLETE | NOT_AUDITED |  |
-| AX-015 | R0–R4 risk vocabulary | COMPLETE | NOT_AUDITED |  |
-| AX-016 | deterministic risk assessment | COMPLETE | NOT_AUDITED |  |
-| AX-017 | Action Gate | COMPLETE | NOT_AUDITED |  |
-| AX-018 | confirmation-required semantics | COMPLETE | NOT_AUDITED |  |
-| AX-019 | destructive-action gating | COMPLETE | NOT_AUDITED |  |
-| AX-020 | Emergency Stop | COMPLETE | NOT_AUDITED |  |
-| AX-021 | resource-envelope contract | COMPLETE | NOT_AUDITED |  |
-| AX-022 | Resource Budget | COMPLETE | NOT_AUDITED |  |
-| AX-023 | machine-action accounting | COMPLETE | NOT_AUDITED |  |
-| AX-024 | bounded runtime budget enforcement | COMPLETE | NOT_AUDITED |  |
-| AX-025 | audit-event contract | COMPLETE | NOT_AUDITED |  |
-| AX-026 | durable audit plumbing | COMPLETE | NOT_AUDITED |  |
-| AX-027 | secret-value abstraction | COMPLETE | NOT_AUDITED |  |
-| AX-028 | secret-boundary rules | COMPLETE | NOT_AUDITED |  |
-| AX-029 | capability ABI | COMPLETE | NOT_AUDITED |  |
-| AX-030 | Capability Registry | COMPLETE | NOT_AUDITED |  |
-| AX-031 | capability request validation | COMPLETE | NOT_AUDITED |  |
-| AX-032 | capability result validation | COMPLETE | NOT_AUDITED |  |
-| AX-033 | CapabilityExecutionLoop | COMPLETE | NOT_AUDITED |  |
-| AX-034 | execution/verification separation | COMPLETE | NOT_AUDITED |  |
-| AX-035 | event bus foundation | COMPLETE | NOT_AUDITED |  |
-| AX-036 | persistence foundation | COMPLETE | NOT_AUDITED |  |
-| AX-037 | SQLite migration framework | COMPLETE | NOT_AUDITED |  |
-| AX-038 | runtime-only dependency gate | COMPLETE | NOT_AUDITED |  |
-| AX-039 | Windows/Python 3.12 quality workflow | COMPLETE | NOT_AUDITED |  |
-| AX-040 | Trusted-Kernel whole-system security audit | COMPLETE | NOT_AUDITED |  |
+| AX-001 | Python 3.12+ project baseline | COMPLETE | VERIFIED |  |
+| AX-002 | src/ package layout | COMPLETE | VERIFIED |  |
+| AX-003 | pyproject.toml packaging | COMPLETE | VERIFIED |  |
+| AX-004 | CLI/version bootstrap | COMPLETE | VERIFIED |  |
+| AX-005 | subsystem ownership map | COMPLETE | VERIFIED |  |
+| AX-006 | architecture dependency manifest | COMPLETE | VERIFIED |  |
+| AX-007 | architecture dependency tests | COMPLETE | VERIFIED |  |
+| AX-008 | canonical Task identity | COMPLETE | VERIFIED |  |
+| AX-009 | canonical Task lifecycle | COMPLETE | VERIFIED |  |
+| AX-010 | ExecutionContext contract | COMPLETE | VERIFIED |  |
+| AX-011 | canonical error/result vocabulary | COMPLETE | VERIFIED |  |
+| AX-012 | permission vocabulary | COMPLETE | VERIFIED |  |
+| AX-013 | Permission Engine | COMPLETE | VERIFIED |  |
+| AX-014 | authority-context contract | COMPLETE | VERIFIED |  |
+| AX-015 | R0–R4 risk vocabulary | COMPLETE | VERIFIED |  |
+| AX-016 | deterministic risk assessment | COMPLETE | VERIFIED |  |
+| AX-017 | Action Gate | COMPLETE | VERIFIED |  |
+| AX-018 | confirmation-required semantics | COMPLETE | VERIFIED |  |
+| AX-019 | destructive-action gating | COMPLETE | VERIFIED |  |
+| AX-020 | Emergency Stop | COMPLETE | VERIFIED |  |
+| AX-021 | resource-envelope contract | COMPLETE | VERIFIED |  |
+| AX-022 | Resource Budget | COMPLETE | VERIFIED |  |
+| AX-023 | machine-action accounting | COMPLETE | VERIFIED |  |
+| AX-024 | bounded runtime budget enforcement | COMPLETE | VERIFIED |  |
+| AX-025 | audit-event contract | COMPLETE | VERIFIED |  |
+| AX-026 | durable audit plumbing | COMPLETE | VERIFIED |  |
+| AX-027 | secret-value abstraction | COMPLETE | VERIFIED |  |
+| AX-028 | secret-boundary rules | COMPLETE | VERIFIED |  |
+| AX-029 | capability ABI | COMPLETE | VERIFIED |  |
+| AX-030 | Capability Registry | COMPLETE | VERIFIED |  |
+| AX-031 | capability request validation | COMPLETE | VERIFIED |  |
+| AX-032 | capability result validation | COMPLETE | VERIFIED |  |
+| AX-033 | CapabilityExecutionLoop | COMPLETE | VERIFIED |  |
+| AX-034 | execution/verification separation | COMPLETE | VERIFIED |  |
+| AX-035 | event bus foundation | COMPLETE | VERIFIED |  |
+| AX-036 | persistence foundation | COMPLETE | VERIFIED |  |
+| AX-037 | SQLite migration framework | COMPLETE | VERIFIED |  |
+| AX-038 | runtime-only dependency gate | COMPLETE | VERIFIED |  |
+| AX-039 | Windows/Python 3.12 quality workflow | COMPLETE | VERIFIED |  |
+| AX-040 | Trusted-Kernel whole-system security audit | COMPLETE | VERIFIED |  |
 | AX-041 | ExecutionLevel L0–L5 vocabulary | COMPLETE | VERIFIED |  |
 | AX-042 | deterministic level-selection inputs | COMPLETE | VERIFIED |  |
 | AX-043 | routing-evidence contract | COMPLETE | VERIFIED |  |
@@ -115,9 +115,9 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-080 | hostile routing metadata inertness | COMPLETE | VERIFIED |  |
 | AX-081 | task/runtime adversarial tests | COMPLETE | VERIFIED |  |
 | AX-082 | task/runtime architecture tests | COMPLETE | VERIFIED |  |
-| AX-083 | real-world single-task vertical slice | PARTIAL | VERIFIED | AX-053, AX-060, AX-069, AX-344 |
-| AX-084 | cross-strategy orchestration benchmark | PARTIAL | VERIFIED | AX-083 |
-| AX-085 | M1 release acceptance proof | NOT_IMPLEMENTED | VERIFIED | AX-054, AX-083, AX-084 |
+| AX-083 | real-world single-task vertical slice | PARTIAL | BLOCKED | AX-053, AX-060, AX-069, AX-344 |
+| AX-084 | cross-strategy orchestration benchmark | PARTIAL | IN_PROGRESS | AX-083 |
+| AX-085 | M1 release acceptance proof | NOT_IMPLEMENTED | BLOCKED | AX-054, AX-083, AX-084 |
 | AX-086 | Episode identity | COMPLETE | VERIFIED |  |
 | AX-087 | Episode record | COMPLETE | VERIFIED |  |
 | AX-088 | Episode outcome vocabulary | COMPLETE | VERIFIED |  |
@@ -208,36 +208,36 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-173 | complete compiled L2 real workflow | COMPLETE | VERIFIED |  |
 | AX-174 | complete guided L3 real workflow | COMPLETE | VERIFIED |  |
 | AX-175 | end-to-end skill compilation acceptance proof | NOT_IMPLEMENTED | VERIFIED | AX-172, AX-173, AX-174 |
-| AX-176 | execution metrics record | COMPLETE | NOT_AUDITED |  |
-| AX-177 | elapsed-time instrumentation | COMPLETE | NOT_AUDITED |  |
-| AX-178 | machine-action instrumentation | COMPLETE | NOT_AUDITED |  |
-| AX-179 | model-call event instrumentation | COMPLETE | NOT_AUDITED |  |
-| AX-180 | input-token accounting | COMPLETE | NOT_AUDITED |  |
-| AX-181 | output-token accounting | COMPLETE | NOT_AUDITED |  |
-| AX-182 | cost accounting | COMPLETE | NOT_AUDITED |  |
-| AX-183 | model-ID evidence | COMPLETE | NOT_AUDITED |  |
-| AX-184 | procedure-revision evidence | COMPLETE | NOT_AUDITED |  |
-| AX-185 | verified-success evidence type | COMPLETE | NOT_AUDITED |  |
-| AX-186 | reuse-mode vocabulary | COMPLETE | NOT_AUDITED |  |
-| AX-187 | cold-run evidence | COMPLETE | NOT_AUDITED |  |
-| AX-188 | warm-run evidence | COMPLETE | NOT_AUDITED |  |
-| AX-189 | efficiency comparison | COMPLETE | NOT_AUDITED |  |
-| AX-190 | missing-metric preservation | COMPLETE | NOT_AUDITED |  |
-| AX-191 | unverified warm-run rejection | COMPLETE | NOT_AUDITED |  |
-| AX-192 | failed warm-run regression rule | COMPLETE | NOT_AUDITED |  |
-| AX-193 | cold-vs-warm experiment harness | COMPLETE | NOT_AUDITED |  |
-| AX-194 | deterministic experiment serialization | COMPLETE | NOT_AUDITED |  |
-| AX-195 | evidence non-authority invariants | COMPLETE | NOT_AUDITED |  |
-| AX-196 | connect metrics to real model provider | NOT_IMPLEMENTED | IN_PROGRESS | AX-344 |
-| AX-197 | execute unknown cold task | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-083, AX-196 |
-| AX-198 | collect real L4/L5 metrics | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-197 |
-| AX-199 | compile cold experience | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-175, AX-197 |
-| AX-200 | validate candidate with variations | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-199 |
-| AX-201 | promote learned procedure | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-200 |
-| AX-202 | restart AgentX | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-125, AX-201 |
-| AX-203 | solve related warm task via reuse | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-202 |
-| AX-204 | demonstrate material model-call/cost reduction | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-198, AX-203 |
-| AX-205 | publish reproducible cold-vs-warm benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-204 |
+| AX-176 | execution metrics record | COMPLETE | VERIFIED |  |
+| AX-177 | elapsed-time instrumentation | COMPLETE | VERIFIED |  |
+| AX-178 | machine-action instrumentation | COMPLETE | VERIFIED |  |
+| AX-179 | model-call event instrumentation | COMPLETE | VERIFIED |  |
+| AX-180 | input-token accounting | COMPLETE | VERIFIED |  |
+| AX-181 | output-token accounting | COMPLETE | VERIFIED |  |
+| AX-182 | cost accounting | COMPLETE | VERIFIED |  |
+| AX-183 | model-ID evidence | COMPLETE | VERIFIED |  |
+| AX-184 | procedure-revision evidence | COMPLETE | VERIFIED |  |
+| AX-185 | verified-success evidence type | COMPLETE | VERIFIED |  |
+| AX-186 | reuse-mode vocabulary | COMPLETE | VERIFIED |  |
+| AX-187 | cold-run evidence | COMPLETE | VERIFIED |  |
+| AX-188 | warm-run evidence | COMPLETE | VERIFIED |  |
+| AX-189 | efficiency comparison | COMPLETE | VERIFIED |  |
+| AX-190 | missing-metric preservation | COMPLETE | VERIFIED |  |
+| AX-191 | unverified warm-run rejection | COMPLETE | VERIFIED |  |
+| AX-192 | failed warm-run regression rule | COMPLETE | VERIFIED |  |
+| AX-193 | cold-vs-warm experiment harness | COMPLETE | VERIFIED |  |
+| AX-194 | deterministic experiment serialization | COMPLETE | VERIFIED |  |
+| AX-195 | evidence non-authority invariants | COMPLETE | VERIFIED |  |
+| AX-196 | connect metrics to real model provider | NOT_IMPLEMENTED | VERIFIED | AX-344 |
+| AX-197 | execute unknown cold task | NOT_IMPLEMENTED | IN_PROGRESS | AX-083, AX-196 |
+| AX-198 | collect real L4/L5 metrics | NOT_IMPLEMENTED | BLOCKED | AX-197 |
+| AX-199 | compile cold experience | NOT_IMPLEMENTED | IN_PROGRESS | AX-175, AX-197 |
+| AX-200 | validate candidate with variations | NOT_IMPLEMENTED | IN_PROGRESS | AX-199 |
+| AX-201 | promote learned procedure | NOT_IMPLEMENTED | IN_PROGRESS | AX-200 |
+| AX-202 | restart AgentX | NOT_IMPLEMENTED | IN_PROGRESS | AX-125, AX-201 |
+| AX-203 | solve related warm task via reuse | NOT_IMPLEMENTED | IN_PROGRESS | AX-202 |
+| AX-204 | demonstrate material model-call/cost reduction | NOT_IMPLEMENTED | BLOCKED | AX-198, AX-203 |
+| AX-205 | publish reproducible cold-vs-warm benchmark | NOT_IMPLEMENTED | BLOCKED | AX-204 |
 | AX-206 | failure taxonomy | COMPLETE | VERIFIED |  |
 | AX-207 | transient-failure classification | COMPLETE | VERIFIED |  |
 | AX-208 | environment-unavailable classification | COMPLETE | VERIFIED |  |
@@ -333,23 +333,23 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-298 | real Windows host mutation suite | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-299 | multi-app Windows workflow benchmark | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-300 | Windows capability milestone acceptance | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-301 | browser provider abstraction | COMPLETE | NOT_AUDITED |  |
-| AX-302 | page/tab identity | COMPLETE | NOT_AUDITED |  |
-| AX-303 | browser-state observation | COMPLETE | NOT_AUDITED |  |
-| AX-304 | DOM representation | COMPLETE | NOT_AUDITED |  |
-| AX-305 | DOM element identity | COMPLETE | NOT_AUDITED |  |
-| AX-306 | deterministic DOM selection | COMPLETE | NOT_AUDITED |  |
-| AX-307 | governed browser action boundary | COMPLETE | NOT_AUDITED |  |
-| AX-308 | governed navigation | COMPLETE | NOT_AUDITED |  |
-| AX-309 | governed click | COMPLETE | NOT_AUDITED |  |
-| AX-310 | navigation risk classification | COMPLETE | NOT_AUDITED |  |
-| AX-311 | redirect evidence | COMPLETE | NOT_AUDITED |  |
-| AX-312 | independent navigation verification | COMPLETE | NOT_AUDITED |  |
-| AX-313 | cross-origin redirect fail-closed policy | COMPLETE | NOT_AUDITED |  |
-| AX-314 | hostile webpage content inertness | COMPLETE | NOT_AUDITED |  |
-| AX-315 | governed text/form entry — N2.27 | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-316 | text-field target binding | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-317 | form-field value validation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-301 | browser provider abstraction | COMPLETE | VERIFIED |  |
+| AX-302 | page/tab identity | COMPLETE | VERIFIED |  |
+| AX-303 | browser-state observation | COMPLETE | VERIFIED |  |
+| AX-304 | DOM representation | COMPLETE | VERIFIED |  |
+| AX-305 | DOM element identity | COMPLETE | VERIFIED |  |
+| AX-306 | deterministic DOM selection | COMPLETE | VERIFIED |  |
+| AX-307 | governed browser action boundary | COMPLETE | VERIFIED |  |
+| AX-308 | governed navigation | COMPLETE | VERIFIED |  |
+| AX-309 | governed click | COMPLETE | VERIFIED |  |
+| AX-310 | navigation risk classification | COMPLETE | VERIFIED |  |
+| AX-311 | redirect evidence | COMPLETE | VERIFIED |  |
+| AX-312 | independent navigation verification | COMPLETE | VERIFIED |  |
+| AX-313 | cross-origin redirect fail-closed policy | COMPLETE | VERIFIED |  |
+| AX-314 | hostile webpage content inertness | COMPLETE | VERIFIED |  |
+| AX-315 | governed text/form entry — N2.27 | NOT_IMPLEMENTED | IN_PROGRESS |  |
+| AX-316 | text-field target binding | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-317 | form-field value validation | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-318 | governed checkbox/radio interaction | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-319 | governed select/dropdown interaction | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-320 | governed submit action | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
@@ -368,61 +368,61 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-333 | multi-page workflow execution | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-334 | hostile-page adversarial benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-335 | browser milestone acceptance benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-336 | provider-neutral ModelId | COMPLETE | NOT_AUDITED |  |
-| AX-337 | provider-neutral model request | COMPLETE | NOT_AUDITED |  |
-| AX-338 | model-response contract | COMPLETE | NOT_AUDITED |  |
-| AX-339 | model-usage contract | COMPLETE | NOT_AUDITED |  |
-| AX-340 | model-role vocabulary | COMPLETE | NOT_AUDITED |  |
-| AX-341 | Reasoner abstraction | COMPLETE | NOT_AUDITED |  |
-| AX-342 | bounded output-token control | COMPLETE | NOT_AUDITED |  |
-| AX-343 | model output treated as data | COMPLETE | NOT_AUDITED |  |
-| AX-344 | concrete provider adapter — N2.28 | COMPLETE | NOT_AUDITED |  |
-| AX-345 | provider configuration | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-346 | canonical credential retrieval | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-347 | secret-to-provider binding | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-348 | HTTP transport implementation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-349 | provider request serialization | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-350 | provider response parsing | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-351 | usage/token extraction | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-352 | provider-error translation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-353 | rate-limit handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-336 | provider-neutral ModelId | COMPLETE | VERIFIED |  |
+| AX-337 | provider-neutral model request | COMPLETE | VERIFIED |  |
+| AX-338 | model-response contract | COMPLETE | VERIFIED |  |
+| AX-339 | model-usage contract | COMPLETE | VERIFIED |  |
+| AX-340 | model-role vocabulary | COMPLETE | VERIFIED |  |
+| AX-341 | Reasoner abstraction | COMPLETE | VERIFIED |  |
+| AX-342 | bounded output-token control | COMPLETE | VERIFIED |  |
+| AX-343 | model output treated as data | COMPLETE | VERIFIED |  |
+| AX-344 | concrete provider adapter — N2.28 | COMPLETE | VERIFIED |  |
+| AX-345 | provider configuration | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-346 | canonical credential retrieval | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-347 | secret-to-provider binding | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-348 | HTTP transport implementation | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-349 | provider request serialization | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-350 | provider response parsing | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-351 | usage/token extraction | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-352 | provider-error translation | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-353 | rate-limit handling | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-354 | bounded retry policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-355 | timeout handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-356 | provider cancellation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-355 | timeout handling | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-356 | provider cancellation | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-357 | fallback-provider policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-358 | provider-health tracking | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-359 | model-capability registry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-360 | clean L5 exploratory strategy — N2.07 | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-361 | exploratory task contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-362 | research objective generation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-363 | knowledge-gap detector | COMPLETE | NOT_AUDITED |  |
-| AX-364 | Hive-first research lookup | COMPLETE | NOT_AUDITED |  |
-| AX-365 | research provider boundary | COMPLETE | NOT_AUDITED |  |
-| AX-366 | unverified research ingestion | COMPLETE | NOT_AUDITED |  |
-| AX-367 | bounded research loop | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-360 | clean L5 exploratory strategy — N2.07 | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-361 | exploratory task contract | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-362 | research objective generation | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-363 | knowledge-gap detector | COMPLETE | VERIFIED |  |
+| AX-364 | Hive-first research lookup | COMPLETE | VERIFIED |  |
+| AX-365 | research provider boundary | COMPLETE | VERIFIED |  |
+| AX-366 | unverified research ingestion | COMPLETE | VERIFIED |  |
+| AX-367 | bounded research loop | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-368 | research -> execution handoff | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-369 | model-backed L4/L5 vertical | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-370 | real-model milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-371 | external-content-is-data invariant | COMPLETE | NOT_AUDITED |  |
-| AX-372 | verified knowledge != authority invariant | COMPLETE | NOT_AUDITED |  |
-| AX-373 | permission-injection resistance | COMPLETE | NOT_AUDITED |  |
-| AX-374 | risk-downgrade resistance | COMPLETE | NOT_AUDITED |  |
-| AX-375 | Action-Gate bypass resistance | COMPLETE | NOT_AUDITED |  |
-| AX-376 | Emergency-Stop override resistance | COMPLETE | NOT_AUDITED |  |
-| AX-377 | budget-override resistance | COMPLETE | NOT_AUDITED |  |
-| AX-378 | task-success fabrication resistance | COMPLETE | NOT_AUDITED |  |
-| AX-379 | verification fabrication resistance | COMPLETE | NOT_AUDITED |  |
-| AX-380 | procedure activation fabrication resistance | COMPLETE | NOT_AUDITED |  |
-| AX-381 | arbitrary-callable rejection | COMPLETE | NOT_AUDITED |  |
-| AX-382 | dynamic-code boundary tests | COMPLETE | NOT_AUDITED |  |
-| AX-383 | model-output authority separation | COMPLETE | NOT_AUDITED |  |
-| AX-384 | clipboard hostile-content tests | COMPLETE | NOT_AUDITED |  |
-| AX-385 | UI hostile-content tests | COMPLETE | NOT_AUDITED |  |
-| AX-386 | browser hostile-content tests | COMPLETE | NOT_AUDITED |  |
-| AX-387 | compiler hostile-history tests | COMPLETE | NOT_AUDITED |  |
-| AX-388 | repair hostile-evidence tests | COMPLETE | NOT_AUDITED |  |
-| AX-389 | persistence malformed-data tests | COMPLETE | NOT_AUDITED |  |
-| AX-390 | threat model foundation | COMPLETE | NOT_AUDITED |  |
+| AX-369 | model-backed L4/L5 vertical | NOT_IMPLEMENTED | BLOCKED |  |
+| AX-370 | real-model milestone acceptance | NOT_IMPLEMENTED | BLOCKED |  |
+| AX-371 | external-content-is-data invariant | COMPLETE | VERIFIED |  |
+| AX-372 | verified knowledge != authority invariant | COMPLETE | VERIFIED |  |
+| AX-373 | permission-injection resistance | COMPLETE | VERIFIED |  |
+| AX-374 | risk-downgrade resistance | COMPLETE | VERIFIED |  |
+| AX-375 | Action-Gate bypass resistance | COMPLETE | VERIFIED |  |
+| AX-376 | Emergency-Stop override resistance | COMPLETE | VERIFIED |  |
+| AX-377 | budget-override resistance | COMPLETE | VERIFIED |  |
+| AX-378 | task-success fabrication resistance | COMPLETE | VERIFIED |  |
+| AX-379 | verification fabrication resistance | COMPLETE | VERIFIED |  |
+| AX-380 | procedure activation fabrication resistance | COMPLETE | VERIFIED |  |
+| AX-381 | arbitrary-callable rejection | COMPLETE | VERIFIED |  |
+| AX-382 | dynamic-code boundary tests | COMPLETE | VERIFIED |  |
+| AX-383 | model-output authority separation | COMPLETE | VERIFIED |  |
+| AX-384 | clipboard hostile-content tests | COMPLETE | VERIFIED |  |
+| AX-385 | UI hostile-content tests | COMPLETE | VERIFIED |  |
+| AX-386 | browser hostile-content tests | COMPLETE | VERIFIED |  |
+| AX-387 | compiler hostile-history tests | COMPLETE | VERIFIED |  |
+| AX-388 | repair hostile-evidence tests | COMPLETE | VERIFIED |  |
+| AX-389 | persistence malformed-data tests | COMPLETE | VERIFIED |  |
+| AX-390 | threat model foundation | COMPLETE | VERIFIED |  |
 | AX-391 | replay modern C4.10 suite | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-392 | research-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-393 | knowledge-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
@@ -438,22 +438,22 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-403 | cross-subsystem privilege audit | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-404 | whole-system hostile-content chain | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-405 | security milestone signoff | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-406 | structured Windows observation foundation | COMPLETE | NOT_AUDITED |  |
-| AX-407 | UIA snapshot foundation | COMPLETE | NOT_AUDITED |  |
-| AX-408 | DOM snapshot foundation | COMPLETE | NOT_AUDITED |  |
-| AX-409 | screen/perception representation | COMPLETE | NOT_AUDITED |  |
-| AX-410 | world-state snapshot contract | COMPLETE | NOT_AUDITED |  |
-| AX-411 | lazy world-state cache | COMPLETE | NOT_AUDITED |  |
-| AX-412 | environment freshness semantics | COMPLETE | NOT_AUDITED |  |
-| AX-413 | environment invalidation evidence | COMPLETE | NOT_AUDITED |  |
-| AX-414 | application registry | COMPLETE | NOT_AUDITED |  |
-| AX-415 | active-window state | COMPLETE | NOT_AUDITED |  |
-| AX-416 | process-state model | COMPLETE | NOT_AUDITED |  |
-| AX-417 | browser-state model | COMPLETE | NOT_AUDITED |  |
-| AX-418 | filesystem-context state | COMPLETE | NOT_AUDITED |  |
-| AX-419 | device-state model | COMPLETE | NOT_AUDITED |  |
-| AX-420 | task-state world binding | COMPLETE | NOT_AUDITED |  |
-| AX-421 | Hive/world relationship linkage | COMPLETE | NOT_AUDITED |  |
+| AX-406 | structured Windows observation foundation | COMPLETE | VERIFIED |  |
+| AX-407 | UIA snapshot foundation | COMPLETE | VERIFIED |  |
+| AX-408 | DOM snapshot foundation | COMPLETE | VERIFIED |  |
+| AX-409 | screen/perception representation | COMPLETE | VERIFIED |  |
+| AX-410 | world-state snapshot contract | COMPLETE | VERIFIED |  |
+| AX-411 | lazy world-state cache | COMPLETE | VERIFIED |  |
+| AX-412 | environment freshness semantics | COMPLETE | VERIFIED |  |
+| AX-413 | environment invalidation evidence | COMPLETE | VERIFIED |  |
+| AX-414 | application registry | COMPLETE | VERIFIED |  |
+| AX-415 | active-window state | COMPLETE | VERIFIED |  |
+| AX-416 | process-state model | COMPLETE | VERIFIED |  |
+| AX-417 | browser-state model | COMPLETE | VERIFIED |  |
+| AX-418 | filesystem-context state | COMPLETE | VERIFIED |  |
+| AX-419 | device-state model | COMPLETE | VERIFIED |  |
+| AX-420 | task-state world binding | COMPLETE | VERIFIED |  |
+| AX-421 | Hive/world relationship linkage | COMPLETE | VERIFIED |  |
 | AX-422 | screen-capture provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-423 | screen-frame identity | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-424 | visual-region representation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
@@ -468,7 +468,7 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-433 | layout-change recovery benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-434 | perception accuracy benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-435 | world-model milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-436 | audio abstraction foundation | COMPLETE | NOT_AUDITED |  |
+| AX-436 | audio abstraction foundation | COMPLETE | VERIFIED |  |
 | AX-437 | microphone input provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-438 | speaker output provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-439 | provider-neutral STT interface | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
@@ -484,7 +484,7 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-449 | voice-task bridge | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-450 | voice authorization rules | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-451 | spoken confirmation protocol | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-452 | runtime -> UI event protocol | COMPLETE | NOT_AUDITED |  |
+| AX-452 | runtime -> UI event protocol | COMPLETE | VERIFIED |  |
 | AX-453 | HUD state model | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-454 | listening telemetry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-455 | reasoning telemetry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
@@ -497,7 +497,7 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-462 | scheduled-task contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-463 | one-shot scheduled tasks | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-464 | recurring scheduled tasks | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-465 | event watcher framework | COMPLETE | NOT_AUDITED |  |
+| AX-465 | event watcher framework | COMPLETE | VERIFIED |  |
 | AX-466 | event-triggered task launch | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-467 | file-change trigger | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-468 | process-state trigger | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
@@ -518,8 +518,8 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-483 | stale proactive-action rejection | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-484 | proactive adversarial tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-485 | proactivity milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-486 | device abstraction foundation | COMPLETE | NOT_AUDITED |  |
-| AX-487 | device protocol foundation | COMPLETE | NOT_AUDITED |  |
+| AX-486 | device abstraction foundation | COMPLETE | VERIFIED |  |
+| AX-487 | device protocol foundation | COMPLETE | VERIFIED |  |
 | AX-488 | Device Registry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-489 | device discovery | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-490 | device capability advertisement | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
@@ -548,8 +548,8 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-513 | cross-device causal episode | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-514 | PC/browser/phone workflow benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-515 | multi-device milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-516 | strategy-performance evidence foundation | COMPLETE | NOT_AUDITED |  |
-| AX-517 | execution-level metrics foundation | COMPLETE | NOT_AUDITED |  |
+| AX-516 | strategy-performance evidence foundation | COMPLETE | VERIFIED |  |
+| AX-517 | execution-level metrics foundation | COMPLETE | VERIFIED |  |
 | AX-518 | deterministic strategy baseline | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-519 | strategy outcome history | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-520 | per-environment strategy statistics | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
@@ -573,7 +573,7 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-538 | specialized-model benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-539 | rollbackable optimization policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-540 | optimization milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-541 | missing-capability detector foundation | COMPLETE | NOT_AUDITED |  |
+| AX-541 | missing-capability detector foundation | COMPLETE | VERIFIED |  |
 | AX-542 | capability-gap record | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-543 | capability research objective | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-544 | capability design proposal | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
@@ -603,9 +603,9 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-568 | generated-capability rollback | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-569 | Trusted-Kernel immutability proof | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-570 | self-extension milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-571 | synchronize README with live architecture | COMPLETE | NOT_AUDITED |  |
-| AX-572 | establish canonical 600-task ledger file | NOT_IMPLEMENTED | IN_PROGRESS | AX-571 |
-| AX-573 | machine-readable task-status ledger | NOT_IMPLEMENTED | IN_PROGRESS | AX-572 |
+| AX-571 | synchronize README with live architecture | COMPLETE | VERIFIED |  |
+| AX-572 | establish canonical 600-task ledger file | NOT_IMPLEMENTED | VERIFIED | AX-571 |
+| AX-573 | machine-readable task-status ledger | NOT_IMPLEMENTED | VERIFIED | AX-572 |
 | AX-574 | dependency DAG synchronization | NOT_IMPLEMENTED | IN_PROGRESS | AX-573 |
 | AX-575 | milestone-status automation | NOT_IMPLEMENTED | IN_PROGRESS | AX-573 |
 | AX-576 | Windows 10 real-host test matrix | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
