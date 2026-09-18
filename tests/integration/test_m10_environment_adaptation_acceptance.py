@@ -92,6 +92,57 @@ def test_m10_real_delete_and_recreate_change_state_without_manual_invalidation(
     assert recreated.value.existence is FilesystemExistence.EXISTS  # type: ignore[union-attr]
 
 
+def test_m10_real_move_changes_path_identity_and_preserves_unaffected_state(
+    tmp_path: Path,
+) -> None:
+    source_path = tmp_path / "source.txt"
+    target_path = tmp_path / "renamed.txt"
+    stable_path = tmp_path / "stable.txt"
+    source_path.write_text("move-me", encoding="utf-8")
+    stable_path.write_text("stable", encoding="utf-8")
+    model = WorldModel()
+    source_id = model.track_filesystem_path(
+        str(source_path),
+        environment_id="env-real-move",
+        windows=False,
+        source=SOURCE,
+        ttl=timedelta(hours=1),
+    )
+    stable_id = model.track_filesystem_path(
+        str(stable_path),
+        environment_id="env-real-move",
+        windows=False,
+        source=SOURCE,
+        ttl=timedelta(hours=1),
+    )
+    assert model.cache.lookup(source_id, at=datetime.now(UTC)).value is not None
+    assert model.cache.lookup(stable_id, at=datetime.now(UTC)).value is not None
+
+    # Real rename outside the world-model update path.
+    source_path.rename(target_path)
+
+    moved_from = model.cache.lookup(source_id, at=datetime.now(UTC))
+    assert moved_from.state is CacheRefreshState.REFRESH_SUCCESS
+    assert moved_from.value is not None
+    assert moved_from.value.existence is FilesystemExistence.MISSING  # type: ignore[union-attr]
+
+    target_id = model.track_filesystem_path(
+        str(target_path),
+        environment_id="env-real-move",
+        windows=False,
+        source=SOURCE,
+        ttl=timedelta(hours=1),
+    )
+    moved_to = model.cache.lookup(target_id, at=datetime.now(UTC))
+    assert moved_to.state is CacheRefreshState.REFRESH_SUCCESS
+    assert moved_to.value is not None
+    assert moved_to.value.existence is FilesystemExistence.EXISTS  # type: ignore[union-attr]
+    assert target_id != source_id
+
+    stable = model.cache.lookup(stable_id, at=datetime.now(UTC))
+    assert stable.state is CacheRefreshState.FRESH_HIT
+
+
 def test_m10_restart_boundary_does_not_restore_ephemeral_world_cache(tmp_path: Path) -> None:
     marker = tmp_path / "cache-proof.txt"
     marker.write_text("before-restart", encoding="utf-8")
