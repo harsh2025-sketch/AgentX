@@ -109,6 +109,11 @@ _ALLOWED: Final[Mapping[RealtimeSessionState, frozenset[RealtimeSessionState]]] 
 )
 
 
+def _is_cancelled(source: CancellationSource) -> bool:
+    """Observe current cancellation without stale flow narrowing."""
+    return source.token.is_cancelled
+
+
 def _voice_error(code: str, message: str, category: ErrorCategory) -> AgentXError:
     return AgentXError(
         code=f"voice.{code}",
@@ -347,7 +352,7 @@ class RealtimeVoiceSession:
                     ErrorCategory.PRECONDITION,
                 )
             )
-        if self._source.token.is_cancelled:
+        if _is_cancelled(self._source):
             return Result.failure(
                 _voice_error("cancelled", "voice turn cancelled", ErrorCategory.CANCELLED)
             )
@@ -391,7 +396,7 @@ class RealtimeVoiceSession:
         )
         self._frames.clear()
         self._turn_bytes = 0
-        if generation != self._generation or self._source.token.is_cancelled:
+        if generation != self._generation or _is_cancelled(self._source):
             return Result.failure(
                 _voice_error(
                     "stale_result",
@@ -430,7 +435,7 @@ class RealtimeVoiceSession:
                 cancellation_token=self._source.token,
             )
         )
-        if generation != self._generation or self._source.token.is_cancelled:
+        if generation != self._generation or _is_cancelled(self._source):
             return Result.failure(
                 _voice_error(
                     "stale_result",
@@ -445,7 +450,7 @@ class RealtimeVoiceSession:
         for frame in response.unwrap().frames:
             written = self._playback.write(frame)
             if written.is_failure:
-                if self._source.token.is_cancelled:
+                if _is_cancelled(self._source):
                     self._transition(RealtimeSessionState.INTERRUPTED)
                 else:
                     self._transition(RealtimeSessionState.FAILED)
@@ -483,8 +488,7 @@ class RealtimeVoiceSession:
         ):
             self._transition(RealtimeSessionState.CANCELLING)
             self._transition(RealtimeSessionState.CANCELLED)
-        if self._state is not RealtimeSessionState.CLOSED:
-            self._transition(RealtimeSessionState.CLOSED)
+        self._transition(RealtimeSessionState.CLOSED)
         self._generation += 1
         self._frames.clear()
         self._turn_bytes = 0
