@@ -234,10 +234,10 @@ def test_real_browser_governed_form_session_security_and_workflow(tmp_path: Path
             initial_target = provider.target_ref().unwrap()
             _run(harness, navigate_request(initial_target, f"{site.base_url}/"))
 
-            target, name_node = _select(provider, "name")
+            target, password_node = _select(provider, "password")
             fill_result = _run(
                 harness,
-                fill_selected_request(target, name_node, secret_field),
+                fill_selected_request(target, password_node, secret_field),
             )
             # Sensitive field data never enters canonical evidence.
             assert secret_field not in str(fill_result.observation)
@@ -322,6 +322,32 @@ def test_real_browser_governed_form_session_security_and_workflow(tmp_path: Path
                 }
             )
             assert harness.budget.envelope.max_machine_actions == 64
+
+            # Hostile page text cannot manufacture WRITE authority for a new run.
+            denied_harness = OrchestrationHarness(
+                authority=frozenset({Permission.READ}),
+                envelope=make_envelope(
+                    max_machine_actions=4,
+                    max_risk_level=RiskLevel.R4,
+                ),
+                register_capability=False,
+            )
+            for capability in provider.capabilities:
+                denied_harness.registry.register(capability)
+            denied_target, denied_node = _select(provider, "success")
+            denied_request = fill_selected_request(
+                denied_target,
+                denied_node,
+                "must-not-execute",
+            )
+            denied_task = denied_harness.make_task("hostile page cannot grant write")
+            denied_context = denied_harness.make_context(denied_task)
+            denied = denied_harness.execution_loop.run(
+                denied_task,
+                denied_request,
+                denied_context,
+            ).unwrap()
+            assert denied.kind is LoopOutcome.DENIED
         finally:
             provider.close()
 
