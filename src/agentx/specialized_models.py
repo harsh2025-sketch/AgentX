@@ -60,10 +60,7 @@ def _text(value: object, *, name: str, max_length: int = _MAX_TEXT) -> str:
 
 
 def _tokens(text: str) -> tuple[str, ...]:
-    normalized = "".join(
-        character.lower() if character.isalnum() else " "
-        for character in text
-    )
+    normalized = "".join(character.lower() if character.isalnum() else " " for character in text)
     return tuple(token for token in normalized.split() if token)[:256]
 
 
@@ -170,12 +167,8 @@ class _BinaryTokenModel:
         counts = Counter(_tokens(text))
         positive_map = dict(self.positive)
         negative_map = dict(self.negative)
-        positive_score = sum(
-            counts[token] * positive_map.get(token, 0) for token in counts
-        )
-        negative_score = sum(
-            counts[token] * negative_map.get(token, 0) for token in counts
-        )
+        positive_score = sum(counts[token] * positive_map.get(token, 0) for token in counts)
+        negative_score = sum(counts[token] * negative_map.get(token, 0) for token in counts)
         return positive_score, negative_score
 
     def to_dict(self) -> dict[str, object]:
@@ -296,11 +289,7 @@ class LightweightGroundingModel:
         total = positive + negative
         if total == 0 or abs(positive - negative) < minimum_margin:
             return GroundingPrediction(label=None, confidence=Decimal(0))
-        label = (
-            GroundingLabel.GROUNDED
-            if positive > negative
-            else GroundingLabel.NOT_GROUNDED
-        )
+        label = GroundingLabel.GROUNDED if positive > negative else GroundingLabel.NOT_GROUNDED
         confidence = Decimal(abs(positive - negative)) / Decimal(total)
         return GroundingPrediction(label=label, confidence=confidence)
 
@@ -497,9 +486,7 @@ class LightweightRoutingModel:
         task_family = _text(task_family, name="task_family", max_length=256)
         context_text = _text(context_text, name="context_text", max_length=2048)
         if not available or any(not isinstance(level, ExecutionLevel) for level in available):
-            raise SpecialistModelError(
-                "available must be non-empty ExecutionLevel tuple"
-            )
+            raise SpecialistModelError("available must be non-empty ExecutionLevel tuple")
         if type(minimum_score) is not int or minimum_score < 1:
             raise SpecialistModelError("minimum_score must be positive integer")
         scores = {level: 0 for level in available}
@@ -519,23 +506,18 @@ class LightweightRoutingModel:
         total = sum(scores.values())
         return RoutingPrediction(
             level=best[0],
-            confidence=(
-                Decimal(1) if total == 0 else Decimal(best_score) / Decimal(total)
-            ),
+            confidence=(Decimal(1) if total == 0 else Decimal(best_score) / Decimal(total)),
         )
-
 
     def to_json(self) -> str:
         payload = {
             "model_id": self.model_id,
             "dataset_id": self.dataset_id,
             "family_counts": [
-                [family, level.value, count]
-                for family, level, count in self.family_counts
+                [family, level.value, count] for family, level, count in self.family_counts
             ],
             "token_counts": [
-                [token, level.value, count]
-                for token, level, count in self.token_counts
+                [token, level.value, count] for token, level, count in self.token_counts
             ],
         }
         return json.dumps(payload, separators=(",", ":"), sort_keys=True)
@@ -592,12 +574,10 @@ class LightweightRoutingModel:
         canonical = {
             "dataset_id": model.dataset_id,
             "family_counts": [
-                [family, level.value, count]
-                for family, level, count in model.family_counts
+                [family, level.value, count] for family, level, count in model.family_counts
             ],
             "token_counts": [
-                [token, level.value, count]
-                for token, level, count in model.token_counts
+                [token, level.value, count] for token, level, count in model.token_counts
             ],
         }
         if _dataset_id(canonical) != model.model_id:
@@ -701,9 +681,7 @@ class DistillationPipeline:
                 sort_keys=True,
             )
         except (TypeError, ValueError) as exc:
-            raise SpecialistModelError(
-                "training_config must be JSON-compatible"
-            ) from exc
+            raise SpecialistModelError("training_config must be JSON-compatible") from exc
         config_id = _dataset_id(json.loads(config_json))
         model = LightweightGroundingModel.train(dataset)
         return model, DistillationArtifact(
@@ -743,16 +721,12 @@ class SpecialistBenchmark:
             raise SpecialistModelError("benchmark vectors must have equal lengths")
         samples = len(truth)
         baseline_correct = sum(
-            predicted == expected
-            for predicted, expected in zip(baseline, truth, strict=True)
+            predicted == expected for predicted, expected in zip(baseline, truth, strict=True)
         )
         specialist_correct = sum(
-            predicted == expected
-            for predicted, expected in zip(specialist, truth, strict=True)
+            predicted == expected for predicted, expected in zip(specialist, truth, strict=True)
         )
-        baseline_accuracy = (
-            None if samples == 0 else Decimal(baseline_correct) / Decimal(samples)
-        )
+        baseline_accuracy = None if samples == 0 else Decimal(baseline_correct) / Decimal(samples)
         specialist_accuracy = (
             None if samples == 0 else Decimal(specialist_correct) / Decimal(samples)
         )
