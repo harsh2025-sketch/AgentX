@@ -59,16 +59,20 @@ def test_adaptive_router_integrates_with_agent_loop_without_bypassing_governance
 
     from agentx.agent_loop import AgentLoop, StrategyRegistry
 
-    outcome = AgentLoop(
-        task_manager=harness.task_manager,
-        strategies=StrategyRegistry(
-            {
-                ExecutionLevel.L1_DIRECT: strategy,
-                ExecutionLevel.L4_PLANNED: strategy,
-            }
-        ),
-        router=router,
-    ).run(request).unwrap()
+    outcome = (
+        AgentLoop(
+            task_manager=harness.task_manager,
+            strategies=StrategyRegistry(
+                {
+                    ExecutionLevel.L1_DIRECT: strategy,
+                    ExecutionLevel.L4_PLANNED: strategy,
+                }
+            ),
+            router=router,
+        )
+        .run(request)
+        .unwrap()
+    )
 
     assert outcome.initial_level is ExecutionLevel.L4_PLANNED
     assert outcome.verified is False
