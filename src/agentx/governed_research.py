@@ -76,9 +76,21 @@ class ResearchAcquireParams(CapabilityParams):
             raise TypeError("request must be a ResearchRequest")
 
     def to_dict(self) -> dict[str, JsonValue]:
-        raw = self.request.to_dict()
-        # ResearchObjective.to_dict is JSON-compatible by contract.
-        return {"request": raw}  # type: ignore[return-value]
+        # Round-trip the already-canonical research contract through JSON so
+        # this ABI method returns plain JsonValue primitives without casts or
+        # type-suppression comments.
+        decoded = json.loads(
+            json.dumps(
+                self.request.to_dict(),
+                ensure_ascii=False,
+                allow_nan=False,
+                separators=(",", ":"),
+                sort_keys=True,
+            )
+        )
+        if not isinstance(decoded, dict):
+            raise TypeError("canonical research request must encode as a JSON object")
+        return {"request": decoded}
 
 
 def _identity(mode: ResearchAcquisitionMode) -> CapabilityIdentity:
