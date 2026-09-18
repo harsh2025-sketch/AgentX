@@ -53,6 +53,7 @@ class _Handler(BaseHTTPRequestHandler):
 
         if self.path == "/slow":
             time.sleep(0.1)
+        payload: dict[str, object]
         if self.path == "/bad":
             payload = {"unexpected": True}
         elif "audio_b64" in document:
@@ -80,7 +81,10 @@ def _server() -> Iterator[str]:
     server = ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
-    host, port = server.server_address
+    address = server.server_address
+    raw_host = address[0]
+    host = raw_host.decode("ascii") if isinstance(raw_host, bytes) else raw_host
+    port = int(address[1])
     try:
         yield f"http://{host}:{port}"
     finally:
