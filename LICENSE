@@ -1,0 +1,123 @@
+AGENTX PROPRIETARY SOURCE LICENSE
+
+Copyright (c) 2026 harsh2025-sketch
+All Rights Reserved.
+
+1. SCOPE
+
+This license applies to AgentX source code, documentation, architecture,
+tests, assets, and other copyrightable project material only to the extent
+that harsh2025-sketch owns or controls the copyright or otherwise has authority
+to license that material ("Owner Material").
+
+AgentX may also contain material contributed by other persons or entities or
+third-party material. This license does not claim ownership of material that
+harsh2025-sketch does not own or control, and it does not replace any separate
+license, notice, attribution requirement, assignment, or other legal right
+applicable to such material.
+
+2. NO IMPLIED LICENSE FROM PUBLIC AVAILABILITY
+
+Public visibility of this repository does not, by itself, grant a license to
+use the software.
+
+Possession of a copy of AgentX, access through GitHub or another hosting
+service, or the ability to view, clone, fork, or download the repository does
+not by itself grant permission to use, run, execute, copy, reproduce, modify,
+adapt, create derivative works from, distribute, redistribute, publish,
+sublicense, sell, commercially exploit, host, deploy, provide as a service, or
+incorporate Owner Material into another software product or system.
+
+No copyright license is granted except by explicit written authorization from
+the copyright holder, except to the extent applicable law or binding platform
+terms provide otherwise.
+
+3. RESTRICTIONS
+
+Except to the extent expressly authorized in writing by the copyright holder,
+or to the extent applicable law provides otherwise, no person or organization
+may:
+
+(a) use, run, or execute AgentX or Owner Material;
+
+(b) copy, reproduce, modify, adapt, translate, or create derivative works from
+    Owner Material;
+
+(c) distribute, redistribute, publish, sublicense, sell, rent, lease, transfer,
+    or otherwise make Owner Material available to another person or
+    organization;
+
+(d) commercially exploit Owner Material;
+
+(e) host, deploy, operate, or provide AgentX or Owner Material as software as a
+    service, hosted service, managed service, or other service offering;
+
+(f) incorporate Owner Material into another software product, system,
+    application, dataset, or service;
+
+(g) remove, obscure, or alter copyright, proprietary, attribution, or license
+    notices relating to Owner Material; or
+
+(h) use copyrighted contents of this repository to train, fine-tune, adapt, or
+    otherwise develop a machine-learning or artificial-intelligence model, or
+    compile those contents into a training or fine-tuning dataset.
+
+These restrictions apply only to the extent legally enforceable. Nothing in
+this license is intended to prohibit non-waivable rights, lawful exceptions or
+limitations, or rights otherwise granted by applicable law.
+
+This license concerns rights in copyrightable expression. It does not purport
+to claim exclusive rights in unprotectable ideas, facts, methods, systems,
+algorithms, interfaces, independently created implementations, or other
+subject matter that copyright law does not protect.
+
+4. WRITTEN PERMISSION
+
+The copyright holder may grant permissions separately in writing. A written
+permission may define, among other things:
+
+- the authorized person or company;
+- the permitted scope and purpose;
+- the duration of the permission;
+- commercial or non-commercial use;
+- modification rights;
+- redistribution or sublicensing rights;
+- hosting or deployment rights; and
+- any other applicable conditions.
+
+For licensing inquiries, contact the copyright holder through an authorized
+contact method published by the project owner.
+
+5. THIRD-PARTY AND CONTRIBUTOR MATERIAL
+
+Third-party components, dependencies, notices, and separately licensed files
+remain governed by their respective licenses and legal terms. Nothing in this
+license removes or limits third-party copyright, attribution, notice, or
+license obligations.
+
+Material contributed by persons or entities other than harsh2025-sketch is
+covered by this license only to the extent harsh2025-sketch has authority to
+license that material. Nothing in this license should be read as an assertion
+that third-party contributions were assigned to harsh2025-sketch unless there
+is separate evidence of such an assignment or other sufficient authority.
+
+6. HISTORICAL RIGHTS
+
+Nothing in this license revokes any rights that were validly granted for an
+earlier version of AgentX under a prior license or separate written
+authorization. Any such rights, if they exist, are governed by the terms under
+which they were granted.
+
+7. NO WARRANTY OR SUPPORT
+
+Mere public availability of AgentX does not create any warranty, support,
+maintenance, service, or other obligation. To the maximum extent permitted by
+applicable law, Owner Material is made available for viewing without warranties
+of any kind, express or implied.
+
+8. RESERVATION OF RIGHTS
+
+All rights in Owner Material that are not expressly granted in a separate
+written authorization or by applicable law are reserved.
+
+All Rights Reserved.
