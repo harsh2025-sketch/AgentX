@@ -33,6 +33,7 @@ from agentx.core.errors import AgentXError
 from agentx.core.execution import CancellationSource, CancellationToken
 from agentx.core.ids import AudioStreamId
 from agentx.core.result import Result
+from agentx.core.runtime_ui_events import RuntimeUiEvent
 from agentx.hud import HudModel, HudState
 from agentx.voice_hud_runtime import VoiceHudRuntime
 from agentx.voice_runtime import VoiceRuntimeTelemetry, VoiceTaskBridge, VoiceTaskPlan
@@ -176,7 +177,7 @@ def test_complete_voice_hud_milestone_path_uses_canonical_governed_runtime() -> 
     harness = OrchestrationHarness()
     agent_loop = harness.agent_loop({ExecutionLevel.L1_DIRECT: harness.governed_strategy()})
     model = HudModel()
-    events = []
+    events: list[RuntimeUiEvent] = []
 
     def consume(event: object) -> None:
         events.append(event)
