@@ -213,7 +213,7 @@ Exit criteria:
 
 ## Milestone 11 — Voice, Realtime Interaction and Product Surface
 
-**Status:** 2/25 VERIFIED (8.00%); PARTIAL — see TASKS.json for exact remaining states
+**Status:** 25/25 VERIFIED (100.00%); COMPLETE for exact milestone scope
 
 Add natural realtime interaction without coupling the intelligence architecture to one voice/model vendor.
 
@@ -225,6 +225,17 @@ Exit criteria:
 - voice commands routed through the same governed runtime as typed goals;
 - voice output never bypasses task verification or authority boundaries;
 - HUD is telemetry/control surface, not the system architecture.
+
+Acceptance evidence: PR #178 implements the production WinMM audio provider, provider-neutral
+STT/TTS plus concrete bounded HTTP adapters, realtime voice/VAD/turn/interruption lifecycle,
+voice-to-AgentLoop trust boundary, exact spoken confirmation, AX-452 HUD telemetry/control and
+deterministic end-to-end voice -> governed runtime -> independent verification -> HUD -> TTS.
+C1.01 run #1180 on implementation head `5d01d8625535477677dc02b32011d164a61972fb`
+passed runtime install, Ruff, format, strict mypy, task-ledger validation, Windows-host
+acceptance, the M7 real-browser regression, and the full suite (**11,316 passed, 9 skipped**).
+Physical microphone/speaker, live speech-provider credentials, and interactive desktop HUD
+entry points are separately runnable and were **not run**; no such real-environment evidence is
+claimed.
 
 ## Milestone 12 — Proactivity, Scheduling and Long-Running Operation
 

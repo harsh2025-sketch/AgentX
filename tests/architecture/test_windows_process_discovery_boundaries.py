@@ -33,8 +33,16 @@ _UIA_NATIVE = _WINDOWS_PKG / "_uia_native.py"
 _CLIPBOARD_NATIVE = _WINDOWS_PKG / "clipboard_native.py"
 _NATIVE_MUTATION = _WINDOWS_PKG / "native_mutation.py"
 _SCREEN_NATIVE = _WINDOWS_PKG / "_screen_native.py"
+_AUDIO_NATIVE = _WINDOWS_PKG / "_audio_native.py"
 _NATIVE_SEAMS = frozenset(
-    {_NATIVE, _UIA_NATIVE, _CLIPBOARD_NATIVE, _NATIVE_MUTATION, _SCREEN_NATIVE}
+    {
+        _NATIVE,
+        _UIA_NATIVE,
+        _CLIPBOARD_NATIVE,
+        _NATIVE_MUTATION,
+        _SCREEN_NATIVE,
+        _AUDIO_NATIVE,
+    }
 )
 
 # Native markers that may appear ONLY inside isolated seam modules.

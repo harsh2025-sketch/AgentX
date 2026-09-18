@@ -21,7 +21,7 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | M8 Models and Research | 13 | 0 | 22 | 33 | 0 | 0 | 2 | 0 |
 | M9 Security | 20 | 0 | 15 | 35 | 0 | 0 | 0 | 0 |
 | M10 World Model | 16 | 0 | 14 | 30 | 0 | 0 | 0 | 0 |
-| M11 Voice and HUD | 2 | 0 | 23 | 2 | 0 | 0 | 0 | 23 |
+| M11 Voice and HUD | 2 | 0 | 23 | 25 | 0 | 0 | 0 | 0 |
 | M12 Scheduling | 1 | 0 | 24 | 1 | 0 | 0 | 0 | 24 |
 | M13 Multi-device and Android | 2 | 0 | 28 | 2 | 0 | 0 | 0 | 28 |
 | M14 Optimization | 2 | 0 | 23 | 2 | 0 | 0 | 0 | 23 |
@@ -469,30 +469,30 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-434 | perception accuracy benchmark | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-435 | world-model milestone acceptance | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-436 | audio abstraction foundation | COMPLETE | VERIFIED |  |
-| AX-437 | microphone input provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-438 | speaker output provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-439 | provider-neutral STT interface | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-440 | concrete STT provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-441 | provider-neutral TTS interface | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-442 | concrete TTS provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-443 | realtime-session abstraction | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-444 | realtime voice provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-445 | voice activity detection | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-446 | turn-end detection | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-447 | interruption/barge-in | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-448 | audio cancellation handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-449 | voice-task bridge | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-450 | voice authorization rules | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-451 | spoken confirmation protocol | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-437 | microphone input provider | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-438 | speaker output provider | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-439 | provider-neutral STT interface | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-440 | concrete STT provider | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-441 | provider-neutral TTS interface | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-442 | concrete TTS provider | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-443 | realtime-session abstraction | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-444 | realtime voice provider | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-445 | voice activity detection | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-446 | turn-end detection | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-447 | interruption/barge-in | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-448 | audio cancellation handling | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-449 | voice-task bridge | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-450 | voice authorization rules | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-451 | spoken confirmation protocol | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-452 | runtime -> UI event protocol | COMPLETE | VERIFIED |  |
-| AX-453 | HUD state model | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-454 | listening telemetry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-455 | reasoning telemetry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-456 | execution telemetry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-457 | verification telemetry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-458 | recovery telemetry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-459 | HUD control actions | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-460 | voice/HUD milestone demonstration | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-453 | HUD state model | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-454 | listening telemetry | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-455 | reasoning telemetry | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-456 | execution telemetry | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-457 | verification telemetry | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-458 | recovery telemetry | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-459 | HUD control actions | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-460 | voice/HUD milestone demonstration | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-461 | scheduler core | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-462 | scheduled-task contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-463 | one-shot scheduled tasks | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
