@@ -6050,495 +6050,1650 @@
       "milestone": "M6",
       "title": "Windows platform-support contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/provider.py",
+          "note": "Production implementation evidence for AX-246 Windows platform-support contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_provider.py; tests/adversarial/test_windows_provider_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-246."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-246."
+        }
+      ]
     },
     {
       "id": "AX-247",
       "milestone": "M6",
       "title": "Windows process discovery",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/process_discovery.py; src/agentx/capabilities/windows/_native.py",
+          "note": "Production implementation evidence for AX-247 Windows process discovery."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_process_discovery.py; tests/adversarial/test_windows_process_discovery_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-247."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-247."
+        }
+      ]
     },
     {
       "id": "AX-248",
       "milestone": "M6",
       "title": "process identity",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/process_discovery.py; src/agentx/capabilities/windows/_native.py",
+          "note": "Production implementation evidence for AX-248 process identity."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_process_discovery.py; tests/adversarial/test_windows_process_discovery_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-248."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-248."
+        }
+      ]
     },
     {
       "id": "AX-249",
       "milestone": "M6",
       "title": "top-level window discovery",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/process_discovery.py; src/agentx/capabilities/windows/_native.py",
+          "note": "Production implementation evidence for AX-249 top-level window discovery."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_process_discovery.py; tests/adversarial/test_windows_process_discovery_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-249."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-249."
+        }
+      ]
     },
     {
       "id": "AX-250",
       "milestone": "M6",
       "title": "window identity",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/process_discovery.py; src/agentx/capabilities/windows/_native.py",
+          "note": "Production implementation evidence for AX-250 window identity."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_process_discovery.py; tests/adversarial/test_windows_process_discovery_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-250."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-250."
+        }
+      ]
     },
     {
       "id": "AX-251",
       "milestone": "M6",
       "title": "UIA observation contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/uia_tree.py; src/agentx/capabilities/windows/_uia_native.py",
+          "note": "Production implementation evidence for AX-251 UIA observation contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_uia_tree.py; tests/adversarial/test_windows_uia_tree_authority.py; tests/adversarial/test_uia_target_resolution_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-251."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-251."
+        }
+      ]
     },
     {
       "id": "AX-252",
       "milestone": "M6",
       "title": "UIA tree inspection",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/uia_tree.py; src/agentx/capabilities/windows/_uia_native.py",
+          "note": "Production implementation evidence for AX-252 UIA tree inspection."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_uia_tree.py; tests/adversarial/test_windows_uia_tree_authority.py; tests/adversarial/test_uia_target_resolution_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-252."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-252."
+        }
+      ]
     },
     {
       "id": "AX-253",
       "milestone": "M6",
       "title": "UIA element identity",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/uia_tree.py; src/agentx/capabilities/windows/_uia_native.py",
+          "note": "Production implementation evidence for AX-253 UIA element identity."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_uia_tree.py; tests/adversarial/test_windows_uia_tree_authority.py; tests/adversarial/test_uia_target_resolution_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-253."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-253."
+        }
+      ]
     },
     {
       "id": "AX-254",
       "milestone": "M6",
       "title": "UIA property observation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/uia_tree.py; src/agentx/capabilities/windows/_uia_native.py",
+          "note": "Production implementation evidence for AX-254 UIA property observation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_uia_tree.py; tests/adversarial/test_windows_uia_tree_authority.py; tests/adversarial/test_uia_target_resolution_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-254."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-254."
+        }
+      ]
     },
     {
       "id": "AX-255",
       "milestone": "M6",
       "title": "UIA semantic target resolution",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/uia_tree.py; src/agentx/capabilities/windows/_uia_native.py",
+          "note": "Production implementation evidence for AX-255 UIA semantic target resolution."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_uia_tree.py; tests/adversarial/test_windows_uia_tree_authority.py; tests/adversarial/test_uia_target_resolution_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-255."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-255."
+        }
+      ]
     },
     {
       "id": "AX-256",
       "milestone": "M6",
       "title": "ambiguity-preserving target resolution",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/uia_tree.py; src/agentx/capabilities/windows/_uia_native.py",
+          "note": "Production implementation evidence for AX-256 ambiguity-preserving target resolution."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_uia_tree.py; tests/adversarial/test_windows_uia_tree_authority.py; tests/adversarial/test_uia_target_resolution_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-256."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-256."
+        }
+      ]
     },
     {
       "id": "AX-257",
       "milestone": "M6",
       "title": "filesystem text-read capability",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/filesystem_text.py",
+          "note": "Production implementation evidence for AX-257 filesystem text-read capability."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_ax260_297_filesystem_input_verification.py; tests/adversarial/test_ax260_297_authority_and_verification.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-257."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-257."
+        }
+      ]
     },
     {
       "id": "AX-258",
       "milestone": "M6",
       "title": "filesystem text-write capability",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/filesystem_text.py",
+          "note": "Production implementation evidence for AX-258 filesystem text-write capability."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_ax260_297_filesystem_input_verification.py; tests/adversarial/test_ax260_297_authority_and_verification.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-258."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-258."
+        }
+      ]
     },
     {
       "id": "AX-259",
       "milestone": "M6",
       "title": "filesystem verification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/filesystem_text.py",
+          "note": "Production implementation evidence for AX-259 filesystem verification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_ax260_297_filesystem_input_verification.py; tests/adversarial/test_ax260_297_authority_and_verification.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-259."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-259."
+        }
+      ]
     },
     {
       "id": "AX-260",
       "milestone": "M6",
       "title": "filesystem structural risk policy",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/filesystem_structural.py",
+          "note": "Production implementation evidence for AX-260 filesystem structural risk policy."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_filesystem_structural_risk.py; tests/adversarial/test_filesystem_structural_risk_authority.py; tests/windows/test_ax260_265_filesystem_structural.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-260."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-260."
+        }
+      ]
     },
     {
       "id": "AX-261",
       "milestone": "M6",
       "title": "governed file move",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/filesystem_structural.py",
+          "note": "Production implementation evidence for AX-261 governed file move."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_filesystem_structural_risk.py; tests/adversarial/test_filesystem_structural_risk_authority.py; tests/windows/test_ax260_265_filesystem_structural.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-261."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-261."
+        }
+      ]
     },
     {
       "id": "AX-262",
       "milestone": "M6",
       "title": "governed file rename",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/filesystem_structural.py",
+          "note": "Production implementation evidence for AX-262 governed file rename."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_filesystem_structural_risk.py; tests/adversarial/test_filesystem_structural_risk_authority.py; tests/windows/test_ax260_265_filesystem_structural.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-262."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-262."
+        }
+      ]
     },
     {
       "id": "AX-263",
       "milestone": "M6",
       "title": "governed directory creation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/filesystem_structural.py",
+          "note": "Production implementation evidence for AX-263 governed directory creation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_filesystem_structural_risk.py; tests/adversarial/test_filesystem_structural_risk_authority.py; tests/windows/test_ax260_265_filesystem_structural.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-263."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-263."
+        }
+      ]
     },
     {
       "id": "AX-264",
       "milestone": "M6",
       "title": "governed file deletion",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/filesystem_structural.py",
+          "note": "Production implementation evidence for AX-264 governed file deletion."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_filesystem_structural_risk.py; tests/adversarial/test_filesystem_structural_risk_authority.py; tests/windows/test_ax260_265_filesystem_structural.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-264."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-264."
+        }
+      ]
     },
     {
       "id": "AX-265",
       "milestone": "M6",
       "title": "governed directory deletion",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/filesystem_structural.py",
+          "note": "Production implementation evidence for AX-265 governed directory deletion."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_filesystem_structural_risk.py; tests/adversarial/test_filesystem_structural_risk_authority.py; tests/windows/test_ax260_265_filesystem_structural.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-265."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-265."
+        }
+      ]
     },
     {
       "id": "AX-266",
       "milestone": "M6",
       "title": "canonical native-mutation seam",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/native_mutation.py",
+          "note": "Production implementation evidence for AX-266 canonical native-mutation seam."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_native_mutation.py; tests/architecture/test_windows_native_mutation_boundaries.py; tests/windows/test_windows_native_mutation.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-266."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-266."
+        }
+      ]
     },
     {
       "id": "AX-267",
       "milestone": "M6",
       "title": "native seam isolation from public capability",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/native_mutation.py",
+          "note": "Production implementation evidence for AX-267 native seam isolation from public capability."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_native_mutation.py; tests/architecture/test_windows_native_mutation_boundaries.py; tests/windows/test_windows_native_mutation.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-267."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-267."
+        }
+      ]
     },
     {
       "id": "AX-268",
       "milestone": "M6",
       "title": "application-launch V2 contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/application_launch_v2.py; src/agentx/capabilities/windows/application_launch_native_adapter.py",
+          "note": "Production implementation evidence for AX-268 application-launch V2 contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_application_launch_v2.py; tests/unit/test_windows_application_launch_native_adapter.py; tests/integration/test_windows_application_launch_verification.py; tests/windows/test_windows_application_launch_v2.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-268."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-268."
+        }
+      ]
     },
     {
       "id": "AX-269",
       "milestone": "M6",
       "title": "structured executable path",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/application_launch_v2.py; src/agentx/capabilities/windows/application_launch_native_adapter.py",
+          "note": "Production implementation evidence for AX-269 structured executable path."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_application_launch_v2.py; tests/unit/test_windows_application_launch_native_adapter.py; tests/integration/test_windows_application_launch_verification.py; tests/windows/test_windows_application_launch_v2.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-269."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-269."
+        }
+      ]
     },
     {
       "id": "AX-270",
       "milestone": "M6",
       "title": "structured argv handling",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/application_launch_v2.py; src/agentx/capabilities/windows/application_launch_native_adapter.py",
+          "note": "Production implementation evidence for AX-270 structured argv handling."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_application_launch_v2.py; tests/unit/test_windows_application_launch_native_adapter.py; tests/integration/test_windows_application_launch_verification.py; tests/windows/test_windows_application_launch_v2.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-270."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-270."
+        }
+      ]
     },
     {
       "id": "AX-271",
       "milestone": "M6",
       "title": "no-shell launch invariant",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/application_launch_v2.py; src/agentx/capabilities/windows/application_launch_native_adapter.py",
+          "note": "Production implementation evidence for AX-271 no-shell launch invariant."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_application_launch_v2.py; tests/unit/test_windows_application_launch_native_adapter.py; tests/integration/test_windows_application_launch_verification.py; tests/windows/test_windows_application_launch_v2.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-271."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-271."
+        }
+      ]
     },
     {
       "id": "AX-272",
       "milestone": "M6",
       "title": "window activation contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/window_management_v2.py; src/agentx/capabilities/windows/window_management_native_adapter.py",
+          "note": "Production implementation evidence for AX-272 window activation contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_windows_window_management_v2.py; tests/windows/test_windows_window_management_v2.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-272."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-272."
+        }
+      ]
     },
     {
       "id": "AX-273",
       "milestone": "M6",
       "title": "window minimization contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/window_management_v2.py; src/agentx/capabilities/windows/window_management_native_adapter.py",
+          "note": "Production implementation evidence for AX-273 window minimization contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_windows_window_management_v2.py; tests/windows/test_windows_window_management_v2.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-273."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-273."
+        }
+      ]
     },
     {
       "id": "AX-274",
       "milestone": "M6",
       "title": "window maximization contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/window_management_v2.py; src/agentx/capabilities/windows/window_management_native_adapter.py",
+          "note": "Production implementation evidence for AX-274 window maximization contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_windows_window_management_v2.py; tests/windows/test_windows_window_management_v2.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-274."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-274."
+        }
+      ]
     },
     {
       "id": "AX-275",
       "milestone": "M6",
       "title": "window restore contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/window_management_v2.py; src/agentx/capabilities/windows/window_management_native_adapter.py",
+          "note": "Production implementation evidence for AX-275 window restore contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_windows_window_management_v2.py; tests/windows/test_windows_window_management_v2.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-275."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-275."
+        }
+      ]
     },
     {
       "id": "AX-276",
       "milestone": "M6",
       "title": "bounded move/resize contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/window_management_v2.py; src/agentx/capabilities/windows/window_management_native_adapter.py",
+          "note": "Production implementation evidence for AX-276 bounded move/resize contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_windows_window_management_v2.py; tests/windows/test_windows_window_management_v2.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-276."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-276."
+        }
+      ]
     },
     {
       "id": "AX-277",
       "milestone": "M6",
       "title": "SetWindowPos native adapter",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/window_management_v2.py; src/agentx/capabilities/windows/window_management_native_adapter.py",
+          "note": "Production implementation evidence for AX-277 SetWindowPos native adapter."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_windows_window_management_v2.py; tests/windows/test_windows_window_management_v2.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-277."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-277."
+        }
+      ]
     },
     {
       "id": "AX-278",
       "milestone": "M6",
       "title": "keyboard text-entry contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/keyboard_text_clipboard.py; src/agentx/capabilities/windows/keyboard_native_adapter.py; src/agentx/capabilities/windows/clipboard_native_adapter.py",
+          "note": "Production implementation evidence for AX-278 keyboard text-entry contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_keyboard_text_clipboard.py; tests/integration/test_windows_keyboard_text_clipboard.py; tests/windows/test_windows_keyboard_text_clipboard.py; tests/adversarial/test_windows_keyboard_text_clipboard_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-278."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-278."
+        }
+      ]
     },
     {
       "id": "AX-279",
       "milestone": "M6",
       "title": "key-combination contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/keyboard_text_clipboard.py; src/agentx/capabilities/windows/keyboard_native_adapter.py; src/agentx/capabilities/windows/clipboard_native_adapter.py",
+          "note": "Production implementation evidence for AX-279 key-combination contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_keyboard_text_clipboard.py; tests/integration/test_windows_keyboard_text_clipboard.py; tests/windows/test_windows_keyboard_text_clipboard.py; tests/adversarial/test_windows_keyboard_text_clipboard_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-279."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-279."
+        }
+      ]
     },
     {
       "id": "AX-280",
       "milestone": "M6",
       "title": "bounded key vocabulary",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/keyboard_text_clipboard.py; src/agentx/capabilities/windows/keyboard_native_adapter.py; src/agentx/capabilities/windows/clipboard_native_adapter.py",
+          "note": "Production implementation evidence for AX-280 bounded key vocabulary."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_keyboard_text_clipboard.py; tests/integration/test_windows_keyboard_text_clipboard.py; tests/windows/test_windows_keyboard_text_clipboard.py; tests/adversarial/test_windows_keyboard_text_clipboard_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-280."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-280."
+        }
+      ]
     },
     {
       "id": "AX-281",
       "milestone": "M6",
       "title": "clipboard read",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/keyboard_text_clipboard.py; src/agentx/capabilities/windows/keyboard_native_adapter.py; src/agentx/capabilities/windows/clipboard_native_adapter.py",
+          "note": "Production implementation evidence for AX-281 clipboard read."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_keyboard_text_clipboard.py; tests/integration/test_windows_keyboard_text_clipboard.py; tests/windows/test_windows_keyboard_text_clipboard.py; tests/adversarial/test_windows_keyboard_text_clipboard_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-281."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-281."
+        }
+      ]
     },
     {
       "id": "AX-282",
       "milestone": "M6",
       "title": "clipboard write",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/keyboard_text_clipboard.py; src/agentx/capabilities/windows/keyboard_native_adapter.py; src/agentx/capabilities/windows/clipboard_native_adapter.py",
+          "note": "Production implementation evidence for AX-282 clipboard write."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_keyboard_text_clipboard.py; tests/integration/test_windows_keyboard_text_clipboard.py; tests/windows/test_windows_keyboard_text_clipboard.py; tests/adversarial/test_windows_keyboard_text_clipboard_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-282."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-282."
+        }
+      ]
     },
     {
       "id": "AX-283",
       "milestone": "M6",
       "title": "clipboard clear",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/keyboard_text_clipboard.py; src/agentx/capabilities/windows/keyboard_native_adapter.py; src/agentx/capabilities/windows/clipboard_native_adapter.py",
+          "note": "Production implementation evidence for AX-283 clipboard clear."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_keyboard_text_clipboard.py; tests/integration/test_windows_keyboard_text_clipboard.py; tests/windows/test_windows_keyboard_text_clipboard.py; tests/adversarial/test_windows_keyboard_text_clipboard_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-283."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-283."
+        }
+      ]
     },
     {
       "id": "AX-284",
       "milestone": "M6",
       "title": "hostile clipboard data inertness",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/keyboard_text_clipboard.py; src/agentx/capabilities/windows/keyboard_native_adapter.py; src/agentx/capabilities/windows/clipboard_native_adapter.py",
+          "note": "Production implementation evidence for AX-284 hostile clipboard data inertness."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_keyboard_text_clipboard.py; tests/integration/test_windows_keyboard_text_clipboard.py; tests/windows/test_windows_keyboard_text_clipboard.py; tests/adversarial/test_windows_keyboard_text_clipboard_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-284."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-284."
+        }
+      ]
     },
     {
       "id": "AX-285",
       "milestone": "M6",
       "title": "no keylogger invariant",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/keyboard_text_clipboard.py; src/agentx/capabilities/windows/keyboard_native_adapter.py; src/agentx/capabilities/windows/clipboard_native_adapter.py",
+          "note": "Production implementation evidence for AX-285 no keylogger invariant."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_keyboard_text_clipboard.py; tests/integration/test_windows_keyboard_text_clipboard.py; tests/windows/test_windows_keyboard_text_clipboard.py; tests/adversarial/test_windows_keyboard_text_clipboard_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-285."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-285."
+        }
+      ]
     },
     {
       "id": "AX-286",
       "milestone": "M6",
       "title": "no global-hotkey capture invariant",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/keyboard_text_clipboard.py; src/agentx/capabilities/windows/keyboard_native_adapter.py; src/agentx/capabilities/windows/clipboard_native_adapter.py",
+          "note": "Production implementation evidence for AX-286 no global-hotkey capture invariant."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_keyboard_text_clipboard.py; tests/integration/test_windows_keyboard_text_clipboard.py; tests/windows/test_windows_keyboard_text_clipboard.py; tests/adversarial/test_windows_keyboard_text_clipboard_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-286."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-286."
+        }
+      ]
     },
     {
       "id": "AX-287",
       "milestone": "M6",
       "title": "Windows transition-verification boundary",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/windows_transition_verification.py",
+          "note": "Production implementation evidence for AX-287 Windows transition-verification boundary."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_transition_verification.py; tests/integration/test_windows_transition_verification.py; tests/adversarial/test_windows_transition_verification_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-287."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-287."
+        }
+      ]
     },
     {
       "id": "AX-288",
       "milestone": "M6",
       "title": "window-present verification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/windows_transition_verification.py",
+          "note": "Production implementation evidence for AX-288 window-present verification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_transition_verification.py; tests/integration/test_windows_transition_verification.py; tests/adversarial/test_windows_transition_verification_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-288."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-288."
+        }
+      ]
     },
     {
       "id": "AX-289",
       "milestone": "M6",
       "title": "window-absent verification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/windows_transition_verification.py",
+          "note": "Production implementation evidence for AX-289 window-absent verification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_transition_verification.py; tests/integration/test_windows_transition_verification.py; tests/adversarial/test_windows_transition_verification_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-289."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-289."
+        }
+      ]
     },
     {
       "id": "AX-290",
       "milestone": "M6",
       "title": "window-visible verification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/windows_transition_verification.py",
+          "note": "Production implementation evidence for AX-290 window-visible verification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_transition_verification.py; tests/integration/test_windows_transition_verification.py; tests/adversarial/test_windows_transition_verification_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-290."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-290."
+        }
+      ]
     },
     {
       "id": "AX-291",
       "milestone": "M6",
       "title": "window-focus verification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/windows_transition_verification.py",
+          "note": "Production implementation evidence for AX-291 window-focus verification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_transition_verification.py; tests/integration/test_windows_transition_verification.py; tests/adversarial/test_windows_transition_verification_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-291."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-291."
+        }
+      ]
     },
     {
       "id": "AX-292",
       "milestone": "M6",
       "title": "window-bounds verification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/windows_transition_verification.py",
+          "note": "Production implementation evidence for AX-292 window-bounds verification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_transition_verification.py; tests/integration/test_windows_transition_verification.py; tests/adversarial/test_windows_transition_verification_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-292."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-292."
+        }
+      ]
     },
     {
       "id": "AX-293",
       "milestone": "M6",
       "title": "process-present verification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/windows_transition_verification.py",
+          "note": "Production implementation evidence for AX-293 process-present verification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_transition_verification.py; tests/integration/test_windows_transition_verification.py; tests/adversarial/test_windows_transition_verification_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-293."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-293."
+        }
+      ]
     },
     {
       "id": "AX-294",
       "milestone": "M6",
       "title": "executable-identity verification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/windows_transition_verification.py",
+          "note": "Production implementation evidence for AX-294 executable-identity verification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_transition_verification.py; tests/integration/test_windows_transition_verification.py; tests/adversarial/test_windows_transition_verification_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-294."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-294."
+        }
+      ]
     },
     {
       "id": "AX-295",
       "milestone": "M6",
       "title": "text-field-value verification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/windows_transition_verification.py",
+          "note": "Production implementation evidence for AX-295 text-field-value verification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_windows_transition_verification.py; tests/integration/test_windows_transition_verification.py; tests/adversarial/test_windows_transition_verification_authority.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-295."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-295."
+        }
+      ]
     },
     {
       "id": "AX-296",
       "milestone": "M6",
       "title": "clipboard independent verification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/input_verification.py; src/agentx/capabilities/windows/clipboard_native.py",
+          "note": "Production implementation evidence for AX-296 clipboard independent verification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_ax260_297_filesystem_input_verification.py; tests/integration/test_ax260_297_governed_completion.py; tests/windows/test_windows_keyboard_text_clipboard.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-296."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-296."
+        }
+      ]
     },
     {
       "id": "AX-297",
       "milestone": "M6",
       "title": "keyboard-action independent verification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/input_verification.py; src/agentx/capabilities/windows/clipboard_native.py",
+          "note": "Production implementation evidence for AX-297 keyboard-action independent verification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_ax260_297_filesystem_input_verification.py; tests/integration/test_ax260_297_governed_completion.py; tests/windows/test_windows_keyboard_text_clipboard.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-297."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-297."
+        }
+      ]
     },
     {
       "id": "AX-298",
       "milestone": "M6",
       "title": "real Windows host mutation suite",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "tests/windows/test_m6_real_host_acceptance.py; src/agentx/capabilities/runtime.py; src/agentx/capabilities/executor.py",
+          "note": "Production implementation evidence for AX-298 real Windows host mutation suite."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/windows/test_m6_real_host_acceptance.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-298."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-298."
+        }
+      ]
     },
     {
       "id": "AX-299",
       "milestone": "M6",
       "title": "multi-app Windows workflow benchmark",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "tests/windows/test_m6_multi_app_workflow.py; src/agentx/capabilities/windows/application_launch_native_adapter.py",
+          "note": "Production implementation evidence for AX-299 multi-app Windows workflow benchmark."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/windows/test_m6_multi_app_workflow.py",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-299."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-299."
+        }
+      ]
     },
     {
       "id": "AX-300",
       "milestone": "M6",
       "title": "Windows capability milestone acceptance",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": ".github/workflows/quality.yml; docs/ROADMAP.md",
+          "note": "Production implementation evidence for AX-300 Windows capability milestone acceptance."
+        },
+        {
+          "kind": "tests",
+          "reference": "C1.01 Quality Gate run #835: 10018 passed, 6 skipped; dedicated AX-298/AX-299 host acceptance 2 passed",
+          "note": "Targeted unit/integration/adversarial/Windows coverage for AX-300."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b18ba0ceda5d0805aaa60a95083a2d727b166c13",
+          "note": "Merged-current-main M6 implementation head that passed Windows C1.01 run #835."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/runs/35315713674",
+          "note": "Windows C1.01 #835 passed runtime install, Ruff, Ruff format, mypy, dedicated M6 real-host acceptance and full pytest for AX-300."
+        }
+      ]
     },
     {
       "id": "AX-301",
