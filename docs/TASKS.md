@@ -8,25 +8,25 @@ Partial: only the explicit critical path is encoded. Empty depends_on is not a c
 
 Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliation, 2026-09-17; definitions from review-agentx-handover (4).pdf pp. 632-647.
 
-| Milestone | Reported complete | Reported partial | Reported remaining | Verified acceptance |
-| --- | ---: | ---: | ---: | ---: |
-| M0 Trusted Kernel | 40 | 0 | 0 | 40 |
-| M1 Agent Runtime | 41 | 2 | 2 | 42 |
-| M2 Hive and Memory | 39 | 0 | 1 | 40 |
-| M3 Procedure Compiler | 49 | 0 | 1 | 50 |
-| M4 Learning Efficiency | 20 | 0 | 10 | 21 |
-| M5 Self-Repair | 36 | 0 | 4 | 40 |
-| M6 Windows Capabilities | 52 | 0 | 3 | 55 |
-| M7 Browser Agent | 14 | 0 | 21 | 16 |
-| M8 Models and Research | 13 | 0 | 22 | 28 |
-| M9 Security | 20 | 0 | 15 | 20 |
-| M10 World Model | 16 | 0 | 14 | 16 |
-| M11 Voice and HUD | 2 | 0 | 23 | 2 |
-| M12 Scheduling | 1 | 0 | 24 | 1 |
-| M13 Multi-device and Android | 2 | 0 | 28 | 2 |
-| M14 Optimization | 2 | 0 | 23 | 2 |
-| M15 Self-extension | 1 | 0 | 29 | 1 |
-| M16 Production and Release | 1 | 0 | 29 | 3 |
+| Milestone | Reported complete | Reported partial | Reported remaining | Verified | Not audited | In progress | Blocked | Not implemented |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| M0 Trusted Kernel | 40 | 0 | 0 | 40 | 0 | 0 | 0 | 0 |
+| M1 Agent Runtime | 41 | 2 | 2 | 42 | 0 | 1 | 2 | 0 |
+| M2 Hive and Memory | 39 | 0 | 1 | 40 | 0 | 0 | 0 | 0 |
+| M3 Procedure Compiler | 49 | 0 | 1 | 50 | 0 | 0 | 0 | 0 |
+| M4 Learning Efficiency | 20 | 0 | 10 | 21 | 0 | 6 | 3 | 0 |
+| M5 Self-Repair | 36 | 0 | 4 | 40 | 0 | 0 | 0 | 0 |
+| M6 Windows Capabilities | 52 | 0 | 3 | 55 | 0 | 0 | 0 | 0 |
+| M7 Browser Agent | 14 | 0 | 21 | 16 | 0 | 1 | 0 | 18 |
+| M8 Models and Research | 13 | 0 | 22 | 28 | 0 | 0 | 2 | 5 |
+| M9 Security | 20 | 0 | 15 | 20 | 0 | 0 | 0 | 15 |
+| M10 World Model | 16 | 0 | 14 | 16 | 0 | 0 | 0 | 14 |
+| M11 Voice and HUD | 2 | 0 | 23 | 2 | 0 | 0 | 0 | 23 |
+| M12 Scheduling | 1 | 0 | 24 | 1 | 0 | 0 | 0 | 24 |
+| M13 Multi-device and Android | 2 | 0 | 28 | 2 | 0 | 0 | 0 | 28 |
+| M14 Optimization | 2 | 0 | 23 | 2 | 0 | 0 | 0 | 23 |
+| M15 Self-extension | 1 | 0 | 29 | 1 | 0 | 0 | 0 | 29 |
+| M16 Production and Release | 1 | 0 | 29 | 4 | 0 | 1 | 0 | 25 |
 
 A zero verified-acceptance count means this ledger has not yet recorded a task-level
 acceptance audit; it does not mean the existing implementation is absent.
@@ -607,7 +607,7 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-572 | establish canonical 600-task ledger file | NOT_IMPLEMENTED | VERIFIED | AX-571 |
 | AX-573 | machine-readable task-status ledger | NOT_IMPLEMENTED | VERIFIED | AX-572 |
 | AX-574 | dependency DAG synchronization | NOT_IMPLEMENTED | IN_PROGRESS | AX-573 |
-| AX-575 | milestone-status automation | NOT_IMPLEMENTED | IN_PROGRESS | AX-573 |
+| AX-575 | milestone-status automation | NOT_IMPLEMENTED | VERIFIED | AX-573 |
 | AX-576 | Windows 10 real-host test matrix | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-577 | Windows 11 real-host test matrix | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-578 | multi-DPI test matrix | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
