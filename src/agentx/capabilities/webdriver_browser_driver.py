@@ -157,7 +157,7 @@ class ChromeDriverService:
             process.kill()
             process.wait(timeout=3)
 
-    def __enter__(self) -> "ChromeDriverService":
+    def __enter__(self) -> ChromeDriverService:
         return self
 
     def __exit__(self, exc_type: object, exc: object, traceback: object) -> None:
@@ -187,9 +187,10 @@ class WebDriverBrowserProvider:
             raise ValueError("WebDriver endpoint must be an explicit loopback HTTP URL")
         if timeout_seconds <= 0 or timeout_seconds > 60:
             raise ValueError("timeout_seconds must be within (0, 60]")
-        if download_directory is not None:
-            if not isinstance(download_directory, Path) or not download_directory.is_absolute():
-                raise ValueError("download_directory must be an absolute Path or None")
+        if download_directory is not None and (
+            not isinstance(download_directory, Path) or not download_directory.is_absolute()
+        ):
+            raise ValueError("download_directory must be an absolute Path or None")
         self._endpoint = endpoint.rstrip("/")
         self._timeout = float(timeout_seconds)
         self._connected = False
