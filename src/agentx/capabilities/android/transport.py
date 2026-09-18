@@ -399,7 +399,9 @@ class AdbTransport:
         validate_adb_serial(serial)
         if not isinstance(tokens, tuple) or not tokens:
             raise TypeError("tokens must be a non-empty tuple")
-        checked = tuple(_validate_argument(item, field_name="remote shell token") for item in tokens)
+        checked = tuple(
+            _validate_argument(item, field_name="remote shell token") for item in tokens
+        )
         remote = " ".join(shlex.quote(item) for item in checked)
         return self.command(
             ("shell", remote),
