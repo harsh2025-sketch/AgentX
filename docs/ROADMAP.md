@@ -196,7 +196,7 @@ Exit criteria:
 
 ## Milestone 10 — Perception and World Model
 
-**Status:** Foundations only
+**Status:** Completed and acceptance-verified
 
 Give AgentX a bounded, freshness-aware model of relevant computer state without continuously mirroring the entire desktop.
 
@@ -208,6 +208,14 @@ Exit criteria:
 - target grounding confidence/evidence kept separate from action authority;
 - cross-application state relationships represented in the Hive/world model;
 - benchmark for recovery from UI/layout/environment change.
+
+Acceptance evidence: PR #171 implements governed Win32 screen capture, immutable frame
+identity, structured-first/OCR-free visual grounding, ambiguity and stale-frame rejection,
+DPI/multi-monitor normalization, real filesystem change detection/re-observation, restart
+behavior, governed runtime integration and layout/perception benchmarks. C1.01 run #967 on
+implementation head `8ca74839f3a615393c4803ba56509439a1bc261a` passed the real Windows-host acceptance and
+full repository regression. AX-406–AX-435 are recorded as acceptance VERIFIED while the
+historical reported baseline remains unchanged.
 
 ## Milestone 11 — Voice, Realtime Interaction and Product Surface
 
