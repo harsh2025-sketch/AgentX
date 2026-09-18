@@ -374,8 +374,7 @@ class WindowsScreenCapture:
             self._frames[frame.frame_id.value] = frame
             while (
                 len(self._frames) > _MAX_RETAINED_FRAMES
-                or sum(len(item.pixels_bgra) for item in self._frames.values())
-                > _MAX_BUFFER_BYTES
+                or sum(len(item.pixels_bgra) for item in self._frames.values()) > _MAX_BUFFER_BYTES
             ):
                 oldest = next(iter(self._frames))
                 if oldest == frame.frame_id.value and len(self._frames) == 1:
@@ -396,10 +395,7 @@ class WindowsScreenCapture:
         _require_text(surface_id, field_name="surface_id")
         with self._lock:
             for frame in reversed(tuple(self._frames.values())):
-                if (
-                    frame.environment_id == environment_id
-                    and frame.surface_id == surface_id
-                ):
+                if frame.environment_id == environment_id and frame.surface_id == surface_id:
                     return frame
         return None
 
