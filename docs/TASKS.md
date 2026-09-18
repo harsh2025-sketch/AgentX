@@ -493,31 +493,31 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-458 | recovery telemetry | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-459 | HUD control actions | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-460 | voice/HUD milestone demonstration | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-461 | scheduler core | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-462 | scheduled-task contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-463 | one-shot scheduled tasks | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-464 | recurring scheduled tasks | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-461 | scheduler core | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-462 | scheduled-task contract | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-463 | one-shot scheduled tasks | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-464 | recurring scheduled tasks | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-465 | event watcher framework | COMPLETE | VERIFIED |  |
-| AX-466 | event-triggered task launch | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-467 | file-change trigger | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-468 | process-state trigger | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-469 | browser-state trigger | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-470 | device-state trigger | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-471 | notification boundary | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-472 | proactive recommendation contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-473 | proactive confidence policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-474 | user opt-in policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-475 | quiet-hours policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-476 | attention-awareness policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-477 | background resource quota | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-478 | background model-call quota | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-479 | background machine-action quota | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-480 | long-running Task persistence | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-481 | restart recovery for scheduled work | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-482 | approval expiration semantics | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-483 | stale proactive-action rejection | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-484 | proactive adversarial tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-485 | proactivity milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-466 | event-triggered task launch | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-467 | file-change trigger | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-468 | process-state trigger | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-469 | browser-state trigger | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-470 | device-state trigger | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-471 | notification boundary | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-472 | proactive recommendation contract | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-473 | proactive confidence policy | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-474 | user opt-in policy | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-475 | quiet-hours policy | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-476 | attention-awareness policy | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-477 | background resource quota | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-478 | background model-call quota | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-479 | background machine-action quota | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-480 | long-running Task persistence | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-481 | restart recovery for scheduled work | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-482 | approval expiration semantics | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-483 | stale proactive-action rejection | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-484 | proactive adversarial tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-485 | proactivity milestone acceptance | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-486 | device abstraction foundation | COMPLETE | VERIFIED |  |
 | AX-487 | device protocol foundation | COMPLETE | VERIFIED |  |
 | AX-488 | Device Registry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
