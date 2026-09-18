@@ -9,15 +9,24 @@ propagates to both the realtime audio owner and the governed task owner.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
+from typing import Protocol, runtime_checkable
 
 from agentx.agent_loop import OrchestrationOutcome
+from agentx.capabilities.human_approval import HumanApprovalDecision
 from agentx.cognition.realtime_voice import RealtimeVoiceSession, VoiceActivity
 from agentx.core.errors import AgentXError, ErrorCategory, Retryability
 from agentx.core.result import Result
-from agentx.voice_runtime import VoiceTaskBridge, VoiceTaskPlan
+from agentx.hud import HudController
+from agentx.voice_runtime import (
+    PendingVoiceConfirmation,
+    SpokenConfirmationProtocol,
+    VoiceTaskBridge,
+    VoiceTaskPlan,
+)
 
-__all__ = ["VoiceHudRuntime", "VoiceTurnResult"]
+__all__ = ["ApprovalDecisionSink", "RetryCommandTarget", "VoiceHudController", "VoiceHudRuntime", "VoiceTurnResult"]
 
 
 def _error(code: str, message: str, category: ErrorCategory) -> AgentXError:
@@ -132,3 +141,111 @@ class VoiceHudRuntime:
         self._task_bridge.cancel("voice/HUD runtime closed")
         self._session.close()
         self._task_bridge.telemetry.state("voice.idle")
+
+
+@runtime_checkable
+class ApprovalDecisionSink(Protocol):
+    """Trusted sink for exact canonical human-approval decisions."""
+
+    def submit(self, decision: HumanApprovalDecision) -> bool: ...
+
+
+@runtime_checkable
+class RetryCommandTarget(Protocol):
+    """Owner of retry semantics; the HUD never implements retry itself."""
+
+    def retry(self, task_id: str | None) -> bool: ...
+
+
+class VoiceHudController(HudController):
+    """Bind typed HUD controls to existing runtime and approval owners.
+
+    The controller never mutates Task, ActionGate, risk, permission, budget, or
+    verification state. Confirmation remains bound to an exact pending
+    HumanApprovalRequest and is converted to the same canonical decision type
+    consumed by governed execution.
+    """
+
+    __slots__ = ("_decision_sink", "_pending", "_protocol", "_retry", "_runtime")
+
+    def __init__(
+        self,
+        *,
+        runtime: VoiceHudRuntime,
+        confirmation_protocol: SpokenConfirmationProtocol,
+        decision_sink: ApprovalDecisionSink,
+        retry_target: RetryCommandTarget | None = None,
+    ) -> None:
+        if not isinstance(runtime, VoiceHudRuntime):
+            raise TypeError("runtime must be VoiceHudRuntime")
+        if not isinstance(confirmation_protocol, SpokenConfirmationProtocol):
+            raise TypeError("confirmation_protocol must be SpokenConfirmationProtocol")
+        if not isinstance(decision_sink, ApprovalDecisionSink):
+            raise TypeError("decision_sink must satisfy ApprovalDecisionSink")
+        if retry_target is not None and not isinstance(retry_target, RetryCommandTarget):
+            raise TypeError("retry_target must satisfy RetryCommandTarget or be None")
+        self._runtime = runtime
+        self._protocol = confirmation_protocol
+        self._decision_sink = decision_sink
+        self._retry = retry_target
+        self._pending: dict[str, PendingVoiceConfirmation] = {}
+
+    def bind_confirmation(
+        self,
+        task_id: str,
+        pending: PendingVoiceConfirmation,
+    ) -> None:
+        if not isinstance(task_id, str) or not task_id.strip() or len(task_id) > 512:
+            raise ValueError("task_id must be bounded non-empty text")
+        if not isinstance(pending, PendingVoiceConfirmation):
+            raise TypeError("pending must be PendingVoiceConfirmation")
+        previous = self._pending.get(task_id)
+        if previous is not None:
+            self._protocol.invalidate(previous)
+        self._pending[task_id] = pending
+
+    def cancel(self, task_id: str | None) -> bool:
+        pending = None if task_id is None else self._pending.pop(task_id, None)
+        if pending is not None:
+            self._protocol.invalidate(pending)
+        runtime_cancelled = self._runtime.barge_in()
+        return runtime_cancelled or pending is not None
+
+    def confirm(self, task_id: str | None, nonce: str | None) -> bool:
+        return self._resolve(task_id, nonce, approve=True)
+
+    def reject(self, task_id: str | None, nonce: str | None) -> bool:
+        return self._resolve(task_id, nonce, approve=False)
+
+    def retry(self, task_id: str | None) -> bool:
+        if self._retry is None:
+            return False
+        return self._retry.retry(task_id)
+
+    def dismiss(self, task_id: str | None) -> bool:
+        if task_id is None:
+            return False
+        pending = self._pending.pop(task_id, None)
+        if pending is None:
+            return False
+        self._protocol.invalidate(pending)
+        return True
+
+    def _resolve(
+        self,
+        task_id: str | None,
+        nonce: str | None,
+        *,
+        approve: bool,
+    ) -> bool:
+        if task_id is None or nonce is None:
+            return False
+        pending = self._pending.get(task_id)
+        if pending is None or pending.nonce != nonce:
+            return False
+        phrase = f"{'confirm' if approve else 'reject'} {nonce}"
+        resolved = self._protocol.resolve(phrase, pending)
+        if resolved.is_failure:
+            return False
+        self._pending.pop(task_id, None)
+        return self._decision_sink.submit(resolved.unwrap())
