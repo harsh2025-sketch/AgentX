@@ -53,10 +53,8 @@ from agentx.core.procedures import (
 )
 from agentx.core.result import Result
 from agentx.core.task_decomposition import DecompositionNode, TaskDecomposition
-from agentx.execution_metrics import (
-    ExecutionEvidenceOutcome,
-    ExecutionMetricsRecorder,
-)
+from agentx.core.reuse_efficiency import ExecutionEvidenceOutcome
+from agentx.execution_metrics import ExecutionMetricsRecord, ExecutionMetricsRecorder
 from agentx.infrastructure.persistence import SQLiteDatabase
 from agentx.infrastructure.procedure_store import ProcedureStore
 from agentx.instrumented_model_provider import InstrumentedModelProvider
@@ -147,7 +145,7 @@ class _ColdPlanProvider:
         )
         self.calls = 0
 
-    def invoke(self, request: ModelRequest):
+    def invoke(self, request: ModelRequest) -> Result[ModelResponse, AgentXError]:
         self.calls += 1
         return Result.success(
             ModelResponse(
@@ -187,7 +185,7 @@ def _cold_l4_read(
     correlation_id: UUID,
     episode_id: EpisodeId,
     offset: int,
-) -> tuple[CausalExperience, object]:
+) -> tuple[CausalExperience, ExecutionMetricsRecord]:
     harness = OrchestrationHarness(
         authority=frozenset({Permission.READ}),
         envelope=make_envelope(
