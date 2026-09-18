@@ -212,6 +212,10 @@ def test_complete_voice_hud_milestone_path_uses_canonical_governed_runtime() -> 
     assert playback.frames
     assert model.snapshot.state is HudState.IDLE
     assert model.snapshot.verified is True
-    assert any(event.state == "voice.processing" for event in events)
-    assert any(event.state == "voice.verifying" for event in events)
-    assert events[-1].state == "voice.verified"
+    states = [event.state for event in events]
+    assert "voice.listening" in states
+    assert "voice.processing" in states
+    assert "voice.executing" in states
+    assert "voice.verifying" in states
+    assert "voice.speaking" in states
+    assert states[-1] == "voice.idle"
