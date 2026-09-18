@@ -149,9 +149,7 @@ def _cold_read(
     )
     strategy = GovernedCapabilityStrategy(
         executor=executor,
-        binding=CapabilityStrategyBinding(
-            request=read_text_request(str(target), max_bytes=256)
-        ),
+        binding=CapabilityStrategyBinding(request=read_text_request(str(target), max_bytes=256)),
     )
     manager = TaskManager()
     task = manager.create(f"cold read {target.name}")
