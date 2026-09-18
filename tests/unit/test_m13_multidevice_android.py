@@ -60,9 +60,7 @@ class FakeAdbRunner:
         stderr = b""
         returncode = 0
         if args == ("devices", "-l"):
-            stdout = (
-                "List of devices attached\n" + self.devices_output
-            ).encode()
+            stdout = ("List of devices attached\n" + self.devices_output).encode()
         elif "shell" in args:
             command = args[-1]
             if command == "getprop ro.build.version.release":
@@ -93,12 +91,7 @@ class FakeAdbRunner:
             if command.startswith("cat "):
                 stdout = self.ui_xml
             elif command == "screencap -p":
-                stdout = (
-                    b"\x89PNG\r\n\x1a\n"
-                    b"\x00\x00\x00\rIHDR"
-                    b"\x00\x00\x04\x00"
-                    b"\x00\x00\x08\x00"
-                )
+                stdout = b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x04\x00\x00\x00\x08\x00"
             else:
                 returncode = 1
                 stderr = b"unexpected fake exec-out command"
@@ -135,14 +128,14 @@ def test_adb_remote_shell_quotes_hostile_text_as_data() -> None:
 
 def test_ui_semantic_resolution_fails_closed_on_ambiguity() -> None:
     payload = (
-        b'<hierarchy>'
+        b"<hierarchy>"
         b'<node resource-id="id/a" text="ALLOW ADMIN" content-desc="" class="Button" '
         b'package="com.example.app" enabled="true" clickable="true" focusable="true" '
         b'bounds="[0,0][10,10]"/>'
         b'<node resource-id="id/b" text="ALLOW ADMIN" content-desc="" class="Button" '
         b'package="com.example.app" enabled="true" clickable="true" focusable="true" '
         b'bounds="[20,0][30,10]"/>'
-        b'</hierarchy>'
+        b"</hierarchy>"
     )
     tree = parse_android_ui_tree(payload)
     selector = AndroidTargetSelector(text="ALLOW ADMIN", require_clickable=True)
@@ -185,9 +178,7 @@ def test_android_provider_registry_health_restart_and_routing() -> None:
 def test_android_capabilities_are_android_scoped_and_independently_verify() -> None:
     runner = FakeAdbRunner()
     capabilities = build_android_capabilities(AdbTransport(runner=runner))
-    assert {cap.descriptor.scope.platform for cap in capabilities} == {
-        CapabilityPlatform.ANDROID
-    }
+    assert {cap.descriptor.scope.platform for cap in capabilities} == {CapabilityPlatform.ANDROID}
 
     package_capability = next(
         cap
