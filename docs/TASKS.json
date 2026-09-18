@@ -14334,13 +14334,28 @@
       "milestone": "M10",
       "title": "screen-capture provider",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-422 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/_screen_native.py; src/agentx/capabilities/windows/screen_capture.py",
+          "note": "M10 production implementation audited for AX-422: screen-capture provider."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_screen_capture_governed.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-422."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-422 at the implementation head."
         }
       ]
     },
@@ -14349,13 +14364,28 @@
       "milestone": "M10",
       "title": "screen-frame identity",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-423 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/screen_capture.py",
+          "note": "M10 production implementation audited for AX-423: screen-frame identity."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-423."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-423 at the implementation head."
         }
       ]
     },
@@ -14364,13 +14394,28 @@
       "milestone": "M10",
       "title": "visual-region representation",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-424 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py",
+          "note": "M10 production implementation audited for AX-424: visual-region representation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_world_model.py; tests/unit/test_m10_screen_perception.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-424."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-424 at the implementation head."
         }
       ]
     },
@@ -14379,13 +14424,28 @@
       "milestone": "M10",
       "title": "OCR-free primary visual grounding",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-425 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/perception.py",
+          "note": "M10 production implementation audited for AX-425: OCR-free primary visual grounding."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-425."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-425 at the implementation head."
         }
       ]
     },
@@ -14394,13 +14454,28 @@
       "milestone": "M10",
       "title": "visual fallback router",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-426 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/perception.py",
+          "note": "M10 production implementation audited for AX-426: visual fallback router."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-426."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-426 at the implementation head."
         }
       ]
     },
@@ -14409,13 +14484,28 @@
       "milestone": "M10",
       "title": "visual target proposal",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-427 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/perception.py",
+          "note": "M10 production implementation audited for AX-427: visual target proposal."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/benchmarks/test_m10_perception_benchmarks.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-427."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-427 at the implementation head."
         }
       ]
     },
@@ -14424,13 +14514,28 @@
       "milestone": "M10",
       "title": "structured-vs-visual evidence ranking",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-428 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/perception.py",
+          "note": "M10 production implementation audited for AX-428: structured-vs-visual evidence ranking."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-428."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-428 at the implementation head."
         }
       ]
     },
@@ -14439,13 +14544,28 @@
       "milestone": "M10",
       "title": "visual ambiguity handling",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-429 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/perception.py",
+          "note": "M10 production implementation audited for AX-429: visual ambiguity handling."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-429."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-429 at the implementation head."
         }
       ]
     },
@@ -14454,13 +14574,28 @@
       "milestone": "M10",
       "title": "stale-screen rejection",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-430 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/perception.py",
+          "note": "M10 production implementation audited for AX-430: stale-screen rejection."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/benchmarks/test_m10_perception_benchmarks.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-430."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-430 at the implementation head."
         }
       ]
     },
@@ -14469,13 +14604,28 @@
       "milestone": "M10",
       "title": "display/DPI normalization",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-431 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/_screen_native.py; src/agentx/capabilities/windows/screen_capture.py",
+          "note": "M10 production implementation audited for AX-431: display/DPI normalization."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-431."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-431 at the implementation head."
         }
       ]
     },
@@ -14484,13 +14634,28 @@
       "milestone": "M10",
       "title": "multi-monitor awareness",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-432 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/windows/_screen_native.py; src/agentx/capabilities/windows/screen_capture.py",
+          "note": "M10 production implementation audited for AX-432: multi-monitor awareness."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-432."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-432 at the implementation head."
         }
       ]
     },
@@ -14499,13 +14664,28 @@
       "milestone": "M10",
       "title": "layout-change recovery benchmark",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-433 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/perception.py",
+          "note": "M10 production implementation audited for AX-433: layout-change recovery benchmark."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/benchmarks/test_m10_perception_benchmarks.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-433."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-433 at the implementation head."
         }
       ]
     },
@@ -14514,13 +14694,28 @@
       "milestone": "M10",
       "title": "perception accuracy benchmark",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-434 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/perception.py",
+          "note": "M10 production implementation audited for AX-434: perception accuracy benchmark."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/benchmarks/test_m10_perception_benchmarks.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-434."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-434 at the implementation head."
         }
       ]
     },
@@ -14529,13 +14724,28 @@
       "milestone": "M10",
       "title": "world-model milestone acceptance",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-435 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py",
+          "note": "M10 production implementation audited for AX-435: world-model milestone acceptance."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/windows/test_m10_screen_capture_real_host.py; tests/benchmarks/test_m10_perception_benchmarks.py",
+          "note": "Requirement-specific M10 behavioral/integration/real-environment evidence for AX-435."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "8ca74839f3a615393c4803ba56509439a1bc261a",
+          "note": "M10 implementation head 8ca74839f3a615393c4803ba56509439a1bc261a passed canonical C1.01 including Ruff, format, strict mypy, ledger validation, real Windows-host acceptance and full pytest."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35334559204",
+          "note": "Second-pass M10 acceptance record and green C1.01 run #967 prove AX-435 at the implementation head."
         }
       ]
     },
