@@ -11,8 +11,8 @@ from __future__ import annotations
 
 import os
 import threading
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from datetime import timedelta
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
