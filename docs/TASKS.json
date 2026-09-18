@@ -16815,7 +16815,7 @@
       "milestone": "M16",
       "title": "milestone-status automation",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "IN_PROGRESS",
+      "acceptance_status": "VERIFIED",
       "depends_on": [
         "AX-573"
       ],
@@ -16826,9 +16826,24 @@
           "note": "Implementation/ledger work; canonical acceptance not yet established."
         },
         {
-          "kind": "audit_finding",
+          "kind": "implementation",
+          "reference": "scripts/task_ledger.py",
+          "note": "Canonical ledger renderer computes per-milestone counts for every audited acceptance state."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_task_ledger.py",
+          "note": "Integration regression validates the generated 600-row ledger and complete milestone acceptance-state analytics."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "bcc0692246a981be5ae15c993b0c3e6512871b92",
+          "note": "Audit baseline; AX-575 remediation is carried only by the focused audit branch until Product Owner review."
+        },
+        {
+          "kind": "acceptance",
           "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-575 to IN_PROGRESS; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "note": "Whole-project audit records AX-575 as locally remediated; exact-head audit-PR CI is still required."
         }
       ]
     },
