@@ -664,10 +664,37 @@ def compile_skill_candidate(
     )
     _require_linkage(parameters.source_trajectory_id, trajectory_id, stage)
 
-    # Stage 5 - C3.05 parameter generalization.
+    # Stage 5 - C3.05 parameter generalization. Corroborating verified
+    # trajectories contribute provenance-bearing parameter observations through
+    # the same canonical C3.02 -> C3.04 stages; no free-form/model data enters.
     stage = CompilerStage.GENERALIZE_PARAMETERS
+    supporting_parameters = tuple(
+        _require_stage_output(
+            extract_parameter_candidates(
+                _require_stage_output(
+                    analyze_irrelevant_actions(
+                        _require_stage_output(
+                            extract_causal_action_candidates(support),
+                            CausalActionExtraction,
+                            stage,
+                        )
+                    ),
+                    IrrelevantActionAnalysis,
+                    stage,
+                )
+            ),
+            ParameterExtraction,
+            stage,
+        )
+        for support in support_trajectories
+    )
     generalization = _require_stage_output(
-        analyze_parameter_generalization(parameters), ParameterGeneralization, stage
+        analyze_parameter_generalization(
+            parameters,
+            corroborating=supporting_parameters,
+        ),
+        ParameterGeneralization,
+        stage,
     )
     _require_linkage(generalization.source_trajectory_id, trajectory_id, stage)
 
