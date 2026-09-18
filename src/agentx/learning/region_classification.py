@@ -820,9 +820,12 @@ def classify_regions(
           or divergent actions at sequence $i$:
           classify as ``REASONING_REQUIRED`` with reason ``CONFLICTING_OUTCOMES``
           or ``DYNAMIC_OBSERVATION_DEPENDENCY``.
-       f. If parameter generalization reports ``OBSERVED_VARIATION`` for this action:
-          classify as ``REASONING_REQUIRED`` with reason ``UNRESOLVED_VARIATION``.
-       g. If 2 or more observations exist, ALL are verified, and parameters/outcomes match:
+       f. If parameter generalization reports ``OBSERVED_VARIATION`` for this action,
+          treat those exact fields as resolved parameters only when an independent
+          corroborating verified observation exists and all non-parameter fields agree;
+          otherwise classify as ``REASONING_REQUIRED / UNRESOLVED_VARIATION``.
+       g. If 2 or more observations exist, ALL are verified, and non-parameter
+          structure/outcomes match:
           classify as ``DETERMINISTIC`` with reason ``REPEATED_VERIFIED_SUCCESS``.
        h. If only 1 observation exists:
           classify as ``INSUFFICIENT_EVIDENCE`` with reason ``SINGLE_OBSERVATION``
@@ -847,12 +850,16 @@ def classify_regions(
             f"got {type(generalization).__name__}"
         )
 
-    # Build action variation lookup from generalization if provided
-    action_variations: dict[str, bool] = {}
+    # Build exact evidence-backed parameter-field lookup from generalization.
+    # Variation is not automatically "reasoning required": when the compiler
+    # has observed the same action field vary and corroborating verified runs
+    # differ only in those declared fields, that variation is structurally
+    # resolved as a reusable parameter. Any other divergence remains unsafe.
+    parameterized_fields: dict[str, set[str]] = {}
     if generalization is not None:
         for group in generalization.groups:
             if group.evidence is ParameterVariationEvidence.OBSERVED_VARIATION:
-                action_variations[group.action_name] = True
+                parameterized_fields.setdefault(group.action_name, set()).add(group.field_name)
 
     classified_actions: list[ActionClassification] = []
 
@@ -966,10 +973,24 @@ def classify_regions(
                         or not corr_exp.verification.passed
                     ):
                         conflicting = True
-                    # Check parameter consistency
-                    corr_data_key = _canonical_data_key(corr_exp.action.data)
-                    if corr_data_key != target_data_key:
+                    # Check parameter consistency. Differences are allowed only
+                    # in exact fields already proven variable by C3.05; all
+                    # field names and every non-parameter value must still
+                    # agree canonically.
+                    ignored = parameterized_fields.get(action_name, set())
+                    corr_data = corr_exp.action.data
+                    target_data = exp.action.data
+                    if set(corr_data) != set(target_data):
                         divergent_behavior = True
+                    else:
+                        target_fixed = {
+                            key: value for key, value in target_data.items() if key not in ignored
+                        }
+                        corr_fixed = {
+                            key: value for key, value in corr_data.items() if key not in ignored
+                        }
+                        if _canonical_data_key(corr_fixed) != _canonical_data_key(target_fixed):
+                            divergent_behavior = True
                 else:
                     # Divergent action at sequence index across runs
                     divergent_behavior = True
@@ -978,14 +999,17 @@ def classify_regions(
 
         total_observations = len(refs)
 
-        # Check for unresolved variation from parameter generalization
-        has_variation = action_variations.get(action_name, False) or divergent_behavior
+        # Evidence-backed parameter variation is resolved only when at least
+        # one independent corroborating observation exists. With one source
+        # trajectory it remains unresolved; unrelated divergence is always
+        # reasoning-required.
+        has_parameterized_variation = bool(parameterized_fields.get(action_name))
 
         if conflicting:
             classification = RegionClassification.REASONING_REQUIRED
             reason = RegionClassificationReason.CONFLICTING_OUTCOMES
             sufficiency = EvidenceSufficiency.SUFFICIENT
-        elif has_variation:
+        elif divergent_behavior or (has_parameterized_variation and total_observations < 2):
             classification = RegionClassification.REASONING_REQUIRED
             reason = RegionClassificationReason.UNRESOLVED_VARIATION
             sufficiency = EvidenceSufficiency.SUFFICIENT
