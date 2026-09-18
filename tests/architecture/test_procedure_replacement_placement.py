@@ -130,7 +130,7 @@ def test_the_persistence_migration_ladder_is_untouched() -> None:
     ]
 
     assert migration_versions == sorted(migration_versions)
-    assert max(migration_versions) == 8
+    assert max(migration_versions) == 9
     assert "procedure_replacement" not in _PERSISTENCE
     assert "agentx_procedure_replacements" not in _PERSISTENCE
 

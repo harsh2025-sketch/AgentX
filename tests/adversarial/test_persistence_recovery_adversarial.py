@@ -256,11 +256,11 @@ def test_unexpected_schema_migration_version_blocks_startup(tmp_path: Path) -> N
     _migrate(database)
     KnowledgeStore(database).insert(_knowledge("schema state"))
     with sqlite3.connect(_path(tmp_path)) as connection:
-        # A cleanly consecutive history ending at version 9 — one past what
+        # A cleanly consecutive history ending at version 10 — one past what
         # this build supports — models a database written by a future build.
         connection.execute(
             "INSERT INTO agentx_schema_migrations (version, name) VALUES (?, ?)",
-            (9, "from_the_future"),
+            (10, "from_the_future"),
         )
 
     assessment = _assess(tmp_path)
@@ -269,7 +269,7 @@ def test_unexpected_schema_migration_version_blocks_startup(tmp_path: Path) -> N
     assert assessment.startup_recommendation is StartupRecommendation.STOP_AND_ESCALATE
     issue = assessment.issues[0]
     assert issue.kind is RecoveryCheckKind.SCHEMA_VERSION_NEWER_THAN_SUPPORTED
-    assert "version 9" in issue.detail
+    assert "version 10" in issue.detail
 
 
 def test_no_destructive_recovery_after_adversarial_input(tmp_path: Path) -> None:

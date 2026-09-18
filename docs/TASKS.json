@@ -16559,13 +16559,28 @@
       "milestone": "M12",
       "title": "scheduler core",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-461 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/scheduling.py; src/agentx/infrastructure/schedule_store.py",
+          "note": "M12 production implementation audited for AX-461: scheduler core."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_scheduling.py; tests/integration/test_m12_scheduling_acceptance.py",
+          "note": "Behavioral/security/integration evidence for AX-461; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-461; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16574,13 +16589,28 @@
       "milestone": "M12",
       "title": "scheduled-task contract",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-462 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/core/scheduling.py",
+          "note": "M12 production implementation audited for AX-462: scheduled-task contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_scheduling.py; tests/adversarial/test_m12_proactivity_security.py",
+          "note": "Behavioral/security/integration evidence for AX-462; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-462; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16589,13 +16619,28 @@
       "milestone": "M12",
       "title": "one-shot scheduled tasks",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-463 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/scheduling.py; src/agentx/infrastructure/schedule_store.py",
+          "note": "M12 production implementation audited for AX-463: one-shot scheduled tasks."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_scheduling.py; tests/integration/test_m12_scheduling_acceptance.py",
+          "note": "Behavioral/security/integration evidence for AX-463; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-463; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16604,13 +16649,28 @@
       "milestone": "M12",
       "title": "recurring scheduled tasks",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-464 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/scheduling.py; src/agentx/infrastructure/schedule_store.py",
+          "note": "M12 production implementation audited for AX-464: recurring scheduled tasks."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_scheduling.py; tests/integration/test_m12_scheduling_acceptance.py",
+          "note": "Behavioral/security/integration evidence for AX-464; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-464; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16625,22 +16685,22 @@
         {
           "kind": "implementation",
           "reference": "src/agentx/infrastructure/event_watcher.py",
-          "note": "Pinned implementation evidence audited for AX-465: event watcher framework."
+          "note": "M12 production implementation audited for AX-465: event watcher framework."
         },
         {
           "kind": "tests",
           "reference": "tests/unit/test_event_watcher_framework.py; tests/architecture/test_ax465_event_watcher_boundaries.py",
-          "note": "Behavioral/boundary evidence audited for AX-465; exact-head full suite remains the final branch gate."
+          "note": "Behavioral/security/integration evidence for AX-465; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
         },
         {
           "kind": "canonical_commit",
-          "reference": "bcc0692246a981be5ae15c993b0c3e6512871b92",
-          "note": "Whole-project independent audit revalidated this requirement against canonical main bcc0692246a981be5ae15c993b0c3e6512871b92."
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
         },
         {
           "kind": "acceptance",
-          "reference": "docs/AUDIT_600.md",
-          "note": "AX-001–AX-600 strict audit record; final audit-PR exact-head CI is required before merge."
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-465; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16649,13 +16709,28 @@
       "milestone": "M12",
       "title": "event-triggered task launch",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-466 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/event_triggers.py; src/agentx/scheduling.py",
+          "note": "M12 production implementation audited for AX-466: event-triggered task launch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_m12_proactivity_security.py; tests/integration/test_m12_scheduling_acceptance.py",
+          "note": "Behavioral/security/integration evidence for AX-466; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-466; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16664,13 +16739,28 @@
       "milestone": "M12",
       "title": "file-change trigger",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-467 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/event_triggers.py",
+          "note": "M12 production implementation audited for AX-467: file-change trigger."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_event_triggers.py; tests/integration/test_m12_scheduling_acceptance.py",
+          "note": "Behavioral/security/integration evidence for AX-467; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-467; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16679,13 +16769,28 @@
       "milestone": "M12",
       "title": "process-state trigger",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-468 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/event_triggers.py; src/agentx/capabilities/windows/process_discovery.py",
+          "note": "M12 production implementation audited for AX-468: process-state trigger."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_event_triggers.py; tests/windows/test_m12_real_process_trigger.py",
+          "note": "Behavioral/security/integration evidence for AX-468; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-468; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16694,13 +16799,28 @@
       "milestone": "M12",
       "title": "browser-state trigger",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-469 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/event_triggers.py; src/agentx/world_model.py",
+          "note": "M12 production implementation audited for AX-469: browser-state trigger."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_event_triggers.py; tests/windows/test_m7_real_browser_acceptance.py",
+          "note": "Behavioral/security/integration evidence for AX-469; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-469; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16709,13 +16829,28 @@
       "milestone": "M12",
       "title": "device-state trigger",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-470 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/event_triggers.py; src/agentx/world_model.py",
+          "note": "M12 production implementation audited for AX-470: device-state trigger."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_event_triggers.py",
+          "note": "Behavioral/security/integration evidence for AX-470; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-470; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16724,13 +16859,28 @@
       "milestone": "M12",
       "title": "notification boundary",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-471 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/proactivity.py",
+          "note": "M12 production implementation audited for AX-471: notification boundary."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_policy_boundaries.py; tests/unit/test_m12_scheduling.py",
+          "note": "Behavioral/security/integration evidence for AX-471; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-471; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16739,13 +16889,28 @@
       "milestone": "M12",
       "title": "proactive recommendation contract",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-472 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/proactivity.py; src/agentx/core/scheduling.py",
+          "note": "M12 production implementation audited for AX-472: proactive recommendation contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_scheduling.py; tests/integration/test_m12_scheduling_acceptance.py",
+          "note": "Behavioral/security/integration evidence for AX-472; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-472; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16754,13 +16919,28 @@
       "milestone": "M12",
       "title": "proactive confidence policy",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-473 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/proactivity.py",
+          "note": "M12 production implementation audited for AX-473: proactive confidence policy."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_policy_boundaries.py; tests/unit/test_m12_scheduling.py",
+          "note": "Behavioral/security/integration evidence for AX-473; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-473; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16769,13 +16949,28 @@
       "milestone": "M12",
       "title": "user opt-in policy",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-474 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/proactivity.py; src/agentx/infrastructure/schedule_store.py",
+          "note": "M12 production implementation audited for AX-474: user opt-in policy."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_policy_boundaries.py; tests/unit/test_m12_scheduling.py",
+          "note": "Behavioral/security/integration evidence for AX-474; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-474; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16784,13 +16979,28 @@
       "milestone": "M12",
       "title": "quiet-hours policy",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-475 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/proactivity.py",
+          "note": "M12 production implementation audited for AX-475: quiet-hours policy."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_policy_boundaries.py; tests/unit/test_m12_scheduling.py",
+          "note": "Behavioral/security/integration evidence for AX-475; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-475; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16799,13 +17009,28 @@
       "milestone": "M12",
       "title": "attention-awareness policy",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-476 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/proactivity.py",
+          "note": "M12 production implementation audited for AX-476: attention-awareness policy."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_scheduling.py",
+          "note": "Behavioral/security/integration evidence for AX-476; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-476; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16814,13 +17039,28 @@
       "milestone": "M12",
       "title": "background resource quota",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-477 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/proactivity.py; src/agentx/infrastructure/schedule_store.py",
+          "note": "M12 production implementation audited for AX-477: background resource quota."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_policy_boundaries.py; tests/unit/test_m12_scheduling.py",
+          "note": "Behavioral/security/integration evidence for AX-477; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-477; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16829,13 +17069,28 @@
       "milestone": "M12",
       "title": "background model-call quota",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-478 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/proactivity.py; src/agentx/infrastructure/schedule_store.py",
+          "note": "M12 production implementation audited for AX-478: background model-call quota."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_policy_boundaries.py; tests/unit/test_m12_scheduling.py",
+          "note": "Behavioral/security/integration evidence for AX-478; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-478; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16844,13 +17099,28 @@
       "milestone": "M12",
       "title": "background machine-action quota",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-479 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/proactivity.py; src/agentx/infrastructure/schedule_store.py",
+          "note": "M12 production implementation audited for AX-479: background machine-action quota."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_policy_boundaries.py; tests/unit/test_m12_scheduling.py",
+          "note": "Behavioral/security/integration evidence for AX-479; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-479; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16859,13 +17129,28 @@
       "milestone": "M12",
       "title": "long-running Task persistence",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-480 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/infrastructure/schedule_store.py; src/agentx/infrastructure/persistence.py",
+          "note": "M12 production implementation audited for AX-480: long-running Task persistence."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_scheduling.py; tests/integration/test_m12_scheduling_acceptance.py",
+          "note": "Behavioral/security/integration evidence for AX-480; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-480; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16874,13 +17159,28 @@
       "milestone": "M12",
       "title": "restart recovery for scheduled work",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-481 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/scheduling.py; src/agentx/infrastructure/schedule_store.py; src/agentx/infrastructure/recovery.py",
+          "note": "M12 production implementation audited for AX-481: restart recovery for scheduled work."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m12_scheduling.py; tests/integration/test_m12_scheduling_acceptance.py",
+          "note": "Behavioral/security/integration evidence for AX-481; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-481; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16889,13 +17189,28 @@
       "milestone": "M12",
       "title": "approval expiration semantics",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-482 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/proactivity.py",
+          "note": "M12 production implementation audited for AX-482: approval expiration semantics."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_m12_proactivity_security.py",
+          "note": "Behavioral/security/integration evidence for AX-482; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-482; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16904,13 +17219,28 @@
       "milestone": "M12",
       "title": "stale proactive-action rejection",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-483 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/proactivity.py; src/agentx/world_model.py",
+          "note": "M12 production implementation audited for AX-483: stale proactive-action rejection."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_m12_proactivity_security.py",
+          "note": "Behavioral/security/integration evidence for AX-483; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-483; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16919,13 +17249,28 @@
       "milestone": "M12",
       "title": "proactive adversarial tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-484 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "tests/adversarial/test_m12_proactivity_security.py",
+          "note": "M12 production implementation audited for AX-484: proactive adversarial tests."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_m12_proactivity_security.py",
+          "note": "Behavioral/security/integration evidence for AX-484; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-484; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },
@@ -16934,13 +17279,28 @@
       "milestone": "M12",
       "title": "proactivity milestone acceptance",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-485 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/scheduling.py; src/agentx/event_triggers.py; src/agentx/proactivity.py",
+          "note": "M12 production implementation audited for AX-485: proactivity milestone acceptance."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m12_scheduling_acceptance.py; tests/adversarial/test_m12_proactivity_security.py; tests/windows/test_m12_real_process_trigger.py",
+          "note": "Behavioral/security/integration evidence for AX-485; exact implementation head 497811f85abd0d981f5e6ad22c3c3d8f3f43d310 passed canonical quality run 35367913564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "497811f85abd0d981f5e6ad22c3c3d8f3f43d310",
+          "note": "M12 implementation candidate exact head passed Ruff, format, mypy, ledger validation, Windows-host regression, real-browser regression, and full pytest in run 35367913564."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M12_SCHEDULING_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Second-pass M12 audit accepts AX-485; separate post-ledger exact-head CI is still required before merge."
         }
       ]
     },

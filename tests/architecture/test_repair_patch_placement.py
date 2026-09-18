@@ -262,7 +262,7 @@ def test_contract_adds_no_persistence_store_or_migration_surface() -> None:
 
     # M5.02 is a pure core contract: the migration ladder is untouched.
     assert migration_versions == sorted(migration_versions)
-    assert max(migration_versions) == 8
+    assert max(migration_versions) == 9
     assert "repair_patch" not in persistence_source
     assert "agentx_repair_patches" not in persistence_source
 

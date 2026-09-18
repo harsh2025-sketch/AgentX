@@ -325,6 +325,7 @@ def test_m1_04_adds_no_migrations() -> None:
         "create_artifact_and_audit_stores",
         "create_knowledge_integrity",
         "create_negative_experience_store",
+        "create_m12_scheduling_store",
     )
     assert not any("retrieval" in name or "episode_retrieval" in name for name in names)
 
