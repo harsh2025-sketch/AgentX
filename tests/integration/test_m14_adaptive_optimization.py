@@ -6,7 +6,6 @@ real-user, or production statistical evidence.
 
 from __future__ import annotations
 
-import json
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 from pathlib import Path
@@ -92,7 +91,11 @@ def _record(
         verification = None
     if cost is None:
         cost_unit = None
-    evidence_id = UUID(int=evidence_int) if evidence_int is not None else UUID(int=int(at.timestamp()) + 1)
+    evidence_id = (
+        UUID(int=evidence_int)
+        if evidence_int is not None
+        else UUID(int=int(at.timestamp()) + 1)
+    )
     performance = StrategyPerformanceEvidence(
         evidence_id=evidence_id,
         task_id=TaskId.create(),
@@ -334,7 +337,8 @@ def test_confidence_calibration_requires_verified_outcomes_and_minimum_samples()
     assert report.sufficient is False
     assert report.brier_score is None
 
-    complete = insufficient + (
+    complete = (
+        *insufficient,
         _record(
             level=ExecutionLevel.L1_DIRECT,
             success=False,
