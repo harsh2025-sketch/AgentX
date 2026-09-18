@@ -103,7 +103,10 @@ class WinMmAudioSurface:
             return Result.failure(_failure(AudioFailureKind.CANCELLED, "audio capture cancelled"))
         if not 10 <= milliseconds <= 1000:
             return Result.failure(
-                _failure(AudioFailureKind.CONFIGURATION, "capture interval is outside [10, 1000] ms")
+                _failure(
+                    AudioFailureKind.CONFIGURATION,
+                    "capture interval is outside [10, 1000] ms",
+                )
             )
 
         import ctypes
@@ -136,7 +139,10 @@ class WinMmAudioSurface:
         handle = ctypes.c_void_p()
         block_align = channel_count * 2
         byte_rate = sample_rate_hz * block_align
-        byte_count = max(block_align, (byte_rate * milliseconds // 1000) // block_align * block_align)
+        byte_count = max(
+            block_align,
+            (byte_rate * milliseconds // 1000) // block_align * block_align,
+        )
         fmt = WAVEFORMATEX(
             1,
             channel_count,
@@ -149,19 +155,42 @@ class WinMmAudioSurface:
         result = int(winmm.waveInOpen(ctypes.byref(handle), 0xFFFFFFFF, ctypes.byref(fmt), 0, 0, 0))
         if result != 0:
             return Result.failure(
-                _failure(AudioFailureKind.PROVIDER_UNAVAILABLE, "microphone device could not be opened")
+                _failure(
+                    AudioFailureKind.PROVIDER_UNAVAILABLE,
+                    "microphone device could not be opened",
+                )
             )
         buffer = ctypes.create_string_buffer(byte_count)
         header = WAVEHDR(ctypes.cast(buffer, ctypes.c_void_p), byte_count, 0, 0, 0, 0, None, 0)
         prepared = False
         try:
-            if int(winmm.waveInPrepareHeader(handle, ctypes.byref(header), ctypes.sizeof(header))) != 0:
-                return Result.failure(_failure(AudioFailureKind.INTERNAL, "microphone buffer prepare failed"))
+            if (
+                int(
+                    winmm.waveInPrepareHeader(
+                        handle, ctypes.byref(header), ctypes.sizeof(header)
+                    )
+                )
+                != 0
+            ):
+                return Result.failure(
+                    _failure(AudioFailureKind.INTERNAL, "microphone buffer prepare failed")
+                )
             prepared = True
-            if int(winmm.waveInAddBuffer(handle, ctypes.byref(header), ctypes.sizeof(header))) != 0:
-                return Result.failure(_failure(AudioFailureKind.INTERNAL, "microphone buffer enqueue failed"))
+            if (
+                int(
+                    winmm.waveInAddBuffer(
+                        handle, ctypes.byref(header), ctypes.sizeof(header)
+                    )
+                )
+                != 0
+            ):
+                return Result.failure(
+                    _failure(AudioFailureKind.INTERNAL, "microphone buffer enqueue failed")
+                )
             if int(winmm.waveInStart(handle)) != 0:
-                return Result.failure(_failure(AudioFailureKind.INTERNAL, "microphone capture start failed"))
+                return Result.failure(
+                    _failure(AudioFailureKind.INTERNAL, "microphone capture start failed")
+                )
             deadline = time.monotonic() + max(2.0, milliseconds / 1000.0 + 1.0)
             whdr_done = 0x00000001
             while not (int(header.dwFlags) & whdr_done):
@@ -172,11 +201,15 @@ class WinMmAudioSurface:
                     )
                 if time.monotonic() >= deadline:
                     winmm.waveInReset(handle)
-                    return Result.failure(_failure(AudioFailureKind.TIMEOUT, "microphone capture timed out"))
+                    return Result.failure(
+                        _failure(AudioFailureKind.TIMEOUT, "microphone capture timed out")
+                    )
                 time.sleep(0.01)
             recorded = int(header.dwBytesRecorded)
             if recorded <= 0:
-                return Result.failure(_failure(AudioFailureKind.INTERNAL, "microphone returned no audio"))
+                return Result.failure(
+                    _failure(AudioFailureKind.INTERNAL, "microphone returned no audio")
+                )
             return Result.success(bytes(buffer.raw[:recorded]))
         finally:
             winmm.waveInReset(handle)
@@ -199,7 +232,9 @@ class WinMmAudioSurface:
         if cancellation_token.is_cancelled:
             return Result.failure(_failure(AudioFailureKind.CANCELLED, "audio playback cancelled"))
         if not payload:
-            return Result.failure(_failure(AudioFailureKind.EMPTY_PAYLOAD, "audio payload is empty"))
+            return Result.failure(
+                _failure(AudioFailureKind.EMPTY_PAYLOAD, "audio payload is empty")
+            )
 
         import ctypes
         from ctypes import wintypes
@@ -232,20 +267,45 @@ class WinMmAudioSurface:
         block_align = channel_count * 2
         byte_rate = sample_rate_hz * block_align
         fmt = WAVEFORMATEX(1, channel_count, sample_rate_hz, byte_rate, block_align, 16, 0)
-        result = int(winmm.waveOutOpen(ctypes.byref(handle), 0xFFFFFFFF, ctypes.byref(fmt), 0, 0, 0))
+        result = int(
+            winmm.waveOutOpen(
+                ctypes.byref(handle), 0xFFFFFFFF, ctypes.byref(fmt), 0, 0, 0
+            )
+        )
         if result != 0:
             return Result.failure(
-                _failure(AudioFailureKind.PROVIDER_UNAVAILABLE, "speaker device could not be opened")
+                _failure(
+                    AudioFailureKind.PROVIDER_UNAVAILABLE,
+                    "speaker device could not be opened",
+                )
             )
         buffer = ctypes.create_string_buffer(payload)
         header = WAVEHDR(ctypes.cast(buffer, ctypes.c_void_p), len(payload), 0, 0, 0, 0, None, 0)
         prepared = False
         try:
-            if int(winmm.waveOutPrepareHeader(handle, ctypes.byref(header), ctypes.sizeof(header))) != 0:
-                return Result.failure(_failure(AudioFailureKind.INTERNAL, "speaker buffer prepare failed"))
+            if (
+                int(
+                    winmm.waveOutPrepareHeader(
+                        handle, ctypes.byref(header), ctypes.sizeof(header)
+                    )
+                )
+                != 0
+            ):
+                return Result.failure(
+                    _failure(AudioFailureKind.INTERNAL, "speaker buffer prepare failed")
+                )
             prepared = True
-            if int(winmm.waveOutWrite(handle, ctypes.byref(header), ctypes.sizeof(header))) != 0:
-                return Result.failure(_failure(AudioFailureKind.INTERNAL, "speaker playback start failed"))
+            if (
+                int(
+                    winmm.waveOutWrite(
+                        handle, ctypes.byref(header), ctypes.sizeof(header)
+                    )
+                )
+                != 0
+            ):
+                return Result.failure(
+                    _failure(AudioFailureKind.INTERNAL, "speaker playback start failed")
+                )
             duration = len(payload) / max(1, byte_rate)
             deadline = time.monotonic() + max(2.0, duration + 1.0)
             whdr_done = 0x00000001
@@ -257,7 +317,9 @@ class WinMmAudioSurface:
                     )
                 if time.monotonic() >= deadline:
                     winmm.waveOutReset(handle)
-                    return Result.failure(_failure(AudioFailureKind.TIMEOUT, "speaker playback timed out"))
+                    return Result.failure(
+                        _failure(AudioFailureKind.TIMEOUT, "speaker playback timed out")
+                    )
                 time.sleep(0.01)
             return Result.success(None)
         finally:
@@ -380,7 +442,9 @@ class _WinMmPlaybackStream(_StreamBase):
             raise TypeError("frame must be AudioFrame")
         with self.lock:
             if self.status_value.state is not AudioStreamState.OPEN:
-                return Result.failure(_failure(AudioFailureKind.NOT_OPEN, "speaker stream is not open"))
+                return Result.failure(
+                    _failure(AudioFailureKind.NOT_OPEN, "speaker stream is not open")
+                )
             if (
                 frame.format is not self.descriptor.format
                 or frame.sample_rate_hz != self.descriptor.sample_rate_hz
@@ -421,7 +485,9 @@ class _WinMmPlaybackStream(_StreamBase):
     def drain(self) -> Result[AudioStreamStatus, AgentXError]:
         with self.lock:
             if self.status_value.state is not AudioStreamState.OPEN:
-                return Result.failure(_failure(AudioFailureKind.NOT_OPEN, "speaker stream is not open"))
+                return Result.failure(
+                    _failure(AudioFailureKind.NOT_OPEN, "speaker stream is not open")
+                )
             self.status_value = AudioStreamStatus(state=AudioStreamState.DRAINING)
             if self._buffered_frames == 0:
                 self.status_value = AudioStreamStatus(state=AudioStreamState.CLOSED)
@@ -505,11 +571,17 @@ class WinMmAudioProvider:
             return Result.failure(_failure(AudioFailureKind.TIMEOUT, "audio open deadline expired"))
         if descriptor.provider_id != _PROVIDER_ID:
             return Result.failure(
-                _failure(AudioFailureKind.UNSUPPORTED_ENDPOINT, "audio endpoint belongs to another provider")
+                _failure(
+                    AudioFailureKind.UNSUPPORTED_ENDPOINT,
+                    "audio endpoint belongs to another provider",
+                )
             )
         if descriptor.format is not AudioFormat.PCM_S16LE:
             return Result.failure(
-                _failure(AudioFailureKind.UNSUPPORTED_CONFIGURATION, "WinMM provider supports PCM S16LE")
+                _failure(
+                    AudioFailureKind.UNSUPPORTED_CONFIGURATION,
+                    "WinMM provider supports PCM S16LE",
+                )
             )
         if descriptor.kind is AudioEndpointKind.SOURCE:
             return Result.success(_WinMmCaptureStream(descriptor, self._surface))
