@@ -34,6 +34,21 @@ class TaskLedgerTests(unittest.TestCase):
         self.assertIn("| M16 Production and Release |", rendered)
         self.assertIn("| 4 | 0 | 1 | 0 | 25 |", rendered)
 
+    def test_audit_report_covers_exactly_the_canonical_600_tasks(self) -> None:
+        report = json.loads((ROOT / "docs" / "AUDIT_600.json").read_text(encoding="utf-8"))
+        rows = report["tasks"]
+        self.assertEqual(report["audited_task_count"], 600)
+        self.assertEqual(
+            [row["id"] for row in rows],
+            [f"AX-{number:03}" for number in range(1, 601)],
+        )
+        ledger_states: dict[str, int] = {}
+        for task in self.data["tasks"]:
+            state = task["acceptance_status"]
+            ledger_states[state] = ledger_states.get(state, 0) + 1
+        for state in ("VERIFIED", "NOT_AUDITED", "IN_PROGRESS", "BLOCKED", "NOT_IMPLEMENTED"):
+            self.assertEqual(report["after"].get(state, 0), ledger_states.get(state, 0))
+
     def test_duplicate_or_missing_task_is_rejected(self) -> None:
         self.data["tasks"][1] = copy.deepcopy(self.data["tasks"][0])
         with self.assertRaisesRegex(ValueError, "exactly once"):
