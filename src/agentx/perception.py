@@ -396,7 +396,10 @@ class PerceptionGrounder:
                 GroundingStatus.NOT_FOUND,
                 None,
                 tuple(structured),
-                (\n                    "visual fallback requires an explicit approximate region; "\n                    "no semantics are invented"\n                ),
+                (
+                    "visual fallback requires an explicit approximate region; "
+                    "no semantics are invented"
+                ),
             )
 
         visual_regions = self._visual_detector.detect(frame)
