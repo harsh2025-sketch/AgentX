@@ -10,6 +10,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from datetime import UTC, datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from typing import ClassVar
 
 from agentx.cognition.speech import (
     HttpSpeechConfig,
@@ -38,12 +39,12 @@ class _Resolver:
 
 
 class _Handler(BaseHTTPRequestHandler):
-    calls: list[tuple[str, str | None]] = []
+    calls: ClassVar[list[tuple[str, str | None]]] = []
 
     def log_message(self, format: str, *args: object) -> None:
         del format, args
 
-    def do_POST(self) -> None:  # noqa: N802
+    def do_POST(self) -> None:
         length = int(self.headers.get("Content-Length", "0"))
         raw = self.rfile.read(length)
         document = json.loads(raw)
