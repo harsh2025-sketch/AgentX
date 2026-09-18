@@ -23,14 +23,18 @@ from agentx.core.audio import (
     AudioFormat,
     AudioFrame,
     AudioPlaybackStream,
+    AudioProvider,
+    AudioStreamDescriptor,
 )
 from agentx.core.errors import AgentXError, ErrorCategory, Retryability
 from agentx.core.execution import CancellationSource
 from agentx.core.result import Result
 
 __all__ = [
+    "ComposedRealtimeVoiceProvider",
     "EnergyVoiceActivityDetector",
     "RealtimeSessionState",
+    "RealtimeVoiceProvider",
     "RealtimeVoiceSession",
     "TurnEndDetector",
     "TurnObservation",
@@ -232,6 +236,13 @@ class VoiceSessionEvent:
             not isinstance(self.transcript, str) or not self.transcript.strip()
         ):
             raise ValueError("transcript must be non-empty text or None")
+
+
+@runtime_checkable
+class RealtimeVoiceProvider(Protocol):
+    """Provider-neutral factory for one bounded realtime voice session."""
+
+    def open_session(self) -> Result["RealtimeVoiceSession", AgentXError]: ...
 
 
 @runtime_checkable
@@ -454,3 +465,91 @@ class RealtimeVoiceSession:
         )
         self._event_sequence += 1
         return event
+
+
+class ComposedRealtimeVoiceProvider:
+    """Concrete realtime provider composed from canonical audio/STT/TTS providers.
+
+    It performs no action execution. Provider callbacks and transcripts remain data;
+    reconnect is caller-driven and bounded by `max_open_attempts`.
+    """
+
+    __slots__ = (
+        "_audio",
+        "_capture_descriptor",
+        "_max_open_attempts",
+        "_playback_descriptor",
+        "_stt",
+        "_tts",
+    )
+
+    def __init__(
+        self,
+        *,
+        audio: AudioProvider,
+        capture_descriptor: AudioStreamDescriptor,
+        playback_descriptor: AudioStreamDescriptor,
+        stt: SpeechToTextProvider,
+        tts: TextToSpeechProvider,
+        max_open_attempts: int = 2,
+    ) -> None:
+        if not isinstance(audio, AudioProvider):
+            raise TypeError("audio must satisfy AudioProvider")
+        if not isinstance(capture_descriptor, AudioStreamDescriptor):
+            raise TypeError("capture_descriptor must be AudioStreamDescriptor")
+        if not isinstance(playback_descriptor, AudioStreamDescriptor):
+            raise TypeError("playback_descriptor must be AudioStreamDescriptor")
+        if not isinstance(stt, SpeechToTextProvider):
+            raise TypeError("stt must satisfy SpeechToTextProvider")
+        if not isinstance(tts, TextToSpeechProvider):
+            raise TypeError("tts must satisfy TextToSpeechProvider")
+        if type(max_open_attempts) is not int or not 1 <= max_open_attempts <= 3:
+            raise ValueError("max_open_attempts must be in [1, 3]")
+        self._audio = audio
+        self._capture_descriptor = capture_descriptor
+        self._playback_descriptor = playback_descriptor
+        self._stt = stt
+        self._tts = tts
+        self._max_open_attempts = max_open_attempts
+
+    def open_session(self) -> Result[RealtimeVoiceSession, AgentXError]:
+        last_error: AgentXError | None = None
+        for _attempt in range(self._max_open_attempts):
+            capture_result = self._audio.open(self._capture_descriptor)
+            if capture_result.is_failure:
+                last_error = capture_result.unwrap_error()
+                continue
+            capture = capture_result.unwrap()
+            if not isinstance(capture, AudioCaptureStream):
+                return Result.failure(
+                    _voice_error(
+                        "capture_contract",
+                        "audio provider returned a non-capture stream",
+                        ErrorCategory.DEPENDENCY,
+                    )
+                )
+            playback_result = self._audio.open(self._playback_descriptor)
+            if playback_result.is_failure:
+                capture.cancel(reason="playback open failed")
+                last_error = playback_result.unwrap_error()
+                continue
+            playback = playback_result.unwrap()
+            if not isinstance(playback, AudioPlaybackStream):
+                capture.cancel(reason="invalid playback stream")
+                return Result.failure(
+                    _voice_error(
+                        "playback_contract",
+                        "audio provider returned a non-playback stream",
+                        ErrorCategory.DEPENDENCY,
+                    )
+                )
+            return Result.success(
+                RealtimeVoiceSession(
+                    capture=capture,
+                    playback=playback,
+                    stt=self._stt,
+                    tts=self._tts,
+                )
+            )
+        assert last_error is not None
+        return Result.failure(last_error)
