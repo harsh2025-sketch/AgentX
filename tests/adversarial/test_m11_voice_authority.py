@@ -7,6 +7,11 @@ from decimal import Decimal
 from uuid import uuid4
 
 import pytest
+from tests.support.demo_capability import (
+    HostileMetadataCapability,
+    NoteWriteParams,
+    hostile_request,
+)
 
 from agentx.capabilities.executor import Executor
 from agentx.capabilities.human_approval import HumanApprovalRequest
@@ -23,11 +28,6 @@ from agentx.voice_runtime import (
     PendingVoiceConfirmation,
     SpokenConfirmationProtocol,
     VoiceGovernedActionBridge,
-)
-from tests.support.demo_capability import (
-    HostileMetadataCapability,
-    NoteWriteParams,
-    hostile_request,
 )
 
 
