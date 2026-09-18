@@ -12,7 +12,7 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | --- | ---: | ---: | ---: | ---: |
 | M0 Trusted Kernel | 40 | 0 | 0 | 0 |
 | M1 Agent Runtime | 41 | 2 | 2 | 45 |
-| M2 Hive and Memory | 39 | 0 | 1 | 0 |
+| M2 Hive and Memory | 39 | 0 | 1 | 40 |
 | M3 Procedure Compiler | 49 | 0 | 1 | 50 |
 | M4 Learning Efficiency | 20 | 0 | 10 | 0 |
 | M5 Self-Repair | 36 | 0 | 4 | 0 |
@@ -118,46 +118,46 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-083 | real-world single-task vertical slice | PARTIAL | VERIFIED | AX-053, AX-060, AX-069, AX-344 |
 | AX-084 | cross-strategy orchestration benchmark | PARTIAL | VERIFIED | AX-083 |
 | AX-085 | M1 release acceptance proof | NOT_IMPLEMENTED | VERIFIED | AX-054, AX-083, AX-084 |
-| AX-086 | Episode identity | COMPLETE | NOT_AUDITED |  |
-| AX-087 | Episode record | COMPLETE | NOT_AUDITED |  |
-| AX-088 | Episode outcome vocabulary | COMPLETE | NOT_AUDITED |  |
-| AX-089 | durable EpisodeStore | COMPLETE | NOT_AUDITED |  |
-| AX-090 | monotonic durable episode sequence | COMPLETE | NOT_AUDITED |  |
-| AX-091 | execution-episode packaging | COMPLETE | NOT_AUDITED |  |
-| AX-092 | execution evidence capture | COMPLETE | NOT_AUDITED |  |
-| AX-093 | verification evidence capture | COMPLETE | NOT_AUDITED |  |
-| AX-094 | causal-experience contract | COMPLETE | NOT_AUDITED |  |
-| AX-095 | causal-outcome vocabulary | COMPLETE | NOT_AUDITED |  |
-| AX-096 | verified causal experience | COMPLETE | NOT_AUDITED |  |
-| AX-097 | failed causal experience | COMPLETE | NOT_AUDITED |  |
-| AX-098 | ExperienceMemory | COMPLETE | NOT_AUDITED |  |
-| AX-099 | restart-safe episode retrieval | COMPLETE | NOT_AUDITED |  |
-| AX-100 | bounded episode retrieval | COMPLETE | NOT_AUDITED |  |
-| AX-101 | task-based episode filtering | COMPLETE | NOT_AUDITED |  |
-| AX-102 | correlation-based episode filtering | COMPLETE | NOT_AUDITED |  |
-| AX-103 | outcome-based episode filtering | COMPLETE | NOT_AUDITED |  |
-| AX-104 | sequence-window retrieval | COMPLETE | NOT_AUDITED |  |
-| AX-105 | semantic knowledge record | COMPLETE | NOT_AUDITED |  |
-| AX-106 | provenance contract | COMPLETE | NOT_AUDITED |  |
-| AX-107 | evidence contract | COMPLETE | NOT_AUDITED |  |
-| AX-108 | KnowledgeStore | COMPLETE | NOT_AUDITED |  |
-| AX-109 | SemanticMemory | COMPLETE | NOT_AUDITED |  |
-| AX-110 | explicit knowledge lifecycle | COMPLETE | NOT_AUDITED |  |
-| AX-111 | unverified-by-default ingestion | COMPLETE | NOT_AUDITED |  |
-| AX-112 | explicit verification promotion | COMPLETE | NOT_AUDITED |  |
-| AX-113 | knowledge retrieval | COMPLETE | NOT_AUDITED |  |
-| AX-114 | environmental state contract | COMPLETE | NOT_AUDITED |  |
-| AX-115 | environmental TTL cache | COMPLETE | NOT_AUDITED |  |
-| AX-116 | environment-change detection | COMPLETE | NOT_AUDITED |  |
-| AX-117 | world-state snapshot | COMPLETE | NOT_AUDITED |  |
-| AX-118 | Hive relationship graph | COMPLETE | NOT_AUDITED |  |
-| AX-119 | explicit user preferences | COMPLETE | NOT_AUDITED |  |
-| AX-120 | contradiction relationships | COMPLETE | NOT_AUDITED |  |
-| AX-121 | supersession relationships | COMPLETE | NOT_AUDITED |  |
-| AX-122 | evidence-confidence metadata | COMPLETE | NOT_AUDITED |  |
-| AX-123 | knowledge revalidation | COMPLETE | NOT_AUDITED |  |
-| AX-124 | cross-scope retrieval protection | COMPLETE | NOT_AUDITED |  |
-| AX-125 | full restart-memory acceptance scenario | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-120, AX-121, AX-122, AX-123, AX-124 |
+| AX-086 | Episode identity | COMPLETE | VERIFIED |  |
+| AX-087 | Episode record | COMPLETE | VERIFIED |  |
+| AX-088 | Episode outcome vocabulary | COMPLETE | VERIFIED |  |
+| AX-089 | durable EpisodeStore | COMPLETE | VERIFIED |  |
+| AX-090 | monotonic durable episode sequence | COMPLETE | VERIFIED |  |
+| AX-091 | execution-episode packaging | COMPLETE | VERIFIED |  |
+| AX-092 | execution evidence capture | COMPLETE | VERIFIED |  |
+| AX-093 | verification evidence capture | COMPLETE | VERIFIED |  |
+| AX-094 | causal-experience contract | COMPLETE | VERIFIED |  |
+| AX-095 | causal-outcome vocabulary | COMPLETE | VERIFIED |  |
+| AX-096 | verified causal experience | COMPLETE | VERIFIED |  |
+| AX-097 | failed causal experience | COMPLETE | VERIFIED |  |
+| AX-098 | ExperienceMemory | COMPLETE | VERIFIED |  |
+| AX-099 | restart-safe episode retrieval | COMPLETE | VERIFIED |  |
+| AX-100 | bounded episode retrieval | COMPLETE | VERIFIED |  |
+| AX-101 | task-based episode filtering | COMPLETE | VERIFIED |  |
+| AX-102 | correlation-based episode filtering | COMPLETE | VERIFIED |  |
+| AX-103 | outcome-based episode filtering | COMPLETE | VERIFIED |  |
+| AX-104 | sequence-window retrieval | COMPLETE | VERIFIED |  |
+| AX-105 | semantic knowledge record | COMPLETE | VERIFIED |  |
+| AX-106 | provenance contract | COMPLETE | VERIFIED |  |
+| AX-107 | evidence contract | COMPLETE | VERIFIED |  |
+| AX-108 | KnowledgeStore | COMPLETE | VERIFIED |  |
+| AX-109 | SemanticMemory | COMPLETE | VERIFIED |  |
+| AX-110 | explicit knowledge lifecycle | COMPLETE | VERIFIED |  |
+| AX-111 | unverified-by-default ingestion | COMPLETE | VERIFIED |  |
+| AX-112 | explicit verification promotion | COMPLETE | VERIFIED |  |
+| AX-113 | knowledge retrieval | COMPLETE | VERIFIED |  |
+| AX-114 | environmental state contract | COMPLETE | VERIFIED |  |
+| AX-115 | environmental TTL cache | COMPLETE | VERIFIED |  |
+| AX-116 | environment-change detection | COMPLETE | VERIFIED |  |
+| AX-117 | world-state snapshot | COMPLETE | VERIFIED |  |
+| AX-118 | Hive relationship graph | COMPLETE | VERIFIED |  |
+| AX-119 | explicit user preferences | COMPLETE | VERIFIED |  |
+| AX-120 | contradiction relationships | COMPLETE | VERIFIED |  |
+| AX-121 | supersession relationships | COMPLETE | VERIFIED |  |
+| AX-122 | evidence-confidence metadata | COMPLETE | VERIFIED |  |
+| AX-123 | knowledge revalidation | COMPLETE | VERIFIED |  |
+| AX-124 | cross-scope retrieval protection | COMPLETE | VERIFIED |  |
+| AX-125 | full restart-memory acceptance scenario | NOT_IMPLEMENTED | VERIFIED | AX-120, AX-121, AX-122, AX-123, AX-124 |
 | AX-126 | ProcedureId contract | COMPLETE | VERIFIED |  |
 | AX-127 | Procedure revision identity | COMPLETE | VERIFIED |  |
 | AX-128 | ProcedureStatus lifecycle vocabulary | COMPLETE | VERIFIED |  |

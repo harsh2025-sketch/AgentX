@@ -67,7 +67,7 @@ states distinguish production code, candidate changes and missing acceptance.
 | --- | --- | --- |
 | M0 Kernel | Permission/risk/gate/budget/stop/audit/secret contracts; governed capability loop; AX-040 merged | Continue whole-system security review as new surfaces land |
 | M1 Single-task runtime | PR #163 candidate: governed L0-L5 composition, typed L4 capability/procedure binding, independent root verification and 45-task acceptance audit | Review/merge #163; real external-model/provider and interactive-host experiments remain later-milestone work |
-| M2 Persistent memory | Event journal, episodes, semantic knowledge, typed scopes and integrated #147 | Prove combined restart and corruption behavior |
+| M2 Persistent memory | Event journal, episodes, semantic knowledge, typed scopes; real child-process restart/corruption acceptance; AX-086–AX-125 acceptance VERIFIED | M2 exit criteria satisfied; historical reported baseline remains immutable and separate from acceptance evidence |
 | M3 Compilation and reuse | Procedure IR/interpreter, corroborated parameter generalization, candidate validation/promotion, restart-safe ACTIVE reuse, and end-to-end cold→compile→validate→promote→restart→L2 proof | No remaining M3 exit-criteria gap; live-model efficiency measurement belongs to M4 |
 | M4 Learning efficiency | Metrics, reuse evidence and experiment contracts | Real model-backed cold/warm comparison with independently verified outcomes |
 | M5 Repair | Diagnosis, degradation, shadow validation, replacement and rollback machinery | Deliberate break/repair/reuse experiment and failed-repair rollback |

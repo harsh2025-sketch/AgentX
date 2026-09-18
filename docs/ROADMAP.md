@@ -36,7 +36,7 @@ Exit criteria:
 
 ## Milestone 2 — Persistent Experience and Restart-Safe Memory
 
-**Status:** Substantially implemented
+**Status:** Completed and acceptance-verified
 
 Make verified experience survive process restarts and become queryable context.
 
@@ -49,6 +49,12 @@ Exit criteria:
 - explicit user preferences;
 - contradiction/supersession handling without silently rewriting history;
 - restart tests demonstrating lossless retrieval of relevant experience.
+
+Acceptance evidence: PR #162 adds `tests/integration/test_m2_restart_memory_acceptance.py`,
+covering durable episode/semantic/relationship/assurance/world-link recovery across a
+real child-process restart, exact-scope isolation, hostile persisted strings remaining
+inert data, and fail-closed corruption handling. AX-086–AX-125 are recorded as
+acceptance VERIFIED while the protected historical reported baseline remains unchanged.
 
 ## Milestone 3 — Procedure Runtime and Verified Skill Compilation
 
