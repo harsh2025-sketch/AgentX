@@ -196,23 +196,6 @@ class ParameterGeneralization:
             )
         if not isinstance(self.groups, tuple):
             raise TypeError("groups must be a tuple of ParameterObservationGroup values")
-        if not isinstance(self.corroborating_extractions, tuple):
-            raise TypeError(
-                "corroborating_extractions must be a tuple of ParameterExtraction values"
-            )
-        seen_trajectory_ids = {self.source_extraction.source_trajectory_id}
-        for index, extraction in enumerate(self.corroborating_extractions):
-            if not isinstance(extraction, ParameterExtraction):
-                raise TypeError(
-                    "corroborating_extractions must contain only ParameterExtraction values; "
-                    f"index {index} is {type(extraction).__name__}"
-                )
-            trajectory_id = extraction.source_trajectory_id
-            if trajectory_id in seen_trajectory_ids:
-                raise ParameterGeneralizationError(
-                    "corroborating_extractions must reference distinct non-target trajectories"
-                )
-            seen_trajectory_ids.add(trajectory_id)
         if not isinstance(self.supporting_extractions, tuple):
             raise TypeError("supporting_extractions must be a tuple of ParameterExtraction values")
         seen_trajectory_ids = {self.source_extraction.source_trajectory_id}
@@ -237,12 +220,8 @@ class ParameterGeneralization:
             )
 
         expected = _build_groups(
-            self.source_extraction.candidates
-            + tuple(
-                candidate
-                for supporting in self.supporting_extractions
-                for candidate in supporting.candidates
-            )
+            self.source_extraction.candidates,
+            *tuple(supporting.candidates for supporting in self.supporting_extractions),
         )
         if self.groups != expected:
             raise ParameterGeneralizationError(
@@ -261,10 +240,6 @@ class ParameterGeneralization:
             "source_trajectory_id": str(self.source_extraction.source_trajectory_id),
             "supporting_trajectory_ids": [
                 str(item.source_trajectory_id) for item in self.supporting_extractions
-            ],
-            "corroborating_source_trajectory_ids": [
-                str(extraction.source_trajectory_id)
-                for extraction in self.corroborating_extractions
             ],
             "groups": [group.to_dict() for group in self.groups],
         }
@@ -339,7 +314,7 @@ def analyze_parameter_generalization(
             )
     return ParameterGeneralization(
         source_extraction=extraction,
-        corroborating_extractions=corroborating,
+        supporting_extractions=corroborating,
         groups=_build_groups(
             extraction.candidates,
             *tuple(item.candidates for item in corroborating),
