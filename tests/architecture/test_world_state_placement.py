@@ -372,9 +372,9 @@ def test_world_state_is_point_in_time_data_not_a_cache_or_store() -> None:
     ]
 
     # The migration ladder is untouched and the highest landed migration
-    # remains the C2.06 negative-experience store (v8).
+    # is the canonical M12 scheduling store (v9).
     assert migration_versions == sorted(migration_versions)
-    assert max(migration_versions) == 8
+    assert max(migration_versions) == 9
     assert "world_state" not in persistence_source
 
 
