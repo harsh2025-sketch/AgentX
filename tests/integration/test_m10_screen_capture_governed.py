@@ -16,6 +16,7 @@ from agentx.capabilities.windows.screen_capture import (
 )
 from agentx.core.events import Event
 from agentx.core.execution import CancellationSource, ExecutionContext
+from agentx.core.knowledge import ProvenanceKind, ProvenanceReference
 from agentx.core.result import Result
 from agentx.core.tasks import Task, TaskStatus
 from agentx.infrastructure.event_bus import EventBus
@@ -24,8 +25,16 @@ from agentx.kernel.emergency_stop import EmergencyStop
 from agentx.kernel.permissions import AuthorityContext, Permission
 from agentx.kernel.resource_budget import ResourceBudget, ResourceEnvelope
 from agentx.kernel.risk import RiskLevel
+from agentx.perception import (
+    GroundingRequest,
+    GroundingStatus,
+    PerceptionGrounder,
+    build_perception_observation,
+)
+from agentx.world_model import PerceptionRegion, ScreenBounds, WorldModel
 
 NOW = datetime(2026, 9, 18, 10, 0, tzinfo=UTC)
+SOURCE = ProvenanceReference(kind=ProvenanceKind.SYSTEM, reference="m10.governed.capture")
 
 
 class FakeScreenSurface:
@@ -169,3 +178,61 @@ def test_m10_screen_observation_cannot_increase_resource_budget() -> None:
     assert outcome.kind is LoopOutcome.BUDGET_EXHAUSTED
     assert outcome.task.status is not TaskStatus.SUCCEEDED
     assert surface.calls == 0
+
+
+def test_m10_governed_capture_flows_into_world_state_and_grounding() -> None:
+    surface = FakeScreenSurface()
+    capture = WindowsScreenCapture(_support(), native_surface=surface)
+    registry = CapabilityRegistry()
+    registry.register(WindowsScreenCaptureCapability(capture))
+    loop = CapabilityExecutionLoop(
+        registry=registry,
+        action_gate=ActionGate(),
+        authority=AuthorityContext(permissions=frozenset({Permission.READ})),
+        emergency_stop=EmergencyStop(),
+        budget=ResourceBudget(_envelope()),
+        publish_event=lambda event: None,
+        publish_audit=lambda record: None,
+    )
+    task, context = _task_context()
+
+    result = loop.run(task, screen_capture_request(environment_id="env-local"), context)
+    assert result.is_success
+    assert result.unwrap().kind is LoopOutcome.VERIFIED
+
+    frame = capture.latest_frame(
+        environment_id="env-local",
+        surface_id="virtual-desktop",
+    )
+    assert frame is not None
+    region = PerceptionRegion(
+        region_id="uia:save",
+        bounds=ScreenBounds(0, 0, 1, 1),
+        text="Save",
+        role="button",
+        confidence=1.0,
+        structured_observation_ref="uia:save",
+    )
+    observation = build_perception_observation(
+        frame,
+        source=SOURCE,
+        ttl=timedelta(seconds=5),
+        regions=(region,),
+        structured_observation_refs=("uia:tree-current",),
+        task_id=task.task_id,
+        correlation_id=context.correlation_id,
+    )
+    world = WorldModel()
+    world.ingest_perception_observation(observation)
+    lookup = world.cache.lookup(observation.entity_id, at=NOW + timedelta(seconds=1))
+    assert lookup.value == observation
+
+    grounded = PerceptionGrounder().ground(
+        observation=observation,
+        frame=frame,
+        request=GroundingRequest(query="Save"),
+        at=NOW + timedelta(seconds=1),
+    )
+    assert grounded.status is GroundingStatus.GROUNDED
+    assert grounded.proposal is not None
+    assert grounded.proposal.evidence_refs == ("uia:save",)
