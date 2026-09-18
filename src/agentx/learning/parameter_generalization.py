@@ -317,9 +317,7 @@ def analyze_parameter_generalization(
                 f"index {index} is {type(supporting).__name__}"
             )
     candidates = extraction.candidates + tuple(
-        candidate
-        for supporting in corroborating
-        for candidate in supporting.candidates
+        candidate for supporting in corroborating for candidate in supporting.candidates
     )
     return ParameterGeneralization(
         source_extraction=extraction,
