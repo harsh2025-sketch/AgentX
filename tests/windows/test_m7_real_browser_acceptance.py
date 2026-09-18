@@ -25,7 +25,9 @@ from agentx.capabilities.browser_actions import (
     fill_selected_request,
     navigate_request,
 )
+from agentx.capabilities.browser_connection import BrowserTargetRef
 from agentx.capabilities.browser_dom import (
+    BrowserDomNodeRef,
     BrowserDomAttribute,
     BrowserDomReadRequest,
 )
@@ -51,7 +53,7 @@ from agentx.capabilities.human_approval import (
     HumanApprovalDecision,
     HumanApprovalOutcome,
 )
-from agentx.capabilities.runtime import LoopOutcome
+from agentx.capabilities.runtime import ClosedLoopOutcome, LoopOutcome
 from agentx.capabilities.webdriver_browser_driver import (
     ChromeDriverService,
     WebDriverBrowserProvider,
@@ -155,8 +157,7 @@ class _FixtureSite:
 
     @property
     def base_url(self) -> str:
-        host, port = self._server.server_address
-        return f"http://{host}:{port}"
+        return f"http://127.0.0.1:{self._server.server_port}"
 
     def __enter__(self) -> _FixtureSite:
         self._thread.start()
@@ -168,7 +169,9 @@ class _FixtureSite:
         self._thread.join(timeout=5)
 
 
-def _select(provider: WebDriverBrowserProvider, element_id: str):
+def _select(
+    provider: WebDriverBrowserProvider, element_id: str
+) -> tuple[BrowserTargetRef, BrowserDomNodeRef]:
     target = provider.target_ref().unwrap()
     observation = provider.observe_dom(BrowserDomReadRequest(target=target)).unwrap()
     result = select_dom_nodes(
@@ -184,7 +187,7 @@ def _select(provider: WebDriverBrowserProvider, element_id: str):
 def _run(
     harness: OrchestrationHarness,
     request: CapabilityRequest[Any],
-):
+) -> ClosedLoopOutcome:
     task = harness.make_task(f"real browser: {request.identity}")
     context = harness.make_context(task)
     requested = harness.execution_loop.approval_requests(task, request, context).unwrap()
