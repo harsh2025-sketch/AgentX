@@ -1,4 +1,4 @@
-# AgentX AX-001–AX-600 ledger
+# AgentX AX-001-AX-600 ledger
 
 Generated from `docs/TASKS.json` by `python scripts/task_ledger.py --write`.
 

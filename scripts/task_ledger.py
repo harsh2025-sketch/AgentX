@@ -74,7 +74,7 @@ def validate(data: dict[str, Any]) -> None:
 
 def render(data: dict[str, Any]) -> str:
     lines = [
-        "# AgentX AX-001–AX-600 ledger",
+        "# AgentX AX-001-AX-600 ledger",
         "",
         "Generated from `docs/TASKS.json` by `python scripts/task_ledger.py --write`.",
         "",
