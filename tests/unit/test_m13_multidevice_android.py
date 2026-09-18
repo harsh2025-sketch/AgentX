@@ -12,10 +12,7 @@ from agentx.capabilities.android.runtime import (
     AndroidOperation,
     build_android_capabilities,
 )
-from agentx.capabilities.android.transport import (
-    AdbCommandResult,
-    AdbTransport,
-)
+from agentx.capabilities.android.transport import AdbCommandResult, AdbTransport
 from agentx.capabilities.android.ui import (
     AndroidTargetSelector,
     AndroidUiValidationError,
