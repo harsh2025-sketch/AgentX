@@ -15,7 +15,6 @@ from threading import Lock
 from typing import Protocol, runtime_checkable
 
 from agentx.capabilities.windows._audio_native import WinMmAudioSurface
-from agentx.capabilities.windows._audio_native import WinMmAudioSurface
 from agentx.core.audio import (
     AudioAdmissionDecision,
     AudioCaptureStream,
