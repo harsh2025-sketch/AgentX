@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 from datetime import timedelta
 from decimal import Decimal
+from uuid import uuid4
 
 import pytest
 
@@ -29,6 +30,7 @@ from agentx.cognition.model_provider import (
     TextContent,
     provider_failure,
 )
+from agentx.core.errors import AgentXError
 from agentx.core.execution import CancellationSource, ExecutionContext
 from agentx.core.result import Result
 from agentx.kernel.resource_budget import ResourceBudget, ResourceEnvelope
@@ -51,7 +53,7 @@ def _descriptor(model_id: ModelId) -> ProviderDescriptor:
     )
 
 
-def _success(model_id: ModelId, text: str = "ok") -> Result[ModelResponse, object]:
+def _success(model_id: ModelId, text: str = "ok") -> Result[ModelResponse, AgentXError]:
     return Result.success(
         ModelResponse(
             model_id=model_id,
@@ -66,7 +68,7 @@ def _success(model_id: ModelId, text: str = "ok") -> Result[ModelResponse, objec
     )
 
 
-def _failure(model_id: ModelId, kind: ProviderFailureKind) -> Result[ModelResponse, object]:
+def _failure(model_id: ModelId, kind: ProviderFailureKind) -> Result[ModelResponse, AgentXError]:
     return Result.failure(
         provider_failure(
             kind,
@@ -81,7 +83,7 @@ class _ScriptedProvider:
     def __init__(
         self,
         model_id: ModelId,
-        results: Iterable[Result[ModelResponse, object]],
+        results: Iterable[Result[ModelResponse, AgentXError]],
     ) -> None:
         self._descriptor = _descriptor(model_id)
         self._results = list(results)
@@ -91,7 +93,7 @@ class _ScriptedProvider:
     def descriptor(self) -> ProviderDescriptor:
         return self._descriptor
 
-    def invoke(self, request: ModelRequest) -> Result[ModelResponse, object]:
+    def invoke(self, request: ModelRequest) -> Result[ModelResponse, AgentXError]:
         self.calls.append(request)
         if not self._results:
             raise AssertionError("script exhausted")
@@ -128,7 +130,7 @@ def _budget(
 
 def _context() -> ExecutionContext:
     return ExecutionContext(
-        correlation_id=__import__("uuid").uuid4(),
+        correlation_id=uuid4(),
         cancellation_token=CancellationSource().token,
     )
 
@@ -274,7 +276,7 @@ def test_cancellation_and_deadline_prevent_future_provider_calls() -> None:
     source = CancellationSource()
     source.request_cancellation("stop")
     cancelled_context = ExecutionContext(
-        correlation_id=__import__("uuid").uuid4(),
+        correlation_id=uuid4(),
         cancellation_token=source.token,
     )
     cancelled_gateway = BoundedModelGateway(
@@ -295,7 +297,7 @@ def test_cancellation_and_deadline_prevent_future_provider_calls() -> None:
 
     deadline_provider = _ScriptedProvider(model_id, (_success(model_id),))
     deadline_context = ExecutionContext(
-        correlation_id=__import__("uuid").uuid4(),
+        correlation_id=uuid4(),
         cancellation_token=CancellationSource().token,
         deadline=Deadline(1.0),
     )
