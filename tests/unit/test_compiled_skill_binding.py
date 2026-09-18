@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from pathlib import Path
 
 import pytest
 
+from agentx.capabilities.abi import CapabilityRequest
 from agentx.capabilities.filesystem import (
     FILESYSTEM_READ_TEXT_IDENTITY,
     ReadTextParams,
@@ -85,10 +87,6 @@ def _materialized(tmp_path: Path) -> ProcedureGraph:
     )
 
 
-def _read_factory(data: object):
-    assert isinstance(data, dict | type({}.keys())) is False
-
-
 def test_materialization_uses_trusted_identity_and_keeps_metadata_inert(tmp_path: Path) -> None:
     graph = _materialized(tmp_path)
     action = next(node for node in graph.nodes if node.kind is ProcedureNodeKind.ACTION)
@@ -124,11 +122,12 @@ def test_typed_request_factory_is_external_and_identity_pinned(tmp_path: Path) -
     parameter = "p000_filesystem_read_text_1_0_0_path"
     target = str(tmp_path / "validation.txt")
 
-    def factory(data):
-        return read_text_request(
-            str(data["path"]),
-            max_bytes=int(data["max_bytes"]),
-        )
+    def factory(data: Mapping[str, object]) -> CapabilityRequest[ReadTextParams]:
+        path_value = data["path"]
+        max_bytes_value = data["max_bytes"]
+        assert isinstance(path_value, str)
+        assert type(max_bytes_value) is int
+        return read_text_request(path_value, max_bytes=max_bytes_value)
 
     requests = build_compiled_action_requests(
         graph,
