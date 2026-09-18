@@ -20,9 +20,7 @@ __all__ = [
 _MAX_UI_XML_BYTES: Final[int] = 2 * 1_048_576
 _MAX_UI_NODES: Final[int] = 4096
 _MAX_UI_TEXT: Final[int] = 4096
-_BOUNDS_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]"
-)
+_BOUNDS_PATTERN: Final[re.Pattern[str]] = re.compile(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]")
 
 
 class AndroidUiValidationError(ValueError):
@@ -176,12 +174,8 @@ def parse_android_ui_tree(payload: bytes) -> AndroidUiTree:
                     element.attrib.get("content-desc", ""),
                     field_name="content_description",
                 ),
-                class_name=_bounded_text(
-                    element.attrib.get("class", ""), field_name="class_name"
-                ),
-                package=_bounded_text(
-                    element.attrib.get("package", ""), field_name="package"
-                ),
+                class_name=_bounded_text(element.attrib.get("class", ""), field_name="class_name"),
+                package=_bounded_text(element.attrib.get("package", ""), field_name="package"),
                 bounds=bounds,
                 enabled=_bool_attr(element.attrib.get("enabled")),
                 clickable=_bool_attr(element.attrib.get("clickable")),
