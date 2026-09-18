@@ -523,6 +523,86 @@ class LightweightRoutingModel:
         )
 
 
+    def to_json(self) -> str:
+        payload = {
+            "model_id": self.model_id,
+            "dataset_id": self.dataset_id,
+            "family_counts": [
+                [family, level.value, count]
+                for family, level, count in self.family_counts
+            ],
+            "token_counts": [
+                [token, level.value, count]
+                for token, level, count in self.token_counts
+            ],
+        }
+        return json.dumps(payload, separators=(",", ":"), sort_keys=True)
+
+    @classmethod
+    def from_json(cls, value: str) -> LightweightRoutingModel:
+        if not isinstance(value, str):
+            raise SpecialistModelError("routing model artifact must be JSON string")
+        try:
+            raw = json.loads(value)
+        except ValueError as exc:
+            raise SpecialistModelError("routing model artifact JSON is malformed") from exc
+        expected = {"model_id", "dataset_id", "family_counts", "token_counts"}
+        if not isinstance(raw, Mapping) or set(raw) != expected:
+            raise SpecialistModelError("routing model artifact shape is invalid")
+        model_id = raw["model_id"]
+        dataset_id = raw["dataset_id"]
+        family_raw = raw["family_counts"]
+        token_raw = raw["token_counts"]
+        if not isinstance(model_id, str) or not isinstance(dataset_id, str):
+            raise SpecialistModelError("routing model identity fields are invalid")
+        if not isinstance(family_raw, list) or not isinstance(token_raw, list):
+            raise SpecialistModelError("routing model count tables must be arrays")
+
+        def parse_table(
+            values: list[object],
+        ) -> tuple[tuple[str, ExecutionLevel, int], ...]:
+            parsed: list[tuple[str, ExecutionLevel, int]] = []
+            for item in values:
+                if (
+                    not isinstance(item, list)
+                    or len(item) != 3
+                    or not isinstance(item[0], str)
+                    or not isinstance(item[1], str)
+                    or type(item[2]) is not int
+                    or item[2] < 0
+                ):
+                    raise SpecialistModelError("invalid routing model count entry")
+                try:
+                    level = ExecutionLevel(item[1])
+                except ValueError as exc:
+                    raise SpecialistModelError(
+                        "routing model contains unknown execution level"
+                    ) from exc
+                parsed.append((item[0], level, item[2]))
+            return tuple(parsed)
+
+        model = cls(
+            model_id=model_id,
+            dataset_id=dataset_id,
+            family_counts=parse_table(family_raw),
+            token_counts=parse_table(token_raw),
+        )
+        canonical = {
+            "dataset_id": model.dataset_id,
+            "family_counts": [
+                [family, level.value, count]
+                for family, level, count in model.family_counts
+            ],
+            "token_counts": [
+                [token, level.value, count]
+                for token, level, count in model.token_counts
+            ],
+        }
+        if _dataset_id(canonical) != model.model_id:
+            raise SpecialistModelError("routing model artifact identity mismatch")
+        return model
+
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class VerifierAssistanceReport:
     samples: int
