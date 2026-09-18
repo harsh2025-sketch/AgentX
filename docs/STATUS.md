@@ -2,9 +2,9 @@
 
 Evidence snapshot: 2026-09-18.
 
-This status is synchronized to the independent AX-001–AX-600 audit on canonical
-main `bcc0692246a981be5ae15c993b0c3e6512871b92`. Historical
-`reported_status` remains immutable and separate from audited acceptance.
+This status is synchronized to the independent AX-001–AX-600 audit plus the focused M10
+re-audit on implementation head `8ca74839f3a615393c4803ba56509439a1bc261a`.
+Historical `reported_status` remains immutable and separate from audited acceptance.
 
 ## Canonical repository state
 
@@ -22,11 +22,11 @@ main `bcc0692246a981be5ae15c993b0c3e6512871b92`. Historical
 
 | Acceptance state | Count |
 | --- | ---: |
-| VERIFIED | 380 |
+| VERIFIED | 394 |
 | NOT_AUDITED | 0 |
 | IN_PROGRESS | 9 |
 | BLOCKED | 7 |
-| NOT_IMPLEMENTED | 204 |
+| NOT_IMPLEMENTED | 190 |
 | **TOTAL** | **600** |
 
 The machine-readable record is [AUDIT_600.json](AUDIT_600.json); the complete
@@ -49,7 +49,7 @@ it.
 | M7 Browser Agent | 16/35 | 1 IN_PROGRESS; 18 NOT_IMPLEMENTED |
 | M8 Models and Research | 28/35 | 2 BLOCKED; 5 NOT_IMPLEMENTED |
 | M9 Security | 20/35 | 15 NOT_IMPLEMENTED |
-| M10 World Model | 16/30 | 14 NOT_IMPLEMENTED |
+| M10 World Model | 30/30 | none |
 | M11 Voice and HUD | 2/25 | 23 NOT_IMPLEMENTED |
 | M12 Scheduling | 1/25 | 24 NOT_IMPLEMENTED |
 | M13 Multi-device and Android | 2/30 | 28 NOT_IMPLEMENTED |
