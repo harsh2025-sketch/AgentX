@@ -12,6 +12,7 @@ import pytest
 from agentx.cognition.model_gateway import (
     BoundedModelGateway,
     FallbackPolicy,
+    GovernedGatewayModelProvider,
     ModelAttemptReservation,
     ModelCapabilityRegistry,
     ProviderHealthTracker,
@@ -30,6 +31,8 @@ from agentx.cognition.model_provider import (
     TextContent,
     provider_failure,
 )
+from agentx.cognition.model_roles import ModelRole, ModelRoleBinding, ModelRoleBindings
+from agentx.cognition.reasoner import Reasoner, ReasonerRequest
 from agentx.core.errors import AgentXError
 from agentx.core.execution import CancellationSource, ExecutionContext
 from agentx.core.result import Result
@@ -412,3 +415,44 @@ def test_invalid_fallback_configuration_fails_before_any_provider_call() -> None
 def test_retry_attempt_limit_is_strict(bad: int) -> None:
     with pytest.raises(ValueError):
         RetryPolicy(max_attempts_per_model=bad)
+
+
+def test_gateway_provider_composes_with_canonical_reasoner_and_budget() -> None:
+    model_id = _model("provider-a")
+    provider = _ScriptedProvider(model_id, (_success(model_id, "bounded answer"),))
+    budget = _budget(calls=1, tokens=100, cost="1")
+    gateway = BoundedModelGateway(
+        registry=ModelCapabilityRegistry((provider,)),
+        budget=budget,
+    )
+    context = _context()
+    bounded = GovernedGatewayModelProvider(
+        gateway=gateway,
+        primary_model=model_id,
+        context=context,
+        reservation=_reservation(),
+    )
+    reasoner = Reasoner(
+        bindings=ModelRoleBindings(
+            bindings=(
+                ModelRoleBinding(
+                    role=ModelRole.REASONING,
+                    model=bounded.descriptor.models[0],
+                ),
+            )
+        ),
+        provider=bounded,
+    )
+
+    response = reasoner.reason(
+        ReasonerRequest(
+            execution_context=context,
+            instruction=TextContent("solve the bounded planning problem"),
+        )
+    ).unwrap()
+
+    assert response.content == (TextContent("bounded answer"),)
+    assert len(provider.calls) == 1
+    usage = budget.snapshot()
+    assert usage.model_calls == 1
+    assert usage.model_tokens == 100
