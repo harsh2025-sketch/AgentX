@@ -20,6 +20,7 @@ from agentx.cognition.speech import (
     SpeechProviderId,
     SpeechSessionId,
     SttRequest,
+    SttTranscript,
     TtsRequest,
 )
 from agentx.core.audio import AudioFormat, AudioFrame
@@ -202,10 +203,7 @@ def test_malformed_and_timeout_provider_responses_fail_typed_and_closed() -> Non
 def test_sensitive_speech_text_is_excluded_from_repr() -> None:
     session = SpeechSessionId.create()
     cancellation = CancellationSource()
-    transcript = __import__(
-        "agentx.cognition.speech",
-        fromlist=["SttTranscript"],
-    ).SttTranscript(
+    transcript = SttTranscript(
         session_id=session,
         text="private transcript material",
         is_final=True,
