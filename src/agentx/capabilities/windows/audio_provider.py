@@ -164,25 +164,14 @@ class WinMmAudioSurface:
         prepared = False
         try:
             if (
-                int(
-                    winmm.waveInPrepareHeader(
-                        handle, ctypes.byref(header), ctypes.sizeof(header)
-                    )
-                )
+                int(winmm.waveInPrepareHeader(handle, ctypes.byref(header), ctypes.sizeof(header)))
                 != 0
             ):
                 return Result.failure(
                     _failure(AudioFailureKind.INTERNAL, "microphone buffer prepare failed")
                 )
             prepared = True
-            if (
-                int(
-                    winmm.waveInAddBuffer(
-                        handle, ctypes.byref(header), ctypes.sizeof(header)
-                    )
-                )
-                != 0
-            ):
+            if int(winmm.waveInAddBuffer(handle, ctypes.byref(header), ctypes.sizeof(header))) != 0:
                 return Result.failure(
                     _failure(AudioFailureKind.INTERNAL, "microphone buffer enqueue failed")
                 )
@@ -267,9 +256,7 @@ class WinMmAudioSurface:
         byte_rate = sample_rate_hz * block_align
         fmt = WAVEFORMATEX(1, channel_count, sample_rate_hz, byte_rate, block_align, 16, 0)
         result = int(
-            winmm.waveOutOpen(
-                ctypes.byref(handle), 0xFFFFFFFF, ctypes.byref(fmt), 0, 0, 0
-            )
+            winmm.waveOutOpen(ctypes.byref(handle), 0xFFFFFFFF, ctypes.byref(fmt), 0, 0, 0)
         )
         if result != 0:
             return Result.failure(
@@ -283,25 +270,14 @@ class WinMmAudioSurface:
         prepared = False
         try:
             if (
-                int(
-                    winmm.waveOutPrepareHeader(
-                        handle, ctypes.byref(header), ctypes.sizeof(header)
-                    )
-                )
+                int(winmm.waveOutPrepareHeader(handle, ctypes.byref(header), ctypes.sizeof(header)))
                 != 0
             ):
                 return Result.failure(
                     _failure(AudioFailureKind.INTERNAL, "speaker buffer prepare failed")
                 )
             prepared = True
-            if (
-                int(
-                    winmm.waveOutWrite(
-                        handle, ctypes.byref(header), ctypes.sizeof(header)
-                    )
-                )
-                != 0
-            ):
+            if int(winmm.waveOutWrite(handle, ctypes.byref(header), ctypes.sizeof(header))) != 0:
                 return Result.failure(
                     _failure(AudioFailureKind.INTERNAL, "speaker playback start failed")
                 )
@@ -516,10 +492,10 @@ class WinMmAudioProvider:
     def supports(self, config: AudioFormatSupport) -> bool:
         if not isinstance(config, AudioFormatSupport):
             raise TypeError("config must be AudioFormatSupport")
-        return all(
-            fmt in _SUPPORT.formats for fmt in config.formats
-        ) and all(rate in _SUPPORT.sample_rates_hz for rate in config.sample_rates_hz) and all(
-            count in _SUPPORT.channel_counts for count in config.channel_counts
+        return (
+            all(fmt in _SUPPORT.formats for fmt in config.formats)
+            and all(rate in _SUPPORT.sample_rates_hz for rate in config.sample_rates_hz)
+            and all(count in _SUPPORT.channel_counts for count in config.channel_counts)
         )
 
     def endpoints(
