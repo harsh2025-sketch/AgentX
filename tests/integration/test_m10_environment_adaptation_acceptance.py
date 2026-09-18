@@ -118,9 +118,7 @@ def test_m10_restart_boundary_does_not_restore_ephemeral_world_cache(tmp_path: P
 
     marker.write_text("changed-while-agent-stopped", encoding="utf-8")
     second_script = (
-        "from agentx.world_model import WorldModel\n"
-        "m=WorldModel()\n"
-        "assert len(m.cache)==0\n"
+        "from agentx.world_model import WorldModel\nm=WorldModel()\nassert len(m.cache)==0\n"
     )
     second = subprocess.run(
         [sys.executable, "-c", second_script],
