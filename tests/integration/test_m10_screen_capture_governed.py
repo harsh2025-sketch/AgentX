@@ -7,13 +7,13 @@ from uuid import uuid4
 from agentx.capabilities.registry import CapabilityRegistry
 from agentx.capabilities.runtime import CapabilityExecutionLoop, LoopOutcome
 from agentx.capabilities.windows import _screen_native
-from agentx.capabilities.windows.provider import PlatformFacts, evaluate_windows_support
+from agentx.capabilities.windows.provider import (\n    PlatformFacts,\n    WindowsSupport,\n    evaluate_windows_support,\n)
 from agentx.capabilities.windows.screen_capture import (
     WindowsScreenCapture,
     WindowsScreenCaptureCapability,
     screen_capture_request,
 )
-from agentx.core.events import Event
+from agentx.core.errors import AgentXError\nfrom agentx.core.events import Event
 from agentx.core.execution import CancellationSource, ExecutionContext
 from agentx.core.knowledge import ProvenanceKind, ProvenanceReference
 from agentx.core.result import Result
@@ -40,7 +40,7 @@ class FakeScreenSurface:
     def __init__(self) -> None:
         self.calls = 0
 
-    def capture(self, *, max_pixels: int):
+    def capture(\n        self, *, max_pixels: int\n    ) -> Result[_screen_native.RawScreenFrame, AgentXError]:
         self.calls += 1
         assert max_pixels >= 4
         return Result.success(
@@ -72,7 +72,7 @@ class FakeScreenSurface:
         )
 
 
-def _support():
+def _support() -> WindowsSupport:
     return evaluate_windows_support(
         PlatformFacts(system="Windows", release="11", version="test", machine="AMD64")
     )
