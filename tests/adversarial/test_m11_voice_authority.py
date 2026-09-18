@@ -30,6 +30,7 @@ from agentx.voice_runtime import (
     VoiceGovernedActionBridge,
 )
 
+
 def _pending() -> tuple[SpokenConfirmationProtocol, PendingVoiceConfirmation]:
     capability = HostileMetadataCapability()
     registry = CapabilityRegistry()
