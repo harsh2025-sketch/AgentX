@@ -294,5 +294,34 @@ python -m pytest -q tests/integration/test_m11_voice_hud_e2e.py
 python -m pytest -q tests/adversarial/test_m11_voice_authority.py
 ```
 
-Final task statuses and exact CI/test counts are recorded only after the
-second-pass audit of the final PR head.
+## Second-pass audit result
+
+The second-pass implementation audit closed the production gaps found during the
+campaign, including wiring turn-end detection into the realtime session, emitting
+listening/executing/recovering/verifying/speaking/cancellation/idle telemetry from
+the production composition, isolating HUD subscriber failures from runtime
+authority, registering the WinMM native seam under the existing Windows
+architecture guard, and carrying one AX-452 correlation ID through each complete
+voice turn.
+
+Canonical M11 task result: **AX-436..AX-460 = 25/25 VERIFIED** for the exact
+milestone requirements.
+
+Implementation validation evidence:
+
+- implementation head: `5d01d8625535477677dc02b32011d164a61972fb`
+- C1.01 quality run: `35369274913` / run #1180
+- runtime-only installation: PASS
+- Ruff lint: PASS
+- Ruff format: PASS
+- strict mypy: PASS
+- task-ledger validation: PASS
+- Windows-host acceptance: PASS
+- M7 real-browser regression: PASS
+- full pytest: **11,316 passed, 9 skipped**
+- physical microphone/speaker acceptance: **NOT RUN**
+- live external STT/TTS provider acceptance: **NOT RUN**
+- interactive desktop HUD acceptance: **NOT RUN**
+
+The three real-environment classes above remain explicitly distinct from the
+deterministic production-path evidence and are not claimed as executed.
