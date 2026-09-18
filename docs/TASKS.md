@@ -11,7 +11,7 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | Milestone | Reported complete | Reported partial | Reported remaining | Verified acceptance |
 | --- | ---: | ---: | ---: | ---: |
 | M0 Trusted Kernel | 40 | 0 | 0 | 0 |
-| M1 Agent Runtime | 41 | 2 | 2 | 0 |
+| M1 Agent Runtime | 41 | 2 | 2 | 45 |
 | M2 Hive and Memory | 39 | 0 | 1 | 0 |
 | M3 Procedure Compiler | 49 | 0 | 1 | 0 |
 | M4 Learning Efficiency | 20 | 0 | 10 | 0 |
@@ -73,51 +73,51 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-038 | runtime-only dependency gate | COMPLETE | NOT_AUDITED |  |
 | AX-039 | Windows/Python 3.12 quality workflow | COMPLETE | NOT_AUDITED |  |
 | AX-040 | Trusted-Kernel whole-system security audit | COMPLETE | NOT_AUDITED |  |
-| AX-041 | ExecutionLevel L0–L5 vocabulary | COMPLETE | NOT_AUDITED |  |
-| AX-042 | deterministic level-selection inputs | COMPLETE | NOT_AUDITED |  |
-| AX-043 | routing-evidence contract | COMPLETE | NOT_AUDITED |  |
-| AX-044 | bounded escalation model | COMPLETE | NOT_AUDITED |  |
-| AX-045 | anti-loop policy | COMPLETE | NOT_AUDITED |  |
-| AX-046 | AgentLoop composition boundary | COMPLETE | NOT_AUDITED |  |
-| AX-047 | strategy registry | COMPLETE | NOT_AUDITED |  |
-| AX-048 | canonical runtime strategy assembly | COMPLETE | NOT_AUDITED |  |
-| AX-049 | L0 strategy adapter | COMPLETE | NOT_AUDITED |  |
-| AX-050 | L1 governed capability strategy | COMPLETE | NOT_AUDITED |  |
-| AX-051 | L2 compiled-procedure strategy | COMPLETE | NOT_AUDITED |  |
-| AX-052 | L3 guided-procedure strategy | COMPLETE | NOT_AUDITED |  |
-| AX-053 | L4 planning boundary | COMPLETE | NOT_AUDITED |  |
-| AX-054 | L5 exploratory strategy clean implementation | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-065, AX-364, AX-365, AX-366 |
-| AX-055 | strategy-unavailable behavior | COMPLETE | NOT_AUDITED |  |
-| AX-056 | failure escalation behavior | COMPLETE | NOT_AUDITED |  |
-| AX-057 | TaskManager/runtime integration | COMPLETE | NOT_AUDITED |  |
-| AX-058 | task decomposition schema | COMPLETE | NOT_AUDITED |  |
-| AX-059 | decomposition DAG validation | COMPLETE | NOT_AUDITED |  |
-| AX-060 | decomposition readiness validator | COMPLETE | NOT_AUDITED |  |
-| AX-061 | terminal-node readiness rules | COMPLETE | NOT_AUDITED |  |
-| AX-062 | capability-target readiness | COMPLETE | NOT_AUDITED |  |
-| AX-063 | procedure-target readiness | COMPLETE | NOT_AUDITED |  |
-| AX-064 | higher-level-resolution readiness | COMPLETE | NOT_AUDITED |  |
-| AX-065 | Reasoner provider-neutral boundary | COMPLETE | NOT_AUDITED |  |
-| AX-066 | bounded Reasoner request | COMPLETE | NOT_AUDITED |  |
-| AX-067 | model-output acceptance boundary | COMPLETE | NOT_AUDITED |  |
-| AX-068 | model-output strict JSON handling | COMPLETE | NOT_AUDITED |  |
-| AX-069 | independent task verification | COMPLETE | NOT_AUDITED |  |
-| AX-070 | verification-requirement contract | COMPLETE | NOT_AUDITED |  |
-| AX-071 | requirement evaluation | COMPLETE | NOT_AUDITED |  |
-| AX-072 | execution success != task success invariant | COMPLETE | NOT_AUDITED |  |
-| AX-073 | procedure END != task success invariant | COMPLETE | NOT_AUDITED |  |
-| AX-074 | cancellation semantics | COMPLETE | NOT_AUDITED |  |
-| AX-075 | timeout semantics | COMPLETE | NOT_AUDITED |  |
-| AX-076 | denied-attempt semantics | COMPLETE | NOT_AUDITED |  |
-| AX-077 | unverified-attempt semantics | COMPLETE | NOT_AUDITED |  |
-| AX-078 | bounded strategy attempts | COMPLETE | NOT_AUDITED |  |
-| AX-079 | strategy result typing | COMPLETE | NOT_AUDITED |  |
-| AX-080 | hostile routing metadata inertness | COMPLETE | NOT_AUDITED |  |
-| AX-081 | task/runtime adversarial tests | COMPLETE | NOT_AUDITED |  |
-| AX-082 | task/runtime architecture tests | COMPLETE | NOT_AUDITED |  |
-| AX-083 | real-world single-task vertical slice | PARTIAL | IN_PROGRESS | AX-053, AX-060, AX-069, AX-344 |
-| AX-084 | cross-strategy orchestration benchmark | PARTIAL | NOT_AUDITED | AX-083 |
-| AX-085 | M1 release acceptance proof | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-054, AX-083, AX-084 |
+| AX-041 | ExecutionLevel L0–L5 vocabulary | COMPLETE | VERIFIED |  |
+| AX-042 | deterministic level-selection inputs | COMPLETE | VERIFIED |  |
+| AX-043 | routing-evidence contract | COMPLETE | VERIFIED |  |
+| AX-044 | bounded escalation model | COMPLETE | VERIFIED |  |
+| AX-045 | anti-loop policy | COMPLETE | VERIFIED |  |
+| AX-046 | AgentLoop composition boundary | COMPLETE | VERIFIED |  |
+| AX-047 | strategy registry | COMPLETE | VERIFIED |  |
+| AX-048 | canonical runtime strategy assembly | COMPLETE | VERIFIED |  |
+| AX-049 | L0 strategy adapter | COMPLETE | VERIFIED |  |
+| AX-050 | L1 governed capability strategy | COMPLETE | VERIFIED |  |
+| AX-051 | L2 compiled-procedure strategy | COMPLETE | VERIFIED |  |
+| AX-052 | L3 guided-procedure strategy | COMPLETE | VERIFIED |  |
+| AX-053 | L4 planning boundary | COMPLETE | VERIFIED |  |
+| AX-054 | L5 exploratory strategy clean implementation | NOT_IMPLEMENTED | VERIFIED | AX-065, AX-364, AX-365, AX-366 |
+| AX-055 | strategy-unavailable behavior | COMPLETE | VERIFIED |  |
+| AX-056 | failure escalation behavior | COMPLETE | VERIFIED |  |
+| AX-057 | TaskManager/runtime integration | COMPLETE | VERIFIED |  |
+| AX-058 | task decomposition schema | COMPLETE | VERIFIED |  |
+| AX-059 | decomposition DAG validation | COMPLETE | VERIFIED |  |
+| AX-060 | decomposition readiness validator | COMPLETE | VERIFIED |  |
+| AX-061 | terminal-node readiness rules | COMPLETE | VERIFIED |  |
+| AX-062 | capability-target readiness | COMPLETE | VERIFIED |  |
+| AX-063 | procedure-target readiness | COMPLETE | VERIFIED |  |
+| AX-064 | higher-level-resolution readiness | COMPLETE | VERIFIED |  |
+| AX-065 | Reasoner provider-neutral boundary | COMPLETE | VERIFIED |  |
+| AX-066 | bounded Reasoner request | COMPLETE | VERIFIED |  |
+| AX-067 | model-output acceptance boundary | COMPLETE | VERIFIED |  |
+| AX-068 | model-output strict JSON handling | COMPLETE | VERIFIED |  |
+| AX-069 | independent task verification | COMPLETE | VERIFIED |  |
+| AX-070 | verification-requirement contract | COMPLETE | VERIFIED |  |
+| AX-071 | requirement evaluation | COMPLETE | VERIFIED |  |
+| AX-072 | execution success != task success invariant | COMPLETE | VERIFIED |  |
+| AX-073 | procedure END != task success invariant | COMPLETE | VERIFIED |  |
+| AX-074 | cancellation semantics | COMPLETE | VERIFIED |  |
+| AX-075 | timeout semantics | COMPLETE | VERIFIED |  |
+| AX-076 | denied-attempt semantics | COMPLETE | VERIFIED |  |
+| AX-077 | unverified-attempt semantics | COMPLETE | VERIFIED |  |
+| AX-078 | bounded strategy attempts | COMPLETE | VERIFIED |  |
+| AX-079 | strategy result typing | COMPLETE | VERIFIED |  |
+| AX-080 | hostile routing metadata inertness | COMPLETE | VERIFIED |  |
+| AX-081 | task/runtime adversarial tests | COMPLETE | VERIFIED |  |
+| AX-082 | task/runtime architecture tests | COMPLETE | VERIFIED |  |
+| AX-083 | real-world single-task vertical slice | PARTIAL | VERIFIED | AX-053, AX-060, AX-069, AX-344 |
+| AX-084 | cross-strategy orchestration benchmark | PARTIAL | VERIFIED | AX-083 |
+| AX-085 | M1 release acceptance proof | NOT_IMPLEMENTED | VERIFIED | AX-054, AX-083, AX-084 |
 | AX-086 | Episode identity | COMPLETE | NOT_AUDITED |  |
 | AX-087 | Episode record | COMPLETE | NOT_AUDITED |  |
 | AX-088 | Episode outcome vocabulary | COMPLETE | NOT_AUDITED |  |
