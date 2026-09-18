@@ -113,16 +113,26 @@ class VoiceRuntimeTelemetry:
         state: str,
         *,
         context: ExecutionContext | None = None,
+        correlation_id: UUID | None = None,
         task: Task | None = None,
         payload: dict[str, object] | None = None,
     ) -> RuntimeUiEvent:
+        if (
+            context is not None
+            and correlation_id is not None
+            and context.correlation_id != correlation_id
+        ):
+            raise ValueError("context and explicit correlation_id disagree")
+        event_correlation_id = (
+            context.correlation_id if context is not None else correlation_id
+        )
         event = RuntimeUiEvent(
             runtime_instance_id=self._runtime_instance_id,
             sequence=self._sequence,
             timestamp=datetime.now(UTC),
             kind=RuntimeUiEventKind.EVENT,
             state=state,
-            correlation_id=None if context is None else context.correlation_id,
+            correlation_id=event_correlation_id,
             task_id=None if task is None else task.task_id.to_str(),
             payload={} if payload is None else payload,
         )
@@ -179,6 +189,8 @@ class VoiceTaskBridge:
         self,
         transcript: str,
         plan: VoiceTaskPlan,
+        *,
+        correlation_id: UUID | None = None,
     ) -> Result[OrchestrationOutcome, AgentXError]:
         if not isinstance(transcript, str) or not transcript.strip():
             return Result.failure(
@@ -204,8 +216,9 @@ class VoiceTaskBridge:
             metadata={"input_modality": "voice"},
         )
         cancellation = CancellationSource()
+        actual_correlation_id = uuid4() if correlation_id is None else correlation_id
         context = ExecutionContext(
-            correlation_id=uuid4(),
+            correlation_id=actual_correlation_id,
             cancellation_token=cancellation.token,
             task_id=task.task_id,
         )
