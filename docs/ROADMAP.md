@@ -20,7 +20,7 @@ Exit criteria:
 
 ## Milestone 1 — Governed Single-Task Agent Runtime
 
-**Status:** Mostly acceptance-verified; strict real-world/benchmark closure remains
+**Status:** 43/45 acceptance-verified; strict live natural-goal vertical and dependent release proof remain BLOCKED
 
 Turn the substrate into a real bounded agent loop for one task.
 
@@ -83,7 +83,7 @@ on implementation head `e55d48b102de4b346faa54d1af0d3de7d35008a0`.
 
 ## Milestone 4 — Learning Efficiency Proof
 
-**Status:** Partially implemented / not yet demonstrated end-to-end
+**Status:** 27/30 acceptance-verified; deterministic cold-to-warm chain accepted, live-model efficiency proof remains BLOCKED
 
 Prove that AgentX converts expensive reasoning into cheaper verified execution over time.
 
@@ -149,7 +149,7 @@ reported baseline remains unchanged.
 
 ## Milestone 7 — Browser Agent Capability Layer
 
-**Status:** Partial
+**Status:** Completed and acceptance-verified for the M7 task scope
 
 Build a governed browser surface for multi-step web workflows.
 
@@ -163,9 +163,17 @@ Exit criteria:
 - hostile webpage content treated as untrusted data, never authority;
 - multi-step browser workflow benchmark with task-level verification.
 
+Acceptance evidence: clean PR #173 adds a concrete W3C WebDriver provider, explicit
+governed form/session/workflow contracts, deterministic DOM recovery and a canonical
+Windows CI real-browser gate. Actual headless Chrome is driven against a controlled
+localhost fixture through Executor/ActionGate/ResourceBudget with independent readback,
+sensitive-value redaction, explicit submit/redirect, upload/download, cookies/auth,
+tabs, recovery, multi-page flow and hostile-page authority-isolation checks. This
+accepts AX-301–AX-335 at M7 scope without claiming arbitrary third-party-site compatibility.
+
 ## Milestone 8 — Real Model Gateway and Exploratory/Research Runtime
 
-**Status:** Major remaining core milestone
+**Status:** 33/35 acceptance-verified; real external model/research vertical and milestone acceptance remain BLOCKED
 
 Make L4/L5 practical with provider-neutral real model execution and governed research.
 
@@ -179,6 +187,13 @@ Exit criteria:
 - research findings enter memory as unverified knowledge until independently verified;
 - model/provider failure and fallback behavior explicitly bounded;
 - no provider-specific assumptions leak into core architecture.
+
+Acceptance evidence: PR #173 adds a bounded provider-independent model gateway with
+retry/fallback/health/capability registry and canonical Reasoner/ResourceBudget
+composition, plus a verified-research-to-execution handoff that admits only canonical
+VERIFIED knowledge as inert context. A fail-closed live-provider command is present,
+but AX-369/370 remain BLOCKED because no genuine external provider credential/service
+was available; loopback or scripted providers are not substituted.
 
 ## Milestone 9 — Security and Adversarial Trust-Boundary Hardening
 
@@ -307,18 +322,20 @@ Exit criteria:
 
 ## Current canonical position
 
-The independent AX-001–AX-600 audit against canonical main
-`bcc0692246a981be5ae15c993b0c3e6512871b92` records 380 VERIFIED,
-9 IN_PROGRESS, 7 BLOCKED and 204 NOT_IMPLEMENTED tasks. M0, M2, M3, M5 and
-M6 are fully accepted at their milestone task scope. M1 is 42/45 under the
-stricter audit because the current deterministic integration evidence does not
-by itself prove the "real-world single-task vertical slice" or one cross-strategy
-benchmark; its release proof therefore remains dependent on those gaps.
+The independent AX-001–AX-600 audit plus the M1/M4/M7/M8 second-pass closure
+campaign on clean PR #173 records 411 VERIFIED, 1 IN_PROGRESS, 7 BLOCKED and
+181 NOT_IMPLEMENTED tasks. M0, M2, M3, M5, M6 and M7 are fully accepted at
+their milestone task scope. M1 is 43/45: AX-084 now has one L0-L5 cross-strategy
+benchmark, while AX-083/085 remain blocked because a real-Chrome pre-bound L1
+slice is not a substitute for the strict full natural-goal/live model-research
+vertical and dependent release proof. M4 is 27/30 with the deterministic
+cold->compile->promote->restart->warm chain accepted; genuine provider-backed
+efficiency measurements remain blocked. M8 is 33/35 with provider-independent
+gateway/research integration accepted and real-service vertical acceptance blocked.
 
-The broader project is not complete: M4 live learning-efficiency proof, governed
-browser completion, live model/research acceptance, modern cross-surface
-adversarial replay, later platform/product milestones, and release-level Windows
-10/11 matrix coverage remain separate work.
+The broader project is not complete: live model/research acceptance, later
+platform/product milestones, separate M9/M10 work not yet merged to canonical
+main, and release-level Windows 10/11 matrix coverage remain separate work.
 
 Milestone completion must be judged by exact requirements and canonical evidence,
 not by raw PR count, historical task-number count, or a single readiness percentage.
