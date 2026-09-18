@@ -124,7 +124,7 @@ class HudModel:
             or "task.started" in value
         ):
             return HudState.EXECUTING
-        if "verified" in value or "task.completed" in value:
+        if "verified" in value or "task.completed" in value or value.endswith(".idle"):
             return HudState.IDLE
         return fallback
 
