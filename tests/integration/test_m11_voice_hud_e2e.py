@@ -5,7 +5,9 @@ from __future__ import annotations
 import struct
 from datetime import UTC, datetime
 
+from agentx.capabilities.verifier import VerificationRequirement
 from agentx.cognition.realtime_voice import RealtimeVoiceSession
+from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.cognition.speech import (
     SpeechProviderId,
     SttRequest,
@@ -34,8 +36,6 @@ from agentx.core.result import Result
 from agentx.hud import HudModel, HudState
 from agentx.voice_hud_runtime import VoiceHudRuntime
 from agentx.voice_runtime import VoiceRuntimeTelemetry, VoiceTaskBridge, VoiceTaskPlan
-from agentx.capabilities.verifier import VerificationRequirement
-from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from tests.support.orchestration_harness import OrchestrationHarness, default_limits
 
 _PROVIDER = AudioProviderId("m11-e2e-audio")
