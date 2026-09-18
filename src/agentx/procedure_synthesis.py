@@ -1204,7 +1204,11 @@ def _check_generalization_groups(
                     reason=SynthesisRejectionReason.EVIDENCE_MISMATCH,
                     detail=f"parameter group {index}: observation provenance is unreadable",
                 )
-            if type(sequence) is not int or sequence < 1 or type(decision) is not ActionEliminationDecision:
+            if (
+                type(sequence) is not int
+                or sequence < 1
+                or type(decision) is not ActionEliminationDecision
+            ):
                 return _Failure(
                     reason=SynthesisRejectionReason.EVIDENCE_MISMATCH,
                     detail=(
