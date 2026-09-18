@@ -1,16 +1,16 @@
 # AgentX status
 
-Repository: `harsh2025-sketch/AgentX`. Integration baseline: `9b2ecd350e24833860fbd1cbf7bde1e2f549bad5`.
+Repository: `harsh2025-sketch/AgentX`. M14 implementation baseline: `446771fab52278b4f12fa752fb000bd4668a5241`.
 
-PR #169 security and PR #171 world-model implementation are merged. This reconciliation incorporates PR #173's core-intelligence evidence; its exact new head must pass canonical CI before merge. The final whole-project audit follows integration. Historical `reported_status` remains unchanged. Counts below are calculated from TASKS.json, not added from PR summaries.
+Canonical main at M14 start includes the completed prior integration and passed exact-SHA C1.01. PR #176 is the isolated M14 implementation/acceptance candidate and must not be self-merged. Historical `reported_status` remains unchanged. Counts below are calculated from TASKS.json, not added from PR summaries.
 
 | State | Tasks | Percentage |
 | --- | ---: | ---: |
-| VERIFIED | 440 | 73.33% |
+| VERIFIED | 463 | 77.17% |
 | NOT_AUDITED | 0 | 0.00% |
 | IN_PROGRESS | 1 | 0.17% |
 | BLOCKED | 7 | 1.17% |
-| NOT_IMPLEMENTED | 152 | 25.33% |
+| NOT_IMPLEMENTED | 129 | 21.50% |
 | TOTAL | 600 | 100.00% |
 
 | Milestone | Range | VERIFIED | TOTAL | % | Other states | Status |
@@ -29,7 +29,7 @@ PR #169 security and PR #171 world-model implementation are merged. This reconci
 | M11 | AX-436–AX-460 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
 | M12 | AX-461–AX-485 | 1 | 25 | 4.00% | NOT_IMPLEMENTED=24 | PARTIAL |
 | M13 | AX-486–AX-515 | 2 | 30 | 6.67% | NOT_IMPLEMENTED=28 | PARTIAL |
-| M14 | AX-516–AX-540 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
+| M14 | AX-516–AX-540 | 25 | 25 | 100.00% | none | COMPLETE |
 | M15 | AX-541–AX-570 | 1 | 30 | 3.33% | NOT_IMPLEMENTED=29 | PARTIAL |
 | M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
 
@@ -47,6 +47,10 @@ M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 releas
 | Voice/HUD | Narrow contracts only; audio hardware and product interaction remain unimplemented. |
 | Scheduling | Event-watcher foundation only; persistent scheduler and policy execution remain open. |
 | Multi-device/Android | Protocol contracts only; real devices, transport and Android execution remain open. |
-| Optimization | Strategy/performance evidence foundations; adaptive policies and acceptance remain open. |
+| Optimization | M14 adaptive strategy history/statistics, bounded experiments, specialist models, safe policy promotion/rollback and controlled acceptance are implemented; real-user/provider production statistics are not claimed. |
 | Self-extension | Capability-gap foundation; safe extension lifecycle remains open. |
 | Production/release | Release is not ready; installer, upgrades, privacy/product controls, platform matrix and whole-system acceptance remain open. |
+
+## M14 acceptance boundary
+
+M14 is 25/25 VERIFIED for its exact repository task scope on PR #176, subject to final exact-head C1.01. Controlled reproducible experiments prove mechanics, safety, fallback, benchmarks and rollback; no statistically representative production improvement, real-user preference corpus, live-model evidence, or provider cost is claimed. See `docs/M14_ADAPTIVE_OPTIMIZATION_ACCEPTANCE.md`.
