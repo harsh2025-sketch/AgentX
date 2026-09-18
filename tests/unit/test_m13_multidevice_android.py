@@ -6,16 +6,15 @@ from uuid import uuid4
 import pytest
 
 from agentx.capabilities.abi import CapabilityPlatform, CapabilityRequest
-from agentx.capabilities.android.provider import AndroidProvider
-from agentx.capabilities.android.runtime import (
+from agentx.capabilities.android import (
+    AdbCommandResult,
+    AdbTransport,
     AndroidActionParams,
     AndroidOperation,
-    build_android_capabilities,
-)
-from agentx.capabilities.android.transport import AdbCommandResult, AdbTransport
-from agentx.capabilities.android.ui import (
+    AndroidProvider,
     AndroidTargetSelector,
     AndroidUiValidationError,
+    build_android_capabilities,
     parse_android_ui_tree,
     resolve_android_target,
 )
