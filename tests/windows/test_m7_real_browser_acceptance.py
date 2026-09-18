@@ -9,7 +9,10 @@ evidence, and capability verification.
 
 from __future__ import annotations
 
+import json
 import os
+import platform
+import sys
 import threading
 from datetime import timedelta
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -415,6 +418,26 @@ def test_real_browser_governed_form_session_security_and_workflow(tmp_path: Path
                 denied_context,
             ).unwrap()
             assert denied.kind is LoopOutcome.DENIED
+
+            assert provider.browser_version is not None
+            evidence = {
+                "acceptance": "AX-335",
+                "browser": "Chrome",
+                "browser_version": provider.browser_version,
+                "headless": provider.headless,
+                "platform": platform.platform(),
+                "controlled_fixture": True,
+                "governed_executor": True,
+                "agent_loop_vertical": vertical.verified,
+                "independent_verification": True,
+                "hostile_page_authority_denied": True,
+                "sensitive_values_exposed": False,
+            }
+            sys.stdout.write(
+                "M7_REAL_BROWSER_ACCEPTANCE="
+                + json.dumps(evidence, sort_keys=True)
+                + "\n"
+            )
         finally:
             provider.close()
 
