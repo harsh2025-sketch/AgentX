@@ -7,6 +7,7 @@ import threading
 from datetime import UTC, datetime
 
 from agentx.cognition.realtime_voice import (
+    ComposedRealtimeVoiceProvider,
     EnergyVoiceActivityDetector,
     RealtimeSessionState,
     RealtimeVoiceSession,
@@ -238,3 +239,74 @@ def test_barge_in_cancels_stale_playback_without_orphan() -> None:
     assert not worker.is_alive()
     assert result and result[0].is_failure
     assert session.state is RealtimeSessionState.INTERRUPTED
+
+
+class _AudioProvider:
+    provider_id = _PROVIDER
+
+    def __init__(self) -> None:
+        self.capture = _Capture()
+        self.playback = _Playback()
+
+    def supports(self, config: AudioFormatSupport) -> bool:
+        return config.formats <= _SUPPORT.formats
+
+    def endpoints(
+        self,
+        kind: AudioEndpointKind | None = None,
+    ) -> Result[tuple[AudioEndpoint, ...], AgentXError]:
+        endpoints = (self.capture.descriptor.endpoint, self.playback.descriptor.endpoint)
+        if kind is None:
+            return Result.success(endpoints)
+        return Result.success(tuple(endpoint for endpoint in endpoints if endpoint.kind is kind))
+
+    def open(
+        self,
+        descriptor: AudioStreamDescriptor,
+        *,
+        deadline: object | None = None,
+    ) -> Result[object, AgentXError]:
+        del deadline
+        if descriptor.kind is AudioEndpointKind.SOURCE:
+            return Result.success(self.capture)
+        return Result.success(self.playback)
+
+
+def test_composed_realtime_provider_opens_fresh_session_from_canonical_contracts() -> None:
+    audio = _AudioProvider()
+    provider = ComposedRealtimeVoiceProvider(
+        audio=audio,
+        capture_descriptor=audio.capture.descriptor,
+        playback_descriptor=audio.playback.descriptor,
+        stt=_Stt(),
+        tts=_Tts(),
+    )
+    session = provider.open_session().unwrap()
+    assert isinstance(session, RealtimeVoiceSession)
+    assert session.state is RealtimeSessionState.IDLE
+
+
+def test_realtime_session_reports_turn_end_after_speech_then_silence() -> None:
+    capture = _Capture()
+    capture.frames = [
+        _frame(capture.descriptor.stream_id, 6000, sequence=0),
+        *[
+            _frame(capture.descriptor.stream_id, 0, sequence=index)
+            for index in range(1, 62)
+        ],
+    ]
+    session = RealtimeVoiceSession(
+        capture=capture,
+        playback=_Playback(),
+        stt=_Stt(),
+        tts=_Tts(),
+        turn_end=TurnEndDetector(silence_seconds=0.6, max_turn_seconds=5),
+    )
+    session.start_turn()
+    ended = False
+    for _ in range(62):
+        observation = session.capture_frame().unwrap()
+        if observation.turn_ended:
+            ended = True
+            break
+    assert ended
