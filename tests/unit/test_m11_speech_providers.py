@@ -6,10 +6,10 @@ import base64
 import json
 import threading
 import time
+from collections.abc import Iterator
 from contextlib import contextmanager
 from datetime import UTC, datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from typing import Iterator
 
 from agentx.cognition.speech import (
     HttpSpeechConfig,
