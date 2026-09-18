@@ -20,6 +20,7 @@ from urllib.parse import urlsplit
 import pytest
 
 from agentx.capabilities.abi import CapabilityRequest
+from agentx.capabilities.verifier import VerificationRequirement
 from agentx.capabilities.browser_actions import (
     BrowserClickPostcondition,
     click_selected_request,
@@ -59,9 +60,15 @@ from agentx.capabilities.webdriver_browser_driver import (
     ChromeDriverService,
     WebDriverBrowserProvider,
 )
+from agentx.capability_strategy import CapabilityStrategyBinding, GovernedCapabilityStrategy
+from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.kernel.permissions import Permission
 from agentx.kernel.risk import RiskLevel
-from tests.support.orchestration_harness import OrchestrationHarness, make_envelope
+from tests.support.orchestration_harness import (
+    OrchestrationHarness,
+    default_limits,
+    make_envelope,
+)
 
 pytestmark = pytest.mark.skipif(
     os.environ.get("AGENTX_M7_REAL_BROWSER") != "1",
@@ -247,7 +254,31 @@ def test_real_browser_governed_form_session_security_and_workflow(tmp_path: Path
                 harness.registry.register(capability)
 
             initial_target = provider.target_ref().unwrap()
-            _run(harness, navigate_request(initial_target, f"{site.base_url}/"))
+            vertical_strategy = GovernedCapabilityStrategy(
+                executor=harness.executor,
+                binding=CapabilityStrategyBinding(
+                    request=navigate_request(initial_target, f"{site.base_url}/")
+                ),
+            )
+            vertical_task = harness.make_task(
+                "Open the controlled browser fixture and verify the destination."
+            )
+            vertical = harness.agent_loop(
+                {ExecutionLevel.L1_DIRECT: vertical_strategy}
+            ).run(
+                harness.make_request(
+                    task=vertical_task,
+                    context=harness.make_context(vertical_task),
+                    routing_evidence=RoutingEvidence(deterministic_direct_path=True),
+                    requirement=VerificationRequirement({"url": f"{site.base_url}/"}),
+                    limits=default_limits(
+                        max_total_attempts=1,
+                        escalation_permitted=False,
+                    ),
+                )
+            ).unwrap()
+            assert vertical.verified is True
+            assert vertical.final_level is ExecutionLevel.L1_DIRECT
 
             target, password_node = _select(provider, "password")
             fill_result = _run(
