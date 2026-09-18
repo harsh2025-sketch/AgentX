@@ -179,9 +179,9 @@ def test_complete_voice_hud_milestone_path_uses_canonical_governed_runtime() -> 
     model = HudModel()
     events: list[RuntimeUiEvent] = []
 
-    def consume(event: object) -> None:
+    def consume(event: RuntimeUiEvent) -> None:
         events.append(event)
-        model.apply(event)  # type: ignore[arg-type]
+        model.apply(event)
 
     bridge = VoiceTaskBridge(
         task_manager=harness.task_manager,
