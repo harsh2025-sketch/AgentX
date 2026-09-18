@@ -26,6 +26,7 @@ from agentx.core.audio import (
     AudioEndpoint,
     AudioEndpointId,
     AudioEndpointKind,
+    AudioFailureKind,
     AudioFormat,
     AudioFormatSupport,
     AudioFrame,
@@ -34,7 +35,6 @@ from agentx.core.audio import (
     AudioStreamState,
     AudioStreamStatus,
     audio_failure,
-    AudioFailureKind,
 )
 from agentx.core.errors import AgentXError
 from agentx.core.execution import CancellationSource, CancellationToken
