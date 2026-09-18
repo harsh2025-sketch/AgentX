@@ -273,7 +273,7 @@ def test_real_browser_governed_form_session_security_and_workflow(tmp_path: Path
                         task=vertical_task,
                         context=harness.make_context(vertical_task),
                         routing_evidence=RoutingEvidence(deterministic_direct_path=True),
-                        requirement=VerificationRequirement({"url": f"{site.base_url}/"}),
+                        requirement=VerificationRequirement({"requested_url": f"{site.base_url}/"}),
                         limits=default_limits(
                             max_total_attempts=1,
                             escalation_permitted=False,
