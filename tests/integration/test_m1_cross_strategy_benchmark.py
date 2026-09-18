@@ -146,10 +146,14 @@ def test_ax084_cross_strategy_production_benchmark(tmp_path: Path) -> None:
         cache_manager,
         expected_fingerprint="sha256:abc123",
     )
-    cache_outcome = AgentLoop(
-        task_manager=cache_manager,
-        strategies=StrategyRegistry({ExecutionLevel.L0_CACHE: cache_strategy}),
-    ).run(cache_run).unwrap()
+    cache_outcome = (
+        AgentLoop(
+            task_manager=cache_manager,
+            strategies=StrategyRegistry({ExecutionLevel.L0_CACHE: cache_strategy}),
+        )
+        .run(cache_run)
+        .unwrap()
+    )
     _assert_level(cache_outcome, ExecutionLevel.L0_CACHE)
     observed.add(cache_outcome.final_level)
 
@@ -161,40 +165,50 @@ def test_ax084_cross_strategy_production_benchmark(tmp_path: Path) -> None:
             request=write_request(NoteWriteParams(key="alpha", value="v1"))
         ),
     )
-    direct_outcome = direct.agent_loop({ExecutionLevel.L1_DIRECT: direct_strategy}).run(
-        direct.make_request(
-            routing_evidence=RoutingEvidence(deterministic_direct_path=True),
-            requirement=VerificationRequirement({"stored": True, "key": "alpha"}),
-            limits=default_limits(max_total_attempts=1, escalation_permitted=False),
+    direct_outcome = (
+        direct.agent_loop({ExecutionLevel.L1_DIRECT: direct_strategy})
+        .run(
+            direct.make_request(
+                routing_evidence=RoutingEvidence(deterministic_direct_path=True),
+                requirement=VerificationRequirement({"stored": True, "key": "alpha"}),
+                limits=default_limits(max_total_attempts=1, escalation_permitted=False),
+            )
         )
-    ).unwrap()
+        .unwrap()
+    )
     _assert_level(direct_outcome, ExecutionLevel.L1_DIRECT)
     observed.add(direct_outcome.final_level)
 
     # L2 — ACTIVE compiled procedure through the canonical procedure runtime.
     compiled = OrchestrationHarness()
-    compiled_outcome = compiled.agent_loop(
-        {ExecutionLevel.L2_COMPILED: _compiled_strategy(compiled)}
-    ).run(
-        compiled.make_request(
-            routing_evidence=RoutingEvidence(verified_reasoning_free_procedure=True),
-            requirement=VerificationRequirement({"stored": True, "key": "alpha"}),
-            limits=default_limits(max_total_attempts=1, escalation_permitted=False),
+    compiled_outcome = (
+        compiled.agent_loop({ExecutionLevel.L2_COMPILED: _compiled_strategy(compiled)})
+        .run(
+            compiled.make_request(
+                routing_evidence=RoutingEvidence(verified_reasoning_free_procedure=True),
+                requirement=VerificationRequirement({"stored": True, "key": "alpha"}),
+                limits=default_limits(max_total_attempts=1, escalation_permitted=False),
+            )
         )
-    ).unwrap()
+        .unwrap()
+    )
     _assert_level(compiled_outcome, ExecutionLevel.L2_COMPILED)
     observed.add(compiled_outcome.final_level)
 
     # L3 — guided procedure with one bounded controlled reasoning gap.
     guided = OrchestrationHarness()
     guided_adapter = guided_strategy(guided, provider=None, guided=False)
-    guided_outcome = guided.agent_loop({ExecutionLevel.L3_GUIDED: guided_adapter}).run(
-        guided.make_request(
-            routing_evidence=RoutingEvidence(procedure_with_reasoning_gaps=True),
-            requirement=VerificationRequirement({"stored": True, "key": "alpha"}),
-            limits=default_limits(max_total_attempts=1, escalation_permitted=False),
+    guided_outcome = (
+        guided.agent_loop({ExecutionLevel.L3_GUIDED: guided_adapter})
+        .run(
+            guided.make_request(
+                routing_evidence=RoutingEvidence(procedure_with_reasoning_gaps=True),
+                requirement=VerificationRequirement({"stored": True, "key": "alpha"}),
+                limits=default_limits(max_total_attempts=1, escalation_permitted=False),
+            )
         )
-    ).unwrap()
+        .unwrap()
+    )
     _assert_level(guided_outcome, ExecutionLevel.L3_GUIDED)
     observed.add(guided_outcome.final_level)
 
@@ -240,15 +254,19 @@ def test_ax084_cross_strategy_production_benchmark(tmp_path: Path) -> None:
         ),
         executor=plan_executor,
     )
-    planned_outcome = planned.agent_loop({ExecutionLevel.L4_PLANNED: planning}).run(
-        planned.make_request(
-            task=planned_task,
-            context=planned.make_context(planned_task),
-            routing_evidence=RoutingEvidence(known_composition_required=True),
-            requirement=VerificationRequirement({"text": "finished"}),
-            limits=default_limits(max_total_attempts=1, escalation_permitted=False),
+    planned_outcome = (
+        planned.agent_loop({ExecutionLevel.L4_PLANNED: planning})
+        .run(
+            planned.make_request(
+                task=planned_task,
+                context=planned.make_context(planned_task),
+                routing_evidence=RoutingEvidence(known_composition_required=True),
+                requirement=VerificationRequirement({"text": "finished"}),
+                limits=default_limits(max_total_attempts=1, escalation_permitted=False),
+            )
         )
-    ).unwrap()
+        .unwrap()
+    )
     _assert_level(planned_outcome, ExecutionLevel.L4_PLANNED)
     assert plan_provider.calls == 1
     assert planned_path.read_text(encoding="utf-8") == "finished"
@@ -298,19 +316,21 @@ def test_ax084_cross_strategy_production_benchmark(tmp_path: Path) -> None:
         ),
     )
     exploratory_task = exploratory.make_task("research one explicit knowledge gap")
-    exploratory_outcome = exploratory.agent_loop(
-        {ExecutionLevel.L5_EXPLORATORY: exploratory_strategy}
-    ).run(
-        exploratory.make_request(
-            task=exploratory_task,
-            context=exploratory.make_context(exploratory_task),
-            routing_evidence=RoutingEvidence(),
-            requirement=VerificationRequirement(
-                {"availability": "available", "research_verified": False}
-            ),
-            limits=default_limits(max_total_attempts=1, escalation_permitted=False),
+    exploratory_outcome = (
+        exploratory.agent_loop({ExecutionLevel.L5_EXPLORATORY: exploratory_strategy})
+        .run(
+            exploratory.make_request(
+                task=exploratory_task,
+                context=exploratory.make_context(exploratory_task),
+                routing_evidence=RoutingEvidence(),
+                requirement=VerificationRequirement(
+                    {"availability": "available", "research_verified": False}
+                ),
+                limits=default_limits(max_total_attempts=1, escalation_permitted=False),
+            )
         )
-    ).unwrap()
+        .unwrap()
+    )
     _assert_level(exploratory_outcome, ExecutionLevel.L5_EXPLORATORY)
     assert research_port.calls == 1
     assert exploratory.budget.snapshot().research_queries == 1
