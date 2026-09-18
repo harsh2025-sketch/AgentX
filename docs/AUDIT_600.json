@@ -11,8 +11,8 @@
   },
   "after": {
     "NOT_AUDITED": 0,
-    "VERIFIED": 379,
-    "IN_PROGRESS": 10,
+    "VERIFIED": 380,
+    "IN_PROGRESS": 9,
     "BLOCKED": 7,
     "NOT_IMPLEMENTED": 204
   },
@@ -147,9 +147,9 @@
     },
     "M16": {
       "TOTAL": 30,
-      "VERIFIED": 3,
+      "VERIFIED": 4,
       "NOT_AUDITED": 0,
-      "IN_PROGRESS": 2,
+      "IN_PROGRESS": 1,
       "BLOCKED": 0,
       "NOT_IMPLEMENTED": 25
     }
@@ -9356,15 +9356,15 @@
       "requirement": "milestone-status automation",
       "reported_status": "NOT_IMPLEMENTED",
       "previous_acceptance_status": "IN_PROGRESS",
-      "audited_acceptance_status": "IN_PROGRESS",
-      "evidence_level": "E2",
-      "implementation_path": "README.md; docs/TASKS.json; scripts/task_ledger.py",
-      "test_path": "scripts/task_ledger.py; .github/workflows/quality.yml",
-      "acceptance_path": "docs/AUDIT_600.md",
+      "audited_acceptance_status": "VERIFIED",
+      "evidence_level": "E3",
+      "implementation_path": "scripts/task_ledger.py",
+      "test_path": "tests/integration/test_task_ledger.py",
+      "acceptance_path": "docs/AUDIT_600.md; .github/workflows/quality.yml",
       "external_dependency": null,
-      "gap": "INTEGRATION MISSING",
-      "remediation_performed": "Audited and retained IN_PROGRESS; no unsupported completion claim added.",
-      "final_conclusion": "Not VERIFIED. Primary gap: INTEGRATION MISSING."
+      "gap": "NONE",
+      "remediation_performed": "Completed milestone-status automation by extending the canonical ledger renderer to calculate every audited acceptance state per milestone and adding an integration regression.",
+      "final_conclusion": "Exact AX-575 requirement accepted at E3 after local remediation; final audit-PR exact-head CI still applies."
     },
     {
       "id": "AX-576",
