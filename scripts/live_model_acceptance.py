@@ -149,9 +149,7 @@ def main() -> int:
         "input_tokens": usage.input_tokens,
         "output_tokens": usage.output_tokens,
         "total_tokens": usage.total_tokens,
-        "latency_seconds": (
-            None if usage.latency is None else usage.latency.total_seconds()
-        ),
+        "latency_seconds": (None if usage.latency is None else usage.latency.total_seconds()),
         "external_cost": None if usage.external_cost is None else str(usage.external_cost),
         "response_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
         "response_text_exposed": False,
