@@ -22,11 +22,12 @@ import time
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Final
+from typing import Any, Final
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
+from agentx.capabilities.abi import Capability
 from agentx.capabilities.browser_actions import (
     BrowserActionOperation,
     BrowserActionOutcome,
@@ -244,7 +245,7 @@ class WebDriverBrowserProvider:
         )
 
     @property
-    def capabilities(self) -> tuple[object, ...]:
+    def capabilities(self) -> tuple[Capability[Any], ...]:
         return self._capabilities
 
     @property
