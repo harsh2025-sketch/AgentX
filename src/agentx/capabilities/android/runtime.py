@@ -259,9 +259,15 @@ class AndroidActionParams(CapabilityParams):
             "navigation": self.navigation,
             "verification": self.verification,
         }
-        unexpected = [name for name, value in values.items() if value is not None and name not in allowed]
+        unexpected = [
+            name
+            for name, value in values.items()
+            if value is not None and name not in allowed
+        ]
         if unexpected:
-            raise ValueError(f"{self.operation.value} rejects fields: {sorted(unexpected)}")
+            raise ValueError(
+                f"{self.operation.value} rejects fields: {sorted(unexpected)}"
+            )
 
     def to_dict(self) -> dict[str, JsonValue]:
         return {
