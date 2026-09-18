@@ -180,7 +180,7 @@ def test_malformed_compiler_metadata_cannot_become_runtime_action(tmp_path: Path
         edges=graph.edges,
     )
 
-    with pytest.raises(CompiledSkillBindingError, match="unexpected"):
+    with pytest.raises(CompiledSkillBindingError, match="exact compiler metadata"):
         materialize_compiled_procedure_graph(
             malformed,
             {"filesystem.read_text@1.0.0": FILESYSTEM_READ_TEXT_IDENTITY},
