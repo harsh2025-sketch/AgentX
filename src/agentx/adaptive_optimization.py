@@ -768,7 +768,7 @@ class AdaptiveExecutionLevelRouter(ExecutionLevelRouter):
     def route(self, evidence: RoutingEvidence) -> RoutingDecision:
         if not isinstance(evidence, RoutingEvidence):
             raise TypeError("evidence must be RoutingEvidence")
-        canonical = super().route(evidence)
+        canonical = ExecutionLevelRouter.route(self, evidence)
         canonical_index = CANONICAL_EXECUTION_LEVELS.index(canonical.level)
         candidates = tuple(
             level
