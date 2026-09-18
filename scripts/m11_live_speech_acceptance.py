@@ -7,8 +7,7 @@ Required environment:
   AGENTX_M11_SPEECH_API_KEY
   AGENTX_M11_STT_AUDIO_B64
 
-The audio is explicit caller-supplied PCM S16LE 16 kHz mono. No credential,
-transcript text, synthesized audio, or raw input audio is printed.
+No credential, transcript text, synthesized audio, or raw input audio is emitted.
 """
 
 from __future__ import annotations
@@ -17,6 +16,8 @@ import base64
 import hashlib
 import json
 import os
+import sys
+from collections.abc import Mapping
 from datetime import UTC, datetime
 
 from agentx.cognition.speech import (
@@ -53,6 +54,10 @@ def _required(name: str) -> str:
     return value.strip()
 
 
+def _emit(payload: Mapping[str, object]) -> None:
+    sys.stdout.write(json.dumps(dict(payload), sort_keys=True) + "\n")
+
+
 def main() -> int:
     required = (
         "AGENTX_M11_SPEECH_PROVIDER_ID",
@@ -63,7 +68,7 @@ def main() -> int:
     )
     missing = [name for name in required if not os.environ.get(name)]
     if missing:
-        print(json.dumps({"accepted": False, "reason": "missing_environment", "missing": missing}))
+        _emit({"accepted": False, "reason": "missing_environment", "missing": missing})
         return 2
 
     provider_id = SpeechProviderId(_required("AGENTX_M11_SPEECH_PROVIDER_ID"))
@@ -87,7 +92,7 @@ def main() -> int:
     try:
         audio = base64.b64decode(_required("AGENTX_M11_STT_AUDIO_B64"), validate=True)
     except ValueError:
-        print(json.dumps({"accepted": False, "reason": "invalid_audio_base64"}))
+        _emit({"accepted": False, "reason": "invalid_audio_base64"})
         return 2
 
     cancellation = CancellationSource()
@@ -109,13 +114,15 @@ def main() -> int:
         )
     )
     if stt_result.is_failure:
-        print(
-            json.dumps(
-                {"accepted": False, "stage": "stt", "error_code": stt_result.unwrap_error().code},
-                sort_keys=True,
-            )
+        _emit(
+            {
+                "accepted": False,
+                "stage": "stt",
+                "error_code": stt_result.unwrap_error().code,
+            }
         )
         return 1
+
     transcript = stt_result.unwrap()
     tts_result = tts.synthesize(
         TtsRequest(
@@ -125,29 +132,28 @@ def main() -> int:
         )
     )
     if tts_result.is_failure:
-        print(
-            json.dumps(
-                {"accepted": False, "stage": "tts", "error_code": tts_result.unwrap_error().code},
-                sort_keys=True,
-            )
+        _emit(
+            {
+                "accepted": False,
+                "stage": "tts",
+                "error_code": tts_result.unwrap_error().code,
+            }
         )
         return 1
+
     synthesized = b"".join(frame.payload for frame in tts_result.unwrap().frames)
-    print(
-        json.dumps(
-            {
-                "accepted": True,
-                "provider": provider_id.value,
-                "stt_final": transcript.is_final,
-                "stt_text_sha256": hashlib.sha256(transcript.text.encode()).hexdigest(),
-                "tts_audio_sha256": hashlib.sha256(synthesized).hexdigest(),
-                "input_audio_exposed": False,
-                "transcript_exposed": False,
-                "tts_audio_exposed": False,
-                "credential_exposed": False,
-            },
-            sort_keys=True,
-        )
+    _emit(
+        {
+            "accepted": True,
+            "provider": provider_id.value,
+            "stt_final": transcript.is_final,
+            "stt_text_sha256": hashlib.sha256(transcript.text.encode()).hexdigest(),
+            "tts_audio_sha256": hashlib.sha256(synthesized).hexdigest(),
+            "input_audio_exposed": False,
+            "transcript_exposed": False,
+            "tts_audio_exposed": False,
+            "credential_exposed": False,
+        }
     )
     return 0
 
