@@ -450,6 +450,8 @@ class RealtimeVoiceSession:
         for frame in response.unwrap().frames:
             written = self._playback.write(frame)
             if written.is_failure:
+                if self._state is RealtimeSessionState.INTERRUPTED:
+                    return Result.failure(written.unwrap_error())
                 if _is_cancelled(self._source):
                     self._transition(RealtimeSessionState.INTERRUPTED)
                 else:
