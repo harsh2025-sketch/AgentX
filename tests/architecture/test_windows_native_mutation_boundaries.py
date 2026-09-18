@@ -16,6 +16,7 @@ _MODULE = _WINDOWS / "native_mutation.py"
 
 _EXPECTED_ADAPTER_METHODS = {
     "activate_window",
+    "clear_clipboard",
     "launch_process",
     "move_resize_window",
     "send_key_strokes",
@@ -35,12 +36,14 @@ _EXPECTED_CLASSES = {
     "NativeTextInputRequest",
     "NativeKeyStroke",
     "NativeKeyInputRequest",
+    "NativeClipboardClearRequest",
     "NativeClipboardTextRequest",
     "NativeProcessLaunchOutcome",
     "NativeWindowStateOutcome",
     "NativeWindowActivationOutcome",
     "NativeWindowMoveResizeOutcome",
     "NativeInputInjectionOutcome",
+    "NativeClipboardClearOutcome",
     "NativeClipboardMutationOutcome",
     "NativeMutationSurface",
     "WindowsNativeMutationAdapter",
@@ -57,6 +60,7 @@ _EXPECTED_CLASSES = {
 _APPROVED_WIN32_MUTATION_NAMES = {
     "CloseClipboard",
     "CloseHandle",
+    "CountClipboardFormats",
     "CreateProcessW",
     "EmptyClipboard",
     "GlobalAlloc",
