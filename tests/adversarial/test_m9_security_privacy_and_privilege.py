@@ -126,9 +126,7 @@ def test_no_production_shell_true_or_dynamic_execution_side_channel() -> None:
                     and isinstance(keyword.value, ast.Constant)
                     and keyword.value.value is True
                 ):
-                    violations.append(
-                        f"{path.relative_to(_REPO_ROOT)}:{node.lineno}:shell=True"
-                    )
+                    violations.append(f"{path.relative_to(_REPO_ROOT)}:{node.lineno}:shell=True")
 
     assert violations == [], "unsafe dynamic execution found: " + ", ".join(violations)
 
@@ -151,8 +149,6 @@ def test_security_sensitive_decoding_uses_no_pickle_or_yaml_loader() -> None:
                 "marshal",
                 "shelve",
             }:
-                violations.append(
-                    f"{path.relative_to(_REPO_ROOT)}:{node.lineno}:{node.module}"
-                )
+                violations.append(f"{path.relative_to(_REPO_ROOT)}:{node.lineno}:{node.module}")
 
     assert violations == [], "unsafe deserialization dependency found: " + ", ".join(violations)
