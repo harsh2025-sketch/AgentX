@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
+from uuid import UUID, uuid4
 
 from agentx.agent_loop import OrchestrationOutcome
 from agentx.capabilities.human_approval import HumanApprovalDecision
@@ -53,7 +54,7 @@ class VoiceTurnResult:
 class VoiceHudRuntime:
     """Bounded synchronous voice/HUD composition with cross-owner cancellation."""
 
-    __slots__ = ("_session", "_task_bridge")
+    __slots__ = ("_correlation_id", "_session", "_task_bridge")
 
     def __init__(
         self,
@@ -67,6 +68,7 @@ class VoiceHudRuntime:
             raise TypeError("task_bridge must be VoiceTaskBridge")
         self._session = session
         self._task_bridge = task_bridge
+        self._correlation_id: UUID | None = None
 
     def run_turn(
         self,
@@ -79,7 +81,12 @@ class VoiceHudRuntime:
         if type(max_capture_frames) is not int or not 1 <= max_capture_frames <= 512:
             raise ValueError("max_capture_frames must be in [1, 512]")
 
-        self._task_bridge.telemetry.state("voice.listening")
+        turn_correlation_id = uuid4()
+        self._correlation_id = turn_correlation_id
+        self._task_bridge.telemetry.state(
+            "voice.listening",
+            correlation_id=turn_correlation_id,
+        )
         self._session.start_turn()
         speech_seen = False
         for _ in range(max_capture_frames):
@@ -106,13 +113,18 @@ class VoiceHudRuntime:
             return Result.failure(transcript_result.unwrap_error())
         transcript = transcript_result.unwrap()
 
-        governed = self._task_bridge.ingest(transcript.text, plan)
+        governed = self._task_bridge.ingest(
+            transcript.text,
+            plan,
+            correlation_id=turn_correlation_id,
+        )
         if governed.is_failure:
             return Result.failure(governed.unwrap_error())
         outcome = governed.unwrap()
 
         self._task_bridge.telemetry.state(
             "voice.speaking",
+            correlation_id=turn_correlation_id,
             task=outcome.task,
             payload={"verified": outcome.verified},
         )
@@ -123,6 +135,7 @@ class VoiceHudRuntime:
             return Result.failure(spoken.unwrap_error())
         self._task_bridge.telemetry.state(
             "voice.idle",
+            correlation_id=turn_correlation_id,
             task=outcome.task,
             payload={"verified": outcome.verified},
         )
@@ -139,13 +152,21 @@ class VoiceHudRuntime:
 
         session_event = self._session.barge_in(reason="user barge-in")
         task_cancelled = self._task_bridge.barge_in()
-        self._task_bridge.telemetry.state("voice.cancelled")
+        correlation_id = self._correlation_id or uuid4()
+        self._task_bridge.telemetry.state(
+            "voice.cancelled",
+            correlation_id=correlation_id,
+        )
         return task_cancelled or session_event.kind.value != "closed"
 
     def close(self) -> None:
         self._task_bridge.cancel("voice/HUD runtime closed")
         self._session.close()
-        self._task_bridge.telemetry.state("voice.idle")
+        correlation_id = self._correlation_id or uuid4()
+        self._task_bridge.telemetry.state(
+            "voice.idle",
+            correlation_id=correlation_id,
+        )
 
 
 @runtime_checkable
