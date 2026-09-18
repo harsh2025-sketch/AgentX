@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import StrEnum
 
-from agentx.capabilities.abi import CapabilityIdentity, CapabilityRequest
+from agentx.capabilities.abi import CapabilityIdentity
 from agentx.capabilities.device import DeviceDescriptor, DeviceId, DevicePlatform
 from agentx.capabilities.device_registry import (
     DeviceEnvironmentIdentity,
@@ -102,7 +102,10 @@ class DeviceRouter:
             return Result.failure(
                 AgentXError(
                     code="device.routing.ambiguous",
-                    message="multiple devices satisfy the requirement; explicit disambiguation required",
+                    message=(
+                        "multiple devices satisfy the requirement; "
+                        "explicit disambiguation required"
+                    ),
                     category=ErrorCategory.CONFLICT,
                     retryability=Retryability.NON_RETRYABLE,
                     details={"candidate_count": len(matches)},
@@ -245,7 +248,9 @@ class DeviceHandoffExecutor:
             return Result.failure(
                 AgentXError(
                     code="device.handoff.target_mismatch",
-                    message="capability request targets a different device than the governed handoff",
+                    message=(
+                        "capability request targets a different device than the governed handoff"
+                    ),
                     category=ErrorCategory.VALIDATION,
                     retryability=Retryability.NON_RETRYABLE,
                 )
