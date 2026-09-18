@@ -2,7 +2,7 @@
 
 Generated from `docs/TASKS.json` by `python scripts/task_ledger.py --write`.
 
-reported_status preserves the supplied 349/2/249 historical snapshot. acceptance_status records strict requirement evidence from canonical history plus subsequent milestone acceptance campaigns; VERIFIED still requires implementation/tests/commit/acceptance evidence and does not imply release readiness.
+reported_status preserves the supplied 349/2/249 historical snapshot. acceptance_status records strict requirement evidence from canonical history plus reconciled milestone acceptance campaigns; VERIFIED requires implementation/tests/commit/acceptance evidence and does not imply release readiness.
 
 Partial: only the explicit critical path is encoded. Empty depends_on is not a claim of independence. AX-574 remains IN_PROGRESS because the whole dependency DAG has not been synchronized.
 
@@ -21,8 +21,8 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | M8 Models and Research | 13 | 0 | 22 | 33 | 0 | 0 | 2 | 0 |
 | M9 Security | 20 | 0 | 15 | 35 | 0 | 0 | 0 | 0 |
 | M10 World Model | 16 | 0 | 14 | 30 | 0 | 0 | 0 | 0 |
-| M11 Voice and HUD | 2 | 0 | 23 | 2 | 0 | 0 | 0 | 23 |
-| M12 Scheduling | 1 | 0 | 24 | 1 | 0 | 0 | 0 | 24 |
+| M11 Voice and HUD | 2 | 0 | 23 | 25 | 0 | 0 | 0 | 0 |
+| M12 Scheduling | 1 | 0 | 24 | 25 | 0 | 0 | 0 | 0 |
 | M13 Multi-device and Android | 2 | 0 | 28 | 2 | 0 | 0 | 0 | 28 |
 | M14 Optimization | 2 | 0 | 23 | 25 | 0 | 0 | 0 | 0 |
 | M15 Self-extension | 1 | 0 | 29 | 1 | 0 | 0 | 0 | 29 |
@@ -469,55 +469,55 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-434 | perception accuracy benchmark | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-435 | world-model milestone acceptance | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-436 | audio abstraction foundation | COMPLETE | VERIFIED |  |
-| AX-437 | microphone input provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-438 | speaker output provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-439 | provider-neutral STT interface | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-440 | concrete STT provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-441 | provider-neutral TTS interface | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-442 | concrete TTS provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-443 | realtime-session abstraction | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-444 | realtime voice provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-445 | voice activity detection | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-446 | turn-end detection | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-447 | interruption/barge-in | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-448 | audio cancellation handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-449 | voice-task bridge | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-450 | voice authorization rules | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-451 | spoken confirmation protocol | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-437 | microphone input provider | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-438 | speaker output provider | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-439 | provider-neutral STT interface | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-440 | concrete STT provider | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-441 | provider-neutral TTS interface | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-442 | concrete TTS provider | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-443 | realtime-session abstraction | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-444 | realtime voice provider | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-445 | voice activity detection | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-446 | turn-end detection | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-447 | interruption/barge-in | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-448 | audio cancellation handling | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-449 | voice-task bridge | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-450 | voice authorization rules | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-451 | spoken confirmation protocol | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-452 | runtime -> UI event protocol | COMPLETE | VERIFIED |  |
-| AX-453 | HUD state model | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-454 | listening telemetry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-455 | reasoning telemetry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-456 | execution telemetry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-457 | verification telemetry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-458 | recovery telemetry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-459 | HUD control actions | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-460 | voice/HUD milestone demonstration | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-461 | scheduler core | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-462 | scheduled-task contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-463 | one-shot scheduled tasks | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-464 | recurring scheduled tasks | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-453 | HUD state model | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-454 | listening telemetry | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-455 | reasoning telemetry | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-456 | execution telemetry | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-457 | verification telemetry | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-458 | recovery telemetry | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-459 | HUD control actions | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-460 | voice/HUD milestone demonstration | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-461 | scheduler core | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-462 | scheduled-task contract | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-463 | one-shot scheduled tasks | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-464 | recurring scheduled tasks | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-465 | event watcher framework | COMPLETE | VERIFIED |  |
-| AX-466 | event-triggered task launch | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-467 | file-change trigger | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-468 | process-state trigger | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-469 | browser-state trigger | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-470 | device-state trigger | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-471 | notification boundary | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-472 | proactive recommendation contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-473 | proactive confidence policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-474 | user opt-in policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-475 | quiet-hours policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-476 | attention-awareness policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-477 | background resource quota | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-478 | background model-call quota | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-479 | background machine-action quota | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-480 | long-running Task persistence | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-481 | restart recovery for scheduled work | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-482 | approval expiration semantics | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-483 | stale proactive-action rejection | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-484 | proactive adversarial tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-485 | proactivity milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-466 | event-triggered task launch | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-467 | file-change trigger | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-468 | process-state trigger | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-469 | browser-state trigger | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-470 | device-state trigger | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-471 | notification boundary | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-472 | proactive recommendation contract | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-473 | proactive confidence policy | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-474 | user opt-in policy | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-475 | quiet-hours policy | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-476 | attention-awareness policy | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-477 | background resource quota | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-478 | background model-call quota | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-479 | background machine-action quota | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-480 | long-running Task persistence | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-481 | restart recovery for scheduled work | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-482 | approval expiration semantics | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-483 | stale proactive-action rejection | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-484 | proactive adversarial tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-485 | proactivity milestone acceptance | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-486 | device abstraction foundation | COMPLETE | VERIFIED |  |
 | AX-487 | device protocol foundation | COMPLETE | VERIFIED |  |
 | AX-488 | Device Registry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |

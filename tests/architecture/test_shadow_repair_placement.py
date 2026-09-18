@@ -308,10 +308,10 @@ def test_c407_adds_no_persistence_or_migration_surface() -> None:
     ]
 
     # C4.07 is a pure core contract: the migration ladder is untouched and
-    # the highest landed migration remains the C2.06 negative-experience
-    # store (v8).
+    # the highest landed migration is the canonical M12 scheduling store
+    # (v9).
     assert migration_versions == sorted(migration_versions)
-    assert max(migration_versions) == 8
+    assert max(migration_versions) == 9
     assert "shadow_repair" not in persistence_source
     assert "shadow_repair_runs" not in persistence_source
 

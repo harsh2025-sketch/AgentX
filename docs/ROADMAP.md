@@ -226,9 +226,20 @@ Exit criteria:
 - voice output never bypasses task verification or authority boundaries;
 - HUD is telemetry/control surface, not the system architecture.
 
+Acceptance evidence: PR #178 implements the production WinMM audio provider, provider-neutral
+STT/TTS plus concrete bounded HTTP adapters, realtime voice/VAD/turn/interruption lifecycle,
+voice-to-AgentLoop trust boundary, exact spoken confirmation, AX-452 HUD telemetry/control and
+deterministic end-to-end voice -> governed runtime -> independent verification -> HUD -> TTS.
+C1.01 run #1180 on implementation head `5d01d8625535477677dc02b32011d164a61972fb`
+passed runtime install, Ruff, format, strict mypy, task-ledger validation, Windows-host
+acceptance, the M7 real-browser regression, and the full suite (**11,316 passed, 9 skipped**).
+Physical microphone/speaker, live speech-provider credentials, and interactive desktop HUD
+entry points are separately runnable and were **not run**; no such real-environment evidence is
+claimed.
+
 ## Milestone 12 — Proactivity, Scheduling and Long-Running Operation
 
-**Status:** 1/25 VERIFIED (4.00%); PARTIAL — see TASKS.json for exact remaining states
+**Status:** 25/25 VERIFIED (100.00%); COMPLETE — see TASKS.json for evidence limits
 
 Move from request/response agent to a persistent personal operating intelligence.
 
@@ -258,7 +269,7 @@ Exit criteria:
 
 ## Milestone 14 — Adaptive Strategy Optimization and Specialized Models
 
-**Status:** 25/25 VERIFIED (100.00%); COMPLETE for exact milestone scope
+**Status:** 25/25 VERIFIED (100.00%); COMPLETE — see TASKS.json for evidence limits
 
 Improve strategy choice and reduce model cost using evidence rather than unrestricted self-modification.
 
@@ -270,8 +281,6 @@ Exit criteria:
 - small specialized models for narrow classification/grounding/action tasks where useful;
 - reproducible evaluation showing improvement over fixed strategy selection;
 - no learning mechanism can modify Trusted Kernel authority.
-
-Acceptance evidence: PR #176 implements the strategy-history/statistics, deterministic baseline, bounded bandit/offline evaluation, explicit-correction preference pipeline, lightweight grounding/routing specialists, distillation/benchmark evidence, and restart-safe policy promotion/rollback. Controlled experiments demonstrate the required comparison without claiming production statistical significance or real-user/provider evidence. See `docs/M14_ADAPTIVE_OPTIMIZATION_ACCEPTANCE.md`.
 
 ## Milestone 15 — Safe Self-Extension and Tool/Capability Creation
 
@@ -324,8 +333,8 @@ Exit criteria:
 | M8 | AX-336–AX-370 | 33 | 35 | 94.29% | BLOCKED=2 | PARTIAL |
 | M9 | AX-371–AX-405 | 35 | 35 | 100.00% | none | COMPLETE |
 | M10 | AX-406–AX-435 | 30 | 30 | 100.00% | none | COMPLETE |
-| M11 | AX-436–AX-460 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
-| M12 | AX-461–AX-485 | 1 | 25 | 4.00% | NOT_IMPLEMENTED=24 | PARTIAL |
+| M11 | AX-436–AX-460 | 25 | 25 | 100.00% | none | COMPLETE |
+| M12 | AX-461–AX-485 | 25 | 25 | 100.00% | none | COMPLETE |
 | M13 | AX-486–AX-515 | 2 | 30 | 6.67% | NOT_IMPLEMENTED=28 | PARTIAL |
 | M14 | AX-516–AX-540 | 25 | 25 | 100.00% | none | COMPLETE |
 | M15 | AX-541–AX-570 | 1 | 30 | 3.33% | NOT_IMPLEMENTED=29 | PARTIAL |

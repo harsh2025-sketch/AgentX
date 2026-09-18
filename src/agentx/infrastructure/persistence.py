@@ -278,6 +278,55 @@ _MIGRATIONS: Final[tuple[_Migration, ...]] = (
             """,
         ),
     ),
+    _Migration(
+        version=9,
+        name="create_m12_scheduling_store",
+        statements=(
+            """
+            CREATE TABLE agentx_scheduled_tasks (
+                schedule_id TEXT PRIMARY KEY CHECK (length(schedule_id) > 0),
+                status TEXT NOT NULL CHECK (length(status) > 0),
+                next_due_utc TEXT NOT NULL CHECK (length(next_due_utc) > 0),
+                record_json TEXT NOT NULL CHECK (length(record_json) > 0)
+            )
+            """,
+            """
+            CREATE INDEX agentx_scheduled_tasks_due_idx
+            ON agentx_scheduled_tasks (status, next_due_utc, schedule_id)
+            """,
+            """
+            CREATE TABLE agentx_background_runs (
+                dispatch_id TEXT PRIMARY KEY CHECK (length(dispatch_id) > 0),
+                schedule_id TEXT CHECK (schedule_id IS NULL OR length(schedule_id) > 0),
+                status TEXT NOT NULL CHECK (length(status) > 0),
+                intent_json TEXT NOT NULL CHECK (length(intent_json) > 0),
+                task_json TEXT,
+                detail TEXT,
+                created_at_utc TEXT NOT NULL CHECK (length(created_at_utc) > 0),
+                updated_at_utc TEXT NOT NULL CHECK (length(updated_at_utc) > 0)
+            )
+            """,
+            """
+            CREATE INDEX agentx_background_runs_schedule_idx
+            ON agentx_background_runs (schedule_id, created_at_utc, dispatch_id)
+            """,
+            """
+            CREATE TABLE agentx_m12_policy (
+                policy_key TEXT PRIMARY KEY CHECK (length(policy_key) > 0),
+                value_json TEXT NOT NULL CHECK (length(value_json) > 0)
+            )
+            """,
+            """
+            CREATE TABLE agentx_m12_quota (
+                quota_scope TEXT PRIMARY KEY CHECK (length(quota_scope) > 0),
+                window_start_utc TEXT NOT NULL CHECK (length(window_start_utc) > 0),
+                resource_units INTEGER NOT NULL CHECK (resource_units >= 0),
+                model_calls INTEGER NOT NULL CHECK (model_calls >= 0),
+                machine_actions INTEGER NOT NULL CHECK (machine_actions >= 0)
+            )
+            """,
+        ),
+    ),
 )
 
 

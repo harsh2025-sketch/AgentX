@@ -205,9 +205,9 @@ def test_c401_adds_no_persistence_or_migration_surface() -> None:
     ]
 
     # C4.01 is a pure core contract: the migration ladder is untouched and the
-    # highest landed migration remains the C2.06 negative-experience store (v8).
+    # highest landed migration is the canonical M12 scheduling store (v9).
     assert migration_versions == sorted(migration_versions)
-    assert max(migration_versions) == 8
+    assert max(migration_versions) == 9
     assert "failure_classification" not in persistence_source
     assert "agentx_failure" not in persistence_source
 
