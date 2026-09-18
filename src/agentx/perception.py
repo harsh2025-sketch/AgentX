@@ -14,9 +14,20 @@ from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from enum import StrEnum
 from typing import Final
+from uuid import UUID
 
 from agentx.capabilities.windows.screen_capture import ScreenFrame, ScreenFrameId, ScreenRect
-from agentx.world_model import PerceptionObservation, PerceptionRegion, ScreenBounds, WorldFreshness
+from agentx.core.ids import TaskId
+from agentx.core.knowledge import ProvenanceReference
+from agentx.world_model import (
+    ObservationMetadata,
+    PerceptionObservation,
+    PerceptionRegion,
+    ScreenBounds,
+    WorldEntityId,
+    WorldEntityKind,
+    WorldFreshness,
+)
 
 __all__ = [
     "GroundingEvidenceKind",
@@ -27,6 +38,7 @@ __all__ = [
     "PixelContrastRegionDetector",
     "StaleScreenError",
     "VisualTargetProposal",
+    "build_perception_observation",
     "rank_grounding_evidence",
 ]
 
@@ -34,6 +46,55 @@ _MAX_VISUAL_REGIONS: Final[int] = 256
 _DEFAULT_GRID: Final[int] = 32
 _DEFAULT_MIN_CONTRAST: Final[int] = 36
 _DEFAULT_AMBIGUITY_MARGIN: Final[float] = 0.05
+
+
+def build_perception_observation(
+    frame: ScreenFrame,
+    *,
+    source: ProvenanceReference,
+    ttl: timedelta,
+    regions: tuple[PerceptionRegion, ...] = (),
+    structured_observation_refs: tuple[str, ...] = (),
+    task_id: TaskId | None = None,
+    correlation_id: UUID | None = None,
+) -> PerceptionObservation:
+    """Normalize one captured frame into the canonical current-world observation model."""
+    if not isinstance(frame, ScreenFrame):
+        raise TypeError("frame must be ScreenFrame")
+    if not isinstance(source, ProvenanceReference):
+        raise TypeError("source must be ProvenanceReference")
+    if not isinstance(ttl, timedelta) or ttl <= timedelta(0):
+        raise ValueError("ttl must be positive")
+    observed_at = datetime.fromisoformat(frame.captured_at_iso)
+    if observed_at.tzinfo is None:
+        raise ValueError("frame captured_at must be timezone-aware")
+    frame_ref = f"screen-frame:{frame.frame_id.value}"
+    refs = tuple(dict.fromkeys((*structured_observation_refs, frame_ref)))
+    return PerceptionObservation(
+        entity_id=WorldEntityId(
+            frame.environment_id,
+            WorldEntityKind.PERCEPTION,
+            f"screen:{frame.surface_id}",
+        ),
+        metadata=ObservationMetadata(
+            observation_id=frame_ref,
+            source=source,
+            observed_at=observed_at,
+            ttl=ttl,
+            environment_id=frame.environment_id,
+            task_id=task_id,
+            correlation_id=correlation_id,
+        ),
+        surface_id=frame.surface_id,
+        bounds=ScreenBounds(
+            frame.bounds.x,
+            frame.bounds.y,
+            frame.bounds.width,
+            frame.bounds.height,
+        ),
+        regions=regions,
+        structured_observation_refs=refs,
+    )
 
 
 class StaleScreenError(ValueError):
