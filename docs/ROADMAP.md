@@ -20,7 +20,7 @@ Exit criteria:
 
 ## Milestone 1 — Governed Single-Task Agent Runtime
 
-**Status:** Closure candidate complete in PR #163; pending review/merge
+**Status:** Completed and acceptance-verified
 
 Turn the substrate into a real bounded agent loop for one task.
 
@@ -123,7 +123,7 @@ are recorded as acceptance VERIFIED without rewriting the protected historical b
 
 ## Milestone 6 — Windows-Native Capability Fabric
 
-**Status:** Partial / substantial foundations
+**Status:** Completed and acceptance-verified
 
 Provide robust Windows-first control using structured APIs before visual fallback.
 
@@ -137,6 +137,15 @@ Exit criteria:
 - native mutation seams remain behind governed capability contracts;
 - no raw keyboard logging/global hotkey capture/unsafe shell bypass;
 - representative real-host Windows workflows verified end-to-end.
+
+Acceptance evidence: PR #165 integrates governed human-approval/runtime binding and native
+application-launch, keyboard and clipboard adapters, plus dedicated Windows host acceptance.
+The canonical Windows quality gate runs the real-host mutation and representative multi-process
+workflow tests before the full suite. Those tests require native mutation followed by independent
+Win32/process readback and task verification; native API return success alone is insufficient.
+The hosted evidence is Windows Server CI and must not be represented as a Windows 10 + Windows 11
+release matrix. AX-246–AX-300 are recorded as acceptance VERIFIED while the protected historical
+reported baseline remains unchanged.
 
 ## Milestone 7 — Browser Agent Capability Layer
 
@@ -298,13 +307,10 @@ Exit criteria:
 
 ## Current canonical position
 
-Canonical main at the start of the M1 closure review was
-`294cf9029e63d91b476971db79133e09264f2087`. PR #163 is the unmerged M1
-closure candidate: it supplies typed L4 application/procedure composition, the
-clean bounded Hive-first L5 strategy boundary, and AX-041–AX-085 acceptance
-evidence. The broader project still needs real external model/research
-configuration and acceptance, governed browser completion, modern C4.10
-adversarial replay, the adaptive-flywheel experiment, and the later
-platform/product milestones.
+Task-level acceptance is recorded for M1, M2, M3, M5 and M6, while the imported
+historical reported-status baseline remains a separate immutable dimension. The broader
+project is not complete: M4 learning-efficiency proof, governed browser completion, live
+model/research acceptance, modern cross-surface adversarial replay, later platform/product
+milestones, and release-level Windows 10/11 matrix coverage remain separate work.
 
 Milestone completion should be judged by exit criteria and canonical evidence on `main`, not by raw PR count or historical task-number count.

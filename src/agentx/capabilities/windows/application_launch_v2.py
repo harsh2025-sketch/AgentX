@@ -7,6 +7,7 @@ never parses commands, invokes a shell, or imports platform-specific native APIs
 
 from __future__ import annotations
 
+import ntpath
 import sys
 from dataclasses import dataclass
 from datetime import timedelta
@@ -30,13 +31,16 @@ from agentx.capabilities.abi import (
     RollbackSupport,
     VerificationResult,
 )
+from agentx.capabilities.windows.process_discovery import MetadataStatus, WindowsProcessSnapshot
+from agentx.core.errors import AgentXError
 from agentx.core.execution import ExecutionContext
+from agentx.core.result import Result
 from agentx.core.tasks import JsonValue
 from agentx.kernel.permissions import Permission
 from agentx.kernel.risk import assess_risk
 
 MAX_EXECUTABLE_LENGTH: Final = 2048
-MAX_ARGUMENTS: Final = 128
+MAX_ARGUMENTS: Final = 64
 MAX_ARGUMENT_LENGTH: Final = 4096
 MAX_WORKING_DIRECTORY_LENGTH: Final = 2048
 
@@ -116,6 +120,12 @@ class LaunchAdapter(Protocol):
     ) -> NativeLaunchResult: ...
 
 
+class ProcessObservationPort(Protocol):
+    """Independent read-only process observer used only by verification."""
+
+    def discover(self) -> Result[WindowsProcessSnapshot, AgentXError]: ...
+
+
 APPLICATION_LAUNCH_V2_IDENTITY = CapabilityIdentity(
     name=CapabilityName("windows.application_launch"), version=CapabilityVersion(2, 0, 0)
 )
@@ -143,8 +153,14 @@ _DESCRIPTOR = CapabilityDescriptor(
 class WindowsApplicationLaunchV2Capability:
     """Structured launch implementation; authorization remains in the runtime."""
 
-    def __init__(self, adapter: LaunchAdapter) -> None:
+    def __init__(
+        self,
+        adapter: LaunchAdapter,
+        *,
+        process_observer: ProcessObservationPort | None = None,
+    ) -> None:
         self._adapter = adapter
+        self._process_observer = process_observer
 
     @property
     def descriptor(self) -> CapabilityDescriptor:
@@ -190,8 +206,40 @@ class WindowsApplicationLaunchV2Capability:
     ) -> VerificationResult:
         if context.observe_stop().should_stop:
             return VerificationResult(False, "verification cancelled by EmergencyStop")
+        if self._process_observer is None:
+            return VerificationResult(
+                False, "application launch has no independent process observer"
+            )
+        data = observation.to_dict().get("data")
+        if not isinstance(data, dict):
+            return VerificationResult(False, "launch observation data is malformed")
+        process_id = data.get("process_id")
+        if type(process_id) is not int or process_id <= 0 or data.get("launched") is not True:
+            return VerificationResult(False, "launch observation has no usable process identity")
+        observed = self._process_observer.discover()
+        if observed.is_failure:
+            return VerificationResult(False, "independent process observation failed")
+        expected_name = ntpath.basename(request.params.executable).casefold()
+        for process in observed.unwrap().processes:
+            if process.process_id != process_id:
+                continue
+            if (
+                process.executable_name_status is not MetadataStatus.AVAILABLE
+                or process.executable_name is None
+            ):
+                return VerificationResult(
+                    False, "launched PID exists but executable identity is unavailable"
+                )
+            if process.executable_name.casefold() != expected_name:
+                return VerificationResult(
+                    False, "launched PID executable identity does not match the request"
+                )
+            return VerificationResult(
+                True, "independent process observation matches PID and executable identity"
+            )
         return VerificationResult(
-            False, "application launch provides no independent readiness verification"
+            False,
+            "launched PID is absent from independent process observation",
         )
 
 
@@ -200,5 +248,6 @@ __all__ = [
     "ApplicationLaunchParams",
     "LaunchAdapter",
     "NativeLaunchResult",
+    "ProcessObservationPort",
     "WindowsApplicationLaunchV2Capability",
 ]

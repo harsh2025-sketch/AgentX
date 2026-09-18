@@ -10,7 +10,7 @@ repair its own procedures over time.
 >
 > Implemented code includes the Trusted Kernel, bounded agent/runtime strategies,
 > persistent experience and semantic memory, procedure compilation/validation,
-> reuse and repair machinery, and Windows/browser capability foundations.
+> reuse and repair machinery, an acceptance-verified Windows-native capability fabric, and browser capability foundations.
 > These components do not yet establish the complete adaptive-learning workflow
 > or a ready-to-use desktop product. The CLI currently exposes package metadata,
 > not a natural-language agent session.
