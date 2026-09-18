@@ -24,7 +24,14 @@ from agentx.voice_runtime import (
     VoiceTaskPlan,
 )
 
-__all__ = ["ApprovalDecisionSink", "RetryCommandTarget", "VoiceHudController", "VoiceHudRuntime", "VoiceTurnResult"]
+__all__ = [
+    "ApprovalDecisionSink",
+    "RetryCommandTarget",
+    "VoiceControlTarget",
+    "VoiceHudController",
+    "VoiceHudRuntime",
+    "VoiceTurnResult",
+]
 
 
 def _error(code: str, message: str, category: ErrorCategory) -> AgentXError:
@@ -142,6 +149,13 @@ class VoiceHudRuntime:
 
 
 @runtime_checkable
+class VoiceControlTarget(Protocol):
+    """Narrow runtime-owned cancellation surface exposed to the HUD."""
+
+    def barge_in(self) -> bool: ...
+
+
+@runtime_checkable
 class ApprovalDecisionSink(Protocol):
     """Trusted sink for exact canonical human-approval decisions."""
 
@@ -169,13 +183,13 @@ class VoiceHudController:
     def __init__(
         self,
         *,
-        runtime: VoiceHudRuntime,
+        runtime: VoiceControlTarget,
         confirmation_protocol: SpokenConfirmationProtocol,
         decision_sink: ApprovalDecisionSink,
         retry_target: RetryCommandTarget | None = None,
     ) -> None:
-        if not isinstance(runtime, VoiceHudRuntime):
-            raise TypeError("runtime must be VoiceHudRuntime")
+        if not isinstance(runtime, VoiceControlTarget):
+            raise TypeError("runtime must satisfy VoiceControlTarget")
         if not isinstance(confirmation_protocol, SpokenConfirmationProtocol):
             raise TypeError("confirmation_protocol must be SpokenConfirmationProtocol")
         if not isinstance(decision_sink, ApprovalDecisionSink):
