@@ -22,7 +22,7 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | M9 Security | 20 | 0 | 15 | 35 | 0 | 0 | 0 | 0 |
 | M10 World Model | 16 | 0 | 14 | 30 | 0 | 0 | 0 | 0 |
 | M11 Voice and HUD | 2 | 0 | 23 | 25 | 0 | 0 | 0 | 0 |
-| M12 Scheduling | 1 | 0 | 24 | 1 | 0 | 0 | 0 | 24 |
+| M12 Scheduling | 1 | 0 | 24 | 25 | 0 | 0 | 0 | 0 |
 | M13 Multi-device and Android | 2 | 0 | 28 | 2 | 0 | 0 | 0 | 28 |
 | M14 Optimization | 2 | 0 | 23 | 2 | 0 | 0 | 0 | 23 |
 | M15 Self-extension | 1 | 0 | 29 | 1 | 0 | 0 | 0 | 29 |
