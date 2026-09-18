@@ -7,8 +7,8 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 ## Audit result
 
 - BEFORE: VERIFIED 230, NOT_AUDITED 132, IN_PROGRESS 5, BLOCKED 0, NOT_IMPLEMENTED 233.
-- AFTER: VERIFIED 380, NOT_AUDITED 0, IN_PROGRESS 9, BLOCKED 7, NOT_IMPLEMENTED 204.
-- Strict acceptance coverage: **380/600 (63.3%)**.
+- AFTER: VERIFIED 394, NOT_AUDITED 0, IN_PROGRESS 9, BLOCKED 7, NOT_IMPLEMENTED 190.
+- Strict acceptance coverage: **394/600 (65.7%)**.
 - This is not a release-readiness percentage. Real-host/provider/device/product/release requirements remain separate.
 
 ## Milestone dashboard
@@ -25,7 +25,7 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | M7 Browser Agent | 16/35 | `█████████░░░░░░░░░░░` | 1 | 0 | 18 |
 | M8 Models and Research | 28/35 | `████████████████░░░░` | 0 | 2 | 5 |
 | M9 Security | 20/35 | `███████████░░░░░░░░░` | 0 | 0 | 15 |
-| M10 World Model | 16/30 | `███████████░░░░░░░░░` | 0 | 0 | 14 |
+| M10 World Model | 30/30 | `████████████████████` | 0 | 0 | 0 |
 | M11 Voice and HUD | 2/25 | `██░░░░░░░░░░░░░░░░░░` | 0 | 0 | 23 |
 | M12 Scheduling | 1/25 | `█░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 24 |
 | M13 Multi-device and Android | 2/30 | `█░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 28 |
@@ -48,6 +48,7 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 - Browser text fill is recognized as partial N2.27 work with redaction and independent field-value readback; it does not prove complete form types, submission, a concrete browser driver, or a live multi-page workflow.
 - The concrete HTTP model adapter, secret binding, strict serialization/parsing, usage/error/timeout/cancellation behavior and bounded L5 single-acquisition path are accepted; live-provider vertical/milestone acceptance is not.
 - Foundation tasks for world state, audio/UI telemetry, event watching, device protocol, strategy evidence and capability-gap detection are accepted only at their narrow contract scope.
+- M10 AX-422–AX-435 were independently re-audited after the screen/perception and real environment-adaptation campaign. C1.01 run #967 on implementation head `8ca74839f3a615393c4803ba56509439a1bc261a` passed Ruff, format, strict mypy, task-ledger validation, real Windows-host acceptance and the full test suite.
 
 ## Per-task audit
 
@@ -474,20 +475,20 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | AX-419 | M10 | device-state model | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-420 | M10 | task-state world binding | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-421 | M10 | Hive/world relationship linkage | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
-| AX-422 | M10 | screen-capture provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-423 | M10 | screen-frame identity | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-424 | M10 | visual-region representation | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-425 | M10 | OCR-free primary visual grounding | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-426 | M10 | visual fallback router | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-427 | M10 | visual target proposal | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-428 | M10 | structured-vs-visual evidence ranking | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-429 | M10 | visual ambiguity handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-430 | M10 | stale-screen rejection | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-431 | M10 | display/DPI normalization | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-432 | M10 | multi-monitor awareness | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-433 | M10 | layout-change recovery benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-434 | M10 | perception accuracy benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
-| AX-435 | M10 | world-model milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |  |
+| AX-422 | M10 | screen-capture provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
+| AX-423 | M10 | screen-frame identity | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-424 | M10 | visual-region representation | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-425 | M10 | OCR-free primary visual grounding | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-426 | M10 | visual fallback router | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-427 | M10 | visual target proposal | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-428 | M10 | structured-vs-visual evidence ranking | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-429 | M10 | visual ambiguity handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-430 | M10 | stale-screen rejection | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-431 | M10 | display/DPI normalization | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-432 | M10 | multi-monitor awareness | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-433 | M10 | layout-change recovery benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-434 | M10 | perception accuracy benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-435 | M10 | world-model milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E5 | NONE |  |
 | AX-436 | M11 | audio abstraction foundation | COMPLETE | NOT_AUDITED | VERIFIED | E2 | NONE |  |
 | AX-437 | M11 | microphone input provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | real microphone/speaker and/or STT/TTS/realtime product environment where the exact requirement needs it |
 | AX-438 | M11 | speaker output provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING | real microphone/speaker and/or STT/TTS/realtime product environment where the exact requirement needs it |
