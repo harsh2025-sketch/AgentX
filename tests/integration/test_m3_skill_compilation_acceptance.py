@@ -406,6 +406,7 @@ def test_ax175_cold_compile_validate_promote_restart_and_l2_reuse(tmp_path: Path
         episode_store=episode_store,
         negative_experience_store=NegativeExperienceStore(database),
     )
+    assert experience_a.episode_id is not None
     recorded = ExecutionEpisodeCapture(memory=memory).record(
         ExecutionEpisodeRequest(
             task=task_a,
@@ -488,7 +489,9 @@ def test_ax175_cold_compile_validate_promote_restart_and_l2_reuse(tmp_path: Path
     assert validation.complete is True
     assert validation.all_cases_passed is True
     assert validation.decision is ValidationDecision.ELIGIBLE_FOR_PROMOTION
-    assert procedure_store.get(_PROCEDURE_ID, 1).status is ProcedureStatus.CANDIDATE
+    stored_candidate = procedure_store.get(_PROCEDURE_ID, 1)
+    assert stored_candidate is not None
+    assert stored_candidate.status is ProcedureStatus.CANDIDATE
 
     promoted_at = _T0 + timedelta(minutes=10)
     lifecycle = assess_procedure_transition(
@@ -511,7 +514,9 @@ def test_ax175_cold_compile_validate_promote_restart_and_l2_reuse(tmp_path: Path
         ),
     )
     assert promotion.outcome is ProcedurePromotionOutcome.PROMOTED
-    assert procedure_store.get(_PROCEDURE_ID, 1).status is ProcedureStatus.ACTIVE
+    stored_active = procedure_store.get(_PROCEDURE_ID, 1)
+    assert stored_active is not None
+    assert stored_active.status is ProcedureStatus.ACTIVE
 
     selection = ActiveProcedureReuse(ActiveProcedureReader(procedure_store), {}).select(
         ProcedureRequirement(scope=_SCOPE)
