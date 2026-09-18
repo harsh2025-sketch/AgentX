@@ -1901,11 +1901,17 @@
       "milestone": "M4",
       "title": "connect metrics to real model provider",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "IN_PROGRESS",
       "depends_on": [
         "AX-344"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "candidate",
+          "reference": "src/agentx/instrumented_model_provider.py",
+          "note": "Concrete provider-to-metrics wiring with loopback HTTP integration tests; live-service acceptance pending."
+        }
+      ]
     },
     {
       "id": "AX-197",

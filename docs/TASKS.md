@@ -228,7 +228,7 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-193 | cold-vs-warm experiment harness | COMPLETE | NOT_AUDITED |  |
 | AX-194 | deterministic experiment serialization | COMPLETE | NOT_AUDITED |  |
 | AX-195 | evidence non-authority invariants | COMPLETE | NOT_AUDITED |  |
-| AX-196 | connect metrics to real model provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-344 |
+| AX-196 | connect metrics to real model provider | NOT_IMPLEMENTED | IN_PROGRESS | AX-344 |
 | AX-197 | execute unknown cold task | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-083, AX-196 |
 | AX-198 | collect real L4/L5 metrics | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-197 |
 | AX-199 | compile cold experience | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-175, AX-197 |
