@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import struct
 from dataclasses import dataclass
 from datetime import timedelta
@@ -394,8 +395,8 @@ class AndroidDriver:
             code="android.foreground.failed",
         )
         patterns = (
-            re_compile(r"mResumedActivity:.*? ([A-Za-z][A-Za-z0-9_.]+)/"),
-            re_compile(r"topResumedActivity=.*? ([A-Za-z][A-Za-z0-9_.]+)/"),
+            re.compile(r"mResumedActivity:.*? ([A-Za-z][A-Za-z0-9_.]+)/"),
+            re.compile(r"topResumedActivity=.*? ([A-Za-z][A-Za-z0-9_.]+)/"),
         )
         for line in output.splitlines():
             for pattern in patterns:
@@ -857,12 +858,6 @@ def _validate_coordinate(value: object, field_name: str) -> int:
     if type(value) is not int or not 0 <= value <= 100_000:
         raise ValueError(f"{field_name} must be an int in [0, 100000]")
     return value
-
-
-def re_compile(pattern: str) -> object:
-    import re
-
-    return re.compile(pattern)
 
 
 def _descriptor(operation: AndroidOperation) -> CapabilityDescriptor:
