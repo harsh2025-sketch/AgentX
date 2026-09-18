@@ -174,9 +174,11 @@ class WebDriverBrowserProvider:
     """Concrete provider over one explicitly established W3C browser session."""
 
     __slots__ = (
+        "_browser_version",
         "_capabilities",
         "_connected",
         "_download_directory",
+        "_headless",
         "_endpoint",
         "_session_id",
         "_timeout",
@@ -201,8 +203,9 @@ class WebDriverBrowserProvider:
         self._endpoint = endpoint.rstrip("/")
         self._timeout = float(timeout_seconds)
         self._download_directory = download_directory
+        self._headless = headless
         self._connected = False
-        self._session_id = self._create_session(
+        self._session_id, self._browser_version = self._create_session(
             headless=headless,
             download_directory=download_directory,
         )
@@ -263,6 +266,14 @@ class WebDriverBrowserProvider:
     @property
     def session_id(self) -> str:
         return self._session_id
+
+    @property
+    def browser_version(self) -> str | None:
+        return self._browser_version
+
+    @property
+    def headless(self) -> bool:
+        return self._headless
 
     def close(self) -> None:
         if not self._connected:
@@ -680,7 +691,9 @@ class WebDriverBrowserProvider:
                 )
             )
 
-    def _create_session(self, *, headless: bool, download_directory: Path | None) -> str:
+    def _create_session(
+        self, *, headless: bool, download_directory: Path | None
+    ) -> tuple[str, str | None]:
         arguments = ["--disable-gpu", "--window-size=1280,900"]
         if headless:
             arguments.append("--headless=new")
@@ -711,7 +724,13 @@ class WebDriverBrowserProvider:
             session_id = raw.get("sessionId") if isinstance(raw, dict) else None
         if not isinstance(session_id, str) or not session_id:
             raise RuntimeError("WebDriver did not return a session id")
-        return session_id
+        capabilities = value.get("capabilities")
+        browser_version: str | None = None
+        if isinstance(capabilities, dict):
+            raw_version = capabilities.get("browserVersion")
+            if isinstance(raw_version, str) and raw_version.strip():
+                browser_version = raw_version.strip()
+        return session_id, browser_version
 
     def _request(
         self,
