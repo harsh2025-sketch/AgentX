@@ -144,13 +144,9 @@ class AndroidProvider:
             protocol_version=_ANDROID_PROTOCOL_VERSION,
             scope=DeviceScope(environment=DeviceEnvironment.LOCAL),
             observation=DeviceObservation(
-                connectivity=(
-                    DeviceConnectivity.ONLINE if online else DeviceConnectivity.OFFLINE
-                ),
+                connectivity=(DeviceConnectivity.ONLINE if online else DeviceConnectivity.OFFLINE),
                 availability=(
-                    DeviceAvailability.AVAILABLE
-                    if online
-                    else DeviceAvailability.UNAVAILABLE
+                    DeviceAvailability.AVAILABLE if online else DeviceAvailability.UNAVAILABLE
                 ),
                 observed_at=observed_at,
                 last_seen=last_seen,
