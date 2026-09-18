@@ -2,9 +2,10 @@
 
 This adapter speaks the standardized WebDriver HTTP protocol using only the
 Python standard library. It exposes no JavaScript execution, CDP passthrough,
-shell command channel, or page-supplied executable parameter. The optional
-local service launcher only executes the fixed chromedriver program discovered
-by the host PATH, with a fixed argument shape and shell=False.
+shell command channel, process-launch primitive, or page-supplied executable
+parameter. Browser-driver service lifecycle is deliberately outside production
+code; trusted composition supplies an already-started loopback WebDriver
+endpoint.
 
 The provider implements the existing narrow browser action driver plus the
 explicit form driver. DOM observation is produced through WebDriver element
@@ -15,10 +16,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import shutil
-import socket
-import subprocess
-import time
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -71,7 +68,6 @@ from agentx.core.errors import AgentXError, ErrorCategory, Retryability
 from agentx.core.result import Result
 
 __all__ = [
-    "ChromeDriverService",
     "WebDriverBrowserProvider",
     "WebDriverHealth",
 ]
@@ -102,72 +98,11 @@ def _error(code: str, message: str, *, category: ErrorCategory) -> AgentXError:
     )
 
 
-def _free_loopback_port() -> int:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.bind(("127.0.0.1", 0))
-        return int(sock.getsockname()[1])
-
-
 @dataclass(frozen=True, slots=True)
 class WebDriverHealth:
     reachable: bool
     session_live: bool
     detail: str
-
-
-class ChromeDriverService:
-    """Trusted local service launcher with no caller-controlled executable."""
-
-    __slots__ = ("_endpoint", "_process")
-
-    def __init__(self, *, startup_timeout: float = 10.0) -> None:
-        executable = shutil.which("chromedriver")
-        if executable is None:
-            raise RuntimeError("chromedriver is not available on the host PATH")
-        if startup_timeout <= 0 or startup_timeout > 60:
-            raise ValueError("startup_timeout must be within (0, 60]")
-        port = _free_loopback_port()
-        self._endpoint = f"http://127.0.0.1:{port}"
-        self._process = subprocess.Popen(
-            [executable, f"--port={port}"],
-            stdin=subprocess.DEVNULL,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            shell=False,
-        )
-        deadline = time.monotonic() + startup_timeout
-        while time.monotonic() < deadline:
-            if self._process.poll() is not None:
-                raise RuntimeError("chromedriver terminated during startup")
-            try:
-                with urlopen(f"{self._endpoint}/status", timeout=0.25) as response:
-                    if response.status == 200:
-                        return
-            except (OSError, URLError):
-                time.sleep(0.05)
-        self.close()
-        raise TimeoutError("chromedriver did not become ready within the startup bound")
-
-    @property
-    def endpoint(self) -> str:
-        return self._endpoint
-
-    def close(self) -> None:
-        process = self._process
-        if process.poll() is not None:
-            return
-        process.terminate()
-        try:
-            process.wait(timeout=3)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            process.wait(timeout=3)
-
-    def __enter__(self) -> ChromeDriverService:
-        return self
-
-    def __exit__(self, exc_type: object, exc: object, traceback: object) -> None:
-        self.close()
 
 
 class WebDriverBrowserProvider:
