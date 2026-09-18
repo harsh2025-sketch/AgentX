@@ -211,7 +211,12 @@ def test_environment_task_family_latency_cost_success_and_staleness_statistics()
         level=ExecutionLevel.L1_DIRECT,
         success=True,
         at=_T0 - timedelta(days=30),
-        context=_context(environment_id="env-old", revision="r0", family="old"),
+        context=_context(
+            environment_id="env-old",
+            revision="r0",
+            family="old",
+            at=_T0 - timedelta(days=30, seconds=1),
+        ),
         evidence_int=1301,
     )
     good = _record(
