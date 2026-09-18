@@ -52,8 +52,8 @@ from agentx.core.procedures import (
     ProcedureStatus,
 )
 from agentx.core.result import Result
-from agentx.core.task_decomposition import DecompositionNode, TaskDecomposition
 from agentx.core.reuse_efficiency import ExecutionEvidenceOutcome
+from agentx.core.task_decomposition import DecompositionNode, TaskDecomposition
 from agentx.execution_metrics import ExecutionMetricsRecord, ExecutionMetricsRecorder
 from agentx.infrastructure.persistence import SQLiteDatabase
 from agentx.infrastructure.procedure_store import ProcedureStore
