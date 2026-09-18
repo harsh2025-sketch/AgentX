@@ -52,6 +52,7 @@ from agentx.core.errors import AgentXError
 from agentx.core.ids import KnowledgeId
 from agentx.core.knowledge import KnowledgeScope, KnowledgeStatus, ScopeDimension
 from agentx.core.result import Result
+from agentx.core.task_decomposition import TaskDecomposition
 from agentx.core.tasks import Task
 from agentx.exploratory_strategy import ExploratoryStrategyBinding, GovernedExploratoryStrategy
 from agentx.governed_research import (
