@@ -85,7 +85,11 @@ class ResearchExecutionHandoff:
                 ResearchContextEntry(
                     knowledge_id=knowledge_id,
                     claim=finding.claim,
-                    provenance_source=record.provenance.source,
+                    provenance_source=(
+                        record.provenance.reference
+                        if record.provenance is not None
+                        else "missing-provenance"
+                    ),
                 )
             )
 
