@@ -36,7 +36,7 @@ from agentx.core.user_preferences import (
     PreferenceSource,
     UserPreference,
 )
-from agentx.infrastructure.event_journal import EventJournal
+from agentx.infrastructure.event_journal import EventJournal, EventJournalError
 from agentx.strategy_performance_evidence import StrategyPerformanceEvidence
 
 __all__ = [
@@ -936,9 +936,12 @@ class SafeContextualBandit:
                     explored=False,
                     estimates=tuple(estimates),
                 )
-            best_rate = max(
+            rates = tuple(
                 item.success_rate for item in scored if item.success_rate is not None
             )
+            if not rates:
+                raise AdaptiveOptimizationError("bandit score set unexpectedly has no rates")
+            best_rate = max(rates)
             candidates = tuple(
                 item.level
                 for item in scored
@@ -1796,7 +1799,7 @@ class OptimizationPolicyRuntime:
         allowed = _levels(available, name="available")
         try:
             active = self.store.active_policy()
-        except AdaptiveOptimizationError:
+        except (AdaptiveOptimizationError, EventJournalError):
             active = None
         if active is None:
             fallback = self.baseline.choose(
