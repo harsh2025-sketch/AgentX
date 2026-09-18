@@ -1,7 +1,8 @@
 """Conservative variation evidence over canonical C3.04 parameter observations.
 
-C3.05 consumes one canonical C3.04 :class:`ParameterExtraction` and reports
-only what its retained historical observations demonstrate for an exact
+C3.05 consumes one canonical target C3.04 :class:`ParameterExtraction` plus
+optional independently normalized corroborating extractions and reports only
+what those provenance-bearing historical observations demonstrate for an exact
 structured ``(action.name, field_name)`` pair.
 
 The evidence vocabulary is deliberately narrow:
@@ -184,6 +185,7 @@ class ParameterGeneralization:
 
     source_extraction: ParameterExtraction
     groups: tuple[ParameterObservationGroup, ...]
+    supporting_extractions: tuple[ParameterExtraction, ...] = ()
     schema_version: int = PARAMETER_GENERALIZATION_SCHEMA_VERSION
 
     def __post_init__(self) -> None:
@@ -194,6 +196,21 @@ class ParameterGeneralization:
             )
         if not isinstance(self.groups, tuple):
             raise TypeError("groups must be a tuple of ParameterObservationGroup values")
+        if not isinstance(self.supporting_extractions, tuple):
+            raise TypeError("supporting_extractions must be a tuple of ParameterExtraction values")
+        seen_trajectory_ids = {self.source_extraction.source_trajectory_id}
+        for index, supporting in enumerate(self.supporting_extractions):
+            if not isinstance(supporting, ParameterExtraction):
+                raise TypeError(
+                    "supporting_extractions must contain only ParameterExtraction values; "
+                    f"index {index} is {type(supporting).__name__}"
+                )
+            trajectory_id = supporting.source_trajectory_id
+            if trajectory_id in seen_trajectory_ids:
+                raise ParameterGeneralizationError(
+                    "supporting extractions must have distinct source trajectory identities"
+                )
+            seen_trajectory_ids.add(trajectory_id)
         if not isinstance(self.schema_version, int) or isinstance(self.schema_version, bool):
             raise TypeError("schema_version must be an integer")
         if self.schema_version != PARAMETER_GENERALIZATION_SCHEMA_VERSION:
@@ -202,7 +219,14 @@ class ParameterGeneralization:
                 f"supported version is {PARAMETER_GENERALIZATION_SCHEMA_VERSION}"
             )
 
-        expected = _build_groups(self.source_extraction.candidates)
+        expected = _build_groups(
+            self.source_extraction.candidates
+            + tuple(
+                candidate
+                for supporting in self.supporting_extractions
+                for candidate in supporting.candidates
+            )
+        )
         if self.groups != expected:
             raise ParameterGeneralizationError(
                 "groups must exactly preserve deterministic C3.04 observation grouping and order"
@@ -218,6 +242,9 @@ class ParameterGeneralization:
         return {
             "schema_version": self.schema_version,
             "source_trajectory_id": str(self.source_extraction.source_trajectory_id),
+            "supporting_trajectory_ids": [
+                str(item.source_trajectory_id) for item in self.supporting_extractions
+            ],
             "groups": [group.to_dict() for group in self.groups],
         }
 
@@ -263,18 +290,39 @@ def _build_groups(
     return tuple(result)
 
 
-def analyze_parameter_generalization(extraction: ParameterExtraction) -> ParameterGeneralization:
-    """Produce observation-only variation evidence from canonical C3.04 output.
+def analyze_parameter_generalization(
+    extraction: ParameterExtraction,
+    *,
+    corroborating: tuple[ParameterExtraction, ...] = (),
+) -> ParameterGeneralization:
+    """Produce observation-only variation evidence from canonical C3.04 outputs.
 
-    Groups are created in first-observation order using only exact structured
-    ``(action.name, field_name)`` equality. Candidate order within each group is
-    the original C3.04 order. No values or provenance entries are deduplicated.
+    The target extraction remains the canonical source trajectory. Optional
+    corroborating extractions contribute only additional provenance-bearing
+    observations; they cannot replace the target, grant authority, or change
+    verification truth. Groups preserve target observations first followed by
+    corroborating runs in caller order. No value or provenance entry is
+    deduplicated.
     """
     if not isinstance(extraction, ParameterExtraction):
         raise TypeError(
             f"extraction must be a ParameterExtraction, got {type(extraction).__name__}"
         )
+    if not isinstance(corroborating, tuple):
+        raise TypeError("corroborating must be a tuple of ParameterExtraction values")
+    for index, supporting in enumerate(corroborating):
+        if not isinstance(supporting, ParameterExtraction):
+            raise TypeError(
+                "corroborating must contain only ParameterExtraction values; "
+                f"index {index} is {type(supporting).__name__}"
+            )
+    candidates = extraction.candidates + tuple(
+        candidate
+        for supporting in corroborating
+        for candidate in supporting.candidates
+    )
     return ParameterGeneralization(
         source_extraction=extraction,
-        groups=_build_groups(extraction.candidates),
+        groups=_build_groups(candidates),
+        supporting_extractions=corroborating,
     )
