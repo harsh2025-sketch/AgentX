@@ -1,4 +1,4 @@
-# M10 World Model — AX-409 / AX-411 / AX-414–AX-421
+# M10 World Model — AX-406–AX-435
 
 `agentx.world_model` is the outer composition layer for AgentX's Milestone-10
 current-environment model. It does **not** replace `agentx.core.world_state`.
@@ -42,8 +42,9 @@ Identity sources are deliberately structured:
   path semantics;
 - device identity reuses the canonical device provider/device id or a bounded
   local-host identity;
-- perception identity is explicitly supplied by the future observation
-  producer and is never derived from screen text.
+- perception identity is environment/surface scoped; immutable screen-frame
+  identity is derived from trusted capture metadata plus the pixel digest, never
+  from screen text.
 
 All identities are environment-scoped. Cross-environment device/perception or
 application/process/window relationships are rejected.
@@ -77,11 +78,17 @@ optional uncertainty confidence, Task/correlation metadata, and links to
 structured UIA/DOM observations. The representation has deterministic JSON
 serialization and strict malformed-input checks.
 
-No capture provider, screenshot store, OCR pipeline, visual grounding,
-fallback router, DPI normalization, or multi-monitor policy is implemented
-here; those remain later M10 tasks.
+The production Windows capture provider now supplies immutable frame identity,
+pixel digest, virtual-desktop geometry, per-monitor topology and effective DPI.
+Governed frames are normalized into this existing perception contract with the
+capture provenance and freshness envelope preserved.
 
-Observed screen text is preserved as inert untrusted data.
+Grounding prefers structured UIA/DOM-linked regions. A bounded OCR-free
+pixel-contrast fallback is available only when structured grounding is
+insufficient and the caller supplies approximate geometry. Ambiguous targets
+are refused and proposals are tied to one exact frame/freshness window.
+
+Observed screen text and pixels remain inert untrusted data.
 
 ## AX-411 lazy cache
 
@@ -194,6 +201,13 @@ filesystem entity, after which refresh reconstructs current metadata. Rename or
 move is represented as invalidation of the old identity plus tracking of the
 new normalized identity; delete refreshes to `MISSING`.
 
+Before reusing a nominally fresh filesystem cache entry, the native provider
+can compare the cached existence/type/size/mtime fingerprint with a fresh OS
+stat. A mismatch invalidates only that entity and enters the ordinary
+re-observation path. This lets external writes, deletes and recreation be
+detected without a manual cache invalidation call while unchanged siblings keep
+their fresh-hit path.
+
 The filesystem world model never grants filesystem permission and never reads
 file contents.
 
@@ -301,12 +315,14 @@ by the linkage lock so a failed durable write does not leave a misleading live
 
 ## Future extension points
 
-Later perception providers can produce `PerceptionObservation` without changing
-Task bindings, freshness, or Hive linkage. Future device platforms can map their
-canonical `DeviceDescriptor` into `DeviceState` without adding Android
-execution here. Screen capture, frame identity, visual grounding/fallback,
-evidence ranking, DPI/multi-monitor policy, Android execution, voice,
-proactivity, and self-extension remain outside this package.
+Additional perception providers can produce `PerceptionObservation` without
+changing Task bindings, freshness, or Hive linkage. Future device platforms can
+map their canonical `DeviceDescriptor` into `DeviceState` without adding
+Android execution here. Android execution, voice, proactivity, and
+self-extension remain outside this package. Windows screen capture, frame
+identity, structured-first visual grounding/fallback, evidence ranking,
+stale-screen rejection and DPI/multi-monitor policy are implemented by the M10
+screen/perception modules documented in `docs/M10_WORLD_MODEL_ACCEPTANCE.md`.
 
 
 ## Completion matrix for the allotted M10 package
@@ -326,5 +342,7 @@ proactivity, and self-extension remain outside this package.
 
 Persistence is deliberately ephemeral/reconstructed for current environmental
 state and Task bindings; the PASS entries mean that policy is explicit and
-tested. Durable AX-421 relationships use the canonical KnowledgeStore. No cell
-claims implementation of AX-422 through AX-435.
+tested. Durable AX-421 relationships use the canonical KnowledgeStore. The historical table above covers the original AX-409/411/414–421 package
+audit. AX-422 through AX-435 are accepted separately in
+`docs/M10_WORLD_MODEL_ACCEPTANCE.md` so the older evidence matrix is not
+silently reinterpreted.

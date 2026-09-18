@@ -54,10 +54,10 @@ jobs:
       - name: Validate task ledger
         run: python scripts/task_ledger.py
 
-      - name: Run M6 Windows host acceptance
+      - name: Run Windows host acceptance
         env:
           AGENTX_M6_REAL_HOST: "1"
-        run: python -m pytest -q -s tests/windows/test_m6_real_host_acceptance.py tests/windows/test_m6_multi_app_workflow.py
+        run: python -m pytest -q -s tests/windows/test_m6_real_host_acceptance.py tests/windows/test_m6_multi_app_workflow.py tests/windows/test_m10_screen_capture_real_host.py
 
       - name: Run M7 real browser acceptance
         env:

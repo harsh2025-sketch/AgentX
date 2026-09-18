@@ -2,7 +2,7 @@
   "schema_version": 1,
   "baseline_commit": "72bf7059d64a38ed9512aedf420ec7b1d2552837",
   "baseline_source": "User-supplied reconciliation, 2026-09-17; definitions from review-agentx-handover (4).pdf pp. 632-647.",
-  "status_policy": "reported_status preserves the supplied 349/2/249 historical snapshot. acceptance_status reflects the independent AX-001–AX-600 audit plus the M1/M4/M7/M8 second-pass closure campaign on clean PR #173 based on canonical main 5eb3c35598bddf6142523a8a0e34c23abcbb7f67; VERIFIED requires exact requirement evidence and does not imply release readiness.",
+  "status_policy": "reported_status preserves the supplied 349/2/249 historical snapshot. acceptance_status is the independent AX-001–AX-600 audit against canonical main bcc0692246a981be5ae15c993b0c3e6512871b92; VERIFIED requires exact requirement evidence and does not imply release readiness.",
   "dependency_coverage": "Partial: only the explicit critical path is encoded. Empty depends_on is not a claim of independence. AX-574 remains IN_PROGRESS because the whole dependency DAG has not been synchronized.",
   "milestones": [
     {
@@ -14389,13 +14389,28 @@
       "milestone": "M9",
       "title": "replay modern C4.10 suite",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-391 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_untrusted_content_*.py; tests/support/untrusted_content_corpus.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14404,13 +14419,28 @@
       "milestone": "M9",
       "title": "research-path C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-392 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_untrusted_content_research_path.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14419,13 +14449,28 @@
       "milestone": "M9",
       "title": "knowledge-path C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-393 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_untrusted_content_knowledge_path.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14434,13 +14479,28 @@
       "milestone": "M9",
       "title": "learning-path C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-394 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_untrusted_content_learning_path.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14449,13 +14509,28 @@
       "milestone": "M9",
       "title": "repair-path C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-395 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_untrusted_content_repair_path.py; tests/integration/test_release_repair_chain_authority.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14464,13 +14539,28 @@
       "milestone": "M9",
       "title": "kernel-authority C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-396 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_untrusted_content_kernel_authority.py; tests/adversarial/test_ax040_whole_system_security.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14479,13 +14569,28 @@
       "milestone": "M9",
       "title": "tool-directive smuggling corpus",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-397 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/support/untrusted_content_corpus.py; tests/adversarial/test_untrusted_content_*.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14494,13 +14599,28 @@
       "milestone": "M9",
       "title": "Unicode/homoglyph adversarial corpus",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-398 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/support/untrusted_content_corpus.py; tests/adversarial/test_untrusted_content_*.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14509,13 +14629,28 @@
       "milestone": "M9",
       "title": "encoded-payload adversarial corpus",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-399 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/support/untrusted_content_corpus.py; tests/adversarial/test_untrusted_content_*.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14524,13 +14659,28 @@
       "milestone": "M9",
       "title": "SQL-shaped data poisoning tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-400 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/support/untrusted_content_corpus.py; tests/adversarial/test_untrusted_content_knowledge_path.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14539,13 +14689,28 @@
       "milestone": "M9",
       "title": "secrets leakage audit",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-401 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_m9_security_privacy_and_privilege.py; tests/unit/test_secrets.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14554,13 +14719,28 @@
       "milestone": "M9",
       "title": "audit-log privacy audit",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-402 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_m9_security_privacy_and_privilege.py; tests/unit/test_audit.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14569,13 +14749,28 @@
       "milestone": "M9",
       "title": "cross-subsystem privilege audit",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-403 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_m9_security_privacy_and_privilege.py; tests/adversarial/test_untrusted_content_architecture.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14584,13 +14779,28 @@
       "milestone": "M9",
       "title": "whole-system hostile-content chain",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-404 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_ax040_whole_system_security.py; tests/adversarial/test_untrusted_content_kernel_authority.py; tests/integration/test_m2_restart_memory_acceptance.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -14599,13 +14809,28 @@
       "milestone": "M9",
       "title": "security milestone signoff",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-405 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; .github/workflows/quality.yml",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -15094,13 +15319,33 @@
       "milestone": "M10",
       "title": "screen-capture provider",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-422 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },
@@ -15109,13 +15354,33 @@
       "milestone": "M10",
       "title": "screen-frame identity",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-423 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },
@@ -15124,13 +15389,33 @@
       "milestone": "M10",
       "title": "visual-region representation",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-424 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },
@@ -15139,13 +15424,33 @@
       "milestone": "M10",
       "title": "OCR-free primary visual grounding",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-425 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },
@@ -15154,13 +15459,33 @@
       "milestone": "M10",
       "title": "visual fallback router",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-426 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },
@@ -15169,13 +15494,33 @@
       "milestone": "M10",
       "title": "visual target proposal",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-427 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },
@@ -15184,13 +15529,33 @@
       "milestone": "M10",
       "title": "structured-vs-visual evidence ranking",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-428 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },
@@ -15199,13 +15564,33 @@
       "milestone": "M10",
       "title": "visual ambiguity handling",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-429 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },
@@ -15214,13 +15599,33 @@
       "milestone": "M10",
       "title": "stale-screen rejection",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-430 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },
@@ -15229,13 +15634,33 @@
       "milestone": "M10",
       "title": "display/DPI normalization",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-431 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },
@@ -15244,13 +15669,33 @@
       "milestone": "M10",
       "title": "multi-monitor awareness",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-432 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },
@@ -15259,13 +15704,33 @@
       "milestone": "M10",
       "title": "layout-change recovery benchmark",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-433 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },
@@ -15274,13 +15739,33 @@
       "milestone": "M10",
       "title": "perception accuracy benchmark",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-434 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },
@@ -15289,13 +15774,33 @@
       "milestone": "M10",
       "title": "world-model milestone acceptance",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
           "kind": "audit_finding",
           "reference": "docs/AUDIT_600.md",
           "note": "Independent whole-project audit set AX-435 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+        },
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/world_model.py; src/agentx/perception.py; src/agentx/capabilities/windows/screen_capture.py; src/agentx/capabilities/windows/_screen_native.py",
+          "note": "Requirement-specific production mapping is recorded in the M10 acceptance report; reviewed against merged PR #171."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m10_screen_perception.py; tests/integration/test_m10_environment_adaptation_acceptance.py; tests/integration/test_m10_screen_capture_governed.py; tests/adversarial/test_m10_world_model_authority.py; tests/benchmarks/test_m10_perception_benchmarks.py; tests/windows/test_m10_screen_capture_real_host.py",
+          "note": "M10 governed observation, stale rejection, real filesystem changes, native capture and measured fixture benchmarks; see task-specific acceptance map."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "9b2ecd350e24833860fbd1cbf7bde1e2f549bad5",
+          "note": "PR #171 merged; implementation tree equals tested exact head 7cb9e42616a097a1ec1333c5669e560a89ce4638."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M10_WORLD_MODEL_ACCEPTANCE.md; https://github.com/harsh2025-sketch/AgentX/actions/runs/35337713508",
+          "note": "Post-M9 reconciliation C1.01: 11242 passed, 7 platform/opt-in skips; separate real-host M6/M10 suite: 3 passed."
         }
       ]
     },

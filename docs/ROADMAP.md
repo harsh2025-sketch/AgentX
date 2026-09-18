@@ -6,7 +6,7 @@ AgentX is a Windows-first, local-first Adaptive Personal Operating Intelligence 
 
 ## Milestone 0 — Governed Architecture and Trusted Kernel
 
-**Status:** Completed and acceptance-verified for the M0 task scope
+**Status:** 40/40 VERIFIED (100.00%); COMPLETE for exact milestone scope
 
 Establish the architectural and security substrate that all later milestones depend on.
 
@@ -20,7 +20,7 @@ Exit criteria:
 
 ## Milestone 1 — Governed Single-Task Agent Runtime
 
-**Status:** 43/45 acceptance-verified; strict live natural-goal vertical and dependent release proof remain BLOCKED
+**Status:** 43/45 VERIFIED (95.56%); PARTIAL — see TASKS.json for exact remaining states
 
 Turn the substrate into a real bounded agent loop for one task.
 
@@ -36,7 +36,7 @@ Exit criteria:
 
 ## Milestone 2 — Persistent Experience and Restart-Safe Memory
 
-**Status:** Completed and acceptance-verified
+**Status:** 40/40 VERIFIED (100.00%); COMPLETE for exact milestone scope
 
 Make verified experience survive process restarts and become queryable context.
 
@@ -58,7 +58,7 @@ acceptance VERIFIED while the protected historical reported baseline remains unc
 
 ## Milestone 3 — Procedure Runtime and Verified Skill Compilation
 
-**Status:** Completed and acceptance-verified
+**Status:** 50/50 VERIFIED (100.00%); COMPLETE for exact milestone scope
 
 Convert verified experience into reusable procedures without conflating one success with general validity.
 
@@ -83,7 +83,7 @@ on implementation head `e55d48b102de4b346faa54d1af0d3de7d35008a0`.
 
 ## Milestone 4 — Learning Efficiency Proof
 
-**Status:** 27/30 acceptance-verified; deterministic cold-to-warm chain accepted, live-model efficiency proof remains BLOCKED
+**Status:** 27/30 VERIFIED (90.00%); PARTIAL — see TASKS.json for exact remaining states
 
 Prove that AgentX converts expensive reasoning into cheaper verified execution over time.
 
@@ -99,7 +99,7 @@ Exit criteria:
 
 ## Milestone 5 — Failure-Driven Self-Repair and Procedure Lifecycle
 
-**Status:** Completed and acceptance-verified
+**Status:** 40/40 VERIFIED (100.00%); COMPLETE for exact milestone scope
 
 Detect when learned procedures stop working and repair them conservatively.
 
@@ -123,7 +123,7 @@ are recorded as acceptance VERIFIED without rewriting the protected historical b
 
 ## Milestone 6 — Windows-Native Capability Fabric
 
-**Status:** Completed and acceptance-verified
+**Status:** 55/55 VERIFIED (100.00%); COMPLETE for exact milestone scope
 
 Provide robust Windows-first control using structured APIs before visual fallback.
 
@@ -149,7 +149,7 @@ reported baseline remains unchanged.
 
 ## Milestone 7 — Browser Agent Capability Layer
 
-**Status:** Completed and acceptance-verified for the M7 task scope
+**Status:** 35/35 VERIFIED (100.00%); COMPLETE for exact milestone scope
 
 Build a governed browser surface for multi-step web workflows.
 
@@ -163,17 +163,9 @@ Exit criteria:
 - hostile webpage content treated as untrusted data, never authority;
 - multi-step browser workflow benchmark with task-level verification.
 
-Acceptance evidence: clean PR #173 adds a concrete W3C WebDriver provider, explicit
-governed form/session/workflow contracts, deterministic DOM recovery and a canonical
-Windows CI real-browser gate. Actual headless Chrome is driven against a controlled
-localhost fixture through Executor/ActionGate/ResourceBudget with independent readback,
-sensitive-value redaction, explicit submit/redirect, upload/download, cookies/auth,
-tabs, recovery, multi-page flow and hostile-page authority-isolation checks. This
-accepts AX-301–AX-335 at M7 scope without claiming arbitrary third-party-site compatibility.
-
 ## Milestone 8 — Real Model Gateway and Exploratory/Research Runtime
 
-**Status:** 33/35 acceptance-verified; real external model/research vertical and milestone acceptance remain BLOCKED
+**Status:** 33/35 VERIFIED (94.29%); PARTIAL — see TASKS.json for exact remaining states
 
 Make L4/L5 practical with provider-neutral real model execution and governed research.
 
@@ -188,30 +180,25 @@ Exit criteria:
 - model/provider failure and fallback behavior explicitly bounded;
 - no provider-specific assumptions leak into core architecture.
 
-Acceptance evidence: PR #173 adds a bounded provider-independent model gateway with
-retry/fallback/health/capability registry and canonical Reasoner/ResourceBudget
-composition, plus a verified-research-to-execution handoff that admits only canonical
-VERIFIED knowledge as inert context. A fail-closed live-provider command is present,
-but AX-369/370 remain BLOCKED because no genuine external provider credential/service
-was available; loopback or scripted providers are not substituted.
-
 ## Milestone 9 — Security and Adversarial Trust-Boundary Hardening
 
-**Status:** Ongoing; historical C4.10 requires modern replay/revalidation
+**Task range:** AX-371–AX-405  
+**Status:** 35/35 VERIFIED (100.00%); COMPLETE for exact milestone scope. PR #169 is merged.
 
-Prove that external content and learned artifacts cannot become authority.
+Exit criteria achieved by the M9 campaign:
+- external/untrusted content remains data rather than authority across canonical surfaces;
+- modern C4.10 research, knowledge, learning, repair and kernel-authority replay;
+- tool-directive, Unicode/homoglyph, encoded-payload and SQL-shaped adversarial corpus;
+- secrets leakage and audit-log privacy audits;
+- cross-subsystem privilege and dynamic-execution source audits;
+- multi-hop whole-system and restart-safe hostile-content evidence;
+- machine-readable matrix in `docs/M9_SECURITY_MATRIX.json`;
+- second-pass acceptance report in `docs/M9_SECURITY_ACCEPTANCE.md`.
 
-Exit criteria:
-- adversarial prompt-injection/untrusted-content regression suite across research, memory, learning and repair;
-- external content cannot grant permission, lower risk, bypass Action Gate, clear Emergency Stop, alter budgets or fabricate verification/task success;
-- no dynamic-code/tool-directive smuggling through data fields;
-- dependency-boundary and authority tests remain machine-enforced;
-- replay/revalidate historical C4.10 against current canonical main;
-- threat-model coverage for capability, memory, model, persistence and self-repair surfaces.
 
 ## Milestone 10 — Perception and World Model
 
-**Status:** Foundations only
+**Status:** 30/30 VERIFIED (100.00%); COMPLETE for exact milestone scope
 
 Give AgentX a bounded, freshness-aware model of relevant computer state without continuously mirroring the entire desktop.
 
@@ -226,7 +213,7 @@ Exit criteria:
 
 ## Milestone 11 — Voice, Realtime Interaction and Product Surface
 
-**Status:** Later-stage
+**Status:** 2/25 VERIFIED (8.00%); PARTIAL — see TASKS.json for exact remaining states
 
 Add natural realtime interaction without coupling the intelligence architecture to one voice/model vendor.
 
@@ -241,7 +228,7 @@ Exit criteria:
 
 ## Milestone 12 — Proactivity, Scheduling and Long-Running Operation
 
-**Status:** Future
+**Status:** 1/25 VERIFIED (4.00%); PARTIAL — see TASKS.json for exact remaining states
 
 Move from request/response agent to a persistent personal operating intelligence.
 
@@ -257,7 +244,7 @@ Exit criteria:
 
 ## Milestone 13 — Multi-Device / Android / Cross-Device AgentOS
 
-**Status:** Future
+**Status:** 2/30 VERIFIED (6.67%); PARTIAL — see TASKS.json for exact remaining states
 
 Generalize the capability fabric beyond the Windows host.
 
@@ -271,7 +258,7 @@ Exit criteria:
 
 ## Milestone 14 — Adaptive Strategy Optimization and Specialized Models
 
-**Status:** Research-stage future
+**Status:** 2/25 VERIFIED (8.00%); PARTIAL — see TASKS.json for exact remaining states
 
 Improve strategy choice and reduce model cost using evidence rather than unrestricted self-modification.
 
@@ -286,7 +273,7 @@ Exit criteria:
 
 ## Milestone 15 — Safe Self-Extension and Tool/Capability Creation
 
-**Status:** Open-research / late-stage
+**Status:** 1/30 VERIFIED (3.33%); PARTIAL — see TASKS.json for exact remaining states
 
 Allow AgentX to propose and validate new capabilities without granting itself unrestricted code-install authority.
 
@@ -302,7 +289,7 @@ Exit criteria:
 
 ## Milestone 16 — Production Hardening, Benchmarks and Release
 
-**Status:** Final program milestone
+**Status:** 4/30 VERIFIED (13.33%); PARTIAL — see TASKS.json for exact remaining states
 
 Turn the research prototype into a defensible, measurable AgentOS release.
 
@@ -320,22 +307,26 @@ Exit criteria:
 
 ---
 
-## Current canonical position
+## Current acceptance ledger
 
-The independent AX-001–AX-600 audit plus the M1/M4/M7/M8 second-pass closure
-campaign on clean PR #173 records 411 VERIFIED, 1 IN_PROGRESS, 7 BLOCKED and
-181 NOT_IMPLEMENTED tasks. M0, M2, M3, M5, M6 and M7 are fully accepted at
-their milestone task scope. M1 is 43/45: AX-084 now has one L0-L5 cross-strategy
-benchmark, while AX-083/085 remain blocked because a real-Chrome pre-bound L1
-slice is not a substitute for the strict full natural-goal/live model-research
-vertical and dependent release proof. M4 is 27/30 with the deterministic
-cold->compile->promote->restart->warm chain accepted; genuine provider-backed
-efficiency measurements remain blocked. M8 is 33/35 with provider-independent
-gateway/research integration accepted and real-service vertical acceptance blocked.
+| Milestone | Range | VERIFIED | TOTAL | % | Other states | Status |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| M0 | AX-001–AX-040 | 40 | 40 | 100.00% | none | COMPLETE |
+| M1 | AX-041–AX-085 | 43 | 45 | 95.56% | BLOCKED=2 | PARTIAL |
+| M2 | AX-086–AX-125 | 40 | 40 | 100.00% | none | COMPLETE |
+| M3 | AX-126–AX-175 | 50 | 50 | 100.00% | none | COMPLETE |
+| M4 | AX-176–AX-205 | 27 | 30 | 90.00% | BLOCKED=3 | PARTIAL |
+| M5 | AX-206–AX-245 | 40 | 40 | 100.00% | none | COMPLETE |
+| M6 | AX-246–AX-300 | 55 | 55 | 100.00% | none | COMPLETE |
+| M7 | AX-301–AX-335 | 35 | 35 | 100.00% | none | COMPLETE |
+| M8 | AX-336–AX-370 | 33 | 35 | 94.29% | BLOCKED=2 | PARTIAL |
+| M9 | AX-371–AX-405 | 35 | 35 | 100.00% | none | COMPLETE |
+| M10 | AX-406–AX-435 | 30 | 30 | 100.00% | none | COMPLETE |
+| M11 | AX-436–AX-460 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
+| M12 | AX-461–AX-485 | 1 | 25 | 4.00% | NOT_IMPLEMENTED=24 | PARTIAL |
+| M13 | AX-486–AX-515 | 2 | 30 | 6.67% | NOT_IMPLEMENTED=28 | PARTIAL |
+| M14 | AX-516–AX-540 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
+| M15 | AX-541–AX-570 | 1 | 30 | 3.33% | NOT_IMPLEMENTED=29 | PARTIAL |
+| M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
 
-The broader project is not complete: live model/research acceptance, later
-platform/product milestones, separate M9/M10 work not yet merged to canonical
-main, and release-level Windows 10/11 matrix coverage remain separate work.
-
-Milestone completion must be judged by exact requirements and canonical evidence,
-not by raw PR count, historical task-number count, or a single readiness percentage.
+M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 release matrix or a user desktop hardware matrix. M7 uses actual headless Chrome against controlled localhost pages. This proves browser mechanics and governance, not compatibility with arbitrary external sites/accounts. M10 DPI/multi-monitor and visual accuracy evidence uses bounded deterministic fixtures in addition to real native capture. Real model/research credentials were unavailable; controlled-provider metrics do not satisfy live-efficiency acceptance. The CLI exposes metadata/help, not a complete natural-language product session.

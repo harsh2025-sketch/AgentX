@@ -10,10 +10,7 @@ repair its own procedures over time.
 >
 > Implemented code includes the Trusted Kernel, bounded agent/runtime strategies,
 > persistent experience and semantic memory, procedure compilation/validation,
-> reuse and repair machinery, an acceptance-verified Windows-native capability fabric,
-> an acceptance-verified governed browser layer, and a provider-independent bounded
-> model/research runtime. The strict audit currently records **411/600 VERIFIED** tasks;
-> M1/M4/M7/M8 together are **138/145 VERIFIED**.
+> reuse and repair machinery, an acceptance-verified Windows-native capability fabric, and governed browser workflows with actual headless Chrome fixture acceptance.
 > These components do not yet establish the complete adaptive-learning workflow
 > or a ready-to-use desktop product. The CLI currently exposes package metadata,
 > not a natural-language agent session.
@@ -138,11 +135,11 @@ these owners without introducing forbidden subsystem imports.
 | ------------------------ | -------------------------------------------------------------- | --------------- |
 | `agentx.core`            | Shared contracts, task/execution state, evidence and world-state representations | implemented foundations |
 | `agentx.kernel`          | Permissions, risk, budgets, action gating, stop, secrets and audit | implemented; hardening continues |
-| `agentx.capabilities`    | Governed filesystem, Windows and browser operations | Windows + M7 browser milestone accepted |
+| `agentx.capabilities`    | Governed filesystem, Windows and browser operations | partial capability coverage |
 | `agentx.hive`            | Knowledge, provenance, scope, preferences and retrieval contracts | implemented foundations |
 | `agentx.procedures`      | Procedure graph/runtime, applicability and lifecycle | implemented; compilation/reuse/repair lifecycle accepted |
-| `agentx.cognition`       | Reasoner, model roles, decomposition, routing and research contracts | provider-independent runtime integrated; live-provider acceptance remains blocked |
-| `agentx.learning`        | Causal extraction, parameterization, synthesis and compilation | cold-to-warm lifecycle accepted; genuine live-model efficiency proof remains open |
+| `agentx.cognition`       | Reasoner, model roles, decomposition, routing and research contracts | implemented; concrete runtime gaps remain |
+| `agentx.learning`        | Causal extraction, parameterization, synthesis and compilation | implemented foundations; live efficiency proof remains open |
 | `agentx.infrastructure`  | Configuration, event journal, persistence and store adapters | implemented foundations |
 
 The canonical names, allowed direct top-level imports, and forbidden dependency
@@ -167,3 +164,13 @@ does not prove a real-world task succeeds.
 - Do not add runtime dependencies "for later". Each dependency must be
   justified by the task that needs it.
 - Do not add placeholder implementations of future subsystems.
+
+## M9 security acceptance
+
+The canonical untrusted-content rule is **data, never authority**. AX-371–AX-405 are covered by the modern C4.10 replay, privacy/privilege audits, whole-system hostile-content chains, and the maintainable security matrix in `docs/M9_SECURITY_MATRIX.json`. See `docs/M9_SECURITY_ACCEPTANCE.md` for strict evidence and limitations.
+
+## Integrated acceptance snapshot
+
+Strict acceptance: **440/600 (73.33%)**. NOT_AUDITED=0; IN_PROGRESS=1; BLOCKED=7; NOT_IMPLEMENTED=152.
+
+This integration candidate requires new exact-head CI and the final main audit. See [status](docs/STATUS.md) for the milestone table and evidence limits. AgentX remains a research prototype, not a production-ready desktop product.
