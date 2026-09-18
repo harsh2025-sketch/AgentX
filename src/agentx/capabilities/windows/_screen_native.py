@@ -219,7 +219,6 @@ def capture_screen_raw(*, max_pixels: int) -> Result[RawScreenFrame, AgentXError
         wintypes.LPARAM,
     )
 
-    @callback_type
     def _monitor_callback(
         monitor: object,
         _device_context: object,
@@ -266,6 +265,7 @@ def capture_screen_raw(*, max_pixels: int) -> Result[RawScreenFrame, AgentXError
         )
         return True
 
+    monitor_callback = callback_type(_monitor_callback)
     user32.EnumDisplayMonitors.restype = wintypes.BOOL
     user32.EnumDisplayMonitors.argtypes = (
         wintypes.HDC,
@@ -273,7 +273,7 @@ def capture_screen_raw(*, max_pixels: int) -> Result[RawScreenFrame, AgentXError
         callback_type,
         wintypes.LPARAM,
     )
-    if not user32.EnumDisplayMonitors(None, None, _monitor_callback, 0) and not monitors:
+    if not user32.EnumDisplayMonitors(None, None, monitor_callback, 0) and not monitors:
         return Result.failure(
             _capture_error(
                 "display monitor enumeration failed",
