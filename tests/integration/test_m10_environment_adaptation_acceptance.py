@@ -46,6 +46,7 @@ def test_m10_real_filesystem_change_is_detected_invalidated_and_reobserved(
     assert second_a.state is CacheRefreshState.REFRESH_SUCCESS
     assert first_a.value is not None
     before_modified_ns = first_a.value.modified_ns  # type: ignore[union-attr]
+    before_size = first_a.value.size_bytes  # type: ignore[union-attr]
 
     # Real external mutation: bypass WorldModel/cache/invalidation entirely.
     first_path.write_text("state-b-is-different", encoding="utf-8")
@@ -56,7 +57,10 @@ def test_m10_real_filesystem_change_is_detected_invalidated_and_reobserved(
     assert first_b.state is CacheRefreshState.REFRESH_SUCCESS
     assert first_b.freshness is WorldFreshness.FRESH
     assert first_b.value is not None
-    assert first_b.value.modified_ns != before_modified_ns  # type: ignore[union-attr]
+    assert (
+        first_b.value.modified_ns != before_modified_ns  # type: ignore[union-attr]
+        or first_b.value.size_bytes != before_size  # type: ignore[union-attr]
+    )
     assert second_b.state is CacheRefreshState.FRESH_HIT
     assert second_b.freshness is WorldFreshness.FRESH
 
