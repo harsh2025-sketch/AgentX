@@ -31,6 +31,7 @@ from dataclasses import dataclass
 from datetime import timedelta
 from decimal import Decimal
 from pathlib import Path
+from threading import Lock
 from typing import Final, NoReturn
 
 from agentx.capabilities.abi import (
@@ -91,6 +92,7 @@ __all__ = [
 MAX_STRUCTURAL_FILE_BYTES: Final[int] = 8 * 1024 * 1024
 MAX_STRUCTURAL_PATH_LENGTH: Final[int] = 4_096
 _CHUNK_BYTES: Final[int] = 128 * 1024
+_MOVE_RENAME_LOCK: Final = Lock()
 
 INVALID_INPUT_ERROR_CODE: Final[str] = "capabilities.filesystem.structural.invalid_input"
 NOT_FOUND_ERROR_CODE: Final[str] = "capabilities.filesystem.structural.not_found"
@@ -619,6 +621,26 @@ def _verify_fail(detail: str) -> VerificationResult:
 
 
 def _move_or_rename_execute(
+    *,
+    source: Path,
+    destination: Path,
+    descriptor: CapabilityDescriptor,
+    operation: FilesystemStructuralOperationKind,
+) -> ExecutionResult:
+    # Keep the complete preflight + native rename linearizable inside this process.
+    # On Windows, overlapping rename attempts can both be admitted before either
+    # caller observes the source-path transition, so relying on path disappearance
+    # alone is not a sufficient concurrency boundary.
+    with _MOVE_RENAME_LOCK:
+        return _move_or_rename_execute_serialized(
+            source=source,
+            destination=destination,
+            descriptor=descriptor,
+            operation=operation,
+        )
+
+
+def _move_or_rename_execute_serialized(
     *,
     source: Path,
     destination: Path,
