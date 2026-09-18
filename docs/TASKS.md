@@ -2,7 +2,7 @@
 
 Generated from `docs/TASKS.json` by `python scripts/task_ledger.py --write`.
 
-reported_status preserves the supplied 349/2/249 historical snapshot. acceptance_status is the independent AX-001–AX-600 audit against canonical main bcc0692246a981be5ae15c993b0c3e6512871b92; VERIFIED requires exact requirement evidence and does not imply release readiness.
+reported_status preserves the supplied 349/2/249 historical snapshot. acceptance_status is independent audited truth; M10 AX-406–AX-435 was re-audited on the M10 closure branch after implementation and full canonical CI. VERIFIED requires requirement-appropriate implementation and behavioral/security/integration/real-environment evidence and does not imply whole-product release readiness.
 
 Partial: only the explicit critical path is encoded. Empty depends_on is not a claim of independence. AX-574 remains IN_PROGRESS because the whole dependency DAG has not been synchronized.
 
