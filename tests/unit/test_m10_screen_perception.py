@@ -155,9 +155,11 @@ def test_ax422_ax423_capture_is_bounded_read_only_and_frame_identity_changes() -
     capture = WindowsScreenCapture(_support(), native_surface=surface)
     first = capture.capture(environment_id="env-local").unwrap()
     same = capture.capture(environment_id="env-local").unwrap()
-    changed = WindowsScreenCapture(
-        _support(), native_surface=FakeScreenSurface(_raw(changed=True))
-    ).capture(environment_id="env-local").unwrap()
+    changed = (
+        WindowsScreenCapture(_support(), native_surface=FakeScreenSurface(_raw(changed=True)))
+        .capture(environment_id="env-local")
+        .unwrap()
+    )
 
     assert surface.calls == 2
     assert first.frame_id == same.frame_id
