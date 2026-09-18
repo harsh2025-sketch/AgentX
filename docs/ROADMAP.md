@@ -182,17 +182,19 @@ Exit criteria:
 
 ## Milestone 9 — Security and Adversarial Trust-Boundary Hardening
 
-**Status:** Ongoing; historical C4.10 requires modern replay/revalidation
+**Task range:** AX-371–AX-405  
+**Status:** Complete / task-level acceptance verified on PR #169, subject to exact-head C1.01.
 
-Prove that external content and learned artifacts cannot become authority.
+Exit criteria achieved by the M9 campaign:
+- external/untrusted content remains data rather than authority across canonical surfaces;
+- modern C4.10 research, knowledge, learning, repair and kernel-authority replay;
+- tool-directive, Unicode/homoglyph, encoded-payload and SQL-shaped adversarial corpus;
+- secrets leakage and audit-log privacy audits;
+- cross-subsystem privilege and dynamic-execution source audits;
+- multi-hop whole-system and restart-safe hostile-content evidence;
+- machine-readable matrix in `docs/M9_SECURITY_MATRIX.json`;
+- second-pass acceptance report in `docs/M9_SECURITY_ACCEPTANCE.md`.
 
-Exit criteria:
-- adversarial prompt-injection/untrusted-content regression suite across research, memory, learning and repair;
-- external content cannot grant permission, lower risk, bypass Action Gate, clear Emergency Stop, alter budgets or fabricate verification/task success;
-- no dynamic-code/tool-directive smuggling through data fields;
-- dependency-boundary and authority tests remain machine-enforced;
-- replay/revalidate historical C4.10 against current canonical main;
-- threat-model coverage for capability, memory, model, persistence and self-repair surfaces.
 
 ## Milestone 10 — Perception and World Model
 
@@ -309,7 +311,7 @@ Exit criteria:
 
 The independent AX-001–AX-600 audit against canonical main
 `bcc0692246a981be5ae15c993b0c3e6512871b92` records 380 VERIFIED,
-9 IN_PROGRESS, 7 BLOCKED and 204 NOT_IMPLEMENTED tasks. M0, M2, M3, M5 and
+9 IN_PROGRESS, 7 BLOCKED and 189 NOT_IMPLEMENTED tasks. M0, M2, M3, M5 and
 M6 are fully accepted at their milestone task scope. M1 is 42/45 under the
 stricter audit because the current deterministic integration evidence does not
 by itself prove the "real-world single-task vertical slice" or one cross-strategy

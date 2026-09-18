@@ -13629,13 +13629,28 @@
       "milestone": "M9",
       "title": "replay modern C4.10 suite",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-391 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_untrusted_content_*.py; tests/support/untrusted_content_corpus.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13644,13 +13659,28 @@
       "milestone": "M9",
       "title": "research-path C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-392 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_untrusted_content_research_path.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13659,13 +13689,28 @@
       "milestone": "M9",
       "title": "knowledge-path C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-393 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_untrusted_content_knowledge_path.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13674,13 +13719,28 @@
       "milestone": "M9",
       "title": "learning-path C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-394 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_untrusted_content_learning_path.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13689,13 +13749,28 @@
       "milestone": "M9",
       "title": "repair-path C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-395 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_untrusted_content_repair_path.py; tests/integration/test_release_repair_chain_authority.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13704,13 +13779,28 @@
       "milestone": "M9",
       "title": "kernel-authority C4.10 tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-396 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_untrusted_content_kernel_authority.py; tests/adversarial/test_ax040_whole_system_security.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13719,13 +13809,28 @@
       "milestone": "M9",
       "title": "tool-directive smuggling corpus",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-397 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/support/untrusted_content_corpus.py; tests/adversarial/test_untrusted_content_*.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13734,13 +13839,28 @@
       "milestone": "M9",
       "title": "Unicode/homoglyph adversarial corpus",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-398 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/support/untrusted_content_corpus.py; tests/adversarial/test_untrusted_content_*.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13749,13 +13869,28 @@
       "milestone": "M9",
       "title": "encoded-payload adversarial corpus",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-399 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/support/untrusted_content_corpus.py; tests/adversarial/test_untrusted_content_*.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13764,13 +13899,28 @@
       "milestone": "M9",
       "title": "SQL-shaped data poisoning tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-400 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/support/untrusted_content_corpus.py; tests/adversarial/test_untrusted_content_knowledge_path.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13779,13 +13929,28 @@
       "milestone": "M9",
       "title": "secrets leakage audit",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-401 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_m9_security_privacy_and_privilege.py; tests/unit/test_secrets.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13794,13 +13959,28 @@
       "milestone": "M9",
       "title": "audit-log privacy audit",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-402 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_m9_security_privacy_and_privilege.py; tests/unit/test_audit.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13809,13 +13989,28 @@
       "milestone": "M9",
       "title": "cross-subsystem privilege audit",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-403 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_m9_security_privacy_and_privilege.py; tests/adversarial/test_untrusted_content_architecture.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13824,13 +14019,28 @@
       "milestone": "M9",
       "title": "whole-system hostile-content chain",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-404 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_ax040_whole_system_security.py; tests/adversarial/test_untrusted_content_kernel_authority.py; tests/integration/test_m2_restart_memory_acceptance.py",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },
@@ -13839,13 +14049,28 @@
       "milestone": "M9",
       "title": "security milestone signoff",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-405 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/kernel/; src/agentx/cognition/; src/agentx/hive/; src/agentx/procedures/; src/agentx/capabilities/",
+          "note": "Current canonical typed trust boundaries remain the production enforcement; M9 adds no parallel security runtime."
+        },
+        {
+          "kind": "tests",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; .github/workflows/quality.yml",
+          "note": "Current-architecture adversarial/security evidence for the exact M9 requirement."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "27c6b72d74af701bd728664a17d93b0eb49535ff",
+          "note": "M9 implementation/test campaign head after modern C4.10 replay remediation; final exact-head CI is recorded on PR #169."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M9_SECURITY_ACCEPTANCE.md; docs/M9_SECURITY_MATRIX.json; PR #169",
+          "note": "Independent second-pass M9 audit and exact-head campaign evidence."
         }
       ]
     },

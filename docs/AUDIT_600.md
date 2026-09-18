@@ -7,8 +7,8 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 ## Audit result
 
 - BEFORE: VERIFIED 230, NOT_AUDITED 132, IN_PROGRESS 5, BLOCKED 0, NOT_IMPLEMENTED 233.
-- AFTER: VERIFIED 380, NOT_AUDITED 0, IN_PROGRESS 9, BLOCKED 7, NOT_IMPLEMENTED 204.
-- Strict acceptance coverage: **380/600 (63.3%)**.
+- AFTER (including M9 closure campaign): VERIFIED 395, NOT_AUDITED 0, IN_PROGRESS 9, BLOCKED 7, NOT_IMPLEMENTED 189.
+- Strict acceptance coverage after M9 closure: **395/600 (65.8%)**.
 - This is not a release-readiness percentage. Real-host/provider/device/product/release requirements remain separate.
 
 ## Milestone dashboard
@@ -24,7 +24,7 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | M6 Windows Capabilities | 55/55 | `████████████████████` | 0 | 0 | 0 |
 | M7 Browser Agent | 16/35 | `█████████░░░░░░░░░░░` | 1 | 0 | 18 |
 | M8 Models and Research | 28/35 | `████████████████░░░░` | 0 | 2 | 5 |
-| M9 Security | 20/35 | `███████████░░░░░░░░░` | 0 | 0 | 15 |
+| M9 Security | 35/35 | `████████████████████` | 0 | 0 | 0 |
 | M10 World Model | 16/30 | `███████████░░░░░░░░░` | 0 | 0 | 14 |
 | M11 Voice and HUD | 2/25 | `██░░░░░░░░░░░░░░░░░░` | 0 | 0 | 23 |
 | M12 Scheduling | 1/25 | `█░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 24 |
@@ -443,21 +443,21 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 | AX-388 | M9 | repair hostile-evidence tests | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-389 | M9 | persistence malformed-data tests | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-390 | M9 | threat model foundation | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
-| AX-391 | M9 | replay modern C4.10 suite | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-392 | M9 | research-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-393 | M9 | knowledge-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-394 | M9 | learning-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-395 | M9 | repair-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-396 | M9 | kernel-authority C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-397 | M9 | tool-directive smuggling corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-398 | M9 | Unicode/homoglyph adversarial corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-399 | M9 | encoded-payload adversarial corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-400 | M9 | SQL-shaped data poisoning tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-401 | M9 | secrets leakage audit | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-402 | M9 | audit-log privacy audit | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-403 | M9 | cross-subsystem privilege audit | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-404 | M9 | whole-system hostile-content chain | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
-| AX-405 | M9 | security milestone signoff | NOT_IMPLEMENTED | NOT_IMPLEMENTED | NOT_IMPLEMENTED | E0 | SECURITY GAP |  |
+| AX-391 | M9 | replay modern C4.10 suite| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-392 | M9 | research-path C4.10 tests| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-393 | M9 | knowledge-path C4.10 tests| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-394 | M9 | learning-path C4.10 tests| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-395 | M9 | repair-path C4.10 tests| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-396 | M9 | kernel-authority C4.10 tests| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-397 | M9 | tool-directive smuggling corpus| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-398 | M9 | Unicode/homoglyph adversarial corpus| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-399 | M9 | encoded-payload adversarial corpus| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-400 | M9 | SQL-shaped data poisoning tests| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-401 | M9 | secrets leakage audit| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-402 | M9 | audit-log privacy audit| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-403 | M9 | cross-subsystem privilege audit| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-404 | M9 | whole-system hostile-content chain| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E3 | NONE |  |
+| AX-405 | M9 | security milestone signoff| NOT_IMPLEMENTED | NOT_IMPLEMENTED | VERIFIED | E4 | NONE |  |
 | AX-406 | M10 | structured Windows observation foundation | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-407 | M10 | UIA snapshot foundation | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
 | AX-408 | M10 | DOM snapshot foundation | COMPLETE | NOT_AUDITED | VERIFIED | E3 | NONE |  |
@@ -678,3 +678,7 @@ Scope: exactly AX-001 through AX-600. Historical `reported_status` is preserved;
 ## Final-gate rule
 
 The audit PR must pass the canonical required workflow on its exact final head before review. This audit report intentionally does not embed a self-referential final head SHA or workflow run ID; those are reported on the PR/final handoff after the exact-head run. The PR must not be self-merged.
+
+## M9 closure addendum
+
+The M9 campaign rooted at `509f13d44a42f1803e22c85b0602083bfa1e1183` ported and modernized the historical C4.10 adversarial suite, extended encoded-payload coverage, added secrets/audit/privacy/privilege audits, and independently re-audited AX-371–AX-405. Detailed evidence is in `docs/M9_SECURITY_ACCEPTANCE.md` and `docs/M9_SECURITY_MATRIX.json`. PR #169 exact-head C1.01 is the final branch-wide acceptance gate.
