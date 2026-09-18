@@ -3,7 +3,7 @@
 Evidence snapshot: 2026-09-18.
 
 This status is synchronized to the independent AX-001–AX-600 audit plus the focused M10
-re-audit on implementation head `8ca74839f3a615393c4803ba56509439a1bc261a`.
+re-audit on implementation head `cafb25c73e396abe7e98361e2408c6768b932a5d`.
 Historical `reported_status` remains immutable and separate from audited acceptance.
 
 ## Canonical repository state
