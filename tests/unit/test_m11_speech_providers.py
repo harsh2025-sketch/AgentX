@@ -197,3 +197,24 @@ def test_malformed_and_timeout_provider_responses_fail_typed_and_closed() -> Non
             SpeechFailureKind.TIMEOUT,
             SpeechFailureKind.UNAVAILABLE,
         }
+
+
+def test_sensitive_speech_text_is_excluded_from_repr() -> None:
+    session = SpeechSessionId.create()
+    cancellation = CancellationSource()
+    transcript = __import__(
+        "agentx.cognition.speech",
+        fromlist=["SttTranscript"],
+    ).SttTranscript(
+        session_id=session,
+        text="private transcript material",
+        is_final=True,
+        provider_id=_PROVIDER,
+    )
+    request = TtsRequest(
+        session_id=session,
+        text="private synthesized response",
+        cancellation_token=cancellation.token,
+    )
+    assert "private transcript material" not in repr(transcript)
+    assert "private synthesized response" not in repr(request)
