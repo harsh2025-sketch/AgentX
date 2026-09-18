@@ -19,7 +19,7 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | M6 Windows Capabilities | 52 | 0 | 3 | 55 | 0 | 0 | 0 | 0 |
 | M7 Browser Agent | 14 | 0 | 21 | 16 | 0 | 1 | 0 | 18 |
 | M8 Models and Research | 13 | 0 | 22 | 28 | 0 | 0 | 2 | 5 |
-| M9 Security | 20 | 0 | 15 | 20 | 0 | 0 | 0 | 15 |
+| M9 Security | 20 | 0 | 15 | 35 | 0 | 0 | 0 | 0 |
 | M10 World Model | 16 | 0 | 14 | 16 | 0 | 0 | 0 | 14 |
 | M11 Voice and HUD | 2 | 0 | 23 | 2 | 0 | 0 | 0 | 23 |
 | M12 Scheduling | 1 | 0 | 24 | 1 | 0 | 0 | 0 | 24 |
@@ -423,21 +423,21 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-388 | repair hostile-evidence tests | COMPLETE | VERIFIED |  |
 | AX-389 | persistence malformed-data tests | COMPLETE | VERIFIED |  |
 | AX-390 | threat model foundation | COMPLETE | VERIFIED |  |
-| AX-391 | replay modern C4.10 suite | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-392 | research-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-393 | knowledge-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-394 | learning-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-395 | repair-path C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-396 | kernel-authority C4.10 tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-397 | tool-directive smuggling corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-398 | Unicode/homoglyph adversarial corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-399 | encoded-payload adversarial corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-400 | SQL-shaped data poisoning tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-401 | secrets leakage audit | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-402 | audit-log privacy audit | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-403 | cross-subsystem privilege audit | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-404 | whole-system hostile-content chain | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-405 | security milestone signoff | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-391 | replay modern C4.10 suite | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-392 | research-path C4.10 tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-393 | knowledge-path C4.10 tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-394 | learning-path C4.10 tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-395 | repair-path C4.10 tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-396 | kernel-authority C4.10 tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-397 | tool-directive smuggling corpus | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-398 | Unicode/homoglyph adversarial corpus | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-399 | encoded-payload adversarial corpus | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-400 | SQL-shaped data poisoning tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-401 | secrets leakage audit | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-402 | audit-log privacy audit | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-403 | cross-subsystem privilege audit | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-404 | whole-system hostile-content chain | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-405 | security milestone signoff | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-406 | structured Windows observation foundation | COMPLETE | VERIFIED |  |
 | AX-407 | UIA snapshot foundation | COMPLETE | VERIFIED |  |
 | AX-408 | DOM snapshot foundation | COMPLETE | VERIFIED |  |
