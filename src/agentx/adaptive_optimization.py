@@ -1720,15 +1720,14 @@ class OptimizationPolicyStore:
         policy = self.staged_policy(policy_id)
         if policy is None:
             raise AdaptiveOptimizationError("retired policy does not exist")
+        active = self.active_policy()
         return self._append(
             PolicyEvent(
                 event_id=uuid4(),
                 policy=policy,
                 transition=PolicyTransition.RETIRED,
                 occurred_at=occurred_at,
-                previous_active=(
-                    None if self.active_policy() is None else self.active_policy().policy_id
-                ),
+                previous_active=None if active is None else active.policy_id,
             )
         )
 
