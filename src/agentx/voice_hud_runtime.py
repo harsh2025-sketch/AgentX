@@ -137,10 +137,10 @@ class VoiceHudRuntime:
     def barge_in(self) -> bool:
         """Cancel both realtime audio and the active canonical task, idempotently."""
 
-        self._session.barge_in(reason="user barge-in")
-        cancelled = self._task_bridge.barge_in()
+        session_event = self._session.barge_in(reason="user barge-in")
+        task_cancelled = self._task_bridge.barge_in()
         self._task_bridge.telemetry.state("voice.cancelled")
-        return cancelled
+        return task_cancelled or session_event.kind.value != "closed"
 
     def close(self) -> None:
         self._task_bridge.cancel("voice/HUD runtime closed")
