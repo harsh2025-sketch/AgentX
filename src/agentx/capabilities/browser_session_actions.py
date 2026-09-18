@@ -222,9 +222,7 @@ class BrowserSessionParams(CapabilityParams):
             "operation": self.operation.value,
             "target": _json_object(self.target.to_dict()),
             "selected_node": (
-                None
-                if self.selected_node is None
-                else _json_object(self.selected_node.to_dict())
+                None if self.selected_node is None else _json_object(self.selected_node.to_dict())
             ),
             "expected_filename": self.expected_filename,
             "cookie": None if self.cookie is None else self.cookie.to_dict(),
