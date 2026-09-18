@@ -11,7 +11,7 @@ import http.client
 import json
 import math
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from enum import StrEnum
 from typing import Protocol, cast, runtime_checkable
@@ -133,7 +133,7 @@ class SttRequest:
 @dataclass(frozen=True, slots=True, kw_only=True)
 class SttTranscript:
     session_id: SpeechSessionId
-    text: str
+    text: str = field(repr=False)
     is_final: bool
     provider_id: SpeechProviderId
     confidence: float | None = None
@@ -157,7 +157,7 @@ class SttTranscript:
 @dataclass(frozen=True, slots=True, kw_only=True)
 class TtsRequest:
     session_id: SpeechSessionId
-    text: str
+    text: str = field(repr=False)
     cancellation_token: CancellationToken
     voice: str | None = None
 
