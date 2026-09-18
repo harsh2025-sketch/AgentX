@@ -425,7 +425,7 @@ def test_hostile_operation_text_changes_no_gate_decision(hostile: str) -> None:
 def test_emergency_stop_has_no_clear_or_reset_api() -> None:
     stop = EmergencyStop()
     public_members = [name for name in dir(stop) if not name.startswith("_")]
-    assert set(public_members) <= {"state", "stop_requested", "request_stop"}
+    assert set(public_members) <= {"state", "stop_requested", "request_stop", "try_admit_execution"}
 
     for forbidden in ("reset", "clear", "resume", "cancel", "unset", "dismiss"):
         assert not hasattr(stop, forbidden)
