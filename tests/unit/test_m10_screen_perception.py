@@ -55,7 +55,7 @@ def _pixels(width: int, height: int, *, changed: bool = False) -> bytes:
     for y in range(height):
         for x in range(width):
             offset = (y * width + x) * 4
-            value = 230 if x < width // 2 and ((x // 4) + (y // 4)) % 2 == 0 else 20
+            value = 230 if x < width // 2 and (x + y) % 2 == 0 else 20
             if changed and x == width - 1 and y == height - 1:
                 value = 111
             data[offset : offset + 4] = bytes((value, value, value, 255))
