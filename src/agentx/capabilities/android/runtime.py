@@ -230,9 +230,7 @@ class AndroidActionParams(CapabilityParams):
             assert self.duration_ms is not None
             if not 1 <= self.duration_ms <= 60_000:
                 raise ValueError("duration_ms must be in [1, 60000]")
-            self._reject_extras(
-                allow={"x", "y", "x2", "y2", "duration_ms", "verification"}
-            )
+            self._reject_extras(allow={"x", "y", "x2", "y2", "duration_ms", "verification"})
             return
         if self.operation is AndroidOperation.NAVIGATION:
             if not isinstance(self.navigation, AndroidNavigation):
@@ -260,14 +258,10 @@ class AndroidActionParams(CapabilityParams):
             "verification": self.verification,
         }
         unexpected = [
-            name
-            for name, value in values.items()
-            if value is not None and name not in allowed
+            name for name, value in values.items() if value is not None and name not in allowed
         ]
         if unexpected:
-            raise ValueError(
-                f"{self.operation.value} rejects fields: {sorted(unexpected)}"
-            )
+            raise ValueError(f"{self.operation.value} rejects fields: {sorted(unexpected)}")
 
     def to_dict(self) -> dict[str, JsonValue]:
         return {
@@ -284,9 +278,7 @@ class AndroidActionParams(CapabilityParams):
             "y2": self.y2,
             "duration_ms": self.duration_ms,
             "navigation": None if self.navigation is None else self.navigation.value,
-            "verification": (
-                None if self.verification is None else self.verification.to_dict()
-            ),
+            "verification": (None if self.verification is None else self.verification.to_dict()),
         }
 
 
