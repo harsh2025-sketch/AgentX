@@ -11,16 +11,16 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | Milestone | Reported complete | Reported partial | Reported remaining | Verified | Not audited | In progress | Blocked | Not implemented |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | M0 Trusted Kernel | 40 | 0 | 0 | 40 | 0 | 0 | 0 | 0 |
-| M1 Agent Runtime | 41 | 2 | 2 | 42 | 0 | 1 | 2 | 0 |
+| M1 Agent Runtime | 41 | 2 | 2 | 43 | 0 | 0 | 2 | 0 |
 | M2 Hive and Memory | 39 | 0 | 1 | 40 | 0 | 0 | 0 | 0 |
 | M3 Procedure Compiler | 49 | 0 | 1 | 50 | 0 | 0 | 0 | 0 |
-| M4 Learning Efficiency | 20 | 0 | 10 | 21 | 0 | 6 | 3 | 0 |
+| M4 Learning Efficiency | 20 | 0 | 10 | 27 | 0 | 0 | 3 | 0 |
 | M5 Self-Repair | 36 | 0 | 4 | 40 | 0 | 0 | 0 | 0 |
 | M6 Windows Capabilities | 52 | 0 | 3 | 55 | 0 | 0 | 0 | 0 |
-| M7 Browser Agent | 14 | 0 | 21 | 16 | 0 | 1 | 0 | 18 |
-| M8 Models and Research | 13 | 0 | 22 | 28 | 0 | 0 | 2 | 5 |
+| M7 Browser Agent | 14 | 0 | 21 | 35 | 0 | 0 | 0 | 0 |
+| M8 Models and Research | 13 | 0 | 22 | 33 | 0 | 0 | 2 | 0 |
 | M9 Security | 20 | 0 | 15 | 35 | 0 | 0 | 0 | 0 |
-| M10 World Model | 16 | 0 | 14 | 16 | 0 | 0 | 0 | 14 |
+| M10 World Model | 16 | 0 | 14 | 30 | 0 | 0 | 0 | 0 |
 | M11 Voice and HUD | 2 | 0 | 23 | 2 | 0 | 0 | 0 | 23 |
 | M12 Scheduling | 1 | 0 | 24 | 1 | 0 | 0 | 0 | 24 |
 | M13 Multi-device and Android | 2 | 0 | 28 | 2 | 0 | 0 | 0 | 28 |
@@ -116,7 +116,7 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-081 | task/runtime adversarial tests | COMPLETE | VERIFIED |  |
 | AX-082 | task/runtime architecture tests | COMPLETE | VERIFIED |  |
 | AX-083 | real-world single-task vertical slice | PARTIAL | BLOCKED | AX-053, AX-060, AX-069, AX-344 |
-| AX-084 | cross-strategy orchestration benchmark | PARTIAL | IN_PROGRESS | AX-083 |
+| AX-084 | cross-strategy orchestration benchmark | PARTIAL | VERIFIED | AX-083 |
 | AX-085 | M1 release acceptance proof | NOT_IMPLEMENTED | BLOCKED | AX-054, AX-083, AX-084 |
 | AX-086 | Episode identity | COMPLETE | VERIFIED |  |
 | AX-087 | Episode record | COMPLETE | VERIFIED |  |
@@ -229,13 +229,13 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-194 | deterministic experiment serialization | COMPLETE | VERIFIED |  |
 | AX-195 | evidence non-authority invariants | COMPLETE | VERIFIED |  |
 | AX-196 | connect metrics to real model provider | NOT_IMPLEMENTED | VERIFIED | AX-344 |
-| AX-197 | execute unknown cold task | NOT_IMPLEMENTED | IN_PROGRESS | AX-083, AX-196 |
+| AX-197 | execute unknown cold task | NOT_IMPLEMENTED | VERIFIED | AX-083, AX-196 |
 | AX-198 | collect real L4/L5 metrics | NOT_IMPLEMENTED | BLOCKED | AX-197 |
-| AX-199 | compile cold experience | NOT_IMPLEMENTED | IN_PROGRESS | AX-175, AX-197 |
-| AX-200 | validate candidate with variations | NOT_IMPLEMENTED | IN_PROGRESS | AX-199 |
-| AX-201 | promote learned procedure | NOT_IMPLEMENTED | IN_PROGRESS | AX-200 |
-| AX-202 | restart AgentX | NOT_IMPLEMENTED | IN_PROGRESS | AX-125, AX-201 |
-| AX-203 | solve related warm task via reuse | NOT_IMPLEMENTED | IN_PROGRESS | AX-202 |
+| AX-199 | compile cold experience | NOT_IMPLEMENTED | VERIFIED | AX-175, AX-197 |
+| AX-200 | validate candidate with variations | NOT_IMPLEMENTED | VERIFIED | AX-199 |
+| AX-201 | promote learned procedure | NOT_IMPLEMENTED | VERIFIED | AX-200 |
+| AX-202 | restart AgentX | NOT_IMPLEMENTED | VERIFIED | AX-125, AX-201 |
+| AX-203 | solve related warm task via reuse | NOT_IMPLEMENTED | VERIFIED | AX-202 |
 | AX-204 | demonstrate material model-call/cost reduction | NOT_IMPLEMENTED | BLOCKED | AX-198, AX-203 |
 | AX-205 | publish reproducible cold-vs-warm benchmark | NOT_IMPLEMENTED | BLOCKED | AX-204 |
 | AX-206 | failure taxonomy | COMPLETE | VERIFIED |  |
@@ -347,27 +347,27 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-312 | independent navigation verification | COMPLETE | VERIFIED |  |
 | AX-313 | cross-origin redirect fail-closed policy | COMPLETE | VERIFIED |  |
 | AX-314 | hostile webpage content inertness | COMPLETE | VERIFIED |  |
-| AX-315 | governed text/form entry — N2.27 | NOT_IMPLEMENTED | IN_PROGRESS |  |
+| AX-315 | governed text/form entry — N2.27 | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-316 | text-field target binding | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-317 | form-field value validation | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-318 | governed checkbox/radio interaction | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-319 | governed select/dropdown interaction | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-320 | governed submit action | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-321 | form-state verification | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-322 | submission-result verification | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-323 | multi-field form transaction | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-324 | upload contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-325 | upload verification | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-326 | download contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-327 | download verification | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-328 | cookie operation contract | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-329 | authentication-session boundary | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-330 | popup/new-tab handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-331 | browser recovery after DOM change | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-332 | browser capability health | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-333 | multi-page workflow execution | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-334 | hostile-page adversarial benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-335 | browser milestone acceptance benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-318 | governed checkbox/radio interaction | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-319 | governed select/dropdown interaction | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-320 | governed submit action | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-321 | form-state verification | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-322 | submission-result verification | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-323 | multi-field form transaction | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-324 | upload contract | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-325 | upload verification | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-326 | download contract | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-327 | download verification | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-328 | cookie operation contract | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-329 | authentication-session boundary | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-330 | popup/new-tab handling | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-331 | browser recovery after DOM change | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-332 | browser capability health | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-333 | multi-page workflow execution | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-334 | hostile-page adversarial benchmark | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-335 | browser milestone acceptance benchmark | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-336 | provider-neutral ModelId | COMPLETE | VERIFIED |  |
 | AX-337 | provider-neutral model request | COMPLETE | VERIFIED |  |
 | AX-338 | model-response contract | COMPLETE | VERIFIED |  |
@@ -386,12 +386,12 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-351 | usage/token extraction | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-352 | provider-error translation | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-353 | rate-limit handling | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-354 | bounded retry policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-354 | bounded retry policy | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-355 | timeout handling | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-356 | provider cancellation | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-357 | fallback-provider policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-358 | provider-health tracking | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-359 | model-capability registry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-357 | fallback-provider policy | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-358 | provider-health tracking | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-359 | model-capability registry | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-360 | clean L5 exploratory strategy — N2.07 | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-361 | exploratory task contract | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-362 | research objective generation | NOT_IMPLEMENTED | VERIFIED |  |
@@ -400,7 +400,7 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-365 | research provider boundary | COMPLETE | VERIFIED |  |
 | AX-366 | unverified research ingestion | COMPLETE | VERIFIED |  |
 | AX-367 | bounded research loop | NOT_IMPLEMENTED | VERIFIED |  |
-| AX-368 | research -> execution handoff | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-368 | research -> execution handoff | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-369 | model-backed L4/L5 vertical | NOT_IMPLEMENTED | BLOCKED |  |
 | AX-370 | real-model milestone acceptance | NOT_IMPLEMENTED | BLOCKED |  |
 | AX-371 | external-content-is-data invariant | COMPLETE | VERIFIED |  |
@@ -454,20 +454,20 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-419 | device-state model | COMPLETE | VERIFIED |  |
 | AX-420 | task-state world binding | COMPLETE | VERIFIED |  |
 | AX-421 | Hive/world relationship linkage | COMPLETE | VERIFIED |  |
-| AX-422 | screen-capture provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-423 | screen-frame identity | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-424 | visual-region representation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-425 | OCR-free primary visual grounding | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-426 | visual fallback router | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-427 | visual target proposal | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-428 | structured-vs-visual evidence ranking | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-429 | visual ambiguity handling | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-430 | stale-screen rejection | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-431 | display/DPI normalization | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-432 | multi-monitor awareness | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-433 | layout-change recovery benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-434 | perception accuracy benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-435 | world-model milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-422 | screen-capture provider | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-423 | screen-frame identity | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-424 | visual-region representation | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-425 | OCR-free primary visual grounding | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-426 | visual fallback router | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-427 | visual target proposal | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-428 | structured-vs-visual evidence ranking | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-429 | visual ambiguity handling | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-430 | stale-screen rejection | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-431 | display/DPI normalization | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-432 | multi-monitor awareness | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-433 | layout-change recovery benchmark | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-434 | perception accuracy benchmark | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-435 | world-model milestone acceptance | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-436 | audio abstraction foundation | COMPLETE | VERIFIED |  |
 | AX-437 | microphone input provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-438 | speaker output provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |

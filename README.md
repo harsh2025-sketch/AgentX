@@ -10,7 +10,7 @@ repair its own procedures over time.
 >
 > Implemented code includes the Trusted Kernel, bounded agent/runtime strategies,
 > persistent experience and semantic memory, procedure compilation/validation,
-> reuse and repair machinery, an acceptance-verified Windows-native capability fabric, and browser capability foundations.
+> reuse and repair machinery, an acceptance-verified Windows-native capability fabric, and governed browser workflows with actual headless Chrome fixture acceptance.
 > These components do not yet establish the complete adaptive-learning workflow
 > or a ready-to-use desktop product. The CLI currently exposes package metadata,
 > not a natural-language agent session.
@@ -168,3 +168,9 @@ does not prove a real-world task succeeds.
 ## M9 security acceptance
 
 The canonical untrusted-content rule is **data, never authority**. AX-371–AX-405 are covered by the modern C4.10 replay, privacy/privilege audits, whole-system hostile-content chains, and the maintainable security matrix in `docs/M9_SECURITY_MATRIX.json`. See `docs/M9_SECURITY_ACCEPTANCE.md` for strict evidence and limitations.
+
+## Integrated acceptance snapshot
+
+Strict acceptance: **440/600 (73.33%)**. NOT_AUDITED=0; IN_PROGRESS=1; BLOCKED=7; NOT_IMPLEMENTED=152.
+
+This integration candidate requires new exact-head CI and the final main audit. See [status](docs/STATUS.md) for the milestone table and evidence limits. AgentX remains a research prototype, not a production-ready desktop product.

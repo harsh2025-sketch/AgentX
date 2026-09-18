@@ -1,98 +1,52 @@
-# AgentX status and completion ledger
+# AgentX status
 
-Evidence snapshot: 2026-09-18.
+Repository: `harsh2025-sketch/AgentX`. Integration baseline: `9b2ecd350e24833860fbd1cbf7bde1e2f549bad5`.
 
-This status is synchronized to the independent AX-001–AX-600 audit on canonical
-main `bcc0692246a981be5ae15c993b0c3e6512871b92`. Historical
-`reported_status` remains immutable and separate from audited acceptance.
+PR #169 security and PR #171 world-model implementation are merged. This reconciliation incorporates PR #173's core-intelligence evidence; its exact new head must pass canonical CI before merge. The final whole-project audit follows integration. Historical `reported_status` remains unchanged. Counts below are calculated from TASKS.json, not added from PR summaries.
 
-## Canonical repository state
+| State | Tasks | Percentage |
+| --- | ---: | ---: |
+| VERIFIED | 440 | 73.33% |
+| NOT_AUDITED | 0 | 0.00% |
+| IN_PROGRESS | 1 | 0.17% |
+| BLOCKED | 7 | 1.17% |
+| NOT_IMPLEMENTED | 152 | 25.33% |
+| TOTAL | 600 | 100.00% |
 
-- Audit starting main: `bcc0692246a981be5ae15c993b0c3e6512871b92`.
-- Audit main: `bcc0692246a981be5ae15c993b0c3e6512871b92`.
-- There were no open pull requests when the audit baseline was established.
-- Milestone PRs #162 (M2), #163 (M1), #164 (M5), #165 (M6), and #166 (M3)
-  are merged history. Older notes describing any of them as unmerged are
-  historical, not current repository state.
-- The focused audit branch is not canonical and must not be self-merged.
-  Its exact final head must pass the required C1.01 workflow before Product
-  Owner review.
+| Milestone | Range | VERIFIED | TOTAL | % | Other states | Status |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| M0 | AX-001–AX-040 | 40 | 40 | 100.00% | none | COMPLETE |
+| M1 | AX-041–AX-085 | 43 | 45 | 95.56% | BLOCKED=2 | PARTIAL |
+| M2 | AX-086–AX-125 | 40 | 40 | 100.00% | none | COMPLETE |
+| M3 | AX-126–AX-175 | 50 | 50 | 100.00% | none | COMPLETE |
+| M4 | AX-176–AX-205 | 27 | 30 | 90.00% | BLOCKED=3 | PARTIAL |
+| M5 | AX-206–AX-245 | 40 | 40 | 100.00% | none | COMPLETE |
+| M6 | AX-246–AX-300 | 55 | 55 | 100.00% | none | COMPLETE |
+| M7 | AX-301–AX-335 | 35 | 35 | 100.00% | none | COMPLETE |
+| M8 | AX-336–AX-370 | 33 | 35 | 94.29% | BLOCKED=2 | PARTIAL |
+| M9 | AX-371–AX-405 | 35 | 35 | 100.00% | none | COMPLETE |
+| M10 | AX-406–AX-435 | 30 | 30 | 100.00% | none | COMPLETE |
+| M11 | AX-436–AX-460 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
+| M12 | AX-461–AX-485 | 1 | 25 | 4.00% | NOT_IMPLEMENTED=24 | PARTIAL |
+| M13 | AX-486–AX-515 | 2 | 30 | 6.67% | NOT_IMPLEMENTED=28 | PARTIAL |
+| M14 | AX-516–AX-540 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
+| M15 | AX-541–AX-570 | 1 | 30 | 3.33% | NOT_IMPLEMENTED=29 | PARTIAL |
+| M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
 
-## Independent 600-task audit
+M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 release matrix or a user desktop hardware matrix. M7 uses actual headless Chrome against controlled localhost pages. This proves browser mechanics and governance, not compatibility with arbitrary external sites/accounts. M10 DPI/multi-monitor and visual accuracy evidence uses bounded deterministic fixtures in addition to real native capture. Real model/research credentials were unavailable; controlled-provider metrics do not satisfy live-efficiency acceptance. The CLI exposes metadata/help, not a complete natural-language product session.
 
-| Acceptance state | Count |
-| --- | ---: |
-| VERIFIED | 395 |
-| NOT_AUDITED | 0 |
-| IN_PROGRESS | 9 |
-| BLOCKED | 7 |
-| NOT_IMPLEMENTED | 189 |
-| **TOTAL** | **600** |
-
-The machine-readable record is [AUDIT_600.json](AUDIT_600.json); the complete
-human-readable audit, evidence policy, per-task decisions and readiness
-dashboard are in [AUDIT_600.md](AUDIT_600.md). [TASKS.json](TASKS.json)
-remains the canonical task ledger and [TASKS.md](TASKS.md) is generated from
-it.
-
-## Milestone audit status
-
-| Milestone | VERIFIED | Remaining audit state |
-| --- | ---: | --- |
-| M0 Trusted Kernel | 40/40 | none |
-| M1 Agent Runtime | 42/45 | AX-083/085 BLOCKED; AX-084 IN_PROGRESS |
-| M2 Hive and Memory | 40/40 | none |
-| M3 Procedure Compiler | 50/50 | none |
-| M4 Learning Efficiency | 21/30 | 6 IN_PROGRESS; 3 BLOCKED on live evidence |
-| M5 Self-Repair | 40/40 | none |
-| M6 Windows Capabilities | 55/55 | milestone scope accepted; release host matrix remains M16 |
-| M7 Browser Agent | 16/35 | 1 IN_PROGRESS; 18 NOT_IMPLEMENTED |
-| M8 Models and Research | 28/35 | 2 BLOCKED; 5 NOT_IMPLEMENTED |
-| M9 Security | 35/35 | Complete / task-level acceptance verified |
-| M10 World Model | 16/30 | 14 NOT_IMPLEMENTED |
-| M11 Voice and HUD | 2/25 | 23 NOT_IMPLEMENTED |
-| M12 Scheduling | 1/25 | 24 NOT_IMPLEMENTED |
-| M13 Multi-device and Android | 2/30 | 28 NOT_IMPLEMENTED |
-| M14 Optimization | 2/25 | 23 NOT_IMPLEMENTED |
-| M15 Self-extension | 1/30 | 29 NOT_IMPLEMENTED |
-| M16 Production and Release | 4/30 | AX-574 IN_PROGRESS; 25 NOT_IMPLEMENTED |
-
-## Evidence boundaries that must not be blurred
-
-M6 has real hosted Windows evidence, but the observed acceptance host is Windows
-Server 2025 and explicitly does not claim an interactive desktop session.
-That does not prove AX-576/577 Windows 10/11 release-matrix requirements,
-multi-DPI/multi-monitor coverage, or installer/upgrade acceptance.
-
-The concrete HTTP model adapter and metrics integration are implemented and
-loopback-integrated. No configured live model/research credentials were
-available for this audit, so live cold-vs-warm efficiency and real-model
-milestone acceptance remain blocked rather than simulated.
-
-Browser foundations include page/DOM identity, deterministic target selection,
-governed navigation/click, selected-node fill, sensitive-value redaction and
-independent field-value readback. They do not establish a concrete live browser
-driver, submission/upload/download/auth/cookie coverage, or the required
-multi-page benchmark.
-
-Audio/UI-event, watcher, device, strategy-evidence and missing-capability
-components are accepted only for their narrow foundation contracts. They do
-not imply microphone/speaker acceptance, a persistent scheduler, Android
-operation, adaptive optimization, or safe self-installing capabilities.
-
-## Product and release posture
-
-The CLI still exposes package metadata/help rather than a usable natural-language
-agent session. Voice/HUD, Android, substantial browser workflow functionality,
-persistent scheduling, adaptive optimization, safe self-extension, installer /
-upgrade / privacy controls, representative release benchmarks and AX-600
-whole-system release acceptance remain open.
-
-Implementation coverage, strict acceptance coverage, external-environment
-readiness, product/UI readiness and release readiness are therefore reported
-separately in [AUDIT_600.md](AUDIT_600.md). A green core-runtime milestone is
-not treated as proof that AgentX v1 is release-ready.
-
-## M9 security closure
-
-AX-371 through AX-405 have been independently re-audited on the M9 campaign branch. The modern C4.10 replay, encoded/tool/Unicode/SQL hostile corpora, secrets/audit/privacy checks and whole-system authority invariants are recorded in `docs/M9_SECURITY_ACCEPTANCE.md`. Final acceptance remains bound to PR #169 exact-head C1.01.
+| Area | Accepted scope and remaining requirements |
+| --- | --- |
+| Core runtime | L0–L5 governed composition, bounded attempts, independent verification; natural-goal/live-provider vertical and final M1 release proof remain blocked. |
+| Memory/learning | Restart-safe Hive, compiled ACTIVE reuse and repair/rollback accepted; real-provider efficiency measurements remain blocked. |
+| Windows capability layer | M6 scope accepted on hosted Windows; Windows 10/11 release matrix remains open. |
+| Browser | M7 forms, sessions, transfers, tabs, recovery and governed workflows have real headless Chrome fixture evidence. |
+| Model/research | HTTP adapter, bounded gateway and inert verified-research handoff implemented; external model vertical/signoff remain blocked. |
+| Security | M9 hostile-content, restart, privacy and authority suites retained; untrusted content remains data. |
+| World model | Freshness/invalidation, real filesystem change, bounded frame capture and grounding accepted within documented environment limits. |
+| Voice/HUD | Narrow contracts only; audio hardware and product interaction remain unimplemented. |
+| Scheduling | Event-watcher foundation only; persistent scheduler and policy execution remain open. |
+| Multi-device/Android | Protocol contracts only; real devices, transport and Android execution remain open. |
+| Optimization | Strategy/performance evidence foundations; adaptive policies and acceptance remain open. |
+| Self-extension | Capability-gap foundation; safe extension lifecycle remains open. |
+| Production/release | Release is not ready; installer, upgrades, privacy/product controls, platform matrix and whole-system acceptance remain open. |
