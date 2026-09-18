@@ -59,14 +59,12 @@ from agentx.capabilities.human_approval import (
 )
 from agentx.capabilities.runtime import ClosedLoopOutcome, LoopOutcome
 from agentx.capabilities.verifier import VerificationRequirement
-from agentx.capabilities.webdriver_browser_driver import (
-    ChromeDriverService,
-    WebDriverBrowserProvider,
-)
+from agentx.capabilities.webdriver_browser_driver import WebDriverBrowserProvider
 from agentx.capability_strategy import CapabilityStrategyBinding, GovernedCapabilityStrategy
 from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.kernel.permissions import Permission
 from agentx.kernel.risk import RiskLevel
+from tests.support.chromedriver_service import ChromeDriverService
 from tests.support.orchestration_harness import (
     OrchestrationHarness,
     default_limits,
