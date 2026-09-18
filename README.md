@@ -22,6 +22,21 @@ repair its own procedures over time.
 > [machine-readable task records](docs/TASKS.json); historical reported status
 > is separate from strict acceptance evidence.
 
+## License
+
+AgentX is proprietary software. Source availability does not grant permission
+to use, copy, modify, distribute, deploy, sublicense, or commercially exploit
+the software.
+
+All rights are reserved except where explicit written permission has been
+granted by the copyright holder or applicable law provides otherwise.
+
+Public repository functionality may permit viewing, cloning, forking, or
+downloading; those capabilities do not by themselves grant a copyright license
+to run, reuse, modify, redistribute, deploy, or commercialize AgentX.
+
+See [LICENSE](LICENSE) for the complete terms.
+
 ## Requirements
 
 - **Python 3.12 or newer** (3.12 and 3.13 are the targets).
