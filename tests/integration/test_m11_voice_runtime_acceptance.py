@@ -34,7 +34,11 @@ from tests.support.demo_capability import (
     NoteWriteParams,
     hostile_request,
 )
-from tests.support.orchestration_harness import OrchestrationHarness, default_limits
+from tests.support.orchestration_harness import (
+    OrchestrationHarness,
+    UnavailableStrategy,
+    default_limits,
+)
 
 
 def test_hostile_voice_transcript_is_data_through_canonical_agent_loop() -> None:
@@ -170,3 +174,60 @@ def test_expired_or_cancelled_confirmation_never_authorizes() -> None:
     cancelled = protocol.issue(approval_request, nonce="cancelled", ttl_seconds=30, now=20.0)
     protocol.invalidate(cancelled)
     assert protocol.resolve("confirm cancelled", cancelled, now=21.0).is_failure
+
+
+def test_recovery_telemetry_reflects_multiple_canonical_attempts() -> None:
+    harness = OrchestrationHarness()
+    events: list[RuntimeUiEvent] = []
+    bridge = VoiceTaskBridge(
+        task_manager=harness.task_manager,
+        agent_loop=harness.agent_loop(
+            {
+                ExecutionLevel.L1_DIRECT: UnavailableStrategy(),
+                ExecutionLevel.L2_COMPILED: harness.governed_strategy(),
+            }
+        ),
+        telemetry=VoiceRuntimeTelemetry(events.append),
+    )
+    outcome = bridge.ingest(
+        "write the note",
+        VoiceTaskPlan(
+            routing_evidence=RoutingEvidence(deterministic_direct_path=True),
+            requirement=VerificationRequirement({"stored": True}),
+            limits=default_limits(max_total_attempts=2),
+        ),
+    ).unwrap()
+
+    assert outcome.verified
+    assert outcome.attempt_count == 2
+    states = [event.state for event in events]
+    assert "voice.executing" in states
+    assert "voice.recovering" in states
+    assert "voice.verifying" in states
+
+
+def test_hud_subscriber_failure_cannot_change_runtime_authority() -> None:
+    harness = OrchestrationHarness()
+
+    def failing_sink(_event: RuntimeUiEvent) -> None:
+        raise RuntimeError("simulated HUD failure")
+
+    telemetry = VoiceRuntimeTelemetry(failing_sink)
+    bridge = VoiceTaskBridge(
+        task_manager=harness.task_manager,
+        agent_loop=harness.agent_loop(
+            {ExecutionLevel.L1_DIRECT: harness.governed_strategy()}
+        ),
+        telemetry=telemetry,
+    )
+    outcome = bridge.ingest(
+        "write the note",
+        VoiceTaskPlan(
+            routing_evidence=RoutingEvidence(deterministic_direct_path=True),
+            requirement=VerificationRequirement({"stored": True}),
+            limits=default_limits(max_total_attempts=1),
+        ),
+    ).unwrap()
+
+    assert outcome.verified
+    assert telemetry.dropped_events >= 1
