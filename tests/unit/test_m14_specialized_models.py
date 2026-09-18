@@ -331,8 +331,9 @@ def test_distillation_records_teacher_dataset_config_and_evaluation_lineage() ->
     assert artifact.evaluation_reference == "tests:m14-distillation"
 
 
-def test_specialist_benchmark_reports_positive_negative_and_insufficient_results_truthfully(
-) -> None:
+def test_specialist_benchmark_reports_positive_negative_and_insufficient_results_truthfully() -> (
+    None
+):
     benchmark = SpecialistBenchmark()
 
     improved = benchmark.compare_labels(
