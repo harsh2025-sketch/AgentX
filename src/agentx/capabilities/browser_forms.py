@@ -289,7 +289,8 @@ class BrowserFormsCapability:
     ) -> ExecutionResult:
         error = self._validate(request)
         if error is not None:
-            return self._failed(error, request.params if isinstance(request.params, BrowserFormParams) else None)
+            params = request.params if isinstance(request.params, BrowserFormParams) else None
+            return self._failed(error, params)
         if context.observe_stop().should_stop:
             return self._failed(
                 _error(
@@ -391,24 +392,44 @@ class BrowserFormsCapability:
         if params.operation is BrowserFormOperation.SET_CHECKED:
             expected = "true" if params.checked else None
             observed_checked = _attribute(node, "checked")
-            passed = (observed_checked is not None) if expected is not None else observed_checked is None
+            passed = (
+                observed_checked is not None
+                if expected is not None
+                else observed_checked is None
+            )
             return VerificationResult(
                 passed=passed,
-                detail="independent checked state matches request" if passed else "checked state mismatch",
+                detail=(
+                    "independent checked state matches request"
+                    if passed
+                    else "checked state mismatch"
+                ),
             )
         if params.operation is BrowserFormOperation.SELECT_OPTION:
             passed = _attribute(node, "value") == params.option_value
             return VerificationResult(
                 passed=passed,
-                detail="independent select value matches request" if passed else "select value mismatch",
+                detail=(
+                    "independent select value matches request"
+                    if passed
+                    else "select value mismatch"
+                ),
             )
 
         expected_name = params.upload_basename
         observed_value = _attribute(node, "value") or ""
-        passed = bool(expected_name) and observed_value.replace("\\", "/").endswith(f"/{expected_name}") or observed_value == expected_name
+        normalized_value = observed_value.replace("\\", "/")
+        passed = bool(expected_name) and (
+            normalized_value == expected_name
+            or normalized_value.endswith(f"/{expected_name}")
+        )
         return VerificationResult(
             passed=passed,
-            detail="independent file-input state matches selected filename" if passed else "upload field verification mismatch",
+            detail=(
+                "independent file-input state matches selected filename"
+                if passed
+                else "upload field verification mismatch"
+            ),
         )
 
     def _observe(
