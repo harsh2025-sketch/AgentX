@@ -35,9 +35,11 @@ from agentx.cognition.model_provider import (
 from agentx.cognition.model_roles import ModelRole, ModelRoleBinding, ModelRoleBindings
 from agentx.cognition.reasoner import Reasoner
 from agentx.cognition.router import ExecutionLevel, RoutingEvidence
+from agentx.compiled_skill_binding import materialize_compiled_procedure_graph
+from agentx.compiled_skill_validation import GovernedCompiledSkillValidationHarness
 from agentx.core.causal_experience import CausalExperience, CausalOutcome, ExperienceState
-from agentx.core.events import ActionPayload, ObservationPayload, VerificationPayload
 from agentx.core.errors import AgentXError, ErrorCategory, Retryability
+from agentx.core.events import ActionPayload, ObservationPayload, VerificationPayload
 from agentx.core.ids import EpisodeId, TaskId
 from agentx.core.procedure_lifecycle import (
     ProcedureLifecycleReason,
@@ -55,10 +57,11 @@ from agentx.execution_metrics import (
     ExecutionEvidenceOutcome,
     ExecutionMetricsRecorder,
 )
-from agentx.instrumented_model_provider import InstrumentedModelProvider
 from agentx.infrastructure.persistence import SQLiteDatabase
 from agentx.infrastructure.procedure_store import ProcedureStore
+from agentx.instrumented_model_provider import InstrumentedModelProvider
 from agentx.kernel.permissions import AuthorityContext, Permission
+from agentx.learning.region_classification import RegionClassification
 from agentx.plan_execution import BoundPlanAction, GovernedPlanExecutor, GovernedPlanningStrategy
 from agentx.planning_strategy import PlanningStrategy
 from agentx.procedure_promotion import (
@@ -68,9 +71,6 @@ from agentx.procedure_promotion import (
 )
 from agentx.procedure_validation import ValidationDecision, ValidationPolicy
 from agentx.procedure_validation_runner import ProcedureValidationCase, ProcedureValidationRunner
-from agentx.compiled_skill_binding import materialize_compiled_procedure_graph
-from agentx.compiled_skill_validation import GovernedCompiledSkillValidationHarness
-from agentx.learning.region_classification import RegionClassification
 from agentx.skill_compiler import SkillCompilationOutcome, compile_skill_candidate
 from tests.integration.test_m3_skill_compilation_acceptance import (
     _CHILD_REUSE,
