@@ -16,12 +16,20 @@ from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.core.execution import CancellationSource, ExecutionContext
 from agentx.core.runtime_ui_events import RuntimeUiEvent
 from agentx.core.tasks import Task
+from agentx.hud import (
+    HudCommand,
+    HudCommandGateway,
+    HudControlAction,
+    HudSnapshot,
+    HudState,
+)
 from agentx.infrastructure.event_bus import EventBus
 from agentx.kernel.action_gate import ActionGate
 from agentx.kernel.emergency_stop import EmergencyStop
 from agentx.kernel.permissions import AuthorityContext, Permission
 from agentx.kernel.resource_budget import ResourceBudget, ResourceEnvelope
 from agentx.kernel.risk import RiskLevel
+from agentx.voice_hud_runtime import VoiceHudController
 from agentx.voice_runtime import (
     SpokenConfirmationProtocol,
     VoiceGovernedActionBridge,
@@ -229,3 +237,99 @@ def test_hud_subscriber_failure_cannot_change_runtime_authority() -> None:
 
     assert outcome.verified
     assert telemetry.dropped_events >= 1
+
+
+class _VoiceControlTarget:
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def barge_in(self) -> bool:
+        self.calls += 1
+        return True
+
+
+class _DecisionSink:
+    def __init__(self) -> None:
+        self.decisions = []
+
+    def submit(self, decision: object) -> bool:
+        self.decisions.append(decision)
+        return True
+
+
+def test_hud_confirmation_routes_to_exact_canonical_approval_decision() -> None:
+    loop, executor, _capability = _high_risk_runtime()
+    governed = VoiceGovernedActionBridge(execution_loop=loop, executor=executor)
+    task = Task.create("external effect")
+    context = ExecutionContext(
+        correlation_id=uuid4(),
+        cancellation_token=CancellationSource().token,
+        task_id=task.task_id,
+    )
+    request = hostile_request(NoteWriteParams("alpha", "data"))
+    approval = governed.approval_requests(task, request, context).unwrap()[0]
+    protocol = SpokenConfirmationProtocol()
+    pending = protocol.issue(approval, nonce="hud-confirm-1", ttl_seconds=30)
+
+    runtime = _VoiceControlTarget()
+    sink = _DecisionSink()
+    controller = VoiceHudController(
+        runtime=runtime,
+        confirmation_protocol=protocol,
+        decision_sink=sink,
+    )
+    task_id = task.task_id.to_str()
+    controller.bind_confirmation(task_id, pending)
+    gateway = HudCommandGateway(controller)
+    snapshot = HudSnapshot(
+        state=HudState.AWAITING_CONFIRMATION,
+        runtime_instance_id=uuid4(),
+        last_sequence=7,
+        task_id=task_id,
+    )
+    command = HudCommand(
+        command_id=uuid4(),
+        action=HudControlAction.CONFIRM,
+        task_id=task_id,
+        confirmation_nonce=pending.nonce,
+    )
+
+    assert gateway.dispatch(command, snapshot)
+    assert len(sink.decisions) == 1
+    assert sink.decisions[0].request == approval
+    assert sink.decisions[0].outcome is HumanApprovalOutcome.APPROVED
+    assert not gateway.dispatch(
+        HudCommand(
+            command_id=uuid4(),
+            action=HudControlAction.CONFIRM,
+            task_id=task_id,
+            confirmation_nonce=pending.nonce,
+        ),
+        snapshot,
+    )
+
+
+def test_hud_cancel_delegates_to_runtime_control_owner() -> None:
+    runtime = _VoiceControlTarget()
+    sink = _DecisionSink()
+    controller = VoiceHudController(
+        runtime=runtime,
+        confirmation_protocol=SpokenConfirmationProtocol(),
+        decision_sink=sink,
+    )
+    gateway = HudCommandGateway(controller)
+    snapshot = HudSnapshot(
+        state=HudState.EXECUTING,
+        runtime_instance_id=uuid4(),
+        last_sequence=3,
+        task_id="task-1",
+    )
+    assert gateway.dispatch(
+        HudCommand(
+            command_id=uuid4(),
+            action=HudControlAction.CANCEL,
+            task_id="task-1",
+        ),
+        snapshot,
+    )
+    assert runtime.calls == 1
