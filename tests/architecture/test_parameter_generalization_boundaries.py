@@ -60,9 +60,18 @@ def test_contract_references_c3_04_objects_instead_of_reconstructing_trajectory_
     result_fields = {field.name for field in fields(ParameterGeneralization)}
     group_fields = {field.name for field in fields(ParameterObservationGroup)}
 
-    assert result_fields == {"source_extraction", "groups", "schema_version"}
+    assert result_fields == {
+        "source_extraction",
+        "groups",
+        "supporting_extractions",
+        "schema_version",
+    }
     assert group_fields == {"action_name", "field_name", "observations", "evidence"}
     assert ParameterGeneralization.__annotations__["source_extraction"] == "ParameterExtraction"
+    assert (
+        ParameterGeneralization.__annotations__["supporting_extractions"]
+        == "tuple[ParameterExtraction, ...]"
+    )
     assert (
         ParameterObservationGroup.__annotations__["observations"]
         == "tuple[ParameterCandidate, ...]"
