@@ -12,7 +12,12 @@ from agentx.capabilities.windows.screen_capture import (
     ScreenRect,
 )
 from agentx.core.knowledge import ProvenanceKind, ProvenanceReference
-from agentx.perception import GroundingRequest, GroundingStatus, PerceptionGrounder, StaleScreenError
+from agentx.perception import (
+    GroundingRequest,
+    GroundingStatus,
+    PerceptionGrounder,
+    StaleScreenError,
+)
 from agentx.world_model import (
     ObservationMetadata,
     PerceptionObservation,
@@ -27,7 +32,7 @@ SOURCE = ProvenanceReference(kind=ProvenanceKind.SYSTEM, reference="benchmark.m1
 
 
 def _frame(seed: int) -> ScreenFrame:
-    pixels = bytes(((index + seed) % 256 for index in range(16 * 16 * 4)))
+    pixels = bytes((index + seed) % 256 for index in range(16 * 16 * 4))
     digest = hashlib.sha256(pixels).hexdigest()
     return ScreenFrame(
         frame_id=ScreenFrameId(hashlib.sha256(f"frame-{seed}".encode()).hexdigest()),
