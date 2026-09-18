@@ -17,7 +17,7 @@ from agentx.capabilities.windows.screen_capture import (
     WindowsScreenCaptureCapability,
     screen_capture_request,
 )
-from agentx.core.errors import AgentXError
+from agentx.core.errors import AgentXError, ErrorCategory
 from agentx.core.events import Event
 from agentx.core.execution import CancellationSource, ExecutionContext
 from agentx.core.knowledge import ProvenanceKind, ProvenanceReference
@@ -177,7 +177,9 @@ def test_m10_screen_observation_cannot_increase_resource_budget() -> None:
 
     assert result.is_success
     outcome = result.unwrap()
-    assert outcome.kind is LoopOutcome.BUDGET_EXHAUSTED
+    assert outcome.kind is LoopOutcome.DENIED
+    assert outcome.error is not None
+    assert outcome.error.category is ErrorCategory.RESOURCE
     assert outcome.task.status is not TaskStatus.SUCCEEDED
     assert surface.calls == 0
 
