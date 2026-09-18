@@ -6,6 +6,7 @@ import ast
 import json
 import pickle
 from pathlib import Path
+from typing import cast
 
 import pytest
 
