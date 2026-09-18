@@ -12,6 +12,7 @@ from uuid import UUID
 
 import pytest
 
+from agentx.active_procedure_reuse import ActiveProcedureReuse
 from agentx.agent_loop import (
     AgentLoop,
     OrchestrationLimits,
@@ -19,7 +20,6 @@ from agentx.agent_loop import (
     OrchestrationStatus,
     StrategyRegistry,
 )
-from agentx.active_procedure_reuse import ActiveProcedureReuse
 from agentx.capabilities.abi import CapabilityRequest
 from agentx.capabilities.executor import Executor
 from agentx.capabilities.filesystem import (
@@ -237,16 +237,29 @@ from pathlib import Path
 from uuid import UUID, uuid4
 
 from agentx.active_procedure_reuse import ActiveProcedureReuse
-from agentx.agent_loop import AgentLoop, OrchestrationLimits, OrchestrationRequest, OrchestrationStatus, StrategyRegistry
+from agentx.agent_loop import (
+    AgentLoop,
+    OrchestrationLimits,
+    OrchestrationRequest,
+    OrchestrationStatus,
+    StrategyRegistry,
+)
 from agentx.capabilities.executor import Executor
-from agentx.capabilities.filesystem import FILESYSTEM_READ_TEXT_IDENTITY, FilesystemReadTextCapability, read_text_request
+from agentx.capabilities.filesystem import (
+    FILESYSTEM_READ_TEXT_IDENTITY,
+    FilesystemReadTextCapability,
+    read_text_request,
+)
 from agentx.capabilities.registry import CapabilityRegistry
 from agentx.capabilities.runtime import CapabilityExecutionLoop
 from agentx.capabilities.verifier import VerificationRequirement
 from agentx.cognition.anti_loop import LoopGuardLimits
 from agentx.cognition.router import ExecutionLevel, RoutingEvidence
 from agentx.cognition.task_manager import TaskManager
-from agentx.compiled_procedure_strategy import CompiledProcedureStrategyBinding, GovernedCompiledProcedureStrategy
+from agentx.compiled_procedure_strategy import (
+    CompiledProcedureStrategyBinding,
+    GovernedCompiledProcedureStrategy,
+)
 from agentx.compiled_skill_binding import build_compiled_action_requests
 from agentx.core.execution import CancellationSource, ExecutionContext
 from agentx.core.procedure_matching import ProcedureRequirement
