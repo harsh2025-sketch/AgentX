@@ -23,7 +23,13 @@ from enum import StrEnum
 from typing import Final, Protocol
 from uuid import NAMESPACE_URL, UUID, uuid4, uuid5
 
-from agentx.cognition.router import CANONICAL_EXECUTION_LEVELS, ExecutionLevel
+from agentx.cognition.router import (
+    CANONICAL_EXECUTION_LEVELS,
+    ExecutionLevel,
+    ExecutionLevelRouter,
+    RoutingDecision,
+    RoutingEvidence,
+)
 from agentx.core.events import (
     CURRENT_EVENT_SCHEMA_VERSION,
     Event,
@@ -40,6 +46,7 @@ from agentx.infrastructure.event_journal import EventJournal, EventJournalError
 from agentx.strategy_performance_evidence import StrategyPerformanceEvidence
 
 __all__ = [
+    "AdaptiveExecutionLevelRouter",
     "AdaptiveOptimizationError",
     "AdaptiveStrategySelector",
     "BanditConfig",
@@ -313,7 +320,10 @@ class StrategyOutcomeRecord:
 
     @property
     def verified_failure(self) -> bool:
-        return self.performance.outcome is ExecutionEvidenceOutcome.FAILED
+        return (
+            self.performance.outcome is ExecutionEvidenceOutcome.FAILED
+            and self.performance.verification_passed is False
+        )
 
     @property
     def verification_known(self) -> bool:
@@ -756,6 +766,64 @@ class AdaptiveStrategySelector(Protocol):
         available: tuple[ExecutionLevel, ...],
         history: tuple[StrategyOutcomeRecord, ...],
     ) -> StrategySelection: ...
+
+
+@dataclass(frozen=True, slots=True)
+class AdaptiveExecutionLevelRouter(ExecutionLevelRouter):
+    """Optional AgentLoop-compatible M14 router below the kernel boundary.
+
+    The canonical deterministic router still establishes the cheapest level
+    justified by typed RoutingEvidence. Adaptation may choose only that level
+    or a more open-ended canonical level that the composition root explicitly
+    exposes. It can never select a cheaper level whose prerequisites were not
+    established by A2.07 evidence, and every selected strategy still executes
+    through the unchanged AgentLoop, strategy adapter, ActionGate, budgets,
+    stop handling, and independent verification.
+    """
+
+    context: StrategyContext
+    selector: AdaptiveStrategySelector
+    available: tuple[ExecutionLevel, ...]
+    history: tuple[StrategyOutcomeRecord, ...] = ()
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.context, StrategyContext):
+            raise AdaptiveOptimizationError("context must be StrategyContext")
+        object.__setattr__(
+            self,
+            "available",
+            _levels(self.available, name="available"),
+        )
+        if not isinstance(self.history, tuple) or any(
+            not isinstance(item, StrategyOutcomeRecord) for item in self.history
+        ):
+            raise AdaptiveOptimizationError(
+                "history must contain StrategyOutcomeRecord values"
+            )
+
+    def route(self, evidence: RoutingEvidence) -> RoutingDecision:
+        if not isinstance(evidence, RoutingEvidence):
+            raise TypeError("evidence must be RoutingEvidence")
+        canonical = super().route(evidence)
+        canonical_index = CANONICAL_EXECUTION_LEVELS.index(canonical.level)
+        candidates = tuple(
+            level
+            for level in self.available
+            if CANONICAL_EXECUTION_LEVELS.index(level) >= canonical_index
+        )
+        if not candidates:
+            return canonical
+        try:
+            selection = self.selector.choose(
+                context=self.context,
+                available=candidates,
+                history=self.history,
+            )
+        except (AdaptiveOptimizationError, ValueError):
+            return canonical
+        if selection.level not in candidates:
+            return canonical
+        return RoutingDecision(selection.level)
 
 
 @dataclass(frozen=True, slots=True)
