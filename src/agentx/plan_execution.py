@@ -52,7 +52,34 @@ class PlanActionBinder(Protocol):
     """Application-owned typed binding; not a model-selected callable."""
 
     def bind(self, node: DecompositionNode) -> Result[BoundPlanAction, AgentXError]:
-        """Resolve a supported objective or fail explicitly without executing it."""
+        """Resolve a supported typed capability leaf or fail without executing it."""
+        ...
+
+
+@dataclass(frozen=True, slots=True)
+class BoundPlanProcedure:
+    """Trusted binding of one procedure leaf to the canonical L2 runtime."""
+
+    procedure_id: ProcedureId
+    strategy: GovernedCompiledProcedureStrategy
+    requirement: VerificationRequirement
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.procedure_id, ProcedureId):
+            raise TypeError("procedure_id must be a ProcedureId")
+        if not isinstance(self.strategy, GovernedCompiledProcedureStrategy):
+            raise TypeError("strategy must be a GovernedCompiledProcedureStrategy")
+        if not isinstance(self.requirement, VerificationRequirement):
+            raise TypeError("requirement must be a VerificationRequirement")
+        if self.strategy.binding.candidate.record.procedure_id != self.procedure_id:
+            raise ValueError("bound strategy procedure identity does not match procedure_id")
+
+
+class PlanProcedureBinder(Protocol):
+    """Resolve exact procedure leaves through a canonical prepared runtime."""
+
+    def bind(self, node: DecompositionNode) -> Result[BoundPlanProcedure, AgentXError]:
+        """Resolve one typed procedure leaf or fail closed."""
         ...
 
 
@@ -139,6 +166,7 @@ class GovernedPlanExecutor:
         executor: Executor,
         binder: PlanActionBinder,
         goal_check: BoundPlanAction,
+        procedure_binder: PlanProcedureBinder | None = None,
         max_actions: int = 32,
         clock: MonotonicClock | None = None,
     ) -> None:
@@ -148,11 +176,14 @@ class GovernedPlanExecutor:
             raise TypeError("binder must expose bind")
         if not isinstance(goal_check, BoundPlanAction):
             raise TypeError("goal_check must be a BoundPlanAction")
+        if procedure_binder is not None and not callable(getattr(procedure_binder, "bind", None)):
+            raise TypeError("procedure_binder must expose bind or be None")
         if type(max_actions) is not int or not 1 <= max_actions <= 256:
             raise ValueError("max_actions must be an integer between 1 and 256")
         self._executor = executor
         self._binder = binder
         self._goal_check = goal_check
+        self._procedure_binder = procedure_binder
         self._max_actions = max_actions
         self._clock = clock
         self._verifier = Verifier()
@@ -175,7 +206,7 @@ class GovernedPlanExecutor:
         # The independent goal check also consumes one governed machine action.
         if len(ordered.unwrap()) + 1 > self._max_actions:
             return _failure("action_limit")
-        bindings: list[tuple[DecompositionNode, BoundPlanAction]] = []
+        bindings: list[tuple[DecompositionNode, BoundPlanAction | BoundPlanProcedure]] = []
         for node in ordered.unwrap():
             if context.observe_stop(clock=self._clock).should_stop:
                 return _failure("context_stopped")
@@ -184,7 +215,18 @@ class GovernedPlanExecutor:
             if not isinstance(execution, Mapping):
                 return _failure("invalid_execution")
             if execution["kind"] == "procedure":
-                return _failure("procedure_binding_unavailable")
+                if self._procedure_binder is None:
+                    return _failure("procedure_binding_unavailable")
+                bound_procedure = self._procedure_binder.bind(node)
+                if bound_procedure.is_failure:
+                    return Result.failure(bound_procedure.unwrap_error())
+                procedure = bound_procedure.unwrap()
+                if not isinstance(procedure, BoundPlanProcedure):
+                    raise TypeError("procedure binder must return a BoundPlanProcedure")
+                if procedure.procedure_id.to_str() != execution["procedure_id"]:
+                    return _failure("procedure_binding_mismatch")
+                bindings.append((node, procedure))
+                continue
             bound = self._binder.bind(node)
             if bound.is_failure:
                 return Result.failure(bound.unwrap_error())
@@ -197,13 +239,18 @@ class GovernedPlanExecutor:
             ):
                 return _failure("capability_binding_mismatch")
             bindings.append((node, action))
-        for node, action in bindings:
-            result = self._run(action, node.objective, task, context)
+        for node, binding in bindings:
+            if isinstance(binding, BoundPlanProcedure):
+                result = self._run_procedure(binding, node.objective, task, context)
+                requirement = binding.requirement
+            else:
+                result = self._run(binding, node.objective, task, context)
+                requirement = binding.requirement
             if result.is_failure:
                 return result
             if result.unwrap().kind is not LoopOutcome.VERIFIED:
                 return result
-            if not self._verified(result.unwrap(), action.requirement):
+            if not self._verified(result.unwrap(), requirement):
                 return _failure("step_unverified")
         result = self._run(self._goal_check, task.objective, task, context)
         if result.is_failure:
@@ -234,6 +281,33 @@ class GovernedPlanExecutor:
         if context.observe_stop(clock=self._clock).should_stop:
             return _failure("context_stopped")
         return result
+
+    def _run_procedure(
+        self,
+        procedure: BoundPlanProcedure,
+        objective: str,
+        task: Task,
+        context: ExecutionContext,
+    ) -> Result[ClosedLoopOutcome, AgentXError]:
+        if context.observe_stop(clock=self._clock).should_stop:
+            return _failure("context_stopped")
+        child = Task.create(objective=objective, parent_task_id=task.task_id)
+        child_context = ExecutionContext(
+            task_id=child.task_id,
+            correlation_id=context.correlation_id,
+            cancellation_token=context.cancellation_token,
+            deadline=context.deadline,
+        )
+        strategy_result = procedure.strategy.attempt(
+            child,
+            child_context,
+            ExecutionLevel.L2_COMPILED,
+        )
+        if context.observe_stop(clock=self._clock).should_stop:
+            return _failure("context_stopped")
+        if strategy_result.outcome is None:
+            return _failure("procedure_runtime_unavailable")
+        return strategy_result.outcome
 
     def _verified(self, outcome: ClosedLoopOutcome, requirement: VerificationRequirement) -> bool:
         return (
