@@ -289,6 +289,13 @@ class PixelContrastRegionDetector:
                 samples = 0
                 sample_step_x = max(1, cell_width // 4)
                 sample_step_y = max(1, cell_height // 4)
+                # Avoid systematic aliasing on periodic UI textures.  A coarse
+                # stride that shares an even period with a pattern can sample
+                # only one phase and falsely report zero contrast.
+                if sample_step_x > 1 and sample_step_x % 2 == 0:
+                    sample_step_x -= 1
+                if sample_step_y > 1 and sample_step_y % 2 == 0:
+                    sample_step_y -= 1
                 for y in range(top, top + cell_height, sample_step_y):
                     row = y * frame.row_stride
                     for x in range(left, left + cell_width, sample_step_x):
