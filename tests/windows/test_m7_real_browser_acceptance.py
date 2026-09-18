@@ -353,11 +353,7 @@ def test_real_browser_governed_form_session_security_and_workflow(tmp_path: Path
 
 
 def test_real_browser_provider_exposes_no_script_or_cdp_escape_hatch() -> None:
-    public = {
-        name
-        for name in dir(WebDriverBrowserProvider)
-        if not name.startswith("_")
-    }
+    public = {name for name in dir(WebDriverBrowserProvider) if not name.startswith("_")}
     forbidden = {
         "execute_script",
         "execute_async_script",
