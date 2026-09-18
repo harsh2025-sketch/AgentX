@@ -474,390 +474,1272 @@
       "milestone": "M1",
       "title": "ExecutionLevel L0–L5 vocabulary",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/cognition/router.py",
+          "note": "Production implementation audited for AX-041: ExecutionLevel L0–L5 vocabulary."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_router.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-041 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-042",
       "milestone": "M1",
       "title": "deterministic level-selection inputs",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/cognition/router.py",
+          "note": "Production implementation audited for AX-042: deterministic level-selection inputs."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_router.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-042 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-043",
       "milestone": "M1",
       "title": "routing-evidence contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/cognition/router.py",
+          "note": "Production implementation audited for AX-043: routing-evidence contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_router.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-043 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-044",
       "milestone": "M1",
       "title": "bounded escalation model",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/cognition/escalation.py",
+          "note": "Production implementation audited for AX-044: bounded escalation model."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_escalation.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-044 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-045",
       "milestone": "M1",
       "title": "anti-loop policy",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/cognition/anti_loop.py",
+          "note": "Production implementation audited for AX-045: anti-loop policy."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_anti_loop.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-045 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-046",
       "milestone": "M1",
       "title": "AgentLoop composition boundary",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py",
+          "note": "Production implementation audited for AX-046: AgentLoop composition boundary."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_agent_loop.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-046 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-047",
       "milestone": "M1",
       "title": "strategy registry",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py",
+          "note": "Production implementation audited for AX-047: strategy registry."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_agent_loop.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-047 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-048",
       "milestone": "M1",
       "title": "canonical runtime strategy assembly",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/strategy_assembly.py",
+          "note": "Production implementation audited for AX-048: canonical runtime strategy assembly."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_strategy_assembly.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-048 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-049",
       "milestone": "M1",
       "title": "L0 strategy adapter",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/cache_strategy.py",
+          "note": "Production implementation audited for AX-049: L0 strategy adapter."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_cache_strategy.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-049 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-050",
       "milestone": "M1",
       "title": "L1 governed capability strategy",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capability_strategy.py",
+          "note": "Production implementation audited for AX-050: L1 governed capability strategy."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_capability_strategy_agent_loop.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-050 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-051",
       "milestone": "M1",
       "title": "L2 compiled-procedure strategy",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/compiled_procedure_strategy.py",
+          "note": "Production implementation audited for AX-051: L2 compiled-procedure strategy."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_compiled_procedure_strategy.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-051 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-052",
       "milestone": "M1",
       "title": "L3 guided-procedure strategy",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/guided_procedure_strategy.py",
+          "note": "Production implementation audited for AX-052: L3 guided-procedure strategy."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_guided_procedure_strategy.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-052 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-053",
       "milestone": "M1",
       "title": "L4 planning boundary",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/plan_execution.py",
+          "note": "Production implementation audited for AX-053: L4 planning boundary."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_plan_execution.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-053 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-054",
       "milestone": "M1",
       "title": "L5 exploratory strategy clean implementation",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [
         "AX-065",
         "AX-364",
         "AX-365",
         "AX-366"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/exploratory_strategy.py; src/agentx/governed_research.py",
+          "note": "Production implementation audited for AX-054: L5 exploratory strategy clean implementation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m1_closure.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-054 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-055",
       "milestone": "M1",
       "title": "strategy-unavailable behavior",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py",
+          "note": "Production implementation audited for AX-055: strategy-unavailable behavior."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_agent_loop.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-055 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-056",
       "milestone": "M1",
       "title": "failure escalation behavior",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py",
+          "note": "Production implementation audited for AX-056: failure escalation behavior."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_agent_loop.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-056 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-057",
       "milestone": "M1",
       "title": "TaskManager/runtime integration",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py",
+          "note": "Production implementation audited for AX-057: TaskManager/runtime integration."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_agent_loop.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-057 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-058",
       "milestone": "M1",
       "title": "task decomposition schema",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/task_decomposition.py; src/agentx/core/decomposition_readiness.py",
+          "note": "Production implementation audited for AX-058: task decomposition schema."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_decomposition_readiness.py; tests/unit/test_task_decomposition.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-058 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-059",
       "milestone": "M1",
       "title": "decomposition DAG validation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/task_decomposition.py; src/agentx/core/decomposition_readiness.py",
+          "note": "Production implementation audited for AX-059: decomposition DAG validation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_decomposition_readiness.py; tests/unit/test_task_decomposition.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-059 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-060",
       "milestone": "M1",
       "title": "decomposition readiness validator",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/task_decomposition.py; src/agentx/core/decomposition_readiness.py",
+          "note": "Production implementation audited for AX-060: decomposition readiness validator."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_decomposition_readiness.py; tests/unit/test_task_decomposition.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-060 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-061",
       "milestone": "M1",
       "title": "terminal-node readiness rules",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/task_decomposition.py; src/agentx/core/decomposition_readiness.py",
+          "note": "Production implementation audited for AX-061: terminal-node readiness rules."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_decomposition_readiness.py; tests/unit/test_task_decomposition.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-061 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-062",
       "milestone": "M1",
       "title": "capability-target readiness",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/task_decomposition.py; src/agentx/core/decomposition_readiness.py",
+          "note": "Production implementation audited for AX-062: capability-target readiness."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_decomposition_readiness.py; tests/unit/test_task_decomposition.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-062 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-063",
       "milestone": "M1",
       "title": "procedure-target readiness",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/task_decomposition.py; src/agentx/core/decomposition_readiness.py",
+          "note": "Production implementation audited for AX-063: procedure-target readiness."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_decomposition_readiness.py; tests/unit/test_task_decomposition.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-063 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-064",
       "milestone": "M1",
       "title": "higher-level-resolution readiness",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/core/task_decomposition.py; src/agentx/core/decomposition_readiness.py",
+          "note": "Production implementation audited for AX-064: higher-level-resolution readiness."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_decomposition_readiness.py; tests/unit/test_task_decomposition.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-064 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-065",
       "milestone": "M1",
       "title": "Reasoner provider-neutral boundary",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/cognition/reasoner.py; src/agentx/planning_strategy.py",
+          "note": "Production implementation audited for AX-065: Reasoner provider-neutral boundary."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_reasoner.py; tests/integration/test_planning_strategy.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-065 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-066",
       "milestone": "M1",
       "title": "bounded Reasoner request",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/cognition/reasoner.py; src/agentx/planning_strategy.py",
+          "note": "Production implementation audited for AX-066: bounded Reasoner request."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_reasoner.py; tests/integration/test_planning_strategy.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-066 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-067",
       "milestone": "M1",
       "title": "model-output acceptance boundary",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/cognition/reasoner.py; src/agentx/planning_strategy.py",
+          "note": "Production implementation audited for AX-067: model-output acceptance boundary."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_reasoner.py; tests/integration/test_planning_strategy.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-067 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-068",
       "milestone": "M1",
       "title": "model-output strict JSON handling",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/cognition/reasoner.py; src/agentx/planning_strategy.py",
+          "note": "Production implementation audited for AX-068: model-output strict JSON handling."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_reasoner.py; tests/integration/test_planning_strategy.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-068 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-069",
       "milestone": "M1",
       "title": "independent task verification",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/verifier.py; src/agentx/agent_loop.py",
+          "note": "Production implementation audited for AX-069: independent task verification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_verifier.py; tests/integration/test_compiled_procedure_strategy.py; tests/integration/test_plan_execution.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-069 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-070",
       "milestone": "M1",
       "title": "verification-requirement contract",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/verifier.py; src/agentx/agent_loop.py",
+          "note": "Production implementation audited for AX-070: verification-requirement contract."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_verifier.py; tests/integration/test_compiled_procedure_strategy.py; tests/integration/test_plan_execution.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-070 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-071",
       "milestone": "M1",
       "title": "requirement evaluation",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/verifier.py; src/agentx/agent_loop.py",
+          "note": "Production implementation audited for AX-071: requirement evaluation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_verifier.py; tests/integration/test_compiled_procedure_strategy.py; tests/integration/test_plan_execution.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-071 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-072",
       "milestone": "M1",
       "title": "execution success != task success invariant",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/verifier.py; src/agentx/agent_loop.py",
+          "note": "Production implementation audited for AX-072: execution success != task success invariant."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_verifier.py; tests/integration/test_compiled_procedure_strategy.py; tests/integration/test_plan_execution.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-072 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-073",
       "milestone": "M1",
       "title": "procedure END != task success invariant",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/verifier.py; src/agentx/agent_loop.py",
+          "note": "Production implementation audited for AX-073: procedure END != task success invariant."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_verifier.py; tests/integration/test_compiled_procedure_strategy.py; tests/integration/test_plan_execution.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-073 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-074",
       "milestone": "M1",
       "title": "cancellation semantics",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py; src/agentx/capabilities/runtime.py",
+          "note": "Production implementation audited for AX-074: cancellation semantics."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_agent_loop.py; tests/integration/test_capability_strategy_agent_loop.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-074 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-075",
       "milestone": "M1",
       "title": "timeout semantics",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py; src/agentx/capabilities/runtime.py",
+          "note": "Production implementation audited for AX-075: timeout semantics."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_agent_loop.py; tests/integration/test_capability_strategy_agent_loop.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-075 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-076",
       "milestone": "M1",
       "title": "denied-attempt semantics",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py; src/agentx/capabilities/runtime.py",
+          "note": "Production implementation audited for AX-076: denied-attempt semantics."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_agent_loop.py; tests/integration/test_capability_strategy_agent_loop.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-076 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-077",
       "milestone": "M1",
       "title": "unverified-attempt semantics",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py; src/agentx/capabilities/runtime.py",
+          "note": "Production implementation audited for AX-077: unverified-attempt semantics."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_agent_loop.py; tests/integration/test_capability_strategy_agent_loop.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-077 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-078",
       "milestone": "M1",
       "title": "bounded strategy attempts",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py; src/agentx/capabilities/runtime.py",
+          "note": "Production implementation audited for AX-078: bounded strategy attempts."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_agent_loop.py; tests/integration/test_capability_strategy_agent_loop.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-078 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-079",
       "milestone": "M1",
       "title": "strategy result typing",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py; src/agentx/capabilities/runtime.py",
+          "note": "Production implementation audited for AX-079: strategy result typing."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_agent_loop.py; tests/integration/test_capability_strategy_agent_loop.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-079 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-080",
       "milestone": "M1",
       "title": "hostile routing metadata inertness",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py; src/agentx/cognition/router.py",
+          "note": "Production implementation audited for AX-080: hostile routing metadata inertness."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_router_adversarial.py; tests/adversarial/test_capability_strategy_adversarial.py; tests/integration/test_m1_closure.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-080 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-081",
       "milestone": "M1",
       "title": "task/runtime adversarial tests",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py; src/agentx/cognition/router.py",
+          "note": "Production implementation audited for AX-081: task/runtime adversarial tests."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/adversarial/test_router_adversarial.py; tests/adversarial/test_capability_strategy_adversarial.py; tests/integration/test_m1_closure.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-081 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-082",
       "milestone": "M1",
       "title": "task/runtime architecture tests",
       "reported_status": "COMPLETE",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/_architecture.py",
+          "note": "Production implementation audited for AX-082: task/runtime architecture tests."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/architecture/test_capability_strategy_boundaries.py; tests/architecture/test_guided_procedure_strategy_boundaries.py; tests/architecture/test_decomposition_readiness_boundaries.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-082 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-083",
       "milestone": "M1",
       "title": "real-world single-task vertical slice",
       "reported_status": "PARTIAL",
-      "acceptance_status": "IN_PROGRESS",
+      "acceptance_status": "VERIFIED",
       "depends_on": [
         "AX-053",
         "AX-060",
@@ -866,9 +1748,24 @@
       ],
       "evidence": [
         {
-          "kind": "candidate",
-          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/161",
-          "note": "Implementation/ledger work; canonical acceptance not yet established."
+          "kind": "implementation",
+          "reference": "src/agentx/plan_execution.py; src/agentx/application_binding.py",
+          "note": "Production implementation audited for AX-083: real-world single-task vertical slice."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_plan_execution.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-083 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
         }
       ]
     },
@@ -877,24 +1774,66 @@
       "milestone": "M1",
       "title": "cross-strategy orchestration benchmark",
       "reported_status": "PARTIAL",
-      "acceptance_status": "NOT_AUDITED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [
         "AX-083"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "src/agentx/agent_loop.py; src/agentx/strategy_assembly.py",
+          "note": "Production implementation audited for AX-084: cross-strategy orchestration benchmark."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_cache_strategy.py; tests/integration/test_capability_strategy_agent_loop.py; tests/integration/test_compiled_procedure_strategy.py; tests/integration/test_guided_procedure_strategy.py; tests/integration/test_plan_execution.py; tests/integration/test_m1_closure.py",
+          "note": "Positive, negative, and/or boundary coverage used for AX-084 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-085",
       "milestone": "M1",
       "title": "M1 release acceptance proof",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [
         "AX-054",
         "AX-083",
         "AX-084"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "implementation",
+          "reference": "docs/m1_acceptance.md",
+          "note": "Production implementation audited for AX-085: M1 release acceptance proof."
+        },
+        {
+          "kind": "tests",
+          "reference": "C1.01 full Windows quality suite",
+          "note": "Positive, negative, and/or boundary coverage used for AX-085 acceptance."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/pull/163",
+          "note": "Focused M1 closure PR; exact tested head and starting main SHA are recorded in the PR body."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "https://github.com/harsh2025-sketch/AgentX/actions/workflows/quality.yml?query=branch%3Am1-governed-runtime-closure",
+          "note": "Windows C1.01 exact-head quality workflow; final run/conclusion is recorded in PR #163."
+        }
+      ]
     },
     {
       "id": "AX-086",
