@@ -53,7 +53,6 @@ def _failure(kind: AudioFailureKind, message: str) -> AgentXError:
     return audio_failure(kind, message=message)
 
 
-
 @runtime_checkable
 class _NativeAudioSurface(Protocol):
     def capture(
@@ -73,7 +72,6 @@ class _NativeAudioSurface(Protocol):
         channel_count: int,
         cancellation_token: CancellationToken,
     ) -> Result[None, AgentXError]: ...
-
 
 
 @dataclass(slots=True)
