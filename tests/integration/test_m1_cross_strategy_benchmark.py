@@ -12,7 +12,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from agentx.agent_loop import AgentLoop, OrchestrationStatus, StrategyRegistry
+from agentx.agent_loop import (
+    AgentLoop,
+    OrchestrationOutcome,
+    OrchestrationStatus,
+    StrategyRegistry,
+)
 from agentx.capabilities.filesystem import (
     FilesystemReadTextCapability,
     FilesystemWriteTextCapability,
@@ -47,6 +52,7 @@ from agentx.core.errors import AgentXError
 from agentx.core.ids import KnowledgeId
 from agentx.core.knowledge import KnowledgeScope, KnowledgeStatus, ScopeDimension
 from agentx.core.result import Result
+from agentx.core.tasks import Task
 from agentx.exploratory_strategy import ExploratoryStrategyBinding, GovernedExploratoryStrategy
 from agentx.governed_research import (
     GovernedResearchAcquisitionCapability,
@@ -78,7 +84,7 @@ _SCOPE = KnowledgeScope({ScopeDimension.PROJECT: "AgentX"})
 
 
 class _PlanProvider:
-    def __init__(self, task, plan) -> None:
+    def __init__(self, task: Task, plan: TaskDecomposition) -> None:
         provider_id = ProviderId("m1-cross-strategy")
         capabilities = frozenset(
             {ModelCapability("content.text.input"), ModelCapability("content.text.output")}
@@ -130,7 +136,7 @@ class _ResearchPort:
         )
 
 
-def _assert_level(outcome, level: ExecutionLevel) -> None:
+def _assert_level(outcome: OrchestrationOutcome, level: ExecutionLevel) -> None:
     assert outcome.status is OrchestrationStatus.SUCCEEDED
     assert outcome.verified is True
     assert outcome.final_level is level
