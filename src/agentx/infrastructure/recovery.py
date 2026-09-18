@@ -360,6 +360,16 @@ _MIGRATION_REGISTRY: Final[tuple[_MigrationRegistryEntry, ...]] = (
         name="create_negative_experience_store",
         tables=("agentx_negative_experiences",),
     ),
+    _MigrationRegistryEntry(
+        version=9,
+        name="create_m12_scheduling_store",
+        tables=(
+            "agentx_scheduled_tasks",
+            "agentx_background_runs",
+            "agentx_m12_policy",
+            "agentx_m12_quota",
+        ),
+    ),
 )
 
 #: Owner category labels for the expected-table check.
@@ -374,6 +384,10 @@ _TABLE_OWNERS: Final[tuple[_TableOwner, ...]] = (
     _TableOwner("agentx_artifacts", "artifact_store"),
     _TableOwner("agentx_audit_records", "audit_store"),
     _TableOwner("agentx_negative_experiences", "negative_experience_store"),
+    _TableOwner("agentx_scheduled_tasks", "schedule_store"),
+    _TableOwner("agentx_background_runs", "schedule_store"),
+    _TableOwner("agentx_m12_policy", "schedule_store"),
+    _TableOwner("agentx_m12_quota", "schedule_store"),
 )
 
 _OWNER_BY_TABLE: Final[dict[str, str]] = {owner.table: owner.store for owner in _TABLE_OWNERS}
