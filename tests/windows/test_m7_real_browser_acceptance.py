@@ -266,20 +266,22 @@ def test_real_browser_governed_form_session_security_and_workflow(tmp_path: Path
             vertical_task = harness.make_task(
                 "Open the controlled browser fixture and verify the destination."
             )
-            vertical = harness.agent_loop(
-                {ExecutionLevel.L1_DIRECT: vertical_strategy}
-            ).run(
-                harness.make_request(
-                    task=vertical_task,
-                    context=harness.make_context(vertical_task),
-                    routing_evidence=RoutingEvidence(deterministic_direct_path=True),
-                    requirement=VerificationRequirement({"url": f"{site.base_url}/"}),
-                    limits=default_limits(
-                        max_total_attempts=1,
-                        escalation_permitted=False,
-                    ),
+            vertical = (
+                harness.agent_loop({ExecutionLevel.L1_DIRECT: vertical_strategy})
+                .run(
+                    harness.make_request(
+                        task=vertical_task,
+                        context=harness.make_context(vertical_task),
+                        routing_evidence=RoutingEvidence(deterministic_direct_path=True),
+                        requirement=VerificationRequirement({"url": f"{site.base_url}/"}),
+                        limits=default_limits(
+                            max_total_attempts=1,
+                            escalation_permitted=False,
+                        ),
+                    )
                 )
-            ).unwrap()
+                .unwrap()
+            )
             assert vertical.verified is True
             assert vertical.final_level is ExecutionLevel.L1_DIRECT
 
@@ -434,9 +436,7 @@ def test_real_browser_governed_form_session_security_and_workflow(tmp_path: Path
                 "sensitive_values_exposed": False,
             }
             sys.stdout.write(
-                "M7_REAL_BROWSER_ACCEPTANCE="
-                + json.dumps(evidence, sort_keys=True)
-                + "\n"
+                "M7_REAL_BROWSER_ACCEPTANCE=" + json.dumps(evidence, sort_keys=True) + "\n"
             )
         finally:
             provider.close()
