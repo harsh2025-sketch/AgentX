@@ -11,10 +11,10 @@
   },
   "after": {
     "NOT_AUDITED": 0,
-    "VERIFIED": 408,
+    "VERIFIED": 394,
     "IN_PROGRESS": 9,
     "BLOCKED": 7,
-    "NOT_IMPLEMENTED": 176
+    "NOT_IMPLEMENTED": 190
   },
   "milestones": {
     "M0": {
