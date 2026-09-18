@@ -220,8 +220,12 @@ class BrowserSessionParams(CapabilityParams):
     def to_dict(self) -> dict[str, JsonValue]:
         return {
             "operation": self.operation.value,
-            "target": self.target.to_dict(),
-            "selected_node": (None if self.selected_node is None else self.selected_node.to_dict()),
+            "target": _json_object(self.target.to_dict()),
+            "selected_node": (
+                None
+                if self.selected_node is None
+                else _json_object(self.selected_node.to_dict())
+            ),
             "expected_filename": self.expected_filename,
             "cookie": None if self.cookie is None else self.cookie.to_dict(),
             "cookie_name": self.cookie_name,
@@ -287,6 +291,22 @@ def _descriptor(operation: BrowserSessionOperation) -> CapabilityDescriptor:
     )
 
 
+def _json_value(value: object) -> JsonValue:
+    if value is None or isinstance(value, bool | int | float | str):
+        return value
+    if isinstance(value, dict):
+        return {str(key): _json_value(item) for key, item in value.items()}
+    if isinstance(value, list | tuple):
+        return [_json_value(item) for item in value]
+    raise TypeError(f"non-JSON-compatible value of type {type(value).__name__}")
+
+
+def _json_object(value: object) -> dict[str, JsonValue]:
+    if not isinstance(value, dict):
+        raise TypeError("expected a JSON object")
+    return {str(key): _json_value(item) for key, item in value.items()}
+
+
 def _error(code: str, message: str, category: ErrorCategory) -> AgentXError:
     return AgentXError(
         code=code,
@@ -323,10 +343,8 @@ class BrowserSessionCapability:
         context: ExecutionContext,
     ) -> ExecutionResult:
         params = request.params
-        if request.identity != self._descriptor.identity or not isinstance(
-            params, BrowserSessionParams
-        ):
-            return self._failed("browser.session.invalid_request", "invalid session request", None)
+        if request.identity != self._descriptor.identity:
+            return self._failed("browser.session.invalid_request", "invalid session request", params)
         if params.operation is not self._operation:
             return self._failed(
                 "browser.session.invalid_operation",
@@ -354,10 +372,10 @@ class BrowserSessionCapability:
             if params.operation is BrowserSessionOperation.DOWNLOAD_SELECTED:
                 assert params.selected_node is not None
                 assert params.expected_filename is not None
-                result = self._driver.download_selected(
+                download_result = self._driver.download_selected(
                     params.selected_node, params.expected_filename
                 )
-                if result.is_failure or not result.unwrap().succeeded:
+                if download_result.is_failure or not download_result.unwrap().succeeded:
                     return self._failed(
                         "browser.session.download_failed",
                         "browser download invocation failed",
@@ -365,8 +383,8 @@ class BrowserSessionCapability:
                     )
             elif params.operation is BrowserSessionOperation.SET_COOKIE:
                 assert params.cookie is not None
-                result = self._driver.set_cookie(params.cookie.to_driver_dict())
-                if result.is_failure:
+                cookie_write_result = self._driver.set_cookie(params.cookie.to_driver_dict())
+                if cookie_write_result.is_failure:
                     return self._failed(
                         "browser.session.cookie_write_failed",
                         "browser cookie mutation failed",
@@ -374,8 +392,8 @@ class BrowserSessionCapability:
                     )
             elif params.operation is BrowserSessionOperation.DELETE_COOKIE:
                 assert params.cookie_name is not None
-                result = self._driver.delete_cookie(params.cookie_name)
-                if result.is_failure:
+                cookie_delete_result = self._driver.delete_cookie(params.cookie_name)
+                if cookie_delete_result.is_failure:
                     return self._failed(
                         "browser.session.cookie_delete_failed",
                         "browser cookie deletion failed",
@@ -383,8 +401,8 @@ class BrowserSessionCapability:
                     )
             else:
                 assert params.window_handle is not None
-                result = self._driver.switch_window(params.window_handle)
-                if result.is_failure:
+                window_result = self._driver.switch_window(params.window_handle)
+                if window_result.is_failure:
                     return self._failed(
                         "browser.session.window_switch_failed",
                         "browser window switch failed",
@@ -412,20 +430,18 @@ class BrowserSessionCapability:
         context: ExecutionContext,
     ) -> VerificationResult:
         params = request.params
-        if not isinstance(params, BrowserSessionParams):
-            return VerificationResult(passed=False, detail="invalid session parameters")
         if context.observe_stop().should_stop or observation.data.get("executed") is not True:
             return VerificationResult(passed=False, detail="session operation is not executable")
         try:
             if params.operation is BrowserSessionOperation.DOWNLOAD_SELECTED:
                 assert params.expected_filename is not None
-                result = self._driver.observe_download(params.expected_filename)
-                if result.is_failure:
+                download_observation = self._driver.observe_download(params.expected_filename)
+                if download_observation.is_failure:
                     return VerificationResult(
                         passed=False,
                         detail="independent downloaded artifact was not observed",
                     )
-                artifact = result.unwrap()
+                artifact = download_observation.unwrap()
                 passed = artifact.filename == params.expected_filename and artifact.size_bytes > 0
                 return VerificationResult(
                     passed=passed,
@@ -439,13 +455,13 @@ class BrowserSessionCapability:
                 BrowserSessionOperation.SET_COOKIE,
                 BrowserSessionOperation.DELETE_COOKIE,
             }:
-                result = self._driver.cookies()
-                if result.is_failure:
+                cookie_observation = self._driver.cookies()
+                if cookie_observation.is_failure:
                     return VerificationResult(
                         passed=False,
                         detail="independent cookie observation failed",
                     )
-                cookies = result.unwrap()
+                cookies = cookie_observation.unwrap()
                 if params.operation is BrowserSessionOperation.SET_COOKIE:
                     assert params.cookie is not None
                     match = next(
