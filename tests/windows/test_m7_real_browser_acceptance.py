@@ -41,6 +41,7 @@ from agentx.capabilities.browser_forms import (
     submit_selected_request,
     upload_selected_request,
 )
+from agentx.capabilities.browser_recovery import BrowserSelectionRecovery
 from agentx.capabilities.browser_selection import (
     BrowserDomSelectionStatus,
     BrowserDomSelector,
@@ -349,6 +350,17 @@ def test_real_browser_governed_form_session_security_and_workflow(tmp_path: Path
                 harness,
                 navigate_request(provider.target_ref().unwrap(), f"{site.base_url}/"),
             )
+
+            # A DOM-changing round trip invalidates the old element generation.
+            # Recovery performs one fresh structured observation and accepts
+            # only one deterministic selector match.
+            recovery_target = provider.target_ref().unwrap()
+            recovered = BrowserSelectionRecovery(provider).recover(
+                BrowserDomReadRequest(target=recovery_target),
+                BrowserDomSelector(attribute=BrowserDomAttribute("id", "name")),
+            )
+            assert recovered.is_success
+            assert recovered.unwrap().node.target.url == f"{site.base_url}/"
 
             target, popup = _select(provider, "popup")
             _run(
