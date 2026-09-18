@@ -356,8 +356,8 @@ class BoundedModelGateway:
         context: ExecutionContext,
         *,
         reservation: ModelAttemptReservation,
-        retry: RetryPolicy = RetryPolicy(),
-        fallback: FallbackPolicy = FallbackPolicy(),
+        retry: RetryPolicy | None = None,
+        fallback: FallbackPolicy | None = None,
     ) -> Result[ModelResponse, AgentXError]:
         if not isinstance(request, ModelRequest):
             raise TypeError("request must be a ModelRequest")
@@ -365,10 +365,12 @@ class BoundedModelGateway:
             raise TypeError("context must be an ExecutionContext")
         if not isinstance(reservation, ModelAttemptReservation):
             raise TypeError("reservation must be a ModelAttemptReservation")
+        retry = RetryPolicy() if retry is None else retry
+        fallback = FallbackPolicy() if fallback is None else fallback
         if not isinstance(retry, RetryPolicy):
-            raise TypeError("retry must be a RetryPolicy")
+            raise TypeError("retry must be a RetryPolicy or None")
         if not isinstance(fallback, FallbackPolicy):
-            raise TypeError("fallback must be a FallbackPolicy")
+            raise TypeError("fallback must be a FallbackPolicy or None")
 
         primary = self._registry.descriptor_for(request.model_id)
         if primary is None:
@@ -381,7 +383,7 @@ class BoundedModelGateway:
                 )
             )
 
-        candidates = (request.model_id,) + fallback.models[: fallback.max_switches]
+        candidates = (request.model_id, *fallback.models[: fallback.max_switches])
         if len(set(candidates)) != len(candidates):
             return Result.failure(
                 provider_failure(
