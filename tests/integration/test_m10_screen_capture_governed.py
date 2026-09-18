@@ -99,9 +99,7 @@ def _loop(
 ) -> CapabilityExecutionLoop:
     registry = CapabilityRegistry()
     registry.register(
-        WindowsScreenCaptureCapability(
-            WindowsScreenCapture(_support(), native_surface=surface)
-        )
+        WindowsScreenCaptureCapability(WindowsScreenCapture(_support(), native_surface=surface))
     )
     events: list[Event] = []
     bus = EventBus()
