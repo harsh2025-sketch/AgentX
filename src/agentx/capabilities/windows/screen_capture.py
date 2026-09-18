@@ -119,7 +119,7 @@ class ScreenRect:
             and self.bottom >= other.bottom
         )
 
-    def to_dict(self) -> dict[str, int]:
+    def to_dict(self) -> dict[str, JsonValue]:
         return {"x": self.x, "y": self.y, "width": self.width, "height": self.height}
 
 
@@ -277,6 +277,11 @@ class WindowsScreenCapture:
 
     __slots__ = ("_frames", "_lock", "_native_surface", "_support")
 
+    _frames: dict[str, ScreenFrame]
+    _lock: Lock
+    _native_surface: NativeScreenSurface
+    _support: WindowsSupport
+
     def __init__(
         self,
         support: WindowsSupport,
@@ -291,7 +296,7 @@ class WindowsScreenCapture:
             native_surface if native_surface is not None else Win32ScreenSurface(),
         )
         object.__setattr__(self, "_support", support)
-        object.__setattr__(self, "_frames", {})
+        object.__setattr__(self, "_frames", dict[str, ScreenFrame]())
         object.__setattr__(self, "_lock", Lock())
 
     def __setattr__(self, name: str, value: object) -> None:
@@ -434,6 +439,9 @@ class WindowsScreenCaptureCapability:
     """Screen observation as an ordinary governed READ capability."""
 
     __slots__ = ("_capture", "_descriptor")
+
+    _capture: WindowsScreenCapture
+    _descriptor: CapabilityDescriptor
 
     def __init__(self, capture: WindowsScreenCapture) -> None:
         if not isinstance(capture, WindowsScreenCapture):
