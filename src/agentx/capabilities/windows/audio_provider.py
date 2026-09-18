@@ -171,14 +171,7 @@ class WinMmAudioSurface:
                     _failure(AudioFailureKind.INTERNAL, "microphone buffer prepare failed")
                 )
             prepared = True
-            if (
-                int(
-                    winmm.waveInAddBuffer(
-                        handle, ctypes.byref(header), ctypes.sizeof(header)
-                    )
-                )
-                != 0
-            ):
+            if int(winmm.waveInAddBuffer(handle, ctypes.byref(header), ctypes.sizeof(header))) != 0:
                 return Result.failure(
                     _failure(AudioFailureKind.INTERNAL, "microphone buffer enqueue failed")
                 )
@@ -225,9 +218,7 @@ class WinMmAudioSurface:
                 _failure(AudioFailureKind.PROVIDER_UNAVAILABLE, "WinMM playback requires Windows")
             )
         if cancellation_token.is_cancelled:
-            return Result.failure(
-                _failure(AudioFailureKind.CANCELLED, "audio playback cancelled")
-            )
+            return Result.failure(_failure(AudioFailureKind.CANCELLED, "audio playback cancelled"))
         if not payload:
             return Result.failure(
                 _failure(AudioFailureKind.EMPTY_PAYLOAD, "audio payload is empty")
@@ -263,9 +254,7 @@ class WinMmAudioSurface:
         handle = ctypes.c_void_p()
         block_align = channel_count * 2
         byte_rate = sample_rate_hz * block_align
-        fmt = WAVEFORMATEX(
-            1, channel_count, sample_rate_hz, byte_rate, block_align, 16, 0
-        )
+        fmt = WAVEFORMATEX(1, channel_count, sample_rate_hz, byte_rate, block_align, 16, 0)
         result = int(
             winmm.waveOutOpen(ctypes.byref(handle), 0xFFFFFFFF, ctypes.byref(fmt), 0, 0, 0)
         )
@@ -288,14 +277,7 @@ class WinMmAudioSurface:
                     _failure(AudioFailureKind.INTERNAL, "speaker buffer prepare failed")
                 )
             prepared = True
-            if (
-                int(
-                    winmm.waveOutWrite(
-                        handle, ctypes.byref(header), ctypes.sizeof(header)
-                    )
-                )
-                != 0
-            ):
+            if int(winmm.waveOutWrite(handle, ctypes.byref(header), ctypes.sizeof(header))) != 0:
                 return Result.failure(
                     _failure(AudioFailureKind.INTERNAL, "speaker playback start failed")
                 )
