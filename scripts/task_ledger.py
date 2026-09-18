@@ -85,16 +85,19 @@ def render(data: dict[str, Any]) -> str:
         f"Baseline: `{data['baseline_commit']}`. {data['baseline_source']}",
         "",
         "| Milestone | Reported complete | Reported partial | Reported remaining | "
-        "Verified acceptance |",
-        "| --- | ---: | ---: | ---: | ---: |",
+        "Verified | Not audited | In progress | Blocked | Not implemented |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for milestone in data["milestones"]:
         tasks = [task for task in data["tasks"] if task["milestone"] == milestone["id"]]
         counts = Counter(task["reported_status"] for task in tasks)
-        verified = sum(task["acceptance_status"] == "VERIFIED" for task in tasks)
+        acceptance = Counter(task["acceptance_status"] for task in tasks)
         lines.append(
             f"| {milestone['id']} {milestone['name']} | {counts['COMPLETE']} | "
-            f"{counts['PARTIAL']} | {counts['NOT_IMPLEMENTED']} | {verified} |"
+            f"{counts['PARTIAL']} | {counts['NOT_IMPLEMENTED']} | "
+            f"{acceptance['VERIFIED']} | {acceptance['NOT_AUDITED']} | "
+            f"{acceptance['IN_PROGRESS']} | {acceptance['BLOCKED']} | "
+            f"{acceptance['NOT_IMPLEMENTED']} |"
         )
     lines.extend(
         [
