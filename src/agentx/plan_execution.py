@@ -18,13 +18,14 @@ from agentx.capabilities.executor import Executor, ExecutorRequest
 from agentx.capabilities.runtime import ClosedLoopOutcome, LoopOutcome
 from agentx.capabilities.verifier import VerificationRequirement, Verifier, VerifierRequest
 from agentx.cognition.router import ExecutionLevel
+from agentx.compiled_procedure_strategy import GovernedCompiledProcedureStrategy
 from agentx.core.decomposition_readiness import (
     DecompositionReadinessDisposition,
     DecompositionReadinessValidator,
 )
 from agentx.core.errors import AgentXError, ErrorCategory
 from agentx.core.execution import ExecutionContext, MonotonicClock
-from agentx.core.ids import CapabilityId, TaskId
+from agentx.core.ids import CapabilityId, ProcedureId, TaskId
 from agentx.core.result import Result
 from agentx.core.task_decomposition import DecompositionNode, TaskDecomposition
 from agentx.core.tasks import Task, TaskStatus
