@@ -15,6 +15,7 @@ the truth of external evidence or promotes knowledge.
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from datetime import timedelta
 from decimal import Decimal
@@ -51,9 +52,9 @@ from agentx.kernel.permissions import Permission
 from agentx.kernel.risk import assess_risk
 
 __all__ = [
-    "ResearchAcquisitionMode",
-    "ResearchAcquireParams",
     "GovernedResearchAcquisitionCapability",
+    "ResearchAcquireParams",
+    "ResearchAcquisitionMode",
     "governed_research_request",
 ]
 
