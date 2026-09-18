@@ -17,6 +17,9 @@ repair its own procedures over time.
 >
 > See the [whole-project roadmap](docs/ROADMAP.md) for milestone exit criteria and
 > the [status and completion ledger](docs/STATUS.md) for evidence and remaining work.
+> The exact normalized [600-task ledger](docs/TASKS.md) is generated from
+> [machine-readable task records](docs/TASKS.json); reported status is separate
+> from verified acceptance evidence.
 
 ## Requirements
 
