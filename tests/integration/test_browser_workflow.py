@@ -19,7 +19,7 @@ from agentx.core.execution import CancellationSource, ExecutionContext
 from agentx.kernel.permissions import Permission
 from tests.support.demo_capability import NoteWriteParams, write_request
 from tests.support.orchestration_harness import OrchestrationHarness
-from tests.unit.test_browser_forms_session_recovery import _Surface, _node
+from tests.unit.test_browser_forms_session_recovery import _node, _Surface
 
 
 def test_multi_field_browser_workflow_uses_shared_governed_executor_and_budget(
