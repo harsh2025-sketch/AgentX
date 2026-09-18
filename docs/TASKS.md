@@ -2,7 +2,7 @@
 
 Generated from `docs/TASKS.json` by `python scripts/task_ledger.py --write`.
 
-reported_status preserves the supplied 349/2/249 historical snapshot. acceptance_status is the independent AX-001–AX-600 audit against canonical main bcc0692246a981be5ae15c993b0c3e6512871b92; VERIFIED requires exact requirement evidence and does not imply release readiness.
+reported_status preserves the supplied 349/2/249 historical snapshot. acceptance_status records strict requirement evidence from canonical history plus reconciled milestone acceptance campaigns; VERIFIED requires implementation/tests/commit/acceptance evidence and does not imply release readiness.
 
 Partial: only the explicit critical path is encoded. Empty depends_on is not a claim of independence. AX-574 remains IN_PROGRESS because the whole dependency DAG has not been synchronized.
 
@@ -24,7 +24,7 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | M11 Voice and HUD | 2 | 0 | 23 | 25 | 0 | 0 | 0 | 0 |
 | M12 Scheduling | 1 | 0 | 24 | 25 | 0 | 0 | 0 | 0 |
 | M13 Multi-device and Android | 2 | 0 | 28 | 2 | 0 | 0 | 0 | 28 |
-| M14 Optimization | 2 | 0 | 23 | 2 | 0 | 0 | 0 | 23 |
+| M14 Optimization | 2 | 0 | 23 | 25 | 0 | 0 | 0 | 0 |
 | M15 Self-extension | 1 | 0 | 29 | 1 | 0 | 0 | 0 | 29 |
 | M16 Production and Release | 1 | 0 | 29 | 4 | 0 | 1 | 0 | 25 |
 
@@ -550,29 +550,29 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-515 | multi-device milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-516 | strategy-performance evidence foundation | COMPLETE | VERIFIED |  |
 | AX-517 | execution-level metrics foundation | COMPLETE | VERIFIED |  |
-| AX-518 | deterministic strategy baseline | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-519 | strategy outcome history | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-520 | per-environment strategy statistics | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-521 | per-task-family strategy statistics | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-522 | strategy latency statistics | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-523 | strategy cost statistics | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-524 | strategy success statistics | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-525 | confidence calibration | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-526 | contextual-bandit experiment | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-527 | bandit safety constraints | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-528 | offline policy evaluation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-529 | online preference-ranking experiment | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-530 | explicit user-correction dataset | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-531 | preference scoring model | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-532 | grounding-specialist dataset | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-533 | lightweight grounding model | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-534 | routing-specialist dataset | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-535 | lightweight routing model | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-536 | verifier-assistance model experiment | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-537 | model-distillation pipeline | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-538 | specialized-model benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-539 | rollbackable optimization policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-540 | optimization milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-518 | deterministic strategy baseline | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-519 | strategy outcome history | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-520 | per-environment strategy statistics | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-521 | per-task-family strategy statistics | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-522 | strategy latency statistics | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-523 | strategy cost statistics | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-524 | strategy success statistics | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-525 | confidence calibration | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-526 | contextual-bandit experiment | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-527 | bandit safety constraints | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-528 | offline policy evaluation | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-529 | online preference-ranking experiment | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-530 | explicit user-correction dataset | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-531 | preference scoring model | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-532 | grounding-specialist dataset | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-533 | lightweight grounding model | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-534 | routing-specialist dataset | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-535 | lightweight routing model | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-536 | verifier-assistance model experiment | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-537 | model-distillation pipeline | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-538 | specialized-model benchmark | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-539 | rollbackable optimization policy | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-540 | optimization milestone acceptance | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-541 | missing-capability detector foundation | COMPLETE | VERIFIED |  |
 | AX-542 | capability-gap record | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
 | AX-543 | capability research objective | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |

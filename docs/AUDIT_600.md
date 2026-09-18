@@ -1,16 +1,16 @@
-#||||||||||||||||||||||||| AX-460 | M11 | voice/HUD milestone demonstration | VERIFIED | E4 | NONE |
+# AgentX 600-task acceptance record
 
-Repository: `harsh2025-sketch/AgentX`. Reconciled M12 candidate is based on canonical M11-integrated main `a030066885f3a674849fb0512db6b9adc66ffabc`.
+Repository: `harsh2025-sketch/AgentX`. M14 reconciliation baseline is green post-M12 main `bd7be90f2eab877fffcb353b675ffd7795b485d3`; PR #176 is reconciled against that exact state.
 
-PR #169 security and PR #171 world-model implementation are merged. This reconciliation incorporates PR #173's core-intelligence evidence; its exact new head must pass canonical CI before merge. The final whole-project audit follows integration. Historical `reported_status` remains unchanged. Counts below are calculated from TASKS.json, not added from PR summaries.
+M11 and M12 are integrated on canonical main with exact-SHA green CI. This reconciliation preserves that state and adds only evidence-backed M14 changes. Historical `reported_status` remains unchanged. Counts below are calculated from the merged 600-task records.
 
 | State | Tasks | Percentage |
 | --- | ---: | ---: |
-| VERIFIED | 487 | 81.17% |
+| VERIFIED | 510 | 85.00% |
 | NOT_AUDITED | 0 | 0.00% |
 | IN_PROGRESS | 1 | 0.17% |
 | BLOCKED | 7 | 1.17% |
-| NOT_IMPLEMENTED | 105 | 17.50% |
+| NOT_IMPLEMENTED | 82 | 13.67% |
 | TOTAL | 600 | 100.00% |
 
 ## Milestones
@@ -31,13 +31,15 @@ PR #169 security and PR #171 world-model implementation are merged. This reconci
 | M11 | AX-436–AX-460 | 25 | 25 | 100.00% | none | COMPLETE |
 | M12 | AX-461–AX-485 | 25 | 25 | 100.00% | none | COMPLETE |
 | M13 | AX-486–AX-515 | 2 | 30 | 6.67% | NOT_IMPLEMENTED=28 | PARTIAL |
-| M14 | AX-516–AX-540 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
+| M14 | AX-516–AX-540 | 25 | 25 | 100.00% | none | COMPLETE |
 | M15 | AX-541–AX-570 | 1 | 30 | 3.33% | NOT_IMPLEMENTED=29 | PARTIAL |
 | M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
 
 ## Evidence boundaries
 
 M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 release matrix or a user desktop hardware matrix. M7 uses actual headless Chrome against controlled localhost pages. This proves browser mechanics and governance, not compatibility with arbitrary external sites/accounts. M10 DPI/multi-monitor and visual accuracy evidence uses bounded deterministic fixtures in addition to real native capture. Real model/research credentials were unavailable; controlled-provider metrics do not satisfy live-efficiency acceptance. M11 has deterministic production-path acceptance and separate real-device/live-provider/interactive-HUD entry points; those three real-environment entry points were not run and are not represented as such. The CLI exposes metadata/help, not a complete natural-language product session.
+
+M14 acceptance uses deterministic controlled strategy/correction/specialist datasets plus real SQLite/EventJournal restart/concurrency mechanics. It proves production optimization contracts, safety constraints, rollback, and reproducibility; it does **not** claim live-provider cost, statistically representative production improvement, or a real-user preference corpus. See `docs/M14_ADAPTIVE_OPTIMIZATION_ACCEPTANCE.md`.
 
 ## Task decisions
 
@@ -478,31 +480,31 @@ M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 releas
 | AX-433 | M10 | layout-change recovery benchmark | VERIFIED | E4 | NONE |
 | AX-434 | M10 | perception accuracy benchmark | VERIFIED | E4 | NONE |
 | AX-435 | M10 | world-model milestone acceptance | VERIFIED | E4 | NONE |
-| AX-436 | M11 | audio abstraction foundation | VERIFIED | E2 | NONE |
-| AX-437 | M11 | microphone input provider | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-438 | M11 | speaker output provider | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-439 | M11 | provider-neutral STT interface | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-440 | M11 | concrete STT provider | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-441 | M11 | provider-neutral TTS interface | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-442 | M11 | concrete TTS provider | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-443 | M11 | realtime-session abstraction | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-444 | M11 | realtime voice provider | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-445 | M11 | voice activity detection | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-446 | M11 | turn-end detection | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-447 | M11 | interruption/barge-in | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-448 | M11 | audio cancellation handling | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-449 | M11 | voice-task bridge | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-450 | M11 | voice authorization rules | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-451 | M11 | spoken confirmation protocol | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-452 | M11 | runtime -> UI event protocol | VERIFIED | E2 | NONE |
-| AX-453 | M11 | HUD state model | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-454 | M11 | listening telemetry | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-455 | M11 | reasoning telemetry | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-456 | M11 | execution telemetry | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-457 | M11 | verification telemetry | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-458 | M11 | recovery telemetry | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-459 | M11 | HUD control actions | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-460 | M11 | voice/HUD milestone demonstration | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
+| AX-436 | M11 | audio abstraction foundation | VERIFIED | E3 | NONE |
+| AX-437 | M11 | microphone input provider | VERIFIED | E3 | NONE |
+| AX-438 | M11 | speaker output provider | VERIFIED | E3 | NONE |
+| AX-439 | M11 | provider-neutral STT interface | VERIFIED | E3 | NONE |
+| AX-440 | M11 | concrete STT provider | VERIFIED | E3 | NONE |
+| AX-441 | M11 | provider-neutral TTS interface | VERIFIED | E3 | NONE |
+| AX-442 | M11 | concrete TTS provider | VERIFIED | E3 | NONE |
+| AX-443 | M11 | realtime-session abstraction | VERIFIED | E3 | NONE |
+| AX-444 | M11 | realtime voice provider | VERIFIED | E3 | NONE |
+| AX-445 | M11 | voice activity detection | VERIFIED | E3 | NONE |
+| AX-446 | M11 | turn-end detection | VERIFIED | E3 | NONE |
+| AX-447 | M11 | interruption/barge-in | VERIFIED | E3 | NONE |
+| AX-448 | M11 | audio cancellation handling | VERIFIED | E3 | NONE |
+| AX-449 | M11 | voice-task bridge | VERIFIED | E4 | NONE |
+| AX-450 | M11 | voice authorization rules | VERIFIED | E4 | NONE |
+| AX-451 | M11 | spoken confirmation protocol | VERIFIED | E4 | NONE |
+| AX-452 | M11 | runtime -> UI event protocol | VERIFIED | E3 | NONE |
+| AX-453 | M11 | HUD state model | VERIFIED | E3 | NONE |
+| AX-454 | M11 | listening telemetry | VERIFIED | E4 | NONE |
+| AX-455 | M11 | reasoning telemetry | VERIFIED | E4 | NONE |
+| AX-456 | M11 | execution telemetry | VERIFIED | E4 | NONE |
+| AX-457 | M11 | verification telemetry | VERIFIED | E4 | NONE |
+| AX-458 | M11 | recovery telemetry | VERIFIED | E4 | NONE |
+| AX-459 | M11 | HUD control actions | VERIFIED | E4 | NONE |
+| AX-460 | M11 | voice/HUD milestone demonstration | VERIFIED | E4 | NONE |
 | AX-461 | M12 | scheduler core | VERIFIED | E4 | NONE |
 | AX-462 | M12 | scheduled-task contract | VERIFIED | E3 | NONE |
 | AX-463 | M12 | one-shot scheduled tasks | VERIFIED | E4 | NONE |
@@ -558,31 +560,31 @@ M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 releas
 | AX-513 | M13 | cross-device causal episode | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
 | AX-514 | M13 | PC/browser/phone workflow benchmark | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
 | AX-515 | M13 | multi-device milestone acceptance | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-516 | M14 | strategy-performance evidence foundation | VERIFIED | E2 | NONE |
-| AX-517 | M14 | execution-level metrics foundation | VERIFIED | E2 | NONE |
-| AX-518 | M14 | deterministic strategy baseline | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-519 | M14 | strategy outcome history | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-520 | M14 | per-environment strategy statistics | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-521 | M14 | per-task-family strategy statistics | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-522 | M14 | strategy latency statistics | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-523 | M14 | strategy cost statistics | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-524 | M14 | strategy success statistics | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-525 | M14 | confidence calibration | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-526 | M14 | contextual-bandit experiment | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-527 | M14 | bandit safety constraints | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-528 | M14 | offline policy evaluation | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-529 | M14 | online preference-ranking experiment | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-530 | M14 | explicit user-correction dataset | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-531 | M14 | preference scoring model | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-532 | M14 | grounding-specialist dataset | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-533 | M14 | lightweight grounding model | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-534 | M14 | routing-specialist dataset | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-535 | M14 | lightweight routing model | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-536 | M14 | verifier-assistance model experiment | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-537 | M14 | model-distillation pipeline | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-538 | M14 | specialized-model benchmark | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-539 | M14 | rollbackable optimization policy | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-540 | M14 | optimization milestone acceptance | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
+| AX-516 | M14 | strategy-performance evidence foundation | VERIFIED | E3 | NONE |
+| AX-517 | M14 | execution-level metrics foundation | VERIFIED | E3 | NONE |
+| AX-518 | M14 | deterministic strategy baseline | VERIFIED | E3 | NONE |
+| AX-519 | M14 | strategy outcome history | VERIFIED | E3 | NONE |
+| AX-520 | M14 | per-environment strategy statistics | VERIFIED | E3 | NONE |
+| AX-521 | M14 | per-task-family strategy statistics | VERIFIED | E3 | NONE |
+| AX-522 | M14 | strategy latency statistics | VERIFIED | E3 | NONE |
+| AX-523 | M14 | strategy cost statistics | VERIFIED | E3 | NONE |
+| AX-524 | M14 | strategy success statistics | VERIFIED | E3 | NONE |
+| AX-525 | M14 | confidence calibration | VERIFIED | E3 | NONE |
+| AX-526 | M14 | contextual-bandit experiment | VERIFIED | E3 | NONE |
+| AX-527 | M14 | bandit safety constraints | VERIFIED | E3 | NONE |
+| AX-528 | M14 | offline policy evaluation | VERIFIED | E3 | NONE |
+| AX-529 | M14 | online preference-ranking experiment | VERIFIED | E3 | NONE |
+| AX-530 | M14 | explicit user-correction dataset | VERIFIED | E3 | NONE |
+| AX-531 | M14 | preference scoring model | VERIFIED | E3 | NONE |
+| AX-532 | M14 | grounding-specialist dataset | VERIFIED | E3 | NONE |
+| AX-533 | M14 | lightweight grounding model | VERIFIED | E3 | NONE |
+| AX-534 | M14 | routing-specialist dataset | VERIFIED | E3 | NONE |
+| AX-535 | M14 | lightweight routing model | VERIFIED | E3 | NONE |
+| AX-536 | M14 | verifier-assistance model experiment | VERIFIED | E3 | NONE |
+| AX-537 | M14 | model-distillation pipeline | VERIFIED | E3 | NONE |
+| AX-538 | M14 | specialized-model benchmark | VERIFIED | E3 | NONE |
+| AX-539 | M14 | rollbackable optimization policy | VERIFIED | E4 | NONE |
+| AX-540 | M14 | optimization milestone acceptance | VERIFIED | E4 | NONE |
 | AX-541 | M15 | missing-capability detector foundation | VERIFIED | E2 | NONE |
 | AX-542 | M15 | capability-gap record | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
 | AX-543 | M15 | capability research objective | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
@@ -656,9 +658,9 @@ M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 releas
 | Security | M9 hostile-content, restart, privacy and authority suites retained; untrusted content remains data. |
 | World model | Freshness/invalidation, real filesystem change, bounded frame capture and grounding accepted within documented environment limits. |
 | Voice/HUD | M11 production voice/HUD path, governed authorization, interruption, telemetry/control and deterministic end-to-end acceptance are complete for AX-436–AX-460. Real microphone/speaker, live STT/TTS credentials and interactive desktop entry points remain separately not run and are not claimed as release-matrix evidence. |
-| Scheduling | Event-watcher foundation only; persistent scheduler and policy execution remain open. |
+| Scheduling | M12 scheduler, one-shot/recurring work, durable recovery, event-trigger launch, proactive policy, quotas, approval expiry and stale-state rejection are integrated with governed execution. |
 | Multi-device/Android | Protocol contracts only; real devices, transport and Android execution remain open. |
-| Optimization | Strategy/performance evidence foundations; adaptive policies and acceptance remain open. |
+| Optimization | M14 strategy history/statistics, constrained contextual-bandit and preference experiments, specialist datasets/models, offline evaluation, rollbackable policy and safety acceptance are implemented with controlled evidence; live-provider and real-user performance claims remain unmade. |
 | Self-extension | Capability-gap foundation; safe extension lifecycle remains open. |
 | Production/release | Release is not ready; installer, upgrades, privacy/product controls, platform matrix and whole-system acceptance remain open. |
 

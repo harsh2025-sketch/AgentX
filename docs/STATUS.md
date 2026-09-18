@@ -1,16 +1,16 @@
 # AgentX status
 
-Repository: `harsh2025-sketch/AgentX`. Integration baseline: `9b2ecd350e24833860fbd1cbf7bde1e2f549bad5`.
+Repository: `harsh2025-sketch/AgentX`. Reconciliation baseline: green post-M12 main `bd7be90f2eab877fffcb353b675ffd7795b485d3`.
 
-PR #169 security and PR #171 world-model implementation are merged. This reconciliation incorporates PR #173's core-intelligence evidence; its exact new head must pass canonical CI before merge. The final whole-project audit follows integration. Historical `reported_status` remains unchanged. Counts below are calculated from TASKS.json, not added from PR summaries.
+M11 and M12 are integrated and exact-main CI is green. PR #176 is the M14 reconciliation candidate. Historical `reported_status` remains unchanged; counts are calculated from merged TASKS.json.
 
 | State | Tasks | Percentage |
 | --- | ---: | ---: |
-| VERIFIED | 487 | 81.17% |
+| VERIFIED | 510 | 85.00% |
 | NOT_AUDITED | 0 | 0.00% |
 | IN_PROGRESS | 1 | 0.17% |
 | BLOCKED | 7 | 1.17% |
-| NOT_IMPLEMENTED | 105 | 17.50% |
+| NOT_IMPLEMENTED | 82 | 13.67% |
 | TOTAL | 600 | 100.00% |
 
 | Milestone | Range | VERIFIED | TOTAL | % | Other states | Status |
@@ -29,7 +29,7 @@ PR #169 security and PR #171 world-model implementation are merged. This reconci
 | M11 | AX-436–AX-460 | 25 | 25 | 100.00% | none | COMPLETE |
 | M12 | AX-461–AX-485 | 25 | 25 | 100.00% | none | COMPLETE |
 | M13 | AX-486–AX-515 | 2 | 30 | 6.67% | NOT_IMPLEMENTED=28 | PARTIAL |
-| M14 | AX-516–AX-540 | 2 | 25 | 8.00% | NOT_IMPLEMENTED=23 | PARTIAL |
+| M14 | AX-516–AX-540 | 25 | 25 | 100.00% | none | COMPLETE |
 | M15 | AX-541–AX-570 | 1 | 30 | 3.33% | NOT_IMPLEMENTED=29 | PARTIAL |
 | M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
 
@@ -45,8 +45,8 @@ M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 releas
 | Security | M9 hostile-content, restart, privacy and authority suites retained; untrusted content remains data. |
 | World model | Freshness/invalidation, real filesystem change, bounded frame capture and grounding accepted within documented environment limits. |
 | Voice/HUD | AX-436–AX-460 are acceptance VERIFIED: concrete Windows audio, STT/TTS, realtime turn/interruption, governed voice-task authorization, confirmation, HUD telemetry/control and deterministic end-to-end acceptance are implemented. Real-device/live-provider/interactive-desktop entry points remain separately not run. |
-| Scheduling | M12 scheduler, one-shot/recurring work, durable recovery, event-trigger launch, proactivity policy, quotas, approval expiry and stale-state rejection are integrated on the reconciled PR #177 candidate; exact-head CI is required before merge. |
+| Scheduling | M12 scheduler, one-shot/recurring work, durable recovery, event-trigger launch, proactivity policy, quotas, approval expiry and stale-state rejection are integrated on canonical main; post-M12 exact-main C1.01 passed. |
 | Multi-device/Android | Protocol contracts only; real devices, transport and Android execution remain open. |
-| Optimization | Strategy/performance evidence foundations; adaptive policies and acceptance remain open. |
+| Optimization | M14 strategy history/statistics, constrained contextual-bandit and preference experiments, specialist datasets/models, offline evaluation, rollbackable policy and safety acceptance are implemented with controlled evidence; no live-provider or real-user performance claim is made. |
 | Self-extension | Capability-gap foundation; safe extension lifecycle remains open. |
 | Production/release | Release is not ready; installer, upgrades, privacy/product controls, platform matrix and whole-system acceptance remain open. |
