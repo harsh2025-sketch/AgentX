@@ -102,6 +102,11 @@ from agentx.capabilities.abi import (
     ExecutionResult,
     VerificationResult,
 )
+from agentx.capabilities.human_approval import HumanApprovalDecision, HumanApprovalRequest
+from agentx.capabilities.human_approval_evaluation import (
+    HumanApprovalEvidenceStatus,
+    evaluate_human_approval_evidence,
+)
 from agentx.capabilities.registry import CapabilityNotFoundError, CapabilityRegistry
 from agentx.core.errors import AgentXError, ErrorCategory, Retryability
 from agentx.core.events import (
@@ -135,6 +140,7 @@ from agentx.kernel.risk import RiskLevel
 
 __all__ = [
     "RUNTIME_SOURCE",
+    "ApprovalDecisions",
     "AuditSink",
     "CapabilityExecutionLoop",
     "ClosedLoopOutcome",
@@ -153,6 +159,10 @@ type EventSink = Callable[[Event], object]
 #: Sink that receives canonical C1.09 :class:`SecurityAuditRecord` values.
 #: Audit storage (C2.04) is injected the same way.
 type AuditSink = Callable[[SecurityAuditRecord], object]
+
+#: Exact typed human decisions supplied by a trusted orchestration/UI boundary.
+#: Decisions never replace permission, risk, budget, stop, or verification checks.
+type ApprovalDecisions = tuple[HumanApprovalDecision, ...]
 
 
 class LoopOutcome(StrEnum):
@@ -324,14 +334,154 @@ class CapabilityExecutionLoop:
         self._source = source
 
     # ------------------------------------------------------------------
-    # Public entry point.
+    # Public approval preflight + execution entry point.
     # ------------------------------------------------------------------
+
+    def approval_requests(
+        self,
+        task: Task,
+        request: CapabilityRequest[Any],
+        context: ExecutionContext,
+    ) -> Result[tuple[HumanApprovalRequest, ...], AgentXError]:
+        """Return exact confirmation requests required by the canonical gate.
+
+        This preflight is inert: it does not mutate Task state, consume budget,
+        publish events/audit, execute the capability, or weaken ActionGate.
+        It exists so a trusted human-control boundary can obtain explicit
+        decisions for the exact task/correlation/capability/params/risk tuple.
+
+        Permissions remain mandatory. A DENY cannot be converted into an
+        approval request. R0-R2 ALLOW decisions require no human approval.
+        """
+        if not isinstance(task, Task):
+            raise TypeError(f"task must be a Task, got {type(task).__name__}")
+        if not isinstance(request, CapabilityRequest):
+            raise TypeError(f"request must be a CapabilityRequest, got {type(request).__name__}")
+        if not isinstance(context, ExecutionContext):
+            raise TypeError(f"context must be an ExecutionContext, got {type(context).__name__}")
+        if context.task_id is None or context.task_id != task.task_id:
+            return Result.failure(
+                _refusal_error(
+                    code="runtime.approval_context_task_mismatch",
+                    message="approval preflight requires ExecutionContext bound to the exact Task",
+                )
+            )
+        if task.status is not TaskStatus.PENDING:
+            return Result.failure(
+                _refusal_error(
+                    code="runtime.task_not_pending",
+                    message="approval preflight requires a Task in PENDING status",
+                )
+            )
+        if self._emergency_stop.stop_requested:
+            return Result.failure(
+                _failure_error(
+                    code="runtime.emergency_stop_active",
+                    message="emergency stop is active; approval preflight is refused",
+                    category=ErrorCategory.PRECONDITION,
+                )
+            )
+        stop = context.observe_stop()
+        if stop.should_stop:
+            return Result.failure(
+                _failure_error(
+                    code="runtime.context_stopped",
+                    message=(
+                        "execution context stop condition is active; approval preflight refused"
+                    ),
+                    category=ErrorCategory.CANCELLED,
+                    retryability=Retryability.UNKNOWN,
+                )
+            )
+        try:
+            self._registry.require(request.identity)
+        except CapabilityNotFoundError:
+            return Result.failure(
+                _failure_error(
+                    code="runtime.capability_not_registered",
+                    message=f"capability {request.identity} is not registered",
+                    category=ErrorCategory.NOT_FOUND,
+                    details={"capability": str(request.identity)},
+                )
+            )
+        descriptor = self._registry.describe(request.identity)
+        if descriptor is None:  # pragma: no cover - registry invariant after require
+            return Result.failure(
+                _failure_error(
+                    code="runtime.descriptor_missing",
+                    message=f"registry returned no descriptor for {request.identity}",
+                    category=ErrorCategory.INTERNAL,
+                    details={"capability": str(request.identity)},
+                )
+            )
+
+        required = tuple(sorted(descriptor.required_permissions, key=lambda item: item.value))
+        effective_level = descriptor.risk_assessment.effective_level
+        if not required and effective_level is not RiskLevel.R0:
+            return Result.failure(
+                _failure_error(
+                    code="runtime.permission_denied",
+                    message=(
+                        "capability declares no required permissions while carrying "
+                        f"effective risk {effective_level.value}"
+                    ),
+                    category=ErrorCategory.PERMISSION,
+                    details={"capability": str(request.identity)},
+                )
+            )
+
+        approvals: list[HumanApprovalRequest] = []
+        for permission in required:
+            check = PermissionEngine().check(permission, self._authority)
+            if not check.present:
+                return Result.failure(
+                    _failure_error(
+                        code="runtime.permission_denied",
+                        message=check.reason,
+                        category=ErrorCategory.PERMISSION,
+                        details={
+                            "capability": str(request.identity),
+                            "required_permission": permission.value,
+                        },
+                    )
+                )
+            gate_request = GateRequest(
+                operation=str(descriptor.identity),
+                required_permission=permission,
+                risk_assessment=descriptor.risk_assessment,
+            )
+            gate_result = self._action_gate.evaluate(gate_request, self._authority)
+            if gate_result.decision is GateDecision.DENY:
+                return Result.failure(
+                    _failure_error(
+                        code="runtime.gate_denied",
+                        message=gate_result.reason,
+                        category=ErrorCategory.PERMISSION,
+                        details={
+                            "capability": str(request.identity),
+                            "required_permission": permission.value,
+                            "decision": gate_result.decision.value,
+                        },
+                    )
+                )
+            if gate_result.decision is GateDecision.REQUIRE_CONFIRMATION:
+                approvals.append(
+                    HumanApprovalRequest.create(
+                        task_id=task.task_id,
+                        context=context,
+                        gate_request=gate_request,
+                        capability_request=request,
+                    )
+                )
+        return Result.success(tuple(approvals))
 
     def run(
         self,
         task: Task,
         request: CapabilityRequest[Any],
         context: ExecutionContext,
+        *,
+        approvals: ApprovalDecisions = (),
     ) -> Result[ClosedLoopOutcome, AgentXError]:
         """Run one governed capability through the full canonical loop.
 
@@ -353,6 +503,11 @@ class CapabilityExecutionLoop:
             raise TypeError(f"request must be a CapabilityRequest, got {type(request).__name__}")
         if not isinstance(context, ExecutionContext):
             raise TypeError(f"context must be an ExecutionContext, got {type(context).__name__}")
+        if type(approvals) is not tuple:
+            raise TypeError("approvals must be a tuple of HumanApprovalDecision values")
+        for approval in approvals:
+            if not isinstance(approval, HumanApprovalDecision):
+                raise TypeError("approvals must contain only HumanApprovalDecision values")
 
         # Value-level refusal: no state change, no events, no audit.
         if context.task_id is not None and context.task_id != task.task_id:
@@ -439,8 +594,17 @@ class CapabilityExecutionLoop:
         effective_level = descriptor.risk_assessment.effective_level
 
         # 4+5. Canonical permission/authority checks, then canonical effective
-        # risk through the ActionGate. Any non-ALLOW decision denies the run.
-        denial = self._evaluate_authority(chain, scope, descriptor)
+        # risk through the ActionGate. A REQUIRE_CONFIRMATION remains a gate
+        # fact and can proceed only when exact typed human approval evidence
+        # for this task/correlation/capability/params/gate request is supplied.
+        denial = self._evaluate_authority(
+            chain,
+            scope,
+            descriptor,
+            request,
+            context,
+            approvals,
+        )
         if denial is not None:
             return self._denied(chain, current, usage, scope, denial, policy_reason=None)
 
@@ -731,13 +895,17 @@ class CapabilityExecutionLoop:
         chain: _CausalEventChain,
         scope: _RunScope,
         descriptor: CapabilityDescriptor,
+        request: CapabilityRequest[Any],
+        context: ExecutionContext,
+        approvals: ApprovalDecisions,
     ) -> AgentXError | None:
-        """Run canonical permission checks and the canonical ActionGate.
+        """Run permission, ActionGate, and exact confirmation-evidence checks.
 
-        Returns ``None`` when every required permission is granted and every
-        gate evaluation returns ALLOW; otherwise returns the structured
-        denial. Both allow and deny outcomes are published as canonical
-        POLICY_DECISION events and canonical audit records.
+        ActionGate remains authoritative: DENY is terminal and its risk result
+        is never rewritten. REQUIRE_CONFIRMATION can proceed only after a
+        separate, exactly bound typed human decision evaluates as
+        MATCHING_APPROVED. Approval supplies no permission, risk downgrade,
+        budget, stop reset, or verification claim.
         """
         required = tuple(sorted(descriptor.required_permissions, key=lambda item: item.value))
         effective_level = descriptor.risk_assessment.effective_level
@@ -817,7 +985,7 @@ class CapabilityExecutionLoop:
                 target=identity,
                 permission=permission,
             )
-            if gate_result.decision is not GateDecision.ALLOW:
+            if gate_result.decision is GateDecision.DENY:
                 self._emit_decision(chain, gate_result.decision.value, gate_result.reason)
                 return _failure_error(
                     code="runtime.gate_denied",
@@ -829,6 +997,60 @@ class CapabilityExecutionLoop:
                         "decision": gate_result.decision.value,
                     },
                 )
+            if gate_result.decision is GateDecision.REQUIRE_CONFIRMATION:
+                self._emit_decision(chain, gate_result.decision.value, gate_result.reason)
+                approval_status = _approval_status(
+                    task_id=scope.task_id,
+                    context=context,
+                    gate_request=GateRequest(
+                        operation=identity,
+                        required_permission=permission,
+                        risk_assessment=descriptor.risk_assessment,
+                    ),
+                    capability_request=request,
+                    approvals=approvals,
+                )
+                if approval_status is not HumanApprovalEvidenceStatus.MATCHING_APPROVED:
+                    reason = (
+                        "DENY: ActionGate returned REQUIRE_CONFIRMATION and explicit human "
+                        f"confirmation evidence is {approval_status.value} for this exact "
+                        "governed request."
+                    )
+                    self._record_audit(
+                        scope,
+                        operation="runtime.human_approval",
+                        outcome=AuditOutcome.DENY,
+                        reason=reason,
+                        risk_level=effective_level,
+                        target=identity,
+                        permission=permission,
+                    )
+                    self._emit_decision(chain, "DENY", reason)
+                    return _failure_error(
+                        code="runtime.gate_denied",
+                        message=reason,
+                        category=ErrorCategory.PERMISSION,
+                        details={
+                            "capability": identity,
+                            "required_permission": permission.value,
+                            "decision": gate_result.decision.value,
+                            "approval_status": approval_status.value,
+                        },
+                    )
+                approval_reason = (
+                    "ALLOW: exact typed human approval evidence satisfied the "
+                    "ActionGate confirmation requirement; all other kernel checks remain active."
+                )
+                self._record_audit(
+                    scope,
+                    operation="runtime.human_approval",
+                    outcome=AuditOutcome.ALLOW,
+                    reason=approval_reason,
+                    risk_level=effective_level,
+                    target=identity,
+                    permission=permission,
+                )
+                self._emit_decision(chain, "ALLOW", approval_reason)
 
         allowed_reason = (
             f"ALLOW: Action Gate allowed all {len(required)} required permission(s) at "
@@ -974,6 +1196,40 @@ class CapabilityExecutionLoop:
                 context=AuditContext(target=target, permission=permission),
             )
         )
+
+
+def _approval_status(
+    *,
+    task_id: TaskId,
+    context: ExecutionContext,
+    gate_request: GateRequest,
+    capability_request: CapabilityRequest[Any],
+    approvals: ApprovalDecisions,
+) -> HumanApprovalEvidenceStatus:
+    """Evaluate supplied decisions against one exact confirmation requirement."""
+    if context.task_id is None or context.task_id != task_id:
+        return HumanApprovalEvidenceStatus.MISMATCHED
+    saw_mismatch = False
+    for decision in approvals:
+        expected = HumanApprovalRequest.create(
+            task_id=task_id,
+            context=context,
+            gate_request=gate_request,
+            capability_request=capability_request,
+            request_id=decision.request.request_id,
+        )
+        status = evaluate_human_approval_evidence(expected, decision)
+        if status is HumanApprovalEvidenceStatus.MATCHING_APPROVED:
+            return status
+        if status is HumanApprovalEvidenceStatus.MATCHING_DENIED:
+            return status
+        if status is HumanApprovalEvidenceStatus.MISMATCHED:
+            saw_mismatch = True
+    return (
+        HumanApprovalEvidenceStatus.MISMATCHED
+        if saw_mismatch
+        else HumanApprovalEvidenceStatus.MISSING
+    )
 
 
 def _gate_outcome(gate_result: GateResult) -> AuditOutcome:
