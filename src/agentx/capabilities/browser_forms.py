@@ -107,6 +107,22 @@ def _error(code: str, message: str, category: ErrorCategory) -> AgentXError:
     )
 
 
+def _json_value(value: object) -> JsonValue:
+    if value is None or isinstance(value, bool | int | float | str):
+        return value
+    if isinstance(value, dict):
+        return {str(key): _json_value(item) for key, item in value.items()}
+    if isinstance(value, list | tuple):
+        return [_json_value(item) for item in value]
+    raise TypeError(f"non-JSON-compatible value of type {type(value).__name__}")
+
+
+def _json_object(value: object) -> dict[str, JsonValue]:
+    if not isinstance(value, dict):
+        raise TypeError("expected a JSON object")
+    return {str(key): _json_value(item) for key, item in value.items()}
+
+
 def _attribute(snapshot: BrowserDomNodeSnapshot, name: str) -> str | None:
     return next((item.value for item in snapshot.attributes if item.name == name), None)
 
@@ -194,8 +210,8 @@ class BrowserFormParams(CapabilityParams):
     def to_dict(self) -> dict[str, JsonValue]:
         return {
             "operation": self.operation.value,
-            "target": self.target.to_dict(),
-            "selected_node": self.selected_node.to_dict(),
+            "target": _json_object(self.target.to_dict()),
+            "selected_node": _json_object(self.selected_node.to_dict()),
             "checked": self.checked,
             "option_value": None if self.option_value is None else "[REDACTED]",
             "file_path": None if self.file_path is None else "[REDACTED]",
@@ -446,12 +462,6 @@ class BrowserFormsCapability:
             return _error(
                 "browser.forms.invalid_operation",
                 "request identity does not match capability operation",
-                ErrorCategory.VALIDATION,
-            )
-        if not isinstance(request.params, BrowserFormParams):
-            return _error(
-                "browser.forms.invalid_params",
-                "params must be BrowserFormParams",
                 ErrorCategory.VALIDATION,
             )
         if request.params.operation is not self._operation:
