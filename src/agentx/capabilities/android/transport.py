@@ -12,9 +12,9 @@ import re
 import shlex
 import subprocess
 import time
-from threading import BoundedSemaphore
 from dataclasses import dataclass
 from enum import StrEnum
+from threading import BoundedSemaphore
 from typing import Final, Protocol
 
 from agentx.core.errors import AgentXError, ErrorCategory, Retryability
