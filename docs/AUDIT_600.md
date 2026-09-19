@@ -2,15 +2,15 @@
 
 Repository: `harsh2025-sketch/AgentX`. Final M14 implementation audit baseline is green post-merge main `7fe73850224160fdbd12883185e91e19a2d35991`; exact push C1.01 run `35379021464` passed.
 
-M11, M12, and M14 are integrated on canonical main with exact-SHA green CI. M13 PR #180 remains open and unmerged; the M13 rows below are the evidence-supported candidate acceptance state on this branch. Historical `reported_status` remains unchanged.
+M11, M12, M13, and M14 are integrated on canonical main with exact-SHA green CI. M15 PR #181 remains open and intentionally unmerged for a separate controlled integration campaign. Historical `reported_status` remains unchanged.
 
 | State | Tasks | Percentage |
 | --- | ---: | ---: |
-| VERIFIED | 536 | 89.33% |
+| VERIFIED | 565 | 94.17% |
 | NOT_AUDITED | 0 | 0.00% |
 | IN_PROGRESS | 1 | 0.17% |
 | BLOCKED | 9 | 1.50% |
-| NOT_IMPLEMENTED | 54 | 9.00% |
+| NOT_IMPLEMENTED | 25 | 4.17% |
 | TOTAL | 600 | 100.00% |
 
 ## Milestones
@@ -32,7 +32,7 @@ M11, M12, and M14 are integrated on canonical main with exact-SHA green CI. M13 
 | M12 | AX-461–AX-485 | 25 | 25 | 100.00% | none | COMPLETE |
 | M13 | AX-486–AX-515 | 28 | 30 | 93.33% | BLOCKED=2 | PARTIAL |
 | M14 | AX-516–AX-540 | 25 | 25 | 100.00% | none | COMPLETE |
-| M15 | AX-541–AX-570 | 1 | 30 | 3.33% | NOT_IMPLEMENTED=29 | PARTIAL |
+| M15 | AX-541–AX-570 | 30 | 30 | 100.00% | none | COMPLETE |
 | M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
 
 ## Evidence boundaries
@@ -40,6 +40,8 @@ M11, M12, and M14 are integrated on canonical main with exact-SHA green CI. M13 
 M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 release matrix or a user desktop hardware matrix. M7 uses actual headless Chrome against controlled localhost pages. This proves browser mechanics and governance, not compatibility with arbitrary external sites/accounts. M10 DPI/multi-monitor and visual accuracy evidence uses bounded deterministic fixtures in addition to real native capture. Real model/research credentials were unavailable; controlled-provider metrics do not satisfy live-efficiency acceptance. M11 has deterministic production-path acceptance and separate real-device/live-provider/interactive-HUD entry points; those three real-environment entry points were not run and are not represented as such. The CLI exposes metadata/help, not a complete natural-language product session.
 
 M14 acceptance uses deterministic controlled strategy/correction/specialist datasets plus real SQLite/EventJournal restart/concurrency mechanics. It proves production optimization contracts, safety constraints, rollback, and reproducibility; it does **not** claim live-provider cost, statistically representative production improvement, or a real-user preference corpus. See `docs/M14_ADAPTIVE_OPTIMIZATION_ACCEPTANCE.md`.
+
+M15 acceptance uses a deny-by-construction generated-tool language, separate-process sandbox worker, immutable artifact/provenance digests, varied validation, authenticated human approval, canonical registry/Executor integration, HMAC restart persistence, health/revocation/rollback, and explicit Trusted Kernel fingerprint checks. It does **not** claim that arbitrary third-party Python, shell, package installers, native binaries, or unrestricted downloaded repositories can be executed safely. See `docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md`.
 
 ## Task decisions
 
@@ -586,35 +588,35 @@ M14 acceptance uses deterministic controlled strategy/correction/specialist data
 | AX-539 | M14 | rollbackable optimization policy | VERIFIED | E4 | NONE |
 | AX-540 | M14 | optimization milestone acceptance | VERIFIED | E4 | NONE |
 | AX-541 | M15 | missing-capability detector foundation | VERIFIED | E2 | NONE |
-| AX-542 | M15 | capability-gap record | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-543 | M15 | capability research objective | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-544 | M15 | capability design proposal | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-545 | M15 | proposal provenance tracking | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-546 | M15 | generated-tool specification | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-547 | M15 | generated-code isolation environment | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-548 | M15 | generated dependency policy | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-549 | M15 | generated-code static analysis | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-550 | M15 | generated-code type checking | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-551 | M15 | generated-code lint gate | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-552 | M15 | generated unit tests | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-553 | M15 | generated adversarial tests | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-554 | M15 | sandbox execution | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-555 | M15 | resource-limited tool test | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-556 | M15 | network-isolated test mode | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-557 | M15 | filesystem-isolated test mode | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-558 | M15 | generated capability ABI validation | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-559 | M15 | generated risk declaration validation | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-560 | M15 | generated permission declaration validation | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-561 | M15 | generated verification contract validation | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-562 | M15 | repeated-success promotion threshold | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-563 | M15 | human review package | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-564 | M15 | installation approval | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-565 | M15 | versioned capability registration | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-566 | M15 | generated-capability health tracking | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-567 | M15 | generated-capability degradation | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-568 | M15 | generated-capability rollback | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-569 | M15 | Trusted-Kernel immutability proof | NOT_IMPLEMENTED | E0 | SECURITY GAP |
-| AX-570 | M15 | self-extension milestone acceptance | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
+| AX-542 | M15 | capability-gap record | VERIFIED | E3 | NONE |
+| AX-543 | M15 | capability research objective | VERIFIED | E3 | NONE |
+| AX-544 | M15 | capability design proposal | VERIFIED | E3 | NONE |
+| AX-545 | M15 | proposal provenance tracking | VERIFIED | E3 | NONE |
+| AX-546 | M15 | generated-tool specification | VERIFIED | E3 | NONE |
+| AX-547 | M15 | generated-code isolation environment | VERIFIED | E3 | NONE |
+| AX-548 | M15 | generated dependency policy | VERIFIED | E3 | NONE |
+| AX-549 | M15 | generated-code static analysis | VERIFIED | E3 | NONE |
+| AX-550 | M15 | generated-code type checking | VERIFIED | E3 | NONE |
+| AX-551 | M15 | generated-code lint gate | VERIFIED | E3 | NONE |
+| AX-552 | M15 | generated unit tests | VERIFIED | E3 | NONE |
+| AX-553 | M15 | generated adversarial tests | VERIFIED | E3 | NONE |
+| AX-554 | M15 | sandbox execution | VERIFIED | E3 | NONE |
+| AX-555 | M15 | resource-limited tool test | VERIFIED | E3 | NONE |
+| AX-556 | M15 | network-isolated test mode | VERIFIED | E3 | NONE |
+| AX-557 | M15 | filesystem-isolated test mode | VERIFIED | E3 | NONE |
+| AX-558 | M15 | generated capability ABI validation | VERIFIED | E3 | NONE |
+| AX-559 | M15 | generated risk declaration validation | VERIFIED | E3 | NONE |
+| AX-560 | M15 | generated permission declaration validation | VERIFIED | E3 | NONE |
+| AX-561 | M15 | generated verification contract validation | VERIFIED | E3 | NONE |
+| AX-562 | M15 | repeated-success promotion threshold | VERIFIED | E3 | NONE |
+| AX-563 | M15 | human review package | VERIFIED | E3 | NONE |
+| AX-564 | M15 | installation approval | VERIFIED | E3 | NONE |
+| AX-565 | M15 | versioned capability registration | VERIFIED | E4 | NONE |
+| AX-566 | M15 | generated-capability health tracking | VERIFIED | E4 | NONE |
+| AX-567 | M15 | generated-capability degradation | VERIFIED | E4 | NONE |
+| AX-568 | M15 | generated-capability rollback | VERIFIED | E4 | NONE |
+| AX-569 | M15 | Trusted-Kernel immutability proof | VERIFIED | E4 | NONE |
+| AX-570 | M15 | self-extension milestone acceptance | VERIFIED | E4 | NONE |
 | AX-571 | M16 | synchronize README with live architecture | VERIFIED | E2 | NONE |
 | AX-572 | M16 | establish canonical 600-task ledger file | VERIFIED | E2 | NONE |
 | AX-573 | M16 | machine-readable task-status ledger | VERIFIED | E2 | NONE |
