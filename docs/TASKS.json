@@ -18984,7 +18984,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-542: capability-gap record."
         },
         {
@@ -19014,7 +19014,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-543: capability research objective."
         },
         {
@@ -19044,7 +19044,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-544: capability design proposal."
         },
         {
@@ -19074,7 +19074,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-545: proposal provenance tracking."
         },
         {
@@ -19104,7 +19104,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-546: generated-tool specification."
         },
         {
@@ -19134,7 +19134,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-547: generated-code isolation environment."
         },
         {
@@ -19164,7 +19164,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-548: generated dependency policy."
         },
         {
@@ -19194,7 +19194,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-549: generated-code static analysis."
         },
         {
@@ -19224,7 +19224,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-550: generated-code type checking."
         },
         {
@@ -19254,7 +19254,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-551: generated-code lint gate."
         },
         {
@@ -19284,7 +19284,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-552: generated unit tests."
         },
         {
@@ -19314,7 +19314,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-553: generated adversarial tests."
         },
         {
@@ -19344,7 +19344,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-554: sandbox execution."
         },
         {
@@ -19374,7 +19374,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-555: resource-limited tool test."
         },
         {
@@ -19404,7 +19404,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-556: network-isolated test mode."
         },
         {
@@ -19434,7 +19434,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-557: filesystem-isolated test mode."
         },
         {
@@ -19464,7 +19464,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-558: generated capability ABI validation."
         },
         {
@@ -19494,7 +19494,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-559: generated risk declaration validation."
         },
         {
@@ -19524,7 +19524,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-560: generated permission declaration validation."
         },
         {
@@ -19554,7 +19554,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-561: generated verification contract validation."
         },
         {
@@ -19584,7 +19584,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-562: repeated-success promotion threshold."
         },
         {
@@ -19614,7 +19614,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-563: human review package."
         },
         {
@@ -19644,7 +19644,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-564: installation approval."
         },
         {
@@ -19674,7 +19674,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-565: versioned capability registration."
         },
         {
@@ -19704,7 +19704,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-566: generated-capability health tracking."
         },
         {
@@ -19734,7 +19734,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-567: generated-capability degradation."
         },
         {
@@ -19764,7 +19764,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-568: generated-capability rollback."
         },
         {
@@ -19794,7 +19794,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-569: Trusted-Kernel immutability proof."
         },
         {
@@ -19824,7 +19824,7 @@
       "evidence": [
         {
           "kind": "implementation",
-          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "reference": "src/agentx/self_extension.py",
           "note": "M15 production implementation for AX-570: self-extension milestone acceptance."
         },
         {
