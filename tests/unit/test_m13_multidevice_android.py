@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
+from threading import Event, Thread
 from uuid import uuid4
 
 import pytest
@@ -368,3 +369,69 @@ def test_mutating_android_actions_without_postcondition_do_not_self_verify() -> 
     verification = capability.verify(request, execution.observation, context())
     assert verification.passed is False
     assert "no independent postcondition" in verification.detail
+
+
+
+class BlockingAdbRunner:
+    def __init__(self) -> None:
+        self.entered = Event()
+        self.release = Event()
+        self.calls = 0
+
+    def run(
+        self,
+        *,
+        executable: str,
+        args: tuple[str, ...],
+        timeout_seconds: float,
+        max_output_bytes: int,
+        context: ExecutionContext,
+    ) -> Result[AdbCommandResult, AgentXError]:
+        del timeout_seconds, max_output_bytes, context
+        self.calls += 1
+        self.entered.set()
+        self.release.wait(timeout=2)
+        return Result.success(
+            AdbCommandResult(
+                argv=(executable, *args),
+                returncode=0,
+                stdout=b"",
+                stderr=b"",
+            )
+        )
+
+
+def test_adb_transport_bounds_concurrency_and_fails_queue_closed() -> None:
+    runner = BlockingAdbRunner()
+    transport = AdbTransport(
+        runner=runner,
+        max_concurrency=1,
+        timeout_seconds=1,
+    )
+    first_result: list[Result[AdbCommandResult, AgentXError]] = []
+
+    def first() -> None:
+        first_result.append(
+            transport.command(
+                ("version",),
+                context=context(),
+            )
+        )
+
+    worker = Thread(target=first, daemon=True)
+    worker.start()
+    assert runner.entered.wait(timeout=1)
+
+    second = transport.command(
+        ("version",),
+        context=context(),
+        timeout_seconds=0.05,
+    )
+    assert second.is_failure
+    assert second.unwrap_error().code == "android.adb.concurrency_timeout"
+    assert runner.calls == 1
+
+    runner.release.set()
+    worker.join(timeout=1)
+    assert len(first_result) == 1
+    assert first_result[0].is_success
