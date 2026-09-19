@@ -121,7 +121,7 @@ AgentX/
 ├── .gitignore
 ├── src/agentx/             The `agentx` package (src-layout)
 │   ├── __init__.py         Public namespace; exposes `__version__`
-│   ├── __main__.py         `python -m agentx` entry point (argparse; --version, --help)
+│   ├── __main__.py         bounded release CLI (`init`, `doctor`, `migrate-config`, version/help)
 │   ├── _version.py         Single source of truth for the version
 │   ├── _architecture.py    Canonical top-level boundary manifest (A1.02)
 │   ├── py.typed            PEP 561 marker: the package is typed
@@ -180,6 +180,8 @@ The canonical untrusted-content rule is **data, never authority**. AX-371–AX-4
 
 ## Integrated acceptance snapshot
 
-Strict acceptance: **536/600 (89.33%)**. NOT_AUDITED=0; IN_PROGRESS=1; BLOCKED=9; NOT_IMPLEMENTED=54.
+Strict acceptance: **586/600 VERIFIED (97.67%)**. NOT_AUDITED=0; IN_PROGRESS=0; BLOCKED=14; NOT_IMPLEMENTED=0.
 
-M11, M12, and M14 are integrated on main. M13 PR #180 accepts AX-486–AX-513 on controlled production-path evidence while AX-514/515 remain blocked on a real PC/browser/phone environment; the M13 PR remains unmerged. See [status](docs/STATUS.md) for the milestone table and evidence limits. AgentX remains a research prototype, not a production-ready desktop product.
+M15 is integrated on canonical main. M16 PR #182 records **25/30 VERIFIED** with AX-576–AX-579 and AX-600 truthfully BLOCKED on mandatory Windows 10/11 workstation and physical DPI/multi-monitor release evidence. M1, M4, M8, and M13 also retain explicit real-provider/device blockers. See [status](docs/STATUS.md) and [M16 release acceptance](docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md) for the exact evidence boundary.
+
+AgentX is therefore **ready for final integration / real-environment acceptance**, not an unconditional production-ready desktop release.
