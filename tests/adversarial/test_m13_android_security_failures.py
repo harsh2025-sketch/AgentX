@@ -2,8 +2,11 @@
 from __future__ import annotations
 
 import ast
+import sys
+import time
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from threading import Thread
 from uuid import UUID
 
 import pytest
@@ -391,3 +394,54 @@ def test_discovery_disappearance_marks_device_unavailable_until_fresh_reconnect(
         )[0].device_id
         == device_id
     )
+
+
+
+def test_real_adb_runner_interrupts_midflight_on_cancellation() -> None:
+    source = CancellationSource()
+    context = ExecutionContext(
+        correlation_id=UUID("77777777-7777-4777-8777-777777777777"),
+        cancellation_token=source.token,
+    )
+
+    def cancel() -> None:
+        time.sleep(0.1)
+        source.request_cancellation("M13 controlled cancellation")
+
+    worker = Thread(target=cancel, daemon=True)
+    worker.start()
+    result = AdbTransport(
+        executable=sys.executable,
+        timeout_seconds=5,
+    ).command(
+        ("-c", "import time; time.sleep(5)"),
+        context=context,
+    )
+    worker.join(timeout=1)
+    assert result.is_failure
+    assert result.unwrap_error().code == "android.adb.cancelled"
+
+
+def test_real_adb_runner_enforces_output_limit() -> None:
+    result = AdbTransport(
+        executable=sys.executable,
+        timeout_seconds=5,
+        max_output_bytes=1024,
+    ).command(
+        ("-c", "print('x'*50000)"),
+        context=ctx(),
+    )
+    assert result.is_failure
+    assert result.unwrap_error().code == "android.adb.output_limit"
+
+
+def test_real_adb_runner_enforces_timeout() -> None:
+    result = AdbTransport(
+        executable=sys.executable,
+        timeout_seconds=0.1,
+    ).command(
+        ("-c", "import time; time.sleep(5)"),
+        context=ctx(),
+    )
+    assert result.is_failure
+    assert result.unwrap_error().code == "android.adb.timeout"
