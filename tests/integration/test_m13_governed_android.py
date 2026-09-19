@@ -224,12 +224,9 @@ def test_device_handoff_uses_canonical_executor_and_target_identity() -> None:
 def test_android_permission_mapping_is_canonical_and_operation_specific() -> None:
     provider = AndroidProvider(AdbTransport(runner=GovernedAndroidRunner()))
     by_name = {
-        item.descriptor.identity.name.value: item.descriptor
-        for item in provider.capabilities()
+        item.descriptor.identity.name.value: item.descriptor for item in provider.capabilities()
     }
-    assert by_name["android.package_discovery"].required_permissions == frozenset(
-        {Permission.READ}
-    )
+    assert by_name["android.package_discovery"].required_permissions == frozenset({Permission.READ})
     assert by_name["android.accessibility_tree"].required_permissions == frozenset(
         {Permission.READ}
     )
