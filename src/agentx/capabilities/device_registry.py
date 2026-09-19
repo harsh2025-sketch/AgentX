@@ -206,6 +206,90 @@ class DeviceRegistry:
     def snapshot(self) -> DeviceRegistrySnapshot:
         return DeviceRegistrySnapshot(descriptors=self.descriptors())
 
+
+    def reconcile_provider(
+        self,
+        provider_id: DeviceProviderId,
+        *,
+        descriptors: tuple[DeviceDescriptor, ...],
+        observed_at: datetime,
+    ) -> tuple[DeviceDescriptor, ...]:
+        """Atomically validate and apply one provider discovery batch.
+
+        No registry mutation occurs unless the entire provider batch is
+        structurally valid and monotonic relative to current evidence.
+        """
+        if not isinstance(provider_id, DeviceProviderId):
+            raise TypeError("provider_id must be DeviceProviderId")
+        if not isinstance(descriptors, tuple):
+            raise TypeError("descriptors must be a tuple")
+        if not isinstance(observed_at, datetime) or observed_at.tzinfo is None:
+            raise TypeError("observed_at must be timezone-aware datetime")
+        moment = observed_at.astimezone(UTC)
+
+        seen: set[DeviceId] = set()
+        for descriptor in descriptors:
+            if not isinstance(descriptor, DeviceDescriptor):
+                raise DeviceRegistryConflictError(
+                    "provider discovery returned a non-DeviceDescriptor value"
+                )
+            if descriptor.provider_id != provider_id:
+                raise DeviceRegistryConflictError(
+                    "provider returned a descriptor from a different provider namespace"
+                )
+            if descriptor.device_id in seen:
+                raise DeviceRegistryConflictError(
+                    "provider discovery returned duplicate device identity"
+                )
+            seen.add(descriptor.device_id)
+
+        with self._lock:
+            new_ids = seen - set(self._devices)
+            if len(self._devices) + len(new_ids) > self._max_devices:
+                raise DeviceRegistryConflictError("device registry is full")
+
+            for descriptor in descriptors:
+                existing = self._devices.get(descriptor.device_id)
+                if existing is None:
+                    continue
+                incoming_at = descriptor.observation.observed_at
+                existing_at = existing.observation.observed_at
+                if incoming_at < existing_at:
+                    raise DeviceRegistryConflictError(
+                        "stale/replayed device observation rejected"
+                    )
+                if incoming_at == existing_at and descriptor != existing:
+                    raise DeviceRegistryConflictError(
+                        "equally fresh conflicting device observations are ambiguous"
+                    )
+
+            # Only after the complete batch passes validation is state changed.
+            for descriptor in descriptors:
+                self._devices[descriptor.device_id] = descriptor
+
+            for device_id, descriptor in tuple(self._devices.items()):
+                if device_id.provider_id != provider_id or device_id in seen:
+                    continue
+                if moment <= descriptor.observation.observed_at:
+                    continue
+                self._devices[device_id] = replace(
+                    descriptor,
+                    observation=DeviceObservation(
+                        connectivity=DeviceConnectivity.OFFLINE,
+                        availability=DeviceAvailability.UNAVAILABLE,
+                        observed_at=moment,
+                        last_seen=descriptor.observation.last_seen,
+                        detail="device absent from latest provider discovery",
+                    ),
+                )
+
+        return tuple(
+            sorted(
+                descriptors,
+                key=lambda item: (item.provider_id.value, item.device_id.value),
+            )
+        )
+
     @classmethod
     def restore(cls, snapshot: DeviceRegistrySnapshot) -> DeviceRegistry:
         """Restore durable identity/history while invalidating live availability."""
@@ -407,28 +491,22 @@ class DeviceDiscovery:
                 errors[provider.provider_id] = result.unwrap_error()
                 continue
             descriptors = result.unwrap()
-            present: set[DeviceId] = set()
-            for descriptor in descriptors:
-                if descriptor.provider_id != provider.provider_id:
-                    errors[provider.provider_id] = AgentXError(
-                        code="device.discovery.identity_mismatch",
-                        message=(
-                            "provider returned a descriptor from a different provider namespace"
-                        ),
-                        category=ErrorCategory.VALIDATION,
-                        retryability=Retryability.NON_RETRYABLE,
-                    )
-                    present.clear()
-                    break
-                self._registry.observe(descriptor)
-                present.add(descriptor.device_id)
-                all_found.append(descriptor)
-            else:
-                self._registry.mark_provider_missing(
+            try:
+                accepted = self._registry.reconcile_provider(
                     provider.provider_id,
-                    present=frozenset(present),
+                    descriptors=descriptors,
                     observed_at=observed_at,
                 )
+            except (DeviceRegistryError, TypeError) as exc:
+                errors[provider.provider_id] = AgentXError(
+                    code="device.discovery.invalid_provider_batch",
+                    message="provider discovery batch was rejected atomically",
+                    category=ErrorCategory.VALIDATION,
+                    retryability=Retryability.NON_RETRYABLE,
+                    details={"reason": str(exc)[:512]},
+                )
+                continue
+            all_found.extend(accepted)
         return DeviceDiscoveryReport(
             discovered=tuple(
                 sorted(
