@@ -1,12 +1,13 @@
 """AgentX: a Windows-first, local-first Adaptive Personal Operating Intelligence.
 
-This is the top-level import namespace for the project.
+M0-M15 provide the governed kernel/runtime, memory, learning/repair, Windows,
+browser, model/research, world-model, voice/HUD, scheduling, device/Android,
+optimization, and safe self-extension foundations. M16 hardens packaging,
+migration, recovery, privacy, benchmarking, and release acceptance.
 
-Current status: **bootstrap only**. The package installs, exposes a version,
-and provides a minimal command-line entry point (``python -m agentx``).
-The architectural subsystems described in the project documentation are
-*not* implemented yet; their sub-packages exist solely to establish
-ownership boundaries for future work.
+A green automated suite does not by itself prove Windows 10/11 desktop,
+physical DPI/multi-monitor, real audio/device, or live-provider compatibility.
+Those evidence classes remain explicit release-matrix concerns.
 """
 
 from __future__ import annotations
