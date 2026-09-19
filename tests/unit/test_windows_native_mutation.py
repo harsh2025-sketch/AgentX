@@ -360,6 +360,74 @@ def test_hostile_strings_remain_data_inside_requests() -> None:
     assert hostile in mutation._windows_command_line(launch_request)
 
 
+def test_text_input_is_paced_per_utf16_code_unit(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    outcomes: list[tuple[mutation._KeyboardEventSpec, ...]] = []
+    sleeps: list[float] = []
+
+    def fake_send(
+        events: tuple[mutation._KeyboardEventSpec, ...] | list[mutation._KeyboardEventSpec],
+    ) -> Result[NativeInputInjectionOutcome, AgentXError]:
+        batch = tuple(events)
+        outcomes.append(batch)
+        return Result.success(
+            NativeInputInjectionOutcome(
+                requested_events=len(batch),
+                accepted_events=len(batch),
+                win32_error=0,
+            )
+        )
+
+    monkeypatch.setattr(mutation, "_send_input_events", fake_send)
+    monkeypatch.setattr("time.sleep", sleeps.append)
+
+    result = mutation._send_text_windows(NativeTextInputRequest("A\U0001f642B"))
+
+    assert result.is_success
+    outcome = result.unwrap()
+    assert outcome.requested_events == 8
+    assert outcome.accepted_events == 8
+    assert outcome.win32_error == 0
+    assert len(outcomes) == 4  # A, UTF-16 surrogate pair, B
+    assert all(len(batch) == 2 for batch in outcomes)
+    assert all(batch[0].unicode and batch[1].unicode for batch in outcomes)
+    assert all(not batch[0].key_up and batch[1].key_up for batch in outcomes)
+    assert sleeps == [mutation._TEXT_INPUT_PACE_SECONDS] * 3
+
+
+def test_text_input_stops_after_partial_native_acceptance(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls = 0
+
+    def fake_send(
+        events: tuple[mutation._KeyboardEventSpec, ...] | list[mutation._KeyboardEventSpec],
+    ) -> Result[NativeInputInjectionOutcome, AgentXError]:
+        nonlocal calls
+        calls += 1
+        accepted = len(events) if calls == 1 else 1
+        return Result.success(
+            NativeInputInjectionOutcome(
+                requested_events=len(events),
+                accepted_events=accepted,
+                win32_error=5 if accepted != len(events) else 0,
+            )
+        )
+
+    monkeypatch.setattr(mutation, "_send_input_events", fake_send)
+    monkeypatch.setattr("time.sleep", lambda _seconds: None)
+
+    result = mutation._send_text_windows(NativeTextInputRequest("ABC"))
+
+    assert result.is_success
+    outcome = result.unwrap()
+    assert calls == 2
+    assert outcome.requested_events == 4
+    assert outcome.accepted_events == 3
+    assert outcome.win32_error == 5
+
+
 def test_native_outcomes_are_low_level_evidence_only() -> None:
     values = (
         NativeProcessLaunchOutcome(
