@@ -115,7 +115,10 @@ def test_production_has_no_dynamic_authority_execution_primitives() -> None:
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
                 for alias in node.names:
-                    if alias.name == "subprocess" and path not in _APPROVED_STRUCTURED_PROCESS_SEAMS:
+                    if (
+                        alias.name == "subprocess"
+                        and path not in _APPROVED_STRUCTURED_PROCESS_SEAMS
+                    ):
                         violations.append(
                             f"{path.relative_to(_REPO_ROOT)}:{node.lineno}:subprocess"
                         )
