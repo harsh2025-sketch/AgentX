@@ -387,13 +387,9 @@ class GeneratedToolSpecification:
             value = output[field.name]
             if field.value_type is OutputType.STRING and not isinstance(value, str):
                 return False
-            if field.value_type is OutputType.INTEGER and (
-                type(value) is not int
-            ):
+            if field.value_type is OutputType.INTEGER and (type(value) is not int):
                 return False
-            if field.value_type is OutputType.NUMBER and (
-                type(value) not in (int, float)
-            ):
+            if field.value_type is OutputType.NUMBER and (type(value) not in (int, float)):
                 return False
             if field.value_type is OutputType.BOOLEAN and type(value) is not bool:
                 return False
@@ -689,11 +685,7 @@ def _parse_candidate_source(source: str) -> tuple[ast.FunctionDef | None, tuple[
     for node in nodes:
         if not isinstance(node, _ALLOWED_AST_NODES):
             violations.append(f"forbidden AST node: {type(node).__name__}")
-        if (
-            isinstance(node, ast.Name)
-            and node.id != "payload"
-            and node.id not in _ALLOWED_CALLS
-        ):
+        if isinstance(node, ast.Name) and node.id != "payload" and node.id not in _ALLOWED_CALLS:
             violations.append(f"forbidden name: {node.id}")
         if isinstance(node, ast.Call) and (
             not isinstance(node.func, ast.Name) or node.func.id not in _ALLOWED_CALLS
@@ -911,8 +903,10 @@ def _eval_expr(node: ast.expr, payload: Mapping[str, object], budget: _StepBudge
         return _bounded(result, maximum=_MAX_OUTPUT_BYTES)
     if isinstance(node, ast.BoolOp):
         values = [_eval_expr(item, payload, budget) for item in node.values]
-        return all(bool(item) for item in values) if isinstance(node.op, ast.And) else any(
-            bool(item) for item in values
+        return (
+            all(bool(item) for item in values)
+            if isinstance(node.op, ast.And)
+            else any(bool(item) for item in values)
         )
     if isinstance(node, ast.Compare):
         if len(node.ops) != 1 or len(node.comparators) != 1:
@@ -1515,8 +1509,7 @@ class GeneratedCapability:
             rollback=RollbackDeclaration(
                 support=RollbackSupport.NOT_APPLICABLE,
                 detail=(
-                    "Generated M15 tools are side-effect-free; external rollback "
-                    "is not applicable."
+                    "Generated M15 tools are side-effect-free; external rollback is not applicable."
                 ),
             ),
             estimate=ResourceEstimate(
@@ -1677,9 +1670,7 @@ def _proposal_from_dict(raw: Mapping[str, object]) -> CapabilityDesignProposal:
         output_fields = tuple(
             OutputField(
                 name=cast(str, cast(Mapping[str, object], item)["name"]),
-                value_type=OutputType(
-                    cast(str, cast(Mapping[str, object], item)["value_type"])
-                ),
+                value_type=OutputType(cast(str, cast(Mapping[str, object], item)["value_type"])),
             )
             for item in fields_raw
         )
@@ -1948,9 +1939,7 @@ class SelfExtensionManager:
         records = self._stored_records()
         signed = _canonical_json({"schema": _SCHEMA_VERSION, "records": records})
         mac = _digest_bytes(hmac.new(self._integrity_key, signed, hashlib.sha256).digest())
-        payload = _canonical_json(
-            {"schema": _SCHEMA_VERSION, "records": records, "mac": mac}
-        )
+        payload = _canonical_json({"schema": _SCHEMA_VERSION, "records": records, "mac": mac})
         self._path.parent.mkdir(parents=True, exist_ok=True)
         temporary = self._path.with_suffix(self._path.suffix + ".tmp")
         temporary.write_bytes(payload)
