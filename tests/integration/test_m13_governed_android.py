@@ -292,7 +292,6 @@ def test_cross_device_task_dag_requires_explicit_binding_for_every_node() -> Non
     assert dag.requirement_for(child.task_id) == phone_requirement
 
 
-
 def test_phone_to_pc_handoff_rejects_android_target_platform() -> None:
     runner = GovernedAndroidRunner()
     provider = AndroidProvider(AdbTransport(runner=runner))
