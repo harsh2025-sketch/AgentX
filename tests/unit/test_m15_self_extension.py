@@ -45,7 +45,6 @@ from agentx.self_extension import (
     validate_candidate,
 )
 
-
 NOW = datetime(2026, 9, 19, 6, 30, tzinfo=UTC)
 KEY = b"k" * 32
 
