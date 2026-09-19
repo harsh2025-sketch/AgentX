@@ -2,7 +2,7 @@
 
 Repository: `harsh2025-sketch/AgentX`. Final M14 implementation audit baseline: green post-merge main `7fe73850224160fdbd12883185e91e19a2d35991` (C1.01 run `35379021464`).
 
-M11, M12, and M14 are integrated. PR #176 is merged, and its exact post-merge main C1.01 passed. Historical `reported_status` remains unchanged; counts are calculated from merged TASKS.json.
+M11, M12, and M14 are integrated. PR #176 is merged, and its exact post-merge main C1.01 passed. M13 PR #180 remains open and unmerged; this branch records its evidence-supported candidate acceptance state. Historical `reported_status` remains unchanged.
 
 | State | Tasks | Percentage |
 | --- | ---: | ---: |
