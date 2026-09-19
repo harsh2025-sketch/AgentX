@@ -71,14 +71,10 @@ def validate(data: dict[str, Any]) -> None:
     for task_id in by_id:
         visit(task_id)
 
-    for task in tasks:
-        task_number = int(task["id"][3:])
-        for dependency in task["depends_on"]:
-            dependency_number = int(dependency[3:])
-            if dependency_number >= task_number:
-                raise ValueError(
-                    f"dependency must precede dependent task: {task['id']} -> {dependency}"
-                )
+    # A valid DAG does not require task identifiers to be numerically topological.
+    # Canonical requirements can depend on later-numbered foundation tasks. The
+    # cycle check above proves that a topological ordering exists without
+    # rewriting authoritative dependency identities.
 
 
 def render(data: dict[str, Any]) -> str:
