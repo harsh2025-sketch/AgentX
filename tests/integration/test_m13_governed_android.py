@@ -50,8 +50,9 @@ class GovernedAndroidRunner:
         args: tuple[str, ...],
         timeout_seconds: float,
         max_output_bytes: int,
+        context: ExecutionContext,
     ) -> Result[AdbCommandResult, AgentXError]:
-        del timeout_seconds, max_output_bytes
+        del timeout_seconds, max_output_bytes, context
         self.calls.append(args)
         stdout = b""
         returncode = 0
