@@ -6,8 +6,8 @@ import sqlite3
 from pathlib import Path
 
 from agentx.infrastructure.persistence import (
-    SQLiteDatabase,
     _MIGRATIONS,
+    SQLiteDatabase,
     _apply_migrations,
 )
 
