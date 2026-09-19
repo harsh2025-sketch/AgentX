@@ -119,7 +119,7 @@ def make_executor(registry: CapabilityRegistry) -> Executor:
     audits: list[SecurityAuditRecord] = []
     bus.subscribe(events.append)
     loop = CapabilityExecutionLoop(
-        registry=registry,
+        register_capability=registry.register,
         action_gate=ActionGate(),
         authority=None,
         emergency_stop=EmergencyStop(),
@@ -146,7 +146,7 @@ def test_positive_e2e_promotes_then_executes_only_through_canonical_executor() -
     sandbox = GeneratedToolSandbox()
     authority = TrustedApprovalAuthority(authority_id="host", key=KEY)
     manager = SelfExtensionManager(
-        registry=registry,
+        register_capability=registry.register,
         sandbox=sandbox,
         approval_authority=authority,
         integrity_key=KEY,
@@ -211,7 +211,7 @@ def test_negative_e2e_malicious_candidate_never_reaches_active_registry() -> Non
     sandbox = GeneratedToolSandbox()
     authority = TrustedApprovalAuthority(authority_id="host", key=KEY)
     manager = SelfExtensionManager(
-        registry=registry,
+        register_capability=registry.register,
         sandbox=sandbox,
         approval_authority=authority,
         integrity_key=KEY,
