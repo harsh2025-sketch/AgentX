@@ -9,6 +9,8 @@ from enum import StrEnum
 from agentx.capabilities.abi import CapabilityIdentity
 from agentx.capabilities.device import DeviceDescriptor, DeviceId, DevicePlatform
 from agentx.capabilities.device_registry import (
+    DeviceDiscovery,
+    DeviceDiscoveryReport,
     DeviceEnvironmentIdentity,
     DeviceRegistry,
 )
@@ -16,7 +18,9 @@ from agentx.capabilities.executor import Executor, ExecutorRequest
 from agentx.capabilities.runtime import ApprovalDecisions, ClosedLoopOutcome
 from agentx.core.causal_experience import CausalExperience
 from agentx.core.errors import AgentXError, ErrorCategory, Retryability
+from agentx.core.execution import ExecutionContext
 from agentx.core.ids import TaskId
+from agentx.core.knowledge import ProvenanceReference
 from agentx.core.procedure_matching import (
     CapabilityRequirement,
     ProcedureRequirement,
@@ -24,6 +28,7 @@ from agentx.core.procedure_matching import (
 from agentx.core.procedures import ProcedureScope, ProcedureScopeDimension
 from agentx.core.result import Result
 from agentx.core.task_decomposition import TaskDecomposition
+from agentx.world_model import DeviceState, ObservationMetadata, WorldModel
 
 __all__ = [
     "CrossDeviceCausalEpisode",
@@ -35,6 +40,8 @@ __all__ = [
     "DeviceRequirement",
     "DeviceRouter",
     "DeviceTaskBinding",
+    "DeviceWorldModelBridge",
+    "DeviceWorldRefresh",
     "procedure_requirement_for_device",
 ]
 
@@ -111,6 +118,82 @@ class DeviceRouter:
                 )
             )
         return Result.success(matches[0])
+
+
+@dataclass(frozen=True, slots=True)
+class DeviceWorldRefresh:
+    """One discovery pass plus the corresponding inert World Model device states."""
+
+    report: DeviceDiscoveryReport
+    states: tuple[DeviceState, ...]
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.report, DeviceDiscoveryReport):
+            raise TypeError("report must be DeviceDiscoveryReport")
+        if not isinstance(self.states, tuple):
+            raise TypeError("states must be tuple")
+        if any(not isinstance(state, DeviceState) for state in self.states):
+            raise TypeError("states must contain DeviceState values")
+
+
+class DeviceWorldModelBridge:
+    """Compose provider discovery into the existing M10 World Model.
+
+    Device observations remain descriptive evidence. This bridge never grants
+    permission, executes a capability, changes risk/budgets, or marks a task
+    verified.
+    """
+
+    def __init__(self, *, discovery: DeviceDiscovery, world_model: WorldModel) -> None:
+        if not isinstance(discovery, DeviceDiscovery):
+            raise TypeError("discovery must be DeviceDiscovery")
+        if not isinstance(world_model, WorldModel):
+            raise TypeError("world_model must be WorldModel")
+        self._discovery = discovery
+        self._world_model = world_model
+
+    def refresh(
+        self,
+        *,
+        context: ExecutionContext,
+        observed_at: datetime,
+        source: ProvenanceReference,
+        ttl: timedelta,
+        environment_id: str,
+    ) -> DeviceWorldRefresh:
+        if not isinstance(context, ExecutionContext):
+            raise TypeError("context must be ExecutionContext")
+        if not isinstance(source, ProvenanceReference):
+            raise TypeError("source must be ProvenanceReference")
+        report = self._discovery.discover(
+            context=context,
+            observed_at=observed_at,
+        )
+        states: list[DeviceState] = []
+        for descriptor in self._discovery.registry.descriptors():
+            metadata = ObservationMetadata(
+                observation_id=(
+                    f"m13-device:{descriptor.provider_id.value}:"
+                    f"{descriptor.device_id.value}:"
+                    f"{descriptor.observation.observed_at.isoformat()}"
+                ),
+                source=source,
+                observed_at=descriptor.observation.observed_at,
+                ttl=ttl,
+                environment_id=environment_id,
+            )
+            role = "phone" if descriptor.platform is DevicePlatform.ANDROID else "device"
+            states.append(
+                self._world_model.ingest_device_descriptor(
+                    descriptor,
+                    metadata=metadata,
+                    role=role,
+                )
+            )
+        return DeviceWorldRefresh(
+            report=report,
+            states=tuple(sorted(states, key=lambda state: state.entity_id.key)),
+        )
 
 
 @dataclass(frozen=True, slots=True)
