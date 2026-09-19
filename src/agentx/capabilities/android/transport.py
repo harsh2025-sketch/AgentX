@@ -11,6 +11,8 @@ from __future__ import annotations
 import re
 import shlex
 import subprocess
+import time
+from threading import BoundedSemaphore
 from dataclasses import dataclass
 from enum import StrEnum
 from typing import Final, Protocol
@@ -20,6 +22,7 @@ from agentx.core.execution import ExecutionContext
 from agentx.core.result import Result
 
 __all__ = [
+    "ADB_DEFAULT_MAX_CONCURRENCY",
     "ADB_DEFAULT_OUTPUT_LIMIT",
     "ADB_DEFAULT_TIMEOUT_SECONDS",
     "AdbCommandResult",
@@ -35,6 +38,9 @@ __all__ = [
 
 ADB_DEFAULT_TIMEOUT_SECONDS: Final[float] = 10.0
 ADB_DEFAULT_OUTPUT_LIMIT: Final[int] = 1_048_576
+ADB_DEFAULT_MAX_CONCURRENCY: Final[int] = 4
+ADB_MAX_RETRIES: Final[int] = 0
+_POLL_INTERVAL_SECONDS: Final[float] = 0.05
 ADB_SCREENSHOT_OUTPUT_LIMIT: Final[int] = 16 * 1_048_576
 _MAX_ADB_ARGUMENT: Final[int] = 16_384
 _MAX_SERIAL: Final[int] = 256
@@ -109,6 +115,7 @@ class AdbRunner(Protocol):
         args: tuple[str, ...],
         timeout_seconds: float,
         max_output_bytes: int,
+        context: ExecutionContext,
     ) -> Result[AdbCommandResult, AgentXError]: ...
 
 
@@ -152,14 +159,14 @@ def _stopped_error(context: ExecutionContext) -> AgentXError | None:
     if status.cancellation_requested:
         return AgentXError(
             code="android.adb.cancelled",
-            message="ADB operation cancelled before transport invocation",
+            message="ADB operation cancelled by the execution context",
             category=ErrorCategory.CANCELLED,
             retryability=Retryability.NON_RETRYABLE,
         )
     if status.timed_out:
         return AgentXError(
             code="android.adb.deadline",
-            message="ADB operation rejected because execution deadline has expired",
+            message="ADB operation stopped because the execution deadline expired",
             category=ErrorCategory.TIMEOUT,
             retryability=Retryability.NON_RETRYABLE,
         )
@@ -178,14 +185,17 @@ class SubprocessAdbRunner:
         args: tuple[str, ...],
         timeout_seconds: float,
         max_output_bytes: int,
+        context: ExecutionContext,
     ) -> Result[AdbCommandResult, AgentXError]:
         _validate_argument(executable, field_name="ADB executable")
+        if not isinstance(context, ExecutionContext):
+            raise TypeError("context must be ExecutionContext")
         try:
-            completed = subprocess.run(
+            process = subprocess.Popen(
                 [executable, *args],
-                check=False,
-                capture_output=True,
-                timeout=timeout_seconds,
+                stdin=subprocess.DEVNULL,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
                 shell=False,
             )
         except FileNotFoundError as exc:
@@ -195,16 +205,6 @@ class SubprocessAdbRunner:
                     message="ADB executable is unavailable",
                     category=ErrorCategory.DEPENDENCY,
                     retryability=Retryability.NON_RETRYABLE,
-                    cause=exc,
-                )
-            )
-        except subprocess.TimeoutExpired as exc:
-            return Result.failure(
-                AgentXError(
-                    code="android.adb.timeout",
-                    message="ADB command exceeded its bounded transport timeout",
-                    category=ErrorCategory.TIMEOUT,
-                    retryability=Retryability.RETRYABLE,
                     cause=exc,
                 )
             )
@@ -218,23 +218,51 @@ class SubprocessAdbRunner:
                     cause=exc,
                 )
             )
-        total = len(completed.stdout) + len(completed.stderr)
-        if total > max_output_bytes:
-            return Result.failure(
-                AgentXError(
-                    code="android.adb.output_limit",
-                    message="ADB output exceeded the configured safety bound",
-                    category=ErrorCategory.RESOURCE,
-                    retryability=Retryability.NON_RETRYABLE,
-                    details={"limit_bytes": max_output_bytes},
+
+        started = time.monotonic()
+        stdout = b""
+        stderr = b""
+        while True:
+            stop_error = _stopped_error(context)
+            if stop_error is not None:
+                process.kill()
+                process.communicate()
+                return Result.failure(stop_error)
+
+            remaining = timeout_seconds - (time.monotonic() - started)
+            if remaining <= 0:
+                process.kill()
+                process.communicate()
+                return Result.failure(
+                    AgentXError(
+                        code="android.adb.timeout",
+                        message="ADB command exceeded its bounded transport timeout",
+                        category=ErrorCategory.TIMEOUT,
+                        retryability=Retryability.RETRYABLE,
+                    )
                 )
-            )
+
+            try:
+                stdout, stderr = process.communicate(
+                    timeout=min(_POLL_INTERVAL_SECONDS, remaining)
+                )
+                break
+            except subprocess.TimeoutExpired as exc:
+                partial_stdout = exc.output if isinstance(exc.output, bytes) else b""
+                partial_stderr = exc.stderr if isinstance(exc.stderr, bytes) else b""
+                if len(partial_stdout) + len(partial_stderr) > max_output_bytes:
+                    process.kill()
+                    process.communicate()
+                    return Result.failure(_output_limit_error(max_output_bytes))
+
+        if len(stdout) + len(stderr) > max_output_bytes:
+            return Result.failure(_output_limit_error(max_output_bytes))
         return Result.success(
             AdbCommandResult(
                 argv=(executable, *args),
-                returncode=completed.returncode,
-                stdout=bytes(completed.stdout),
-                stderr=bytes(completed.stderr),
+                returncode=process.returncode,
+                stdout=bytes(stdout),
+                stderr=bytes(stderr),
             )
         )
 
@@ -249,6 +277,7 @@ class AdbTransport:
         runner: AdbRunner | None = None,
         timeout_seconds: float = ADB_DEFAULT_TIMEOUT_SECONDS,
         max_output_bytes: int = ADB_DEFAULT_OUTPUT_LIMIT,
+        max_concurrency: int = ADB_DEFAULT_MAX_CONCURRENCY,
     ) -> None:
         self._executable = _validate_argument(executable, field_name="ADB executable")
         if not isinstance(timeout_seconds, int | float) or isinstance(timeout_seconds, bool):
@@ -257,9 +286,13 @@ class AdbTransport:
             raise ValueError("timeout_seconds must be in (0, 120]")
         if type(max_output_bytes) is not int or max_output_bytes < 1:
             raise TypeError("max_output_bytes must be a positive int")
+        if type(max_concurrency) is not int or not 1 <= max_concurrency <= 32:
+            raise ValueError("max_concurrency must be an int in [1, 32]")
         self._runner = SubprocessAdbRunner() if runner is None else runner
         self._timeout_seconds = float(timeout_seconds)
         self._max_output_bytes = max_output_bytes
+        self._max_concurrency = max_concurrency
+        self._slots = BoundedSemaphore(max_concurrency)
 
     @property
     def executable(self) -> str:
@@ -291,12 +324,43 @@ class AdbTransport:
             raise ValueError("timeout_seconds must be in (0, 120]")
         if type(limit) is not int or limit < 1:
             raise TypeError("max_output_bytes must be a positive int")
-        result = self._runner.run(
-            executable=self._executable,
-            args=(*prefix, *checked_args),
-            timeout_seconds=timeout,
-            max_output_bytes=limit,
-        )
+        started = time.monotonic()
+        while not self._slots.acquire(timeout=_POLL_INTERVAL_SECONDS):
+            stop_error = _stopped_error(context)
+            if stop_error is not None:
+                return Result.failure(stop_error)
+            if time.monotonic() - started >= timeout:
+                return Result.failure(
+                    AgentXError(
+                        code="android.adb.concurrency_timeout",
+                        message="ADB operation could not acquire a bounded transport slot",
+                        category=ErrorCategory.RESOURCE,
+                        retryability=Retryability.RETRYABLE,
+                    )
+                )
+        try:
+            stop_error = _stopped_error(context)
+            if stop_error is not None:
+                return Result.failure(stop_error)
+            remaining = timeout - (time.monotonic() - started)
+            if remaining <= 0:
+                return Result.failure(
+                    AgentXError(
+                        code="android.adb.timeout",
+                        message="ADB command exceeded its total transport timeout",
+                        category=ErrorCategory.TIMEOUT,
+                        retryability=Retryability.RETRYABLE,
+                    )
+                )
+            result = self._runner.run(
+                executable=self._executable,
+                args=(*prefix, *checked_args),
+                timeout_seconds=remaining,
+                max_output_bytes=limit,
+                context=context,
+            )
+        finally:
+            self._slots.release()
         post_error = _stopped_error(context)
         if post_error is not None:
             return Result.failure(post_error)
@@ -448,4 +512,14 @@ def _malformed_devices_error() -> AgentXError:
         message="ADB device enumeration output was malformed",
         category=ErrorCategory.VALIDATION,
         retryability=Retryability.NON_RETRYABLE,
+    )
+
+
+def _output_limit_error(limit_bytes: int) -> AgentXError:
+    return AgentXError(
+        code="android.adb.output_limit",
+        message="ADB output exceeded the configured safety bound",
+        category=ErrorCategory.RESOURCE,
+        retryability=Retryability.NON_RETRYABLE,
+        details={"limit_bytes": limit_bytes},
     )
