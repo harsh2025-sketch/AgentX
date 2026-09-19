@@ -227,7 +227,6 @@ def test_android_screenshot_is_bounded_png_evidence() -> None:
     assert screen_capability.verify(request, execution.observation, context()).passed
 
 
-
 def _capability_by_name(runner: FakeAdbRunner, name: str):
     return next(
         cap
@@ -284,9 +283,7 @@ def test_android_semantic_tap_uses_unique_target_center_and_verifies_state() -> 
 
 def test_android_text_swipe_back_and_home_are_typed_and_verified() -> None:
     runner = FakeAdbRunner()
-    verification = AndroidVerificationSpec(
-        expected_foreground_package="com.example.app"
-    )
+    verification = AndroidVerificationSpec(expected_foreground_package="com.example.app")
 
     text_capability = _capability_by_name(runner, "android.text_entry")
     text_request = CapabilityRequest(
@@ -341,9 +338,7 @@ def test_android_text_swipe_back_and_home_are_typed_and_verified() -> None:
         )
         execution = navigation_capability.execute(navigation_request, context())
         assert execution.succeeded
-        assert any(
-            call[-1] == f"input keyevent {expected_keycode}" for call in runner.calls
-        )
+        assert any(call[-1] == f"input keyevent {expected_keycode}" for call in runner.calls)
         assert navigation_capability.verify(
             navigation_request,
             execution.observation,
