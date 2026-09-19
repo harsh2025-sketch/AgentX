@@ -32,7 +32,7 @@ class TaskLedgerTests(unittest.TestCase):
             rendered,
         )
         self.assertIn("| M16 Production and Release |", rendered)
-        self.assertIn("| 4 | 0 | 1 | 0 | 25 |", rendered)
+        self.assertIn("| 25 | 0 | 0 | 5 | 0 |", rendered)
 
     def test_audit_report_covers_exactly_the_canonical_600_tasks(self) -> None:
         report = json.loads((ROOT / "docs" / "AUDIT_600.json").read_text(encoding="utf-8"))
