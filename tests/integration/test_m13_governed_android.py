@@ -219,3 +219,17 @@ def test_device_handoff_uses_canonical_executor_and_target_identity() -> None:
         device_id=phone.device_id,
     )
     assert router.select(wrong, now=_T0, max_age=timedelta(seconds=30)).is_success
+
+
+def test_android_permission_mapping_is_canonical_and_operation_specific() -> None:
+    provider = AndroidProvider(AdbTransport(runner=GovernedAndroidRunner()))
+    by_name = {item.descriptor.identity.name.value: item.descriptor for item in provider.capabilities()}
+    assert by_name["android.package_discovery"].required_permissions == frozenset({Permission.READ})
+    assert by_name["android.accessibility_tree"].required_permissions == frozenset({Permission.READ})
+    assert by_name["android.screen_capture"].required_permissions == frozenset({Permission.READ})
+    assert by_name["android.tap"].required_permissions == frozenset({Permission.EXECUTE})
+    assert by_name["android.swipe"].required_permissions == frozenset({Permission.EXECUTE})
+    assert by_name["android.navigation"].required_permissions == frozenset({Permission.EXECUTE})
+    assert by_name["android.text_entry"].required_permissions == frozenset(
+        {Permission.WRITE, Permission.EXECUTE}
+    )
