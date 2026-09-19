@@ -10,7 +10,8 @@ repair its own procedures over time.
 >
 > Implemented code includes the Trusted Kernel, bounded agent/runtime strategies,
 > persistent experience and semantic memory, procedure compilation/validation,
-> reuse and repair machinery, an acceptance-verified Windows-native capability fabric, governed browser workflows with actual headless Chrome fixture acceptance, governed M11 voice/HUD and M12 scheduling/proactivity paths, a governed provider-neutral M13 Android/cross-device implementation with controlled acceptance, and M14 adaptive strategy optimization/specialist-model foundations with rollbackable controlled acceptance.
+> reuse and repair machinery, an acceptance-verified Windows-native capability fabric, governed browser workflows with actual headless Chrome fixture acceptance, governed M11 voice/HUD and M12 scheduling/proactivity paths, a governed provider-neutral M13 Android/cross-device implementation with controlled acceptance, M14 adaptive strategy optimization/specialist-model foundations with rollbackable controlled acceptance, and M15 governed safe self-extension for deterministic side-effect-free generated tools with provenance, isolated validation, authenticated promotion, restart integrity, revocation, and Trusted Kernel protection.
+> M15 deliberately does not expose arbitrary Python/shell/package execution; generated source remains untrusted candidate data until bounded validation and trusted approval.
 > These components do not yet establish the complete adaptive-learning workflow
 > or a ready-to-use desktop product. The CLI currently exposes package metadata,
 > not a natural-language agent session.
