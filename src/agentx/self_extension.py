@@ -1183,6 +1183,31 @@ class ValidationEvidence:
         return self.unit_successes + self.adversarial_successes + self.variation_successes
 
     @property
+    def evidence_digest(self) -> str:
+        return _digest_bytes(
+            _canonical_json(
+                {
+                    "artifact_digest": self.artifact_digest,
+                    "static_passed": self.static_passed,
+                    "typecheck_passed": self.typecheck_passed,
+                    "lint_passed": self.lint_passed,
+                    "dependency_passed": self.dependency_passed,
+                    "unit_successes": self.unit_successes,
+                    "adversarial_successes": self.adversarial_successes,
+                    "variation_successes": self.variation_successes,
+                    "case_digests": list(self.case_digests),
+                    "sandboxed": self.sandboxed,
+                    "network_isolated": self.network_isolated,
+                    "filesystem_isolated": self.filesystem_isolated,
+                    "resource_limited": self.resource_limited,
+                    "kernel_before": self.kernel_before,
+                    "kernel_after": self.kernel_after,
+                    "validated_at": self.validated_at.isoformat(),
+                }
+            )
+        )
+
+    @property
     def passed(self) -> bool:
         return (
             self.static_passed
@@ -1326,6 +1351,7 @@ class HumanReviewPackage:
                 "identity": _identity_dict(self.identity),
                 "created_at": self.created_at.isoformat(),
                 "successes": self.evidence.total_successes,
+                "evidence_digest": self.evidence.evidence_digest,
             }
         )
 
@@ -1770,6 +1796,7 @@ class SelfExtensionManager:
             raise SelfExtensionSecurityError("promotion requires exact passing validation evidence")
         if (
             review.artifact_digest != artifact.digest
+            or review.evidence != evidence
             or review.evidence.artifact_digest != artifact.digest
             or review.identity != artifact.proposal.identity
         ):
@@ -1908,6 +1935,7 @@ class SelfExtensionManager:
                     "consecutive_failures": record.consecutive_failures,
                     "successes": record.successes,
                     "validated_at": record.evidence.validated_at.isoformat(),
+                    "kernel_after": record.evidence.kernel_after,
                     "case_digests": list(record.evidence.case_digests),
                     "validation_successes": record.evidence.total_successes,
                 }
@@ -1991,15 +2019,21 @@ class SelfExtensionManager:
             observed_successes_raw = item.get("successes")
             case_digests_raw = item.get("case_digests")
             validated_at_raw = item.get("validated_at")
+            kernel_after_raw = item.get("kernel_after")
             if (
                 type(successes_raw) is not int
                 or type(failures_raw) is not int
                 or type(observed_successes_raw) is not int
                 or not isinstance(case_digests_raw, list)
                 or not isinstance(validated_at_raw, str)
+                or not isinstance(kernel_after_raw, str)
             ):
                 raise SelfExtensionSecurityError("stored validation evidence is malformed")
             kernel = trusted_kernel_fingerprint()
+            if not hmac.compare_digest(kernel, kernel_after_raw):
+                raise SelfExtensionSecurityError(
+                    "Trusted Kernel changed since extension validation; revalidation is required"
+                )
             evidence = ValidationEvidence(
                 artifact_digest=artifact.digest,
                 static_passed=True,
@@ -2014,8 +2048,8 @@ class SelfExtensionManager:
                 network_isolated=True,
                 filesystem_isolated=True,
                 resource_limited=True,
-                kernel_before=kernel,
-                kernel_after=kernel,
+                kernel_before=kernel_after_raw,
+                kernel_after=kernel_after_raw,
                 validated_at=datetime.fromisoformat(validated_at_raw),
             )
             review = HumanReviewPackage(
