@@ -2,15 +2,15 @@
 
 Repository: `harsh2025-sketch/AgentX`. Final M14 implementation audit baseline: green post-merge main `7fe73850224160fdbd12883185e91e19a2d35991` (C1.01 run `35379021464`).
 
-M11, M12, and M14 are integrated. PR #176 is merged, and its exact post-merge main C1.01 passed. Historical `reported_status` remains unchanged; counts are calculated from merged TASKS.json.
+M11, M12, and M14 are integrated. PR #176 is merged, and its exact post-merge main C1.01 passed. M13 PR #180 remains open and unmerged; this branch records its evidence-supported candidate acceptance state. Historical `reported_status` remains unchanged.
 
 | State | Tasks | Percentage |
 | --- | ---: | ---: |
-| VERIFIED | 510 | 85.00% |
+| VERIFIED | 536 | 89.33% |
 | NOT_AUDITED | 0 | 0.00% |
 | IN_PROGRESS | 1 | 0.17% |
-| BLOCKED | 7 | 1.17% |
-| NOT_IMPLEMENTED | 82 | 13.67% |
+| BLOCKED | 9 | 1.50% |
+| NOT_IMPLEMENTED | 54 | 9.00% |
 | TOTAL | 600 | 100.00% |
 
 | Milestone | Range | VERIFIED | TOTAL | % | Other states | Status |
@@ -28,7 +28,7 @@ M11, M12, and M14 are integrated. PR #176 is merged, and its exact post-merge ma
 | M10 | AX-406–AX-435 | 30 | 30 | 100.00% | none | COMPLETE |
 | M11 | AX-436–AX-460 | 25 | 25 | 100.00% | none | COMPLETE |
 | M12 | AX-461–AX-485 | 25 | 25 | 100.00% | none | COMPLETE |
-| M13 | AX-486–AX-515 | 2 | 30 | 6.67% | NOT_IMPLEMENTED=28 | PARTIAL |
+| M13 | AX-486–AX-515 | 28 | 30 | 93.33% | BLOCKED=2 | PARTIAL |
 | M14 | AX-516–AX-540 | 25 | 25 | 100.00% | none | COMPLETE |
 | M15 | AX-541–AX-570 | 1 | 30 | 3.33% | NOT_IMPLEMENTED=29 | PARTIAL |
 | M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
@@ -46,7 +46,7 @@ M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 releas
 | World model | Freshness/invalidation, real filesystem change, bounded frame capture and grounding accepted within documented environment limits. |
 | Voice/HUD | AX-436–AX-460 are acceptance VERIFIED: concrete Windows audio, STT/TTS, realtime turn/interruption, governed voice-task authorization, confirmation, HUD telemetry/control and deterministic end-to-end acceptance are implemented. Real-device/live-provider/interactive-desktop entry points remain separately not run. |
 | Scheduling | M12 scheduler, one-shot/recurring work, durable recovery, event-trigger launch, proactivity policy, quotas, approval expiry and stale-state rejection are integrated on canonical main; post-M12 exact-main C1.01 passed. |
-| Multi-device/Android | Protocol contracts only; real devices, transport and Android execution remain open. |
+| Multi-device/Android | AX-486–AX-513 are acceptance VERIFIED with provider-neutral registry/discovery, bounded ADB, governed Android capabilities, semantic UI, verification, routing/handoff, procedure applicability, World Model and causal integration. AX-514/515 remain BLOCKED on a real PC + browser + authorized Android phone workflow. |
 | Optimization | M14 strategy history/statistics, constrained contextual-bandit and preference experiments, specialist datasets/models, offline evaluation, rollbackable policy and safety acceptance are implemented with controlled evidence; no live-provider or real-user performance claim is made. |
 | Self-extension | Capability-gap foundation; safe extension lifecycle remains open. |
 | Production/release | Release is not ready; installer, upgrades, privacy/product controls, platform matrix and whole-system acceptance remain open. |

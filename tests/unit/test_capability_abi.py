@@ -327,6 +327,7 @@ def test_capability_platform_vocabulary_is_small_and_exact() -> None:
         "windows",
         "linux",
         "macos",
+        "android",
         "any",
     )
     assert CapabilityScope(platform=CapabilityPlatform.WINDOWS).platform is (

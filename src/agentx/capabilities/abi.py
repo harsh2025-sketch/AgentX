@@ -352,6 +352,7 @@ class CapabilityPlatform(StrEnum):
     WINDOWS = "windows"
     LINUX = "linux"
     MACOS = "macos"
+    ANDROID = "android"
     ANY = "any"
 
 

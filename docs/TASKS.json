@@ -17369,13 +17369,28 @@
       "milestone": "M13",
       "title": "Device Registry",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-488 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/device_registry.py",
+          "note": "M13 production implementation audited for AX-488: Device Registry."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers Device Registry, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-488; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17384,13 +17399,28 @@
       "milestone": "M13",
       "title": "device discovery",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-489 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/device_registry.py; src/agentx/capabilities/android/provider.py",
+          "note": "M13 production implementation audited for AX-489: device discovery."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers device discovery, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-489; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17399,13 +17429,28 @@
       "milestone": "M13",
       "title": "device capability advertisement",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-490 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/device_registry.py; src/agentx/capabilities/android/provider.py",
+          "note": "M13 production implementation audited for AX-490: device capability advertisement."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers device capability advertisement, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-490; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17414,13 +17459,28 @@
       "milestone": "M13",
       "title": "device health model",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-491 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/device_registry.py",
+          "note": "M13 production implementation audited for AX-491: device health model."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers device health model, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-491; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17429,13 +17489,28 @@
       "milestone": "M13",
       "title": "device environment identity",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-492 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/device_registry.py",
+          "note": "M13 production implementation audited for AX-492: device environment identity."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers device environment identity, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-492; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17444,13 +17519,28 @@
       "milestone": "M13",
       "title": "Android provider",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-493 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/provider.py",
+          "note": "M13 production implementation audited for AX-493: Android provider."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers Android provider, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-493; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17459,13 +17549,28 @@
       "milestone": "M13",
       "title": "ADB transport",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-494 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/transport.py",
+          "note": "M13 production implementation audited for AX-494: ADB transport."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers ADB transport, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-494; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17474,13 +17579,28 @@
       "milestone": "M13",
       "title": "Android package discovery",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-495 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/runtime.py",
+          "note": "M13 production implementation audited for AX-495: Android package discovery."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers Android package discovery, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-495; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17489,13 +17609,28 @@
       "milestone": "M13",
       "title": "Android app launch",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-496 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/runtime.py",
+          "note": "M13 production implementation audited for AX-496: Android app launch."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers Android app launch, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-496; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17504,13 +17639,28 @@
       "milestone": "M13",
       "title": "accessibility-tree observation",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-497 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/ui.py; src/agentx/capabilities/android/runtime.py",
+          "note": "M13 production implementation audited for AX-497: accessibility-tree observation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers accessibility-tree observation, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-497; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17519,13 +17669,28 @@
       "milestone": "M13",
       "title": "Android semantic target resolution",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-498 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/ui.py",
+          "note": "M13 production implementation audited for AX-498: Android semantic target resolution."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers Android semantic target resolution, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-498; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17534,13 +17699,28 @@
       "milestone": "M13",
       "title": "Android tap action",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-499 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/runtime.py",
+          "note": "M13 production implementation audited for AX-499: Android tap action."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers Android tap action, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-499; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17549,13 +17729,28 @@
       "milestone": "M13",
       "title": "Android text entry",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-500 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/runtime.py",
+          "note": "M13 production implementation audited for AX-500: Android text entry."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers Android text entry, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-500; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17564,13 +17759,28 @@
       "milestone": "M13",
       "title": "Android swipe action",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-501 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/runtime.py",
+          "note": "M13 production implementation audited for AX-501: Android swipe action."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers Android swipe action, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-501; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17579,13 +17789,28 @@
       "milestone": "M13",
       "title": "Android back/home actions",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-502 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/runtime.py",
+          "note": "M13 production implementation audited for AX-502: Android back/home actions."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers Android back/home actions, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-502; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17594,13 +17819,28 @@
       "milestone": "M13",
       "title": "Android state verification",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-503 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/runtime.py",
+          "note": "M13 production implementation audited for AX-503: Android state verification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers Android state verification, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-503; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17609,13 +17849,28 @@
       "milestone": "M13",
       "title": "Android screen fallback",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-504 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/runtime.py",
+          "note": "M13 production implementation audited for AX-504: Android screen fallback."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers Android screen fallback, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-504; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17624,13 +17879,28 @@
       "milestone": "M13",
       "title": "Android risk policy",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-505 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/runtime.py; src/agentx/kernel/risk.py",
+          "note": "M13 production implementation audited for AX-505: Android risk policy."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers Android risk policy, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-505; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17639,13 +17909,28 @@
       "milestone": "M13",
       "title": "Android permission mapping",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-506 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/capabilities/android/runtime.py; src/agentx/kernel/permissions.py",
+          "note": "M13 production implementation audited for AX-506: Android permission mapping."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers Android permission mapping, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-506; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17654,13 +17939,28 @@
       "milestone": "M13",
       "title": "cross-device Task DAG",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-507 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/device_orchestration.py; src/agentx/core/task_decomposition.py",
+          "note": "M13 production implementation audited for AX-507: cross-device Task DAG."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers cross-device Task DAG, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-507; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17669,13 +17969,28 @@
       "milestone": "M13",
       "title": "device-target routing",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-508 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/device_orchestration.py; src/agentx/capabilities/device_registry.py",
+          "note": "M13 production implementation audited for AX-508: device-target routing."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers device-target routing, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-508; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17684,13 +17999,28 @@
       "milestone": "M13",
       "title": "PC -> phone handoff",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-509 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/device_orchestration.py",
+          "note": "M13 production implementation audited for AX-509: PC -> phone handoff."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers PC -> phone handoff, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-509; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17699,13 +18029,28 @@
       "milestone": "M13",
       "title": "phone -> PC handoff",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-510 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/device_orchestration.py",
+          "note": "M13 production implementation audited for AX-510: phone -> PC handoff."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers phone -> PC handoff, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-510; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17714,13 +18059,28 @@
       "milestone": "M13",
       "title": "browser -> phone handoff",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-511 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/device_orchestration.py",
+          "note": "M13 production implementation audited for AX-511: browser -> phone handoff."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers browser -> phone handoff, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-511; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17729,13 +18089,28 @@
       "milestone": "M13",
       "title": "device-specific Procedure applicability",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-512 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/device_orchestration.py; src/agentx/core/procedure_matching.py",
+          "note": "M13 production implementation audited for AX-512: device-specific Procedure applicability."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers device-specific Procedure applicability, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-512; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17744,13 +18119,28 @@
       "milestone": "M13",
       "title": "cross-device causal episode",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-513 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/device_orchestration.py; src/agentx/core/causal_experience.py; src/agentx/world_model.py",
+          "note": "M13 production implementation audited for AX-513: cross-device causal episode."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Deterministic unit/integration/adversarial evidence covers cross-device causal episode, including failure/security behavior; real Android evidence is not claimed."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "0a86b36c80228b37d20595270151d67631cfa48e",
+          "note": "M13 implementation candidate before final ledger/documentation reconciliation; the exact final PR head must pass C1.01 before merge."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md; PR #180",
+          "note": "Second-pass M13 acceptance for AX-513; controlled-vs-real environment limitations are explicit."
         }
       ]
     },
@@ -17759,13 +18149,23 @@
       "milestone": "M13",
       "title": "PC/browser/phone workflow benchmark",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "BLOCKED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-514 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/device_orchestration.py; src/agentx/capabilities/android/; src/agentx/world_model.py",
+          "note": "Locally implementable production paths supporting AX-514 are present."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Controlled cross-device and governed Android paths are covered, but they do not substitute for a real PC/browser/phone environment."
+        },
+        {
+          "kind": "external_blocker",
+          "reference": "docs/ROADMAP.md; docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md",
+          "note": "Canonical M13 exit criteria require an end-to-end PC + browser + phone workflow with verification at every device boundary; no real Android target/ADB device is available in this campaign environment."
         }
       ]
     },
@@ -17774,13 +18174,23 @@
       "milestone": "M13",
       "title": "multi-device milestone acceptance",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "BLOCKED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-515 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/device_orchestration.py; src/agentx/capabilities/android/; src/agentx/world_model.py",
+          "note": "Locally implementable production paths supporting AX-515 are present."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m13_multidevice_android.py; tests/integration/test_m13_governed_android.py; tests/adversarial/test_m13_android_security_failures.py",
+          "note": "Controlled cross-device and governed Android paths are covered, but they do not substitute for a real PC/browser/phone environment."
+        },
+        {
+          "kind": "external_blocker",
+          "reference": "docs/ROADMAP.md; docs/M13_MULTI_DEVICE_ANDROID_ACCEPTANCE.md",
+          "note": "Canonical M13 exit criteria require an end-to-end PC + browser + phone workflow with verification at every device boundary; no real Android target/ADB device is available in this campaign environment."
         }
       ]
     },
