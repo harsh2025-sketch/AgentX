@@ -21,7 +21,7 @@ import os
 import subprocess
 import sys
 import tempfile
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
@@ -858,7 +858,7 @@ def _eval_expr(node: ast.expr, payload: Mapping[str, object], budget: _StepBudge
         return [_eval_expr(item, payload, budget) for item in node.elts]
     if isinstance(node, ast.Subscript):
         target = _eval_expr(node.value, payload, budget)
-        index = _eval_expr(cast(ast.expr, node.slice), payload, budget)
+        index = _eval_expr(node.slice, payload, budget)
         if not isinstance(target, Mapping | list | tuple | str):
             raise SelfExtensionSecurityError("subscript target type is forbidden")
         if isinstance(target, Mapping):
@@ -874,7 +874,8 @@ def _eval_expr(node: ast.expr, payload: Mapping[str, object], budget: _StepBudge
             return not bool(value)
         if type(value) not in (int, float):
             raise SelfExtensionSecurityError("numeric unary operator requires a number")
-        return +value if isinstance(node.op, ast.UAdd) else -value
+        numeric = cast(int | float, value)
+        return +numeric if isinstance(node.op, ast.UAdd) else -numeric
     if isinstance(node, ast.BinOp):
         left = _eval_expr(node.left, payload, budget)
         right = _eval_expr(node.right, payload, budget)
@@ -1492,7 +1493,7 @@ class GeneratedCapability:
         *,
         artifact: CandidateArtifact,
         sandbox: GeneratedToolSandbox,
-        is_active: object,
+        is_active: Callable[[CapabilityIdentity, str], bool],
     ) -> None:
         if not callable(is_active):
             raise TypeError("is_active must be callable")
@@ -1525,7 +1526,7 @@ class GeneratedCapability:
 
     def _active(self) -> bool:
         callback = self._is_active
-        return bool(callback(self._artifact.proposal.identity, self._artifact.digest))  # type: ignore[operator]
+        return bool(callback(self._artifact.proposal.identity, self._artifact.digest))
 
     def execute(
         self,
