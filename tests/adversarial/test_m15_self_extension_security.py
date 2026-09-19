@@ -179,7 +179,7 @@ def test_persistence_tampering_and_forged_activation_fail_closed(tmp_path: Path)
     path = tmp_path / "extensions.json"
     authority = TrustedApprovalAuthority(authority_id="host", key=KEY)
     manager = SelfExtensionManager(
-        registry=CapabilityRegistry(),
+        register_capability=CapabilityRegistry().register,
         sandbox=GeneratedToolSandbox(),
         approval_authority=authority,
         integrity_key=KEY,
@@ -193,7 +193,7 @@ def test_persistence_tampering_and_forged_activation_fail_closed(tmp_path: Path)
     )
     with pytest.raises(SelfExtensionSecurityError):
         SelfExtensionManager(
-            registry=CapabilityRegistry(),
+            register_capability=CapabilityRegistry().register,
             sandbox=GeneratedToolSandbox(),
             approval_authority=authority,
             integrity_key=KEY,
