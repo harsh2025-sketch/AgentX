@@ -60,9 +60,7 @@ def test_expiry_and_delete_survive_restart_without_payload_leak(tmp_path: Path) 
     assert KnowledgeStore(reopened).get(old.knowledge_id) is None
     assert KnowledgeStore(reopened).get(recent.knowledge_id) == recent
 
-    deleted = PrivacyRetentionController(reopened).delete_all(
-        (RetentionCategory.EPISODES,)
-    )
+    deleted = PrivacyRetentionController(reopened).delete_all((RetentionCategory.EPISODES,))
     assert deleted.total_deleted_rows == 1
     assert secret not in repr(deleted)
     with reopened.connection() as connection:

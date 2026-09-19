@@ -209,9 +209,7 @@ def _normalize_config_document(
             f"{_CONFIG_SCHEMA_FIELD} from {source} must be an integer; got {raw_version!r}"
         )
     if raw_version < 0:
-        raise ConfigValidationError(
-            f"{_CONFIG_SCHEMA_FIELD} from {source} must not be negative"
-        )
+        raise ConfigValidationError(f"{_CONFIG_SCHEMA_FIELD} from {source} must not be negative")
     if raw_version > CURRENT_CONFIG_SCHEMA_VERSION:
         raise ConfigValidationError(
             f"{_CONFIG_SCHEMA_FIELD} {raw_version} from {source} is newer than "

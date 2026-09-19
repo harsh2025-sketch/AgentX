@@ -46,11 +46,9 @@ def test_abrupt_process_exit_does_not_commit_partial_state_and_restart_is_health
     restarted = SQLiteDatabase(path)
     with restarted.connection() as connection:
         count = connection.execute(
-            "SELECT COUNT(*) FROM agentx_event_journal "
-            "WHERE event_id = 'm16-uncommitted-event'"
+            "SELECT COUNT(*) FROM agentx_event_journal WHERE event_id = 'm16-uncommitted-event'"
         ).fetchone()[0]
     assert count == 0
     assert (
-        PersistenceRecoveryInspector(restarted).assess().disposition
-        is RecoveryDisposition.HEALTHY
+        PersistenceRecoveryInspector(restarted).assess().disposition is RecoveryDisposition.HEALTHY
     )

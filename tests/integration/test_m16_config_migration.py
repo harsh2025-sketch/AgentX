@@ -17,10 +17,7 @@ from agentx.infrastructure.config_migration import ConfigMigrationError, migrate
 def test_legacy_config_migrates_atomically_and_is_idempotent(tmp_path: Path) -> None:
     path = tmp_path / "config.toml"
     path.write_text(
-        'profile = "legacy"\n'
-        'data_dir = "state"\n'
-        'log_level = "warning"\n'
-        "debug = false\n",
+        'profile = "legacy"\ndata_dir = "state"\nlog_level = "warning"\ndebug = false\n',
         encoding="utf-8",
     )
 
@@ -41,9 +38,7 @@ def test_legacy_config_migrates_atomically_and_is_idempotent(tmp_path: Path) -> 
 def test_explicit_schema_zero_migrates_without_rewriting_values(tmp_path: Path) -> None:
     path = tmp_path / "config.toml"
     path.write_text(
-        "schema_version = 0 # legacy\n"
-        'profile = "legacy"\n'
-        f'data_dir = "{tmp_path.as_posix()}"\n',
+        f'schema_version = 0 # legacy\nprofile = "legacy"\ndata_dir = "{tmp_path.as_posix()}"\n',
         encoding="utf-8",
     )
 
@@ -56,11 +51,7 @@ def test_explicit_schema_zero_migrates_without_rewriting_values(tmp_path: Path) 
 
 def test_current_config_reopens_without_change(tmp_path: Path) -> None:
     path = tmp_path / "config.toml"
-    content = (
-        "schema_version = 1\n"
-        'profile = "current"\n'
-        f'data_dir = "{tmp_path.as_posix()}"\n'
-    )
+    content = f'schema_version = 1\nprofile = "current"\ndata_dir = "{tmp_path.as_posix()}"\n'
     path.write_text(content, encoding="utf-8")
 
     result = migrate_config_file(path)

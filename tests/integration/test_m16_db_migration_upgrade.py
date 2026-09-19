@@ -41,9 +41,7 @@ def test_v8_database_upgrades_to_current_without_destroying_existing_rows(
             "WHERE type = 'table' AND name = 'agentx_scheduled_tasks'"
         ).fetchone()
 
-    assert [int(row["version"]) for row in versions] == list(
-        range(1, len(_MIGRATIONS) + 1)
-    )
+    assert [int(row["version"]) for row in versions] == list(range(1, len(_MIGRATIONS) + 1))
     assert preserved is not None
     assert preserved["event_json"] == payload
     assert scheduler is not None

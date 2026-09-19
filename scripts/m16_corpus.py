@@ -51,13 +51,7 @@ def main() -> int:
     if not args.run:
         sys.stdout.write("M16 acceptance corpus validated.\n")
         return 0
-    tests = sorted(
-        {
-            path
-            for entry in manifest["corpora"].values()
-            for path in entry["tests"]
-        }
-    )
+    tests = sorted({path for entry in manifest["corpora"].values() for path in entry["tests"]})
     completed = subprocess.run(
         [sys.executable, "-m", "pytest", "-q", *tests],
         cwd=ROOT,

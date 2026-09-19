@@ -70,9 +70,7 @@ def initialize_release_state(
         RecoveryDisposition.BLOCK_STARTUP,
         RecoveryDisposition.INSUFFICIENT_EVIDENCE,
     }:
-        raise ReleaseStartupError(
-            f"durable-state startup blocked: {recovery.disposition.value}"
-        )
+        raise ReleaseStartupError(f"durable-state startup blocked: {recovery.disposition.value}")
 
     return ReleaseStartupReport(
         config=config,

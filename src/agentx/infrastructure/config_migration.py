@@ -29,9 +29,7 @@ __all__ = [
     "migrate_config_file",
 ]
 
-_SCHEMA_LINE: Final = re.compile(
-    r"(?m)^(\s*schema_version\s*=\s*)0(\s*(?:#.*)?)$"
-)
+_SCHEMA_LINE: Final = re.compile(r"(?m)^(\s*schema_version\s*=\s*)0(\s*(?:#.*)?)$")
 
 
 class ConfigMigrationError(ConfigError):
