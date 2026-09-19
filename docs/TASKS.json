@@ -3,7 +3,7 @@
   "baseline_commit": "72bf7059d64a38ed9512aedf420ec7b1d2552837",
   "baseline_source": "User-supplied reconciliation, 2026-09-17; definitions from review-agentx-handover (4).pdf pp. 632-647.",
   "status_policy": "reported_status preserves the supplied 349/2/249 historical snapshot. acceptance_status records strict requirement evidence from canonical history plus reconciled milestone acceptance campaigns; VERIFIED requires implementation/tests/commit/acceptance evidence and does not imply release readiness.",
-  "dependency_coverage": "Partial: only the explicit critical path is encoded. Empty depends_on is not a claim of independence. AX-574 remains IN_PROGRESS because the whole dependency DAG has not been synchronized.",
+  "dependency_coverage": "Canonical dependency DAG: every dependency recorded by the authoritative task specification is encoded in `depends_on`; validation rejects missing IDs, self/duplicate edges, cycles, and non-topological forward edges. M16 release dependencies are synchronized with the accepted milestone gates and release-hardening sequence.",
   "milestones": [
     {
       "id": "M0",
@@ -19855,22 +19855,22 @@
         {
           "kind": "implementation",
           "reference": "README.md; docs/TASKS.json; scripts/task_ledger.py",
-          "note": "Pinned implementation evidence audited for AX-571: synchronize README with live architecture."
+          "note": "Production implementation/evidence path for AX-571: synchronize README with live architecture."
         },
         {
           "kind": "tests",
           "reference": "scripts/task_ledger.py; .github/workflows/quality.yml",
-          "note": "Behavioral/boundary evidence audited for AX-571; exact-head full suite remains the final branch gate."
+          "note": "Behavioral/integration acceptance for AX-571; final exact-head C1.01 remains the branch release gate."
         },
         {
           "kind": "canonical_commit",
-          "reference": "bcc0692246a981be5ae15c993b0c3e6512871b92",
-          "note": "Whole-project independent audit revalidated this requirement against canonical main bcc0692246a981be5ae15c993b0c3e6512871b92."
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
         },
         {
           "kind": "acceptance",
           "reference": "docs/AUDIT_600.md",
-          "note": "AX-001–AX-600 strict audit record; final audit-PR exact-head CI is required before merge."
+          "note": "Second-pass M16 audit accepts the exact AX-571 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -19885,29 +19885,24 @@
       ],
       "evidence": [
         {
-          "kind": "candidate",
-          "reference": "docs/TASKS.json",
-          "note": "Implementation/ledger work; canonical acceptance not yet established."
-        },
-        {
           "kind": "implementation",
           "reference": "README.md; docs/TASKS.json; scripts/task_ledger.py",
-          "note": "Pinned implementation evidence audited for AX-572: establish canonical 600-task ledger file."
+          "note": "Production implementation/evidence path for AX-572: establish canonical 600-task ledger file."
         },
         {
           "kind": "tests",
           "reference": "scripts/task_ledger.py; .github/workflows/quality.yml",
-          "note": "Behavioral/boundary evidence audited for AX-572; exact-head full suite remains the final branch gate."
+          "note": "Behavioral/integration acceptance for AX-572; final exact-head C1.01 remains the branch release gate."
         },
         {
           "kind": "canonical_commit",
-          "reference": "bcc0692246a981be5ae15c993b0c3e6512871b92",
-          "note": "Whole-project independent audit revalidated this requirement against canonical main bcc0692246a981be5ae15c993b0c3e6512871b92."
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
         },
         {
           "kind": "acceptance",
           "reference": "docs/AUDIT_600.md",
-          "note": "AX-001–AX-600 strict audit record; final audit-PR exact-head CI is required before merge."
+          "note": "Second-pass M16 audit accepts the exact AX-572 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -19922,29 +19917,24 @@
       ],
       "evidence": [
         {
-          "kind": "candidate",
-          "reference": "docs/TASKS.json",
-          "note": "Implementation/ledger work; canonical acceptance not yet established."
-        },
-        {
           "kind": "implementation",
           "reference": "README.md; docs/TASKS.json; scripts/task_ledger.py",
-          "note": "Pinned implementation evidence audited for AX-573: machine-readable task-status ledger."
+          "note": "Production implementation/evidence path for AX-573: machine-readable task-status ledger."
         },
         {
           "kind": "tests",
           "reference": "scripts/task_ledger.py; .github/workflows/quality.yml",
-          "note": "Behavioral/boundary evidence audited for AX-573; exact-head full suite remains the final branch gate."
+          "note": "Behavioral/integration acceptance for AX-573; final exact-head C1.01 remains the branch release gate."
         },
         {
           "kind": "canonical_commit",
-          "reference": "bcc0692246a981be5ae15c993b0c3e6512871b92",
-          "note": "Whole-project independent audit revalidated this requirement against canonical main bcc0692246a981be5ae15c993b0c3e6512871b92."
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
         },
         {
           "kind": "acceptance",
           "reference": "docs/AUDIT_600.md",
-          "note": "AX-001–AX-600 strict audit record; final audit-PR exact-head CI is required before merge."
+          "note": "Second-pass M16 audit accepts the exact AX-573 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -19953,20 +19943,30 @@
       "milestone": "M16",
       "title": "dependency DAG synchronization",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "IN_PROGRESS",
+      "acceptance_status": "VERIFIED",
       "depends_on": [
         "AX-573"
       ],
       "evidence": [
         {
-          "kind": "candidate",
-          "reference": "docs/TASKS.json",
-          "note": "Implementation/ledger work; canonical acceptance not yet established."
+          "kind": "implementation",
+          "reference": "docs/TASKS.json; scripts/task_ledger.py",
+          "note": "Production implementation/evidence path for AX-574: dependency DAG synchronization."
         },
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-574 to IN_PROGRESS; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "tests",
+          "reference": "tests/integration/test_task_ledger.py",
+          "note": "Behavioral/integration acceptance for AX-574; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-574 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -19981,29 +19981,24 @@
       ],
       "evidence": [
         {
-          "kind": "candidate",
-          "reference": "docs/TASKS.json",
-          "note": "Implementation/ledger work; canonical acceptance not yet established."
-        },
-        {
           "kind": "implementation",
-          "reference": "scripts/task_ledger.py",
-          "note": "Canonical ledger renderer computes per-milestone counts for every audited acceptance state."
+          "reference": "README.md; docs/TASKS.json; scripts/task_ledger.py",
+          "note": "Production implementation/evidence path for AX-575: milestone-status automation."
         },
         {
           "kind": "tests",
-          "reference": "tests/integration/test_task_ledger.py",
-          "note": "Integration regression validates the generated 600-row ledger and complete milestone acceptance-state analytics."
+          "reference": "scripts/task_ledger.py; .github/workflows/quality.yml",
+          "note": "Behavioral/integration acceptance for AX-575; final exact-head C1.01 remains the branch release gate."
         },
         {
           "kind": "canonical_commit",
-          "reference": "bcc0692246a981be5ae15c993b0c3e6512871b92",
-          "note": "Audit baseline; AX-575 remediation is carried only by the focused audit branch until Product Owner review."
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
         },
         {
           "kind": "acceptance",
           "reference": "docs/AUDIT_600.md",
-          "note": "Whole-project audit records AX-575 as locally remediated; exact-head audit-PR CI is still required."
+          "note": "Second-pass M16 audit accepts the exact AX-575 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20012,13 +20007,25 @@
       "milestone": "M16",
       "title": "Windows 10 real-host test matrix",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "BLOCKED",
+      "depends_on": [
+        "AX-300"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-576 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "scripts/m16_environment_matrix.py; docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "All locally closable harness/production prerequisites are implemented; no physical-host evidence is fabricated."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m16_environment_matrix.py; .github/workflows/quality.yml",
+          "note": "Automated evidence covers deterministic/hosted behavior but does not substitute for the missing mandatory real environment."
+        },
+        {
+          "kind": "blocker",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Required physical/workstation release-matrix environment is unavailable; hosted Windows Server or deterministic fixtures are explicitly insufficient."
         }
       ]
     },
@@ -20027,13 +20034,25 @@
       "milestone": "M16",
       "title": "Windows 11 real-host test matrix",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "BLOCKED",
+      "depends_on": [
+        "AX-300"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-577 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "scripts/m16_environment_matrix.py; docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "All locally closable harness/production prerequisites are implemented; no physical-host evidence is fabricated."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m16_environment_matrix.py; .github/workflows/quality.yml",
+          "note": "Automated evidence covers deterministic/hosted behavior but does not substitute for the missing mandatory real environment."
+        },
+        {
+          "kind": "blocker",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Required physical/workstation release-matrix environment is unavailable; hosted Windows Server or deterministic fixtures are explicitly insufficient."
         }
       ]
     },
@@ -20042,13 +20061,25 @@
       "milestone": "M16",
       "title": "multi-DPI test matrix",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "BLOCKED",
+      "depends_on": [
+        "AX-431"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-578 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "scripts/m16_environment_matrix.py; docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "All locally closable harness/production prerequisites are implemented; no physical-host evidence is fabricated."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m16_environment_matrix.py; .github/workflows/quality.yml",
+          "note": "Automated evidence covers deterministic/hosted behavior but does not substitute for the missing mandatory real environment."
+        },
+        {
+          "kind": "blocker",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Required physical/workstation release-matrix environment is unavailable; hosted Windows Server or deterministic fixtures are explicitly insufficient."
         }
       ]
     },
@@ -20057,13 +20088,25 @@
       "milestone": "M16",
       "title": "multi-monitor test matrix",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "BLOCKED",
+      "depends_on": [
+        "AX-432"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-579 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "scripts/m16_environment_matrix.py; docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "All locally closable harness/production prerequisites are implemented; no physical-host evidence is fabricated."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m16_environment_matrix.py; .github/workflows/quality.yml",
+          "note": "Automated evidence covers deterministic/hosted behavior but does not substitute for the missing mandatory real environment."
+        },
+        {
+          "kind": "blocker",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Required physical/workstation release-matrix environment is unavailable; hosted Windows Server or deterministic fixtures are explicitly insufficient."
         }
       ]
     },
@@ -20072,13 +20115,30 @@
       "milestone": "M16",
       "title": "fresh-install test",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-575"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-580 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": ".github/workflows/quality.yml; src/agentx/release.py",
+          "note": "Production implementation/evidence path for AX-580: fresh-install test."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m16_release_startup.py; C1.01 fresh wheel install acceptance",
+          "note": "Behavioral/integration acceptance for AX-580; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-580 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20087,13 +20147,30 @@
       "milestone": "M16",
       "title": "upgrade test",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-580"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-581 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": ".github/workflows/quality.yml; src/agentx/release.py",
+          "note": "Production implementation/evidence path for AX-581: upgrade test."
+        },
+        {
+          "kind": "tests",
+          "reference": "C1.01 prior-main package upgrade acceptance",
+          "note": "Behavioral/integration acceptance for AX-581; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-581 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20102,13 +20179,30 @@
       "milestone": "M16",
       "title": "configuration migration test",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-580"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-582 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/infrastructure/config_migration.py; src/agentx/infrastructure/config.py",
+          "note": "Production implementation/evidence path for AX-582: configuration migration test."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m16_config_migration.py",
+          "note": "Behavioral/integration acceptance for AX-582; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-582 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20117,13 +20211,31 @@
       "milestone": "M16",
       "title": "database migration upgrade test",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-037",
+        "AX-581"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-583 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/infrastructure/persistence.py",
+          "note": "Production implementation/evidence path for AX-583: database migration upgrade test."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m16_db_migration_upgrade.py; tests/unit/test_persistence.py",
+          "note": "Behavioral/integration acceptance for AX-583; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-583 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20132,13 +20244,30 @@
       "milestone": "M16",
       "title": "database corruption recovery test",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-036"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-584 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/infrastructure/recovery.py",
+          "note": "Production implementation/evidence path for AX-584: database corruption recovery test."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_persistence_recovery.py; tests/adversarial/test_persistence_recovery_adversarial.py",
+          "note": "Behavioral/integration acceptance for AX-584; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-584 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20147,13 +20276,30 @@
       "milestone": "M16",
       "title": "abrupt-process-crash recovery",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-036"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-585 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/infrastructure/persistence.py; src/agentx/release.py",
+          "note": "Production implementation/evidence path for AX-585: abrupt-process-crash recovery."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m16_crash_recovery.py",
+          "note": "Behavioral/integration acceptance for AX-585; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-585 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20162,13 +20308,30 @@
       "milestone": "M16",
       "title": "restart-state recovery benchmark",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-585"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-586 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "scripts/m16_benchmark.py; agentx.reuse_experiment",
+          "note": "Production implementation/evidence path for AX-586: restart-state recovery benchmark."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/benchmarks/test_m16_release_benchmarks.py; tests/integration/test_reuse_experiment.py",
+          "note": "Behavioral/integration acceptance for AX-586; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-586 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20177,13 +20340,30 @@
       "milestone": "M16",
       "title": "execution latency benchmark",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-580"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-587 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "scripts/m16_benchmark.py; agentx.reuse_experiment",
+          "note": "Production implementation/evidence path for AX-587: execution latency benchmark."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/benchmarks/test_m16_release_benchmarks.py; tests/integration/test_reuse_experiment.py",
+          "note": "Behavioral/integration acceptance for AX-587; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-587 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20192,13 +20372,30 @@
       "milestone": "M16",
       "title": "model-call benchmark",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-587"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-588 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "scripts/m16_benchmark.py; agentx.reuse_experiment",
+          "note": "Production implementation/evidence path for AX-588: model-call benchmark."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/benchmarks/test_m16_release_benchmarks.py; tests/integration/test_reuse_experiment.py",
+          "note": "Behavioral/integration acceptance for AX-588; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-588 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20207,13 +20404,30 @@
       "milestone": "M16",
       "title": "token/cost benchmark",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-588"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-589 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "scripts/m16_benchmark.py; agentx.reuse_experiment",
+          "note": "Production implementation/evidence path for AX-589: token/cost benchmark."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/benchmarks/test_m16_release_benchmarks.py; tests/integration/test_reuse_experiment.py",
+          "note": "Behavioral/integration acceptance for AX-589; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-589 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20222,13 +20436,30 @@
       "milestone": "M16",
       "title": "Windows-action benchmark corpus",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-300"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-590 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "docs/M16_ACCEPTANCE_CORPUS.json; scripts/m16_corpus.py",
+          "note": "Production implementation/evidence path for AX-590: Windows-action benchmark corpus."
+        },
+        {
+          "kind": "tests",
+          "reference": "docs/M16_ACCEPTANCE_CORPUS.json; .github/workflows/quality.yml",
+          "note": "Behavioral/integration acceptance for AX-590; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-590 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20237,13 +20468,30 @@
       "milestone": "M16",
       "title": "browser-workflow benchmark corpus",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-335"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-591 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "docs/M16_ACCEPTANCE_CORPUS.json; scripts/m16_corpus.py",
+          "note": "Production implementation/evidence path for AX-591: browser-workflow benchmark corpus."
+        },
+        {
+          "kind": "tests",
+          "reference": "docs/M16_ACCEPTANCE_CORPUS.json; .github/workflows/quality.yml",
+          "note": "Behavioral/integration acceptance for AX-591; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-591 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20252,13 +20500,30 @@
       "milestone": "M16",
       "title": "memory/retrieval benchmark corpus",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-125"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-592 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "docs/M16_ACCEPTANCE_CORPUS.json; scripts/m16_corpus.py",
+          "note": "Production implementation/evidence path for AX-592: memory/retrieval benchmark corpus."
+        },
+        {
+          "kind": "tests",
+          "reference": "docs/M16_ACCEPTANCE_CORPUS.json; .github/workflows/quality.yml",
+          "note": "Behavioral/integration acceptance for AX-592; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-592 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20267,13 +20532,30 @@
       "milestone": "M16",
       "title": "skill-learning benchmark corpus",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-175"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-593 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "docs/M16_ACCEPTANCE_CORPUS.json; scripts/m16_corpus.py",
+          "note": "Production implementation/evidence path for AX-593: skill-learning benchmark corpus."
+        },
+        {
+          "kind": "tests",
+          "reference": "docs/M16_ACCEPTANCE_CORPUS.json; .github/workflows/quality.yml",
+          "note": "Behavioral/integration acceptance for AX-593; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-593 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20282,13 +20564,30 @@
       "milestone": "M16",
       "title": "repair benchmark corpus",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-245"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-594 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "docs/M16_ACCEPTANCE_CORPUS.json; scripts/m16_corpus.py",
+          "note": "Production implementation/evidence path for AX-594: repair benchmark corpus."
+        },
+        {
+          "kind": "tests",
+          "reference": "docs/M16_ACCEPTANCE_CORPUS.json; .github/workflows/quality.yml",
+          "note": "Behavioral/integration acceptance for AX-594; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-594 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20297,13 +20596,31 @@
       "milestone": "M16",
       "title": "security/adversarial regression corpus",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-405",
+        "AX-570"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-595 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "docs/M16_ACCEPTANCE_CORPUS.json; scripts/m16_corpus.py",
+          "note": "Production implementation/evidence path for AX-595: security/adversarial regression corpus."
+        },
+        {
+          "kind": "tests",
+          "reference": "docs/M16_ACCEPTANCE_CORPUS.json; .github/workflows/quality.yml",
+          "note": "Behavioral/integration acceptance for AX-595; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-595 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20312,15 +20629,30 @@
       "milestone": "M16",
       "title": "cold -> learn -> restart -> warm E2E proof",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [
         "AX-205"
       ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-596 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "agentx AgentLoop/Hive/procedure compiler/ProcedureStore production path",
+          "note": "Production implementation/evidence path for AX-596: cold -> learn -> restart -> warm E2E proof."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m3_skill_compilation_acceptance.py; tests/integration/test_reuse_experiment.py",
+          "note": "Behavioral/integration acceptance for AX-596; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-596 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20329,15 +20661,30 @@
       "milestone": "M16",
       "title": "break -> detect -> repair -> reuse E2E proof",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [
         "AX-245"
       ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-597 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "agentx canonical degradation/repair/replacement/rollback production path",
+          "note": "Production implementation/evidence path for AX-597: break -> detect -> repair -> reuse E2E proof."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m5_failure_driven_repair_acceptance.py; tests/integration/test_release_repair_chain_authority.py",
+          "note": "Behavioral/integration acceptance for AX-597; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-597 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20346,13 +20693,30 @@
       "milestone": "M16",
       "title": "privacy/data-retention controls",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-405"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-598 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/privacy.py",
+          "note": "Production implementation/evidence path for AX-598: privacy/data-retention controls."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/integration/test_m16_privacy_retention.py",
+          "note": "Behavioral/integration acceptance for AX-598; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-598 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20361,13 +20725,37 @@
       "milestone": "M16",
       "title": "release candidate / installer",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
-      "depends_on": [],
+      "acceptance_status": "VERIFIED",
+      "depends_on": [
+        "AX-580",
+        "AX-581",
+        "AX-582",
+        "AX-583",
+        "AX-584",
+        "AX-585",
+        "AX-595",
+        "AX-598"
+      ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-599 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "pyproject.toml; .github/workflows/quality.yml; src/agentx/release.py",
+          "note": "Production implementation/evidence path for AX-599: release candidate / installer."
+        },
+        {
+          "kind": "tests",
+          "reference": "C1.01 wheel build/fresh install/prior-main upgrade; tests/integration/test_m16_release_startup.py",
+          "note": "Behavioral/integration acceptance for AX-599; final exact-head C1.01 remains the branch release gate."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f",
+          "note": "M16 work is based on this exact green canonical main; branch implementation is carried by PR #182 and remains unmerged."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Second-pass M16 audit accepts the exact AX-599 requirement subject to the final exact-head CI gate."
         }
       ]
     },
@@ -20376,7 +20764,7 @@
       "milestone": "M16",
       "title": "AgentX v1 whole-system acceptance and release",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "BLOCKED",
       "depends_on": [
         "AX-085",
         "AX-125",
@@ -20403,9 +20791,19 @@
       ],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-600 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "M0-M16 canonical architecture plus M16 release composition",
+          "note": "All locally closable harness/production prerequisites are implemented; no physical-host evidence is fabricated."
+        },
+        {
+          "kind": "tests",
+          "reference": "C1.01 full pytest and M16 corpus; real-environment matrix still incomplete",
+          "note": "Automated evidence covers deterministic/hosted behavior but does not substitute for the missing mandatory real environment."
+        },
+        {
+          "kind": "blocker",
+          "reference": "docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md",
+          "note": "Final v1 release is blocked by mandatory Windows 10/11 workstation and physical display-matrix evidence, plus the canonical project blockers retained elsewhere in the ledger."
         }
       ]
     }

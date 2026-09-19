@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "title": "AgentX M16 release acceptance corpus",
+  "claim_policy": "Entries point to canonical production-path tests. Controlled/hosted evidence is never promoted to physical-host or live-provider evidence.",
+  "corpora": {
+    "windows": {
+      "task": "AX-590",
+      "tests": [
+        "tests/windows/test_m6_real_host_acceptance.py",
+        "tests/windows/test_m6_multi_app_workflow.py",
+        "tests/windows/test_m10_screen_capture_real_host.py",
+        "tests/integration/test_windows_keyboard_text_clipboard.py"
+      ]
+    },
+    "browser": {
+      "task": "AX-591",
+      "tests": [
+        "tests/windows/test_m7_real_browser_acceptance.py",
+        "tests/adversarial/test_browser_actions_adversarial.py"
+      ]
+    },
+    "memory": {
+      "task": "AX-592",
+      "tests": [
+        "tests/integration/test_m2_restart_memory_acceptance.py",
+        "tests/integration/test_persistence_recovery.py"
+      ]
+    },
+    "learning": {
+      "task": "AX-593",
+      "tests": [
+        "tests/integration/test_m3_skill_compilation_acceptance.py",
+        "tests/integration/test_reuse_experiment.py"
+      ]
+    },
+    "repair": {
+      "task": "AX-594",
+      "tests": [
+        "tests/integration/test_m5_failure_driven_repair_acceptance.py",
+        "tests/integration/test_release_repair_chain_authority.py"
+      ]
+    },
+    "security": {
+      "task": "AX-595",
+      "tests": [
+        "tests/adversarial/test_context_authority.py",
+        "tests/adversarial/test_device_authority.py",
+        "tests/adversarial/test_experience_memory_adversarial.py",
+        "tests/adversarial/test_m10_world_model_authority.py",
+        "tests/adversarial/test_m11_voice_authority.py",
+        "tests/adversarial/test_m13_android_security_failures.py",
+        "tests/adversarial/test_m14_optimization_authority.py",
+        "tests/adversarial/test_m15_self_extension_security.py",
+        "tests/adversarial/test_m9_security_privacy_and_privilege.py",
+        "tests/adversarial/test_procedure_promotion_authority.py",
+        "tests/integration/test_release_repair_chain_authority.py",
+        "tests/integration/test_release_wave_e_hostile_data_authority.py"
+      ]
+    }
+  }
+}

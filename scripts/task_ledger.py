@@ -71,6 +71,11 @@ def validate(data: dict[str, Any]) -> None:
     for task_id in by_id:
         visit(task_id)
 
+    # A valid DAG does not require task identifiers to be numerically topological.
+    # Canonical requirements can depend on later-numbered foundation tasks. The
+    # cycle check above proves that a topological ordering exists without
+    # rewriting authoritative dependency identities.
+
 
 def render(data: dict[str, Any]) -> str:
     lines = [

@@ -32,7 +32,7 @@ class TaskLedgerTests(unittest.TestCase):
             rendered,
         )
         self.assertIn("| M16 Production and Release |", rendered)
-        self.assertIn("| 4 | 0 | 1 | 0 | 25 |", rendered)
+        self.assertIn("| 25 | 0 | 0 | 5 | 0 |", rendered)
 
     def test_audit_report_covers_exactly_the_canonical_600_tasks(self) -> None:
         report = json.loads((ROOT / "docs" / "AUDIT_600.json").read_text(encoding="utf-8"))
@@ -74,6 +74,10 @@ class TaskLedgerTests(unittest.TestCase):
         self.data["tasks"][0]["depends_on"] = ["AX-601"]
         with self.assertRaisesRegex(ValueError, "invalid dependency"):
             self.script["validate"](self.data)
+
+    def test_acyclic_forward_numbered_dependency_is_allowed(self) -> None:
+        self.data["tasks"][2]["depends_on"] = ["AX-004"]
+        self.script["validate"](self.data)
 
     def test_wrong_milestone_is_rejected(self) -> None:
         self.data["tasks"][0]["milestone"] = "M16"

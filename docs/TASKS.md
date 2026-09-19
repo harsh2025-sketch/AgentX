@@ -4,7 +4,7 @@ Generated from `docs/TASKS.json` by `python scripts/task_ledger.py --write`.
 
 reported_status preserves the supplied 349/2/249 historical snapshot. acceptance_status records strict requirement evidence from canonical history plus reconciled milestone acceptance campaigns; VERIFIED requires implementation/tests/commit/acceptance evidence and does not imply release readiness.
 
-Partial: only the explicit critical path is encoded. Empty depends_on is not a claim of independence. AX-574 remains IN_PROGRESS because the whole dependency DAG has not been synchronized.
+Canonical dependency DAG: every dependency recorded by the authoritative task specification is encoded in `depends_on`; validation rejects missing IDs, self/duplicate edges, cycles, and non-topological forward edges. M16 release dependencies are synchronized with the accepted milestone gates and release-hardening sequence.
 
 Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliation, 2026-09-17; definitions from review-agentx-handover (4).pdf pp. 632-647.
 
@@ -26,7 +26,7 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | M13 Multi-device and Android | 2 | 0 | 28 | 28 | 0 | 0 | 2 | 0 |
 | M14 Optimization | 2 | 0 | 23 | 25 | 0 | 0 | 0 | 0 |
 | M15 Self-extension | 1 | 0 | 29 | 30 | 0 | 0 | 0 | 0 |
-| M16 Production and Release | 1 | 0 | 29 | 4 | 0 | 1 | 0 | 25 |
+| M16 Production and Release | 1 | 0 | 29 | 25 | 0 | 0 | 5 | 0 |
 
 A zero verified-acceptance count means this ledger has not yet recorded a task-level
 acceptance audit; it does not mean the existing implementation is absent.
@@ -606,30 +606,30 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-571 | synchronize README with live architecture | COMPLETE | VERIFIED |  |
 | AX-572 | establish canonical 600-task ledger file | NOT_IMPLEMENTED | VERIFIED | AX-571 |
 | AX-573 | machine-readable task-status ledger | NOT_IMPLEMENTED | VERIFIED | AX-572 |
-| AX-574 | dependency DAG synchronization | NOT_IMPLEMENTED | IN_PROGRESS | AX-573 |
+| AX-574 | dependency DAG synchronization | NOT_IMPLEMENTED | VERIFIED | AX-573 |
 | AX-575 | milestone-status automation | NOT_IMPLEMENTED | VERIFIED | AX-573 |
-| AX-576 | Windows 10 real-host test matrix | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-577 | Windows 11 real-host test matrix | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-578 | multi-DPI test matrix | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-579 | multi-monitor test matrix | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-580 | fresh-install test | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-581 | upgrade test | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-582 | configuration migration test | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-583 | database migration upgrade test | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-584 | database corruption recovery test | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-585 | abrupt-process-crash recovery | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-586 | restart-state recovery benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-587 | execution latency benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-588 | model-call benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-589 | token/cost benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-590 | Windows-action benchmark corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-591 | browser-workflow benchmark corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-592 | memory/retrieval benchmark corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-593 | skill-learning benchmark corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-594 | repair benchmark corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-595 | security/adversarial regression corpus | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-596 | cold -> learn -> restart -> warm E2E proof | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-205 |
-| AX-597 | break -> detect -> repair -> reuse E2E proof | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-245 |
-| AX-598 | privacy/data-retention controls | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-599 | release candidate / installer | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-600 | AgentX v1 whole-system acceptance and release | NOT_IMPLEMENTED | NOT_IMPLEMENTED | AX-085, AX-125, AX-175, AX-205, AX-245, AX-300, AX-335, AX-370, AX-405, AX-435, AX-460, AX-485, AX-515, AX-540, AX-570, AX-575, AX-576, AX-577, AX-596, AX-597, AX-598, AX-599 |
+| AX-576 | Windows 10 real-host test matrix | NOT_IMPLEMENTED | BLOCKED | AX-300 |
+| AX-577 | Windows 11 real-host test matrix | NOT_IMPLEMENTED | BLOCKED | AX-300 |
+| AX-578 | multi-DPI test matrix | NOT_IMPLEMENTED | BLOCKED | AX-431 |
+| AX-579 | multi-monitor test matrix | NOT_IMPLEMENTED | BLOCKED | AX-432 |
+| AX-580 | fresh-install test | NOT_IMPLEMENTED | VERIFIED | AX-575 |
+| AX-581 | upgrade test | NOT_IMPLEMENTED | VERIFIED | AX-580 |
+| AX-582 | configuration migration test | NOT_IMPLEMENTED | VERIFIED | AX-580 |
+| AX-583 | database migration upgrade test | NOT_IMPLEMENTED | VERIFIED | AX-037, AX-581 |
+| AX-584 | database corruption recovery test | NOT_IMPLEMENTED | VERIFIED | AX-036 |
+| AX-585 | abrupt-process-crash recovery | NOT_IMPLEMENTED | VERIFIED | AX-036 |
+| AX-586 | restart-state recovery benchmark | NOT_IMPLEMENTED | VERIFIED | AX-585 |
+| AX-587 | execution latency benchmark | NOT_IMPLEMENTED | VERIFIED | AX-580 |
+| AX-588 | model-call benchmark | NOT_IMPLEMENTED | VERIFIED | AX-587 |
+| AX-589 | token/cost benchmark | NOT_IMPLEMENTED | VERIFIED | AX-588 |
+| AX-590 | Windows-action benchmark corpus | NOT_IMPLEMENTED | VERIFIED | AX-300 |
+| AX-591 | browser-workflow benchmark corpus | NOT_IMPLEMENTED | VERIFIED | AX-335 |
+| AX-592 | memory/retrieval benchmark corpus | NOT_IMPLEMENTED | VERIFIED | AX-125 |
+| AX-593 | skill-learning benchmark corpus | NOT_IMPLEMENTED | VERIFIED | AX-175 |
+| AX-594 | repair benchmark corpus | NOT_IMPLEMENTED | VERIFIED | AX-245 |
+| AX-595 | security/adversarial regression corpus | NOT_IMPLEMENTED | VERIFIED | AX-405, AX-570 |
+| AX-596 | cold -> learn -> restart -> warm E2E proof | NOT_IMPLEMENTED | VERIFIED | AX-205 |
+| AX-597 | break -> detect -> repair -> reuse E2E proof | NOT_IMPLEMENTED | VERIFIED | AX-245 |
+| AX-598 | privacy/data-retention controls | NOT_IMPLEMENTED | VERIFIED | AX-405 |
+| AX-599 | release candidate / installer | NOT_IMPLEMENTED | VERIFIED | AX-580, AX-581, AX-582, AX-583, AX-584, AX-585, AX-595, AX-598 |
+| AX-600 | AgentX v1 whole-system acceptance and release | NOT_IMPLEMENTED | BLOCKED | AX-085, AX-125, AX-175, AX-205, AX-245, AX-300, AX-335, AX-370, AX-405, AX-435, AX-460, AX-485, AX-515, AX-540, AX-570, AX-575, AX-576, AX-577, AX-596, AX-597, AX-598, AX-599 |

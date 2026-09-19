@@ -18,6 +18,7 @@ from pathlib import Path, PureWindowsPath
 from typing import Final, cast
 
 __all__ = [
+    "CURRENT_CONFIG_SCHEMA_VERSION",
     "AgentXConfig",
     "ConfigError",
     "ConfigFileError",
@@ -33,6 +34,8 @@ __all__ = [
 _DEFAULT_PROFILE: Final = "default"
 _DEFAULT_LOG_LEVEL: Final = "INFO"
 _DEFAULT_DEBUG: Final = False
+CURRENT_CONFIG_SCHEMA_VERSION: Final[int] = 1
+_CONFIG_SCHEMA_FIELD: Final = "schema_version"
 _ENV_PREFIX: Final = "AGENTX_"
 _ALLOWED_FIELDS: Final = frozenset({"profile", "data_dir", "log_level", "debug"})
 _ENV_TO_FIELD: Final = {
@@ -130,10 +133,15 @@ def load_config(
     }
 
     if selected_path.is_file():
+        document_source = f"configuration file {selected_path}"
+        document = _normalize_config_document(
+            _read_toml(selected_path),
+            source=document_source,
+        )
         _apply_layer(
             values,
-            _read_toml(selected_path),
-            source=f"configuration file {selected_path}",
+            document,
+            source=document_source,
             data_dir_base=selected_path.parent,
         )
     elif config_path is not None:
@@ -180,6 +188,38 @@ def _read_toml(path: Path) -> dict[str, object]:
         raise ConfigParseError(f"Malformed TOML in {path}: {exc}") from exc
     except OSError as exc:
         raise ConfigFileError(f"Unable to read configuration file {path}: {exc}") from exc
+
+
+def _normalize_config_document(
+    document: Mapping[str, object],
+    *,
+    source: str,
+) -> dict[str, object]:
+    """Validate version metadata and return only canonical configuration fields.
+
+    Unversioned files are the legacy schema (version 0) and remain readable so
+    the explicit migration command can upgrade them. The schema version is
+    metadata, never a runtime authority/configuration value, and therefore is
+    not accepted from environment variables or runtime overrides.
+    """
+    layer = dict(document)
+    raw_version = layer.pop(_CONFIG_SCHEMA_FIELD, 0)
+    if type(raw_version) is not int:
+        raise ConfigValidationError(
+            f"{_CONFIG_SCHEMA_FIELD} from {source} must be an integer; got {raw_version!r}"
+        )
+    if raw_version < 0:
+        raise ConfigValidationError(f"{_CONFIG_SCHEMA_FIELD} from {source} must not be negative")
+    if raw_version > CURRENT_CONFIG_SCHEMA_VERSION:
+        raise ConfigValidationError(
+            f"{_CONFIG_SCHEMA_FIELD} {raw_version} from {source} is newer than "
+            f"this AgentX build supports ({CURRENT_CONFIG_SCHEMA_VERSION})"
+        )
+    if raw_version not in (0, CURRENT_CONFIG_SCHEMA_VERSION):
+        raise ConfigValidationError(
+            f"unsupported {_CONFIG_SCHEMA_FIELD} {raw_version} from {source}"
+        )
+    return layer
 
 
 def _environment_layer(environ: Mapping[str, str]) -> dict[str, object]:
