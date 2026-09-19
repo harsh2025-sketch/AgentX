@@ -20,7 +20,6 @@ from typing import Final, cast
 from agentx.infrastructure.config import (
     CURRENT_CONFIG_SCHEMA_VERSION,
     ConfigError,
-    ConfigValidationError,
     load_config,
 )
 
@@ -127,7 +126,7 @@ def migrate_config_file(path: str | Path) -> ConfigMigrationResult:
 
         # Validate exactly the bytes that will become canonical.
         load_config(temporary_path, environ={})
-        os.replace(temporary_path, source)
+        temporary_path.replace(source)
         temporary_path = None
     except (OSError, ConfigError) as exc:
         raise ConfigMigrationError(f"configuration migration failed safely: {exc}") from exc
