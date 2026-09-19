@@ -98,6 +98,7 @@ _MAX_ARGV_ITEMS: Final[int] = 64
 _MAX_ARG_CHARS: Final[int] = 4_096
 _MAX_COMMAND_LINE_CHARS: Final[int] = 32_767
 _MAX_TEXT_INPUT_CODE_UNITS: Final[int] = 1_024
+_TEXT_INPUT_PACE_SECONDS: Final[float] = 0.03
 _MAX_KEY_STROKES: Final[int] = 64
 _MAX_INPUT_EVENTS: Final[int] = 16384
 _MAX_CLIPBOARD_CODE_UNITS: Final[int] = 65_536
@@ -1109,8 +1110,42 @@ def _move_resize_window_windows(
 def _send_text_windows(
     request: NativeTextInputRequest,
 ) -> Result[NativeInputInjectionOutcome, AgentXError]:
-    events = _text_input_events(_utf16_code_units(request.text))
-    return _send_input_events(events)
+    """Inject Unicode text as paced key-down/key-up pairs.
+
+    Some modern Windows edit controls can report a large KEYEVENTF_UNICODE
+    SendInput batch as fully accepted while rendering corrupted/repeated text.
+    Keep the Win32 evidence semantics unchanged, but submit one UTF-16 code
+    unit at a time with a small bounded inter-unit delay. Independent
+    verification remains responsible for proving the application state.
+    """
+    import time
+
+    code_units = _utf16_code_units(request.text)
+    requested_events = 0
+    accepted_events = 0
+    win32_error = 0
+
+    for index, code_unit in enumerate(code_units):
+        result = _send_input_events(_text_input_events((code_unit,)))
+        if result.is_failure:
+            return result
+        outcome = result.unwrap()
+        requested_events += outcome.requested_events
+        accepted_events += outcome.accepted_events
+        if outcome.win32_error:
+            win32_error = outcome.win32_error
+        if outcome.accepted_events != outcome.requested_events:
+            break
+        if index + 1 < len(code_units):
+            time.sleep(_TEXT_INPUT_PACE_SECONDS)
+
+    return Result.success(
+        NativeInputInjectionOutcome(
+            requested_events=requested_events,
+            accepted_events=accepted_events,
+            win32_error=win32_error,
+        )
+    )
 
 
 def _send_key_strokes_windows(
