@@ -8,7 +8,6 @@ from agentx.self_extension import (
     CapabilityGapReason,
 )
 
-
 ROOT = Path(__file__).resolve().parents[2]
 MILESTONE_MODULES = (
     "src/agentx/adaptive_optimization.py",
