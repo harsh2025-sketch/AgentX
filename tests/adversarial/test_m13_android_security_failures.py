@@ -410,7 +410,6 @@ def test_discovery_disappearance_marks_device_unavailable_until_fresh_reconnect(
     )
 
 
-
 def test_real_adb_runner_interrupts_midflight_on_cancellation() -> None:
     source = CancellationSource()
     context = ExecutionContext(
