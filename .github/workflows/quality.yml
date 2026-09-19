@@ -109,9 +109,12 @@ jobs:
         run: python -m mypy
 
       - name: Validate task ledger and M16 corpus
+        shell: pwsh
         run: |
           python scripts/task_ledger.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python scripts/m16_corpus.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Run Windows host acceptance
         env:
