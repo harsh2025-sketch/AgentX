@@ -116,15 +116,14 @@ class PrivacyRetentionController:
         cutoff_text = None if cutoff is None else _sqlite_timestamp(cutoff)
         counts: list[DeletionCount] = []
         try:
-            with self.database.connection() as connection:
-                with transaction(connection):
-                    for category in categories:
-                        deleted = _delete_category(
-                            connection,
-                            category,
-                            cutoff_text=cutoff_text,
-                        )
-                        counts.append(DeletionCount(category=category, deleted_rows=deleted))
+            with self.database.connection() as connection, transaction(connection):
+                for category in categories:
+                    deleted = _delete_category(
+                        connection,
+                        category,
+                        cutoff_text=cutoff_text,
+                    )
+                    counts.append(DeletionCount(category=category, deleted_rows=deleted))
         except sqlite3.Error as exc:
             raise PrivacyRetentionError("privacy deletion failed transactionally") from exc
         return PrivacyDeletionReport(cutoff_utc=cutoff, counts=tuple(counts))
@@ -151,7 +150,9 @@ class ScopedPrivacyFiles:
         if not candidate.exists():
             return False
         if candidate.is_dir():
-            raise PrivacyRetentionError("privacy file deletion does not recursively delete directories")
+            raise PrivacyRetentionError(
+                "privacy file deletion does not recursively delete directories"
+            )
         candidate.unlink()
         return True
 
