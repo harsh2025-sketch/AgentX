@@ -48,7 +48,7 @@ from agentx.core.procedures import (
     ProcedureStatus,
 )
 from agentx.core.result import Result
-from agentx.world_model import ObservationMetadata, WorldAvailability, WorldModel
+from agentx.world_model import WorldAvailability, WorldModel
 from agentx.device_orchestration import (
     CrossDeviceCausalEpisode,
     DeviceCausalStep,
