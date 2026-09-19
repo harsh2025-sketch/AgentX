@@ -61,7 +61,9 @@ def run_benchmark(repetitions: int) -> dict[str, Any]:
     restart_samples: list[int] = []
     failures: list[str] = []
 
-    with tempfile.TemporaryDirectory(prefix="agentx-m16-benchmark-") as raw:
+    with tempfile.TemporaryDirectory(
+        prefix="agentx-m16-benchmark-", ignore_cleanup_errors=True
+    ) as raw:
         root = Path(raw)
         data_dir = root / "state"
         for index in range(repetitions):
