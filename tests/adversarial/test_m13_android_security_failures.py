@@ -54,6 +54,7 @@ from agentx.device_orchestration import (
     DeviceCausalStep,
     DeviceRequirement,
     DeviceRouter,
+    DeviceWorldModelBridge,
     procedure_requirement_for_device,
 )
 from agentx.core.errors import AgentXError
@@ -296,28 +297,41 @@ def test_device_specific_procedure_scope_rejects_different_phone() -> None:
 
 
 def test_android_descriptor_integrates_into_world_model_as_evidence_only() -> None:
-    provider = AndroidProvider(AdbTransport(runner=Runner("emulator-5554 device\n")))
-    descriptor = provider.discover(context=ctx(), observed_at=_T0).unwrap()[0]
+    runner = Runner("emulator-5554 device\n")
+    provider = AndroidProvider(AdbTransport(runner=runner))
+    registry = DeviceRegistry()
+    discovery = DeviceDiscovery(registry=registry, providers=(provider,))
     model = WorldModel()
-    metadata = ObservationMetadata(
-        observation_id="android-device-1",
-        source=ProvenanceReference(
-            kind=ProvenanceKind.SYSTEM,
-            reference="adb:controlled-test",
-        ),
+    bridge = DeviceWorldModelBridge(discovery=discovery, world_model=model)
+    source = ProvenanceReference(
+        kind=ProvenanceKind.SYSTEM,
+        reference="adb:controlled-test",
+    )
+
+    refresh = bridge.refresh(
+        context=ctx(),
         observed_at=_T0,
+        source=source,
         ttl=timedelta(seconds=30),
         environment_id="controlled-m13",
     )
-    state = model.ingest_device_descriptor(
-        descriptor,
-        metadata=metadata,
-        role="phone",
-    )
+    assert len(refresh.states) == 1
+    state = refresh.states[0]
     assert state.platform == "android"
     assert state.availability is WorldAvailability.AVAILABLE
     assert state.metadata.source.reference == "adb:controlled-test"
     assert state.capability_health
+
+    runner.devices = ""
+    disconnected = bridge.refresh(
+        context=ctx(),
+        observed_at=_T0 + timedelta(seconds=1),
+        source=source,
+        ttl=timedelta(seconds=30),
+        environment_id="controlled-m13",
+    )
+    assert len(disconnected.states) == 1
+    assert disconnected.states[0].availability is WorldAvailability.UNAVAILABLE
 
 
 class MismatchedProvider:
