@@ -23,7 +23,7 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | M10 World Model | 16 | 0 | 14 | 30 | 0 | 0 | 0 | 0 |
 | M11 Voice and HUD | 2 | 0 | 23 | 25 | 0 | 0 | 0 | 0 |
 | M12 Scheduling | 1 | 0 | 24 | 25 | 0 | 0 | 0 | 0 |
-| M13 Multi-device and Android | 2 | 0 | 28 | 2 | 0 | 0 | 0 | 28 |
+| M13 Multi-device and Android | 2 | 0 | 28 | 28 | 0 | 0 | 2 | 0 |
 | M14 Optimization | 2 | 0 | 23 | 25 | 0 | 0 | 0 | 0 |
 | M15 Self-extension | 1 | 0 | 29 | 1 | 0 | 0 | 0 | 29 |
 | M16 Production and Release | 1 | 0 | 29 | 4 | 0 | 1 | 0 | 25 |
@@ -520,34 +520,34 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-485 | proactivity milestone acceptance | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-486 | device abstraction foundation | COMPLETE | VERIFIED |  |
 | AX-487 | device protocol foundation | COMPLETE | VERIFIED |  |
-| AX-488 | Device Registry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-489 | device discovery | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-490 | device capability advertisement | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-491 | device health model | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-492 | device environment identity | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-493 | Android provider | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-494 | ADB transport | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-495 | Android package discovery | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-496 | Android app launch | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-497 | accessibility-tree observation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-498 | Android semantic target resolution | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-499 | Android tap action | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-500 | Android text entry | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-501 | Android swipe action | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-502 | Android back/home actions | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-503 | Android state verification | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-504 | Android screen fallback | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-505 | Android risk policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-506 | Android permission mapping | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-507 | cross-device Task DAG | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-508 | device-target routing | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-509 | PC -> phone handoff | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-510 | phone -> PC handoff | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-511 | browser -> phone handoff | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-512 | device-specific Procedure applicability | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-513 | cross-device causal episode | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-514 | PC/browser/phone workflow benchmark | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-515 | multi-device milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-488 | Device Registry | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-489 | device discovery | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-490 | device capability advertisement | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-491 | device health model | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-492 | device environment identity | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-493 | Android provider | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-494 | ADB transport | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-495 | Android package discovery | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-496 | Android app launch | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-497 | accessibility-tree observation | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-498 | Android semantic target resolution | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-499 | Android tap action | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-500 | Android text entry | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-501 | Android swipe action | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-502 | Android back/home actions | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-503 | Android state verification | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-504 | Android screen fallback | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-505 | Android risk policy | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-506 | Android permission mapping | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-507 | cross-device Task DAG | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-508 | device-target routing | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-509 | PC -> phone handoff | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-510 | phone -> PC handoff | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-511 | browser -> phone handoff | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-512 | device-specific Procedure applicability | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-513 | cross-device causal episode | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-514 | PC/browser/phone workflow benchmark | NOT_IMPLEMENTED | BLOCKED |  |
+| AX-515 | multi-device milestone acceptance | NOT_IMPLEMENTED | BLOCKED |  |
 | AX-516 | strategy-performance evidence foundation | COMPLETE | VERIFIED |  |
 | AX-517 | execution-level metrics foundation | COMPLETE | VERIFIED |  |
 | AX-518 | deterministic strategy baseline | NOT_IMPLEMENTED | VERIFIED |  |
