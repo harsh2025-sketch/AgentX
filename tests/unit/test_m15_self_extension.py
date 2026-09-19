@@ -180,10 +180,10 @@ def test_static_analysis_accepts_pure_subset_and_rejects_authority_primitives() 
     assert inspect_candidate(artifact()).passed
 
     hostile_sources = (
-        "import os\ndef run(payload):\n    return {\"answer\": 1}\n",
-        "def run(payload):\n    return {\"answer\": __import__(\"os\")}\n",
-        "def run(payload):\n    return {\"answer\": open(\"x\").read()}\n",
-        "def run(payload):\n    return {\"answer\": payload.__class__}\n",
+        'import os\ndef run(payload):\n    return {"answer": 1}\n',
+        'def run(payload):\n    return {"answer": __import__("os")}\n',
+        'def run(payload):\n    return {"answer": open("x").read()}\n',
+        'def run(payload):\n    return {"answer": payload.__class__}\n',
     )
     for source in hostile_sources:
         report = inspect_candidate(artifact(source=source))
