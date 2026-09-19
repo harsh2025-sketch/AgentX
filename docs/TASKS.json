@@ -18979,13 +18979,28 @@
       "milestone": "M15",
       "title": "capability-gap record",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-542 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-542: capability-gap record."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-542."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -18994,13 +19009,28 @@
       "milestone": "M15",
       "title": "capability research objective",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-543 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-543: capability research objective."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-543."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19009,13 +19039,28 @@
       "milestone": "M15",
       "title": "capability design proposal",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-544 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-544: capability design proposal."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-544."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19024,13 +19069,28 @@
       "milestone": "M15",
       "title": "proposal provenance tracking",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-545 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-545: proposal provenance tracking."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-545."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19039,13 +19099,28 @@
       "milestone": "M15",
       "title": "generated-tool specification",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-546 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-546: generated-tool specification."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-546."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19054,13 +19129,28 @@
       "milestone": "M15",
       "title": "generated-code isolation environment",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-547 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-547: generated-code isolation environment."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-547."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19069,13 +19159,28 @@
       "milestone": "M15",
       "title": "generated dependency policy",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-548 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-548: generated dependency policy."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-548."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19084,13 +19189,28 @@
       "milestone": "M15",
       "title": "generated-code static analysis",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-549 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-549: generated-code static analysis."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-549."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19099,13 +19219,28 @@
       "milestone": "M15",
       "title": "generated-code type checking",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-550 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-550: generated-code type checking."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-550."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19114,13 +19249,28 @@
       "milestone": "M15",
       "title": "generated-code lint gate",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-551 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-551: generated-code lint gate."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-551."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19129,13 +19279,28 @@
       "milestone": "M15",
       "title": "generated unit tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-552 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-552: generated unit tests."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-552."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19144,13 +19309,28 @@
       "milestone": "M15",
       "title": "generated adversarial tests",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-553 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-553: generated adversarial tests."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-553."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19159,13 +19339,28 @@
       "milestone": "M15",
       "title": "sandbox execution",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-554 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-554: sandbox execution."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-554."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19174,13 +19369,28 @@
       "milestone": "M15",
       "title": "resource-limited tool test",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-555 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-555: resource-limited tool test."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-555."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19189,13 +19399,28 @@
       "milestone": "M15",
       "title": "network-isolated test mode",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-556 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-556: network-isolated test mode."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-556."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19204,13 +19429,28 @@
       "milestone": "M15",
       "title": "filesystem-isolated test mode",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-557 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-557: filesystem-isolated test mode."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-557."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19219,13 +19459,28 @@
       "milestone": "M15",
       "title": "generated capability ABI validation",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-558 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-558: generated capability ABI validation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-558."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19234,13 +19489,28 @@
       "milestone": "M15",
       "title": "generated risk declaration validation",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-559 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-559: generated risk declaration validation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-559."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19249,13 +19519,28 @@
       "milestone": "M15",
       "title": "generated permission declaration validation",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-560 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-560: generated permission declaration validation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-560."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19264,13 +19549,28 @@
       "milestone": "M15",
       "title": "generated verification contract validation",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-561 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-561: generated verification contract validation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-561."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19279,13 +19579,28 @@
       "milestone": "M15",
       "title": "repeated-success promotion threshold",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-562 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-562: repeated-success promotion threshold."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-562."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19294,13 +19609,28 @@
       "milestone": "M15",
       "title": "human review package",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-563 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-563: human review package."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-563."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19309,13 +19639,28 @@
       "milestone": "M15",
       "title": "installation approval",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-564 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-564: installation approval."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-564."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19324,13 +19669,28 @@
       "milestone": "M15",
       "title": "versioned capability registration",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-565 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-565: versioned capability registration."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-565."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19339,13 +19699,28 @@
       "milestone": "M15",
       "title": "generated-capability health tracking",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-566 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-566: generated-capability health tracking."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-566."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19354,13 +19729,28 @@
       "milestone": "M15",
       "title": "generated-capability degradation",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-567 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-567: generated-capability degradation."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-567."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19369,13 +19759,28 @@
       "milestone": "M15",
       "title": "generated-capability rollback",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-568 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-568: generated-capability rollback."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-568."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19384,13 +19789,28 @@
       "milestone": "M15",
       "title": "Trusted-Kernel immutability proof",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-569 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-569: Trusted-Kernel immutability proof."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-569."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
@@ -19399,13 +19819,28 @@
       "milestone": "M15",
       "title": "self-extension milestone acceptance",
       "reported_status": "NOT_IMPLEMENTED",
-      "acceptance_status": "NOT_IMPLEMENTED",
+      "acceptance_status": "VERIFIED",
       "depends_on": [],
       "evidence": [
         {
-          "kind": "audit_finding",
-          "reference": "docs/AUDIT_600.md",
-          "note": "Independent whole-project audit set AX-570 to NOT_IMPLEMENTED; existing evidence was not sufficient for strict VERIFIED acceptance."
+          "kind": "implementation",
+          "reference": "src/agentx/self_extension.py; src/agentx/self_extension_worker.py",
+          "note": "M15 production implementation for AX-570: self-extension milestone acceptance."
+        },
+        {
+          "kind": "tests",
+          "reference": "tests/unit/test_m15_self_extension.py; tests/integration/test_m15_self_extension_e2e.py; tests/adversarial/test_m15_self_extension_security.py; tests/architecture/test_m15_cross_milestone_boundaries.py",
+          "note": "Focused lifecycle, sandbox, security, persistence, cross-milestone, and end-to-end evidence covers AX-570."
+        },
+        {
+          "kind": "canonical_commit",
+          "reference": "PR #181 exact-head C1.01",
+          "note": "M15 implementation remains intentionally unmerged; final exact PR-head CI is the acceptance commit gate."
+        },
+        {
+          "kind": "acceptance",
+          "reference": "docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md; docs/AUDIT_600.md",
+          "note": "Independent M15 re-audit records exact requirement acceptance and security boundaries."
         }
       ]
     },
