@@ -1,7 +1,9 @@
 # ruff: noqa: I001
 from __future__ import annotations
 
+import ast
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
 from uuid import UUID
 
 import pytest
@@ -196,3 +198,46 @@ def test_cross_device_causal_episode_requires_same_lineage() -> None:
                 DeviceCausalStep(descriptor.device_id, second),
             )
         )
+
+
+def test_cancelled_context_never_invokes_adb_runner() -> None:
+    runner = Runner("emulator-5554 device\n")
+    source = CancellationSource()
+    source.request_cancellation("stop")
+    context = ExecutionContext(
+        correlation_id=UUID("55555555-5555-4555-8555-555555555555"),
+        cancellation_token=source.token,
+    )
+    result = AdbTransport(runner=runner).devices(context=context)
+    assert result.is_failure
+    assert result.unwrap_error().code == "android.adb.cancelled"
+    assert runner.calls == []
+
+
+def test_adb_subprocess_boundary_is_argv_only_shell_false() -> None:
+    source_path = (
+        Path(__file__).resolve().parents[2]
+        / "src"
+        / "agentx"
+        / "capabilities"
+        / "android"
+        / "transport.py"
+    )
+    tree = ast.parse(source_path.read_text(encoding="utf-8"))
+    run_calls = [
+        node
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and isinstance(node.func.value, ast.Name)
+        and node.func.value.id == "subprocess"
+        and node.func.attr == "run"
+    ]
+    assert len(run_calls) == 1
+    call = run_calls[0]
+    shell_keywords = [item for item in call.keywords if item.arg == "shell"]
+    assert len(shell_keywords) == 1
+    assert isinstance(shell_keywords[0].value, ast.Constant)
+    assert shell_keywords[0].value.value is False
+    assert call.args
+    assert isinstance(call.args[0], ast.List)
