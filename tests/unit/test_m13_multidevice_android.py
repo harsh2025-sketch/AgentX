@@ -11,10 +11,12 @@ from agentx.capabilities.android import (
     AdbCommandResult,
     AdbTransport,
     AndroidActionParams,
+    AndroidNavigation,
     AndroidOperation,
     AndroidProvider,
     AndroidTargetSelector,
     AndroidUiValidationError,
+    AndroidVerificationSpec,
     build_android_capabilities,
     parse_android_ui_tree,
     resolve_android_target,
@@ -223,3 +225,146 @@ def test_android_screenshot_is_bounded_png_evidence() -> None:
     assert execution.observation.data["width"] == 1024
     assert execution.observation.data["height"] == 2048
     assert screen_capability.verify(request, execution.observation, context()).passed
+
+
+
+def _capability_by_name(runner: FakeAdbRunner, name: str):
+    return next(
+        cap
+        for cap in build_android_capabilities(AdbTransport(runner=runner))
+        if cap.descriptor.identity.name.value == name
+    )
+
+
+def test_android_app_launch_requires_independent_foreground_readback() -> None:
+    runner = FakeAdbRunner()
+    capability = _capability_by_name(runner, "android.app_launch")
+    request = CapabilityRequest(
+        identity=capability.descriptor.identity,
+        params=AndroidActionParams(
+            operation=AndroidOperation.APP_LAUNCH,
+            serial="emulator-5554",
+            package="com.example.app",
+        ),
+    )
+    execution = capability.execute(request, context())
+    assert execution.succeeded
+    assert execution.observation.data["component"] == "com.example.app/.MainActivity"
+    assert capability.verify(request, execution.observation, context()).passed
+
+    runner.foreground = "com.example.other"
+    rejected = capability.verify(request, execution.observation, context())
+    assert rejected.passed is False
+
+
+def test_android_semantic_tap_uses_unique_target_center_and_verifies_state() -> None:
+    runner = FakeAdbRunner()
+    capability = _capability_by_name(runner, "android.tap")
+    selector = AndroidTargetSelector(
+        resource_id="com.example:id/go",
+        package="com.example.app",
+        require_clickable=True,
+    )
+    request = CapabilityRequest(
+        identity=capability.descriptor.identity,
+        params=AndroidActionParams(
+            operation=AndroidOperation.TAP,
+            serial="emulator-5554",
+            selector=selector,
+            verification=AndroidVerificationSpec(target_present=selector),
+        ),
+    )
+    execution = capability.execute(request, context())
+    assert execution.succeeded
+    assert execution.observation.data["x"] == 60
+    assert execution.observation.data["y"] == 70
+    assert any(call[-1] == "input tap 60 70" for call in runner.calls)
+    assert capability.verify(request, execution.observation, context()).passed
+
+
+def test_android_text_swipe_back_and_home_are_typed_and_verified() -> None:
+    runner = FakeAdbRunner()
+    verification = AndroidVerificationSpec(
+        expected_foreground_package="com.example.app"
+    )
+
+    text_capability = _capability_by_name(runner, "android.text_entry")
+    text_request = CapabilityRequest(
+        identity=text_capability.descriptor.identity,
+        params=AndroidActionParams(
+            operation=AndroidOperation.TEXT_ENTRY,
+            serial="emulator-5554",
+            text="hello world",
+            verification=verification,
+        ),
+    )
+    text_execution = text_capability.execute(text_request, context())
+    assert text_execution.succeeded
+    assert text_execution.observation.data["text"] == "[REDACTED]"
+    assert text_capability.verify(text_request, text_execution.observation, context()).passed
+
+    swipe_capability = _capability_by_name(runner, "android.swipe")
+    swipe_request = CapabilityRequest(
+        identity=swipe_capability.descriptor.identity,
+        params=AndroidActionParams(
+            operation=AndroidOperation.SWIPE,
+            serial="emulator-5554",
+            x=10,
+            y=20,
+            x2=30,
+            y2=40,
+            duration_ms=250,
+            verification=verification,
+        ),
+    )
+    swipe_execution = swipe_capability.execute(swipe_request, context())
+    assert swipe_execution.succeeded
+    assert swipe_capability.verify(
+        swipe_request,
+        swipe_execution.observation,
+        context(),
+    ).passed
+
+    navigation_capability = _capability_by_name(runner, "android.navigation")
+    for navigation, expected_keycode in (
+        (AndroidNavigation.BACK, "4"),
+        (AndroidNavigation.HOME, "3"),
+    ):
+        navigation_request = CapabilityRequest(
+            identity=navigation_capability.descriptor.identity,
+            params=AndroidActionParams(
+                operation=AndroidOperation.NAVIGATION,
+                serial="emulator-5554",
+                navigation=navigation,
+                verification=verification,
+            ),
+        )
+        execution = navigation_capability.execute(navigation_request, context())
+        assert execution.succeeded
+        assert any(
+            call[-1] == f"input keyevent {expected_keycode}" for call in runner.calls
+        )
+        assert navigation_capability.verify(
+            navigation_request,
+            execution.observation,
+            context(),
+        ).passed
+
+
+def test_mutating_android_actions_without_postcondition_do_not_self_verify() -> None:
+    runner = FakeAdbRunner()
+    capability = _capability_by_name(runner, "android.tap")
+    request = CapabilityRequest(
+        identity=capability.descriptor.identity,
+        params=AndroidActionParams(
+            operation=AndroidOperation.TAP,
+            serial="emulator-5554",
+            x=50,
+            y=60,
+        ),
+    )
+    execution = capability.execute(request, context())
+    assert execution.succeeded
+    verification = capability.verify(request, execution.observation, context())
+    assert verification.passed is False
+    assert "no independent postcondition" in verification.detail
