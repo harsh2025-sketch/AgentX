@@ -255,7 +255,7 @@ Exit criteria:
 
 ## Milestone 13 — Multi-Device / Android / Cross-Device AgentOS
 
-**Status:** 2/30 VERIFIED (6.67%); PARTIAL — see TASKS.json for exact remaining states
+**Status:** 28/30 VERIFIED (93.33%); PARTIAL — AX-514/515 require real PC/browser/phone acceptance
 
 Generalize the capability fabric beyond the Windows host.
 
@@ -266,6 +266,14 @@ Exit criteria:
 - cross-device task decomposition and handoff;
 - device-specific environment validity for learned procedures;
 - end-to-end PC + browser + phone workflow with verification on every device boundary.
+
+M13 campaign evidence: PR #180 implements the provider-neutral registry/discovery layer,
+bounded ADB Android provider, semantic accessibility-first interaction, independent
+readback verification, canonical risk/permission enforcement, cross-device routing and
+handoff, device-specific Procedure applicability, World Model integration and causal
+episodes. Deterministic unit/integration/adversarial tests accept AX-488–AX-513. The
+campaign environment has no authorized Android target, so AX-514/515 remain BLOCKED
+rather than treating a fake provider as proof of the required real PC/browser/phone exit flow.
 
 ## Milestone 14 — Adaptive Strategy Optimization and Specialized Models
 
@@ -335,7 +343,7 @@ Exit criteria:
 | M10 | AX-406–AX-435 | 30 | 30 | 100.00% | none | COMPLETE |
 | M11 | AX-436–AX-460 | 25 | 25 | 100.00% | none | COMPLETE |
 | M12 | AX-461–AX-485 | 25 | 25 | 100.00% | none | COMPLETE |
-| M13 | AX-486–AX-515 | 2 | 30 | 6.67% | NOT_IMPLEMENTED=28 | PARTIAL |
+| M13 | AX-486–AX-515 | 28 | 30 | 93.33% | BLOCKED=2 | PARTIAL |
 | M14 | AX-516–AX-540 | 25 | 25 | 100.00% | none | COMPLETE |
 | M15 | AX-541–AX-570 | 1 | 30 | 3.33% | NOT_IMPLEMENTED=29 | PARTIAL |
 | M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
