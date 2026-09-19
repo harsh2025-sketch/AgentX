@@ -10,6 +10,7 @@ from agentx.capabilities.abi import CapabilityPlatform, CapabilityRequest
 from agentx.capabilities.android import (
     AdbCommandResult,
     AdbTransport,
+    AndroidActionCapability,
     AndroidActionParams,
     AndroidNavigation,
     AndroidOperation,
@@ -227,7 +228,10 @@ def test_android_screenshot_is_bounded_png_evidence() -> None:
     assert screen_capability.verify(request, execution.observation, context()).passed
 
 
-def _capability_by_name(runner: FakeAdbRunner, name: str):
+def _capability_by_name(
+    runner: FakeAdbRunner,
+    name: str,
+) -> AndroidActionCapability:
     return next(
         cap
         for cap in build_android_capabilities(AdbTransport(runner=runner))
