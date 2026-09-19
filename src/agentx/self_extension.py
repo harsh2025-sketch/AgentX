@@ -67,6 +67,7 @@ __all__ = [
     "DependencyPolicy",
     "ExtensionHealthState",
     "GeneratedCapability",
+    "GeneratedToolSandbox",
     "GeneratedCapabilityParams",
     "GeneratedDependency",
     "GeneratedToolSpecification",
@@ -86,6 +87,7 @@ __all__ = [
     "ValidationKind",
     "classify_runtime_failure",
     "trusted_kernel_fingerprint",
+    "validate_candidate",
 ]
 
 _SCHEMA_VERSION: Final[int] = 1
@@ -160,6 +162,24 @@ def _identity_dict(identity: CapabilityIdentity) -> dict[str, object]:
             "patch": identity.version.patch,
         },
     }
+
+
+def _artifact_digest(
+    *,
+    proposal: CapabilityDesignProposal,
+    source: str,
+    dependencies: tuple[GeneratedDependency, ...],
+) -> str:
+    material = {
+        "identity": _identity_dict(proposal.identity),
+        "proposal_id": str(proposal.proposal_id),
+        "source": source,
+        "dependencies": [
+            {"name": item.name, "version": item.version, "digest": item.digest}
+            for item in dependencies
+        ],
+    }
+    return _digest_bytes(_canonical_json(material))
 
 
 def _identity_from_dict(raw: Mapping[str, object]) -> CapabilityIdentity:
@@ -515,22 +535,17 @@ class CandidateArtifact:
         encoded = source.encode("utf-8")
         if not encoded or len(encoded) > _MAX_SOURCE_BYTES:
             raise SelfExtensionError("candidate source is empty or exceeds the source limit")
-        material = {
-            "identity": _identity_dict(proposal.identity),
-            "proposal_id": str(proposal.proposal_id),
-            "source": source,
-            "dependencies": [
-                {"name": item.name, "version": item.version, "digest": item.digest}
-                for item in dependencies
-            ],
-        }
         return cls(
             artifact_id=uuid4(),
             proposal=proposal,
             source=source,
             provenance=provenance,
             dependencies=dependencies,
-            digest=_digest_bytes(_canonical_json(material)),
+            digest=_artifact_digest(
+                proposal=proposal,
+                source=source,
+                dependencies=dependencies,
+            ),
         )
 
     def __post_init__(self) -> None:
@@ -543,12 +558,11 @@ class CandidateArtifact:
         if not isinstance(self.dependencies, tuple):
             raise TypeError("dependencies must be tuple")
         object.__setattr__(self, "digest", _validate_digest(self.digest, name="artifact.digest"))
-        expected = CandidateArtifact.create(
+        expected = _artifact_digest(
             proposal=self.proposal,
             source=self.source,
-            provenance=self.provenance,
             dependencies=self.dependencies,
-        ).digest
+        )
         if not hmac.compare_digest(self.digest, expected):
             raise SelfExtensionSecurityError("candidate artifact digest does not match its bytes")
 
