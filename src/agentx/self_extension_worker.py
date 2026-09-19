@@ -22,7 +22,11 @@ def main() -> int:
         source = raw.get("source")
         payload = raw.get("payload")
         max_steps = raw.get("max_steps")
-        if not isinstance(source, str) or not isinstance(payload, Mapping) or type(max_steps) is not int:
+        if (
+            not isinstance(source, str)
+            or not isinstance(payload, Mapping)
+            or type(max_steps) is not int
+        ):
             raise ValueError("sandbox envelope is malformed")
         output = execute_safe_candidate(
             source=source,
