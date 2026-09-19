@@ -17,10 +17,7 @@ import ast
 import hashlib
 import hmac
 import json
-import os
-import subprocess
-import sys
-import tempfile
+import time
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
@@ -48,7 +45,6 @@ from agentx.capabilities.abi import (
     RollbackSupport,
     VerificationResult,
 )
-from agentx.capabilities.registry import CapabilityAlreadyRegisteredError, CapabilityRegistry
 from agentx.core.errors import AgentXError, ErrorCategory
 from agentx.core.execution import ExecutionContext
 from agentx.core.tasks import JsonValue
@@ -1017,57 +1013,21 @@ class GeneratedToolSandbox:
                 transcript_digest=transcript_digest,
                 artifact_digest=artifact.digest,
             )
-        envelope = {
-            "artifact_digest": artifact.digest,
-            "source": artifact.source,
-            "payload": dict(payload),
-            "max_steps": self._policy.max_steps,
-        }
-        child_env = {
-            "PYTHONHASHSEED": "0",
-            "PYTHONIOENCODING": "utf-8",
-        }
-        system_root = os.environ.get("SYSTEMROOT")
-        if system_root:
-            child_env["SYSTEMROOT"] = system_root
+        started = time.monotonic()
         try:
-            with tempfile.TemporaryDirectory(prefix="agentx-m15-") as working_dir:
-                completed = subprocess.run(
-                    [sys.executable, "-I", "-m", "agentx.self_extension_worker"],
-                    input=_canonical_json(envelope),
-                    capture_output=True,
-                    cwd=working_dir,
-                    env=child_env,
-                    timeout=self._policy.timeout_seconds,
-                    check=False,
-                )
-        except subprocess.TimeoutExpired:
-            return SandboxResult(
-                succeeded=False,
-                output=None,
-                error_code="extension.sandbox_timeout",
-                transcript_digest=transcript_digest,
-                artifact_digest=artifact.digest,
+            output = execute_safe_candidate(
+                source=artifact.source,
+                payload=dict(payload),
+                max_steps=self._policy.max_steps,
             )
-        if completed.returncode != 0 or len(completed.stdout) > self._policy.max_output_bytes:
-            return SandboxResult(
-                succeeded=False,
-                output=None,
-                error_code="extension.sandbox_failed",
-                transcript_digest=transcript_digest,
-                artifact_digest=artifact.digest,
-            )
-        try:
-            decoded = json.loads(completed.stdout.decode("utf-8"))
-        except (UnicodeDecodeError, json.JSONDecodeError):
-            return SandboxResult(
-                succeeded=False,
-                output=None,
-                error_code="extension.sandbox_protocol",
-                transcript_digest=transcript_digest,
-                artifact_digest=artifact.digest,
-            )
-        if not isinstance(decoded, Mapping) or decoded.get("ok") is not True:
+        except (
+            SelfExtensionSecurityError,
+            ValueError,
+            TypeError,
+            KeyError,
+            ArithmeticError,
+            OverflowError,
+        ):
             return SandboxResult(
                 succeeded=False,
                 output=None,
@@ -1075,7 +1035,14 @@ class GeneratedToolSandbox:
                 transcript_digest=transcript_digest,
                 artifact_digest=artifact.digest,
             )
-        output = decoded.get("output")
+        if time.monotonic() - started > self._policy.timeout_seconds:
+            return SandboxResult(
+                succeeded=False,
+                output=None,
+                error_code="extension.sandbox_timeout",
+                transcript_digest=transcript_digest,
+                artifact_digest=artifact.digest,
+            )
         try:
             _bounded(output, maximum=self._policy.max_output_bytes)
         except SelfExtensionSecurityError:
@@ -1592,7 +1559,14 @@ class GeneratedCapability:
                 passed=False,
                 detail="observation is not bound to the validated artifact digest",
             )
-        output = observation.data.get("output")
+        canonical_observation = observation.to_dict()
+        canonical_data = canonical_observation.get("data")
+        if not isinstance(canonical_data, dict):
+            return VerificationResult(
+                passed=False,
+                detail="trusted observation data is not a canonical JSON object",
+            )
+        output = canonical_data.get("output")
         payload = request.params.payload()
         expected_transcript = _digest_bytes(
             _canonical_json(
@@ -1603,7 +1577,7 @@ class GeneratedCapability:
                 }
             )
         )
-        if observation.data.get("transcript_digest") != expected_transcript:
+        if canonical_data.get("transcript_digest") != expected_transcript:
             return VerificationResult(
                 passed=False,
                 detail="trusted sandbox transcript digest does not match execution evidence",
@@ -1735,21 +1709,21 @@ class SelfExtensionManager:
         "_integrity_key",
         "_path",
         "_records",
-        "_registry",
+        "_register_capability",
         "_sandbox",
     )
 
     def __init__(
         self,
         *,
-        registry: CapabilityRegistry,
+        register_capability: Callable[[GeneratedCapability], object],
         sandbox: GeneratedToolSandbox,
         approval_authority: TrustedApprovalAuthority,
         integrity_key: bytes,
         persistence_path: Path | None = None,
     ) -> None:
-        if not isinstance(registry, CapabilityRegistry):
-            raise TypeError("registry must be CapabilityRegistry")
+        if not callable(register_capability):
+            raise TypeError("register_capability must be callable")
         if not isinstance(sandbox, GeneratedToolSandbox):
             raise TypeError("sandbox must be GeneratedToolSandbox")
         if not isinstance(approval_authority, TrustedApprovalAuthority):
@@ -1758,7 +1732,7 @@ class SelfExtensionManager:
             raise SelfExtensionSecurityError("integrity key must contain at least 32 bytes")
         if persistence_path is not None and not isinstance(persistence_path, Path):
             raise TypeError("persistence_path must be Path or None")
-        self._registry = registry
+        self._register_capability = register_capability
         self._sandbox = sandbox
         self._approval_authority = approval_authority
         self._integrity_key = integrity_key
@@ -1802,6 +1776,16 @@ class SelfExtensionManager:
         current = self._records.get(artifact.proposal.identity)
         if current is not None and current.artifact.digest != artifact.digest:
             raise SelfExtensionError("exact capability version is already bound to different bytes")
+        capability = GeneratedCapability(
+            artifact=artifact,
+            sandbox=self._sandbox,
+            is_active=self.is_active,
+        )
+        # Registration is injected by the canonical composition boundary. M15
+        # never imports or owns the registry, preserving the single A1.10
+        # registry-placement rule. If registration fails, lifecycle state
+        # remains unchanged and promotion fails closed.
+        self._register_capability(capability)
         for identity, record in self._records.items():
             if (
                 identity.name == artifact.proposal.identity.name
@@ -1809,24 +1793,12 @@ class SelfExtensionManager:
                 and record.status is CandidateLifecycle.ACTIVE
             ):
                 record.status = CandidateLifecycle.RETIRED
-        record = _ExtensionRecord(
+        self._records[artifact.proposal.identity] = _ExtensionRecord(
             artifact=artifact,
             evidence=evidence,
             review=review,
             status=CandidateLifecycle.ACTIVE,
         )
-        self._records[artifact.proposal.identity] = record
-        capability = GeneratedCapability(
-            artifact=artifact,
-            sandbox=self._sandbox,
-            is_active=self.is_active,
-        )
-        try:
-            self._registry.register(capability)
-        except CapabilityAlreadyRegisteredError:
-            existing = self._registry.describe(artifact.proposal.identity)
-            if existing is None or existing.identity != artifact.proposal.identity:
-                raise
         self._persist()
         return capability
 
@@ -2067,7 +2039,7 @@ class SelfExtensionManager:
                     sandbox=self._sandbox,
                     is_active=self.is_active,
                 )
-                self._registry.register(capability)
+                self._register_capability(capability)
 
 
 def pure_read_risk() -> RiskAssessment:
