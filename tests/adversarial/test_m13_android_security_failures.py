@@ -17,7 +17,7 @@ from agentx.capabilities.android import (
     AndroidUiValidationError,
     parse_android_ui_tree,
 )
-from agentx.capabilities.device import DevicePlatform, DeviceProviderId
+from agentx.capabilities.device import DeviceDescriptor, DevicePlatform, DeviceProviderId
 from agentx.capabilities.device_registry import (
     DeviceDiscovery,
     DeviceRegistry,
@@ -318,7 +318,7 @@ def test_android_descriptor_integrates_into_world_model_as_evidence_only() -> No
 
 
 class MismatchedProvider:
-    def __init__(self, descriptor) -> None:
+    def __init__(self, descriptor: DeviceDescriptor) -> None:
         self._descriptor = descriptor
 
     @property
@@ -330,7 +330,7 @@ class MismatchedProvider:
         *,
         context: ExecutionContext,
         observed_at: datetime,
-    ):
+    ) -> Result[tuple[DeviceDescriptor, ...], AgentXError]:
         del context, observed_at
         return Result.success((self._descriptor,))
 
