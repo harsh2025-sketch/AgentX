@@ -1,16 +1,22 @@
 # AgentX status
 
-Repository: `harsh2025-sketch/AgentX`. Final M14 implementation audit baseline: green post-merge main `7fe73850224160fdbd12883185e91e19a2d35991` (C1.01 run `35379021464`).
+Repository: `harsh2025-sketch/AgentX`.
 
-M11, M12, M13, and M14 are integrated on canonical main. M15 PR #181 remains open and intentionally unmerged for controlled integration. Historical `reported_status` remains unchanged.
+M15 is merged into canonical main. M16 PR #182 is the final production/release hardening
+candidate and intentionally remains open and unmerged for a separate final-integration campaign.
+Its implementation baseline is canonical main
+`b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f`, whose exact push-triggered C1.01
+run `35429637569` passed.
+
+Historical `reported_status` remains unchanged. Current strict acceptance is:
 
 | State | Tasks | Percentage |
 | --- | ---: | ---: |
-| VERIFIED | 565 | 94.17% |
+| VERIFIED | 586 | 97.67% |
 | NOT_AUDITED | 0 | 0.00% |
-| IN_PROGRESS | 1 | 0.17% |
-| BLOCKED | 9 | 1.50% |
-| NOT_IMPLEMENTED | 25 | 4.17% |
+| IN_PROGRESS | 0 | 0.00% |
+| BLOCKED | 14 | 2.33% |
+| NOT_IMPLEMENTED | 0 | 0.00% |
 | TOTAL | 600 | 100.00% |
 
 | Milestone | Range | VERIFIED | TOTAL | % | Other states | Status |
@@ -31,23 +37,40 @@ M11, M12, M13, and M14 are integrated on canonical main. M15 PR #181 remains ope
 | M13 | AX-486–AX-515 | 28 | 30 | 93.33% | BLOCKED=2 | PARTIAL |
 | M14 | AX-516–AX-540 | 25 | 25 | 100.00% | none | COMPLETE |
 | M15 | AX-541–AX-570 | 30 | 30 | 100.00% | none | COMPLETE |
-| M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
+| M16 | AX-571–AX-600 | 25 | 30 | 83.33% | BLOCKED=5 | PARTIAL |
 
-M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 release matrix or a user desktop hardware matrix. M7 uses actual headless Chrome against controlled localhost pages. This proves browser mechanics and governance, not compatibility with arbitrary external sites/accounts. M10 DPI/multi-monitor and visual accuracy evidence uses bounded deterministic fixtures in addition to real native capture. Real model/research credentials were unavailable; controlled-provider metrics do not satisfy live-efficiency acceptance. M11 has deterministic production-path acceptance; physical microphone/speaker, live STT/TTS provider credentials, and interactive desktop HUD entry points were not run and are not represented as real-environment evidence. The CLI exposes metadata/help, not a complete natural-language product session.
+## M16 release acceptance
 
-| Area | Accepted scope and remaining requirements |
-| --- | --- |
-| Core runtime | L0–L5 governed composition, bounded attempts, independent verification; natural-goal/live-provider vertical and final M1 release proof remain blocked. |
-| Memory/learning | Restart-safe Hive, compiled ACTIVE reuse and repair/rollback accepted; real-provider efficiency measurements remain blocked. |
-| Windows capability layer | M6 scope accepted on hosted Windows; Windows 10/11 release matrix remains open. |
-| Browser | M7 forms, sessions, transfers, tabs, recovery and governed workflows have real headless Chrome fixture evidence. |
-| Model/research | HTTP adapter, bounded gateway and inert verified-research handoff implemented; external model vertical/signoff remain blocked. |
-| Security | M9 hostile-content, restart, privacy and authority suites retained; untrusted content remains data. |
-| World model | Freshness/invalidation, real filesystem change, bounded frame capture and grounding accepted within documented environment limits. |
-| Voice/HUD | AX-436–AX-460 are acceptance VERIFIED: concrete Windows audio, STT/TTS, realtime turn/interruption, governed voice-task authorization, confirmation, HUD telemetry/control and deterministic end-to-end acceptance are implemented. Real-device/live-provider/interactive-desktop entry points remain separately not run. |
-| Scheduling | M12 scheduler, one-shot/recurring work, durable recovery, event-trigger launch, proactivity policy, quotas, approval expiry and stale-state rejection are integrated on canonical main; post-M12 exact-main C1.01 passed. |
-| Multi-device/Android | AX-486–AX-513 are acceptance VERIFIED with provider-neutral registry/discovery, bounded ADB, governed Android capabilities, semantic UI, verification, routing/handoff, procedure applicability, World Model and causal integration. AX-514/515 remain BLOCKED on a real PC + browser + authorized Android phone workflow. |
-| Safe self-extension | AX-541–AX-570 are acceptance VERIFIED on PR #181 with typed gap classification, immutable provenance, safe-subset sandbox validation, dependency/static/type/lint gates, varied tests, authenticated human approval, canonical registry/Executor execution, restart integrity, degradation/revocation/rollback, and Trusted Kernel immutability evidence. Arbitrary host code execution is explicitly out of scope. |
-| Optimization | M14 strategy history/statistics, constrained contextual-bandit and preference experiments, specialist datasets/models, offline evaluation, rollbackable policy and safety acceptance are implemented with controlled evidence; no live-provider or real-user performance claim is made. |
-| Self-extension | Capability-gap foundation; safe extension lifecycle remains open. |
-| Production/release | Release is not ready; installer, upgrades, privacy/product controls, platform matrix and whole-system acceptance remain open. |
+Locally accepted M16 scope includes dependency/status automation, fresh wheel installation,
+prior-main package upgrade, versioned/atomic configuration migration, durable database migration,
+bounded corruption inspection, abrupt-crash restart behavior, reproducible restart/latency
+benchmarking, controlled model/token/cost instrumentation, Windows/browser/memory/learning/repair
+corpora, a cross-milestone adversarial corpus, cold→learn→restart→warm proof,
+break→detect→repair→reuse proof, transactional privacy/retention deletion, and the
+`1.0.0rc1` wheel release candidate.
+
+Five M16 tasks remain BLOCKED:
+
+- AX-576: genuine Windows 10 workstation matrix.
+- AX-577: genuine Windows 11 workstation matrix.
+- AX-578: physical multi-DPI matrix.
+- AX-579: physical multi-monitor matrix.
+- AX-600: final v1 whole-system release, because those mandatory release matrices and the
+  project-level real-environment blockers below remain unsatisfied.
+
+Hosted C1.01 is Microsoft Windows Server 2025. It is valid Windows-native regression evidence,
+but M16 explicitly refuses to relabel it as Windows 10/11 workstation proof. Likewise, M10
+deterministic DPI/monitor fixtures are algorithmic regression evidence, not physical-display proof.
+
+The other nine project blockers remain the pre-existing M1 live vertical/release proof,
+M4 live-provider efficiency evidence, M8 real-provider vertical/signoff, and M13 real
+PC/browser/authorized-Android workflow/signoff. No controlled provider, fake device, localhost
+browser fixture, or hosted-server result is promoted into those missing evidence classes.
+
+## Release state
+
+**READY_FOR_FINAL_INTEGRATION / READY_FOR_REAL_ENVIRONMENT_ACCEPTANCE.**
+
+This is not an unconditional production-ready claim. See
+`docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md`, `docs/AUDIT_600.md`, and
+`docs/TASKS.json` for exact evidence and blockers.

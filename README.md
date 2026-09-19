@@ -6,19 +6,25 @@ can operate a user's Windows machine, browser, and devices through governed,
 verifiable capabilities, with persistent memory and the ability to learn and
 repair its own procedures over time.
 
-> **Current status: substantial governed research prototype; not a finished AgentOS.**
+> **Current status: M16 v1 release candidate with substantial governed production acceptance; final release is blocked on mandatory real-environment matrices.**
 >
 > Implemented code includes the Trusted Kernel, bounded agent/runtime strategies,
 > persistent experience and semantic memory, procedure compilation/validation,
 > reuse and repair machinery, an acceptance-verified Windows-native capability fabric, governed browser workflows with actual headless Chrome fixture acceptance, governed M11 voice/HUD and M12 scheduling/proactivity paths, a governed provider-neutral M13 Android/cross-device implementation with controlled acceptance, M14 adaptive strategy optimization/specialist-model foundations with rollbackable controlled acceptance, and M15 governed safe self-extension for deterministic side-effect-free generated tools with provenance, isolated validation, authenticated promotion, restart integrity, revocation, and Trusted Kernel protection.
 > M15 deliberately does not expose arbitrary Python/shell/package execution; generated source remains untrusted candidate data until bounded validation and trusted approval.
-> These components do not yet establish the complete adaptive-learning workflow
-> or a ready-to-use desktop product. The CLI currently exposes package metadata,
-> not a natural-language agent session.
+> M16 adds a bounded v1 release candidate, wheel build/install/upgrade acceptance,
+> versioned configuration migration, durable-state recovery, privacy/retention controls,
+> benchmarks, and final cross-milestone acceptance corpora. The CLI exposes bounded
+> release operations (`init`, `doctor`, `migrate-config`) rather than a parallel
+> natural-language AgentLoop. Windows 10/11 workstation and physical multi-DPI/
+> multi-monitor release matrices remain unproven and are not replaced by hosted
+> Windows Server or deterministic fixtures.
 >
 > See the [whole-project roadmap](docs/ROADMAP.md) for milestone exit criteria,
 > the [status and completion ledger](docs/STATUS.md), and the independent
-> [AX-001–AX-600 audit](docs/AUDIT_600.md) for evidence and remaining work.
+> [AX-001–AX-600 audit](docs/AUDIT_600.md) for evidence and remaining work, and
+> [M16 release acceptance](docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md) for packaging,
+> migration, recovery, benchmark, privacy, and real-environment boundaries.
 > The exact normalized [600-task ledger](docs/TASKS.md) is generated from
 > [machine-readable task records](docs/TASKS.json); historical reported status
 > is separate from strict acceptance evidence.
@@ -69,9 +75,11 @@ Smoke test:
 
 ```powershell
 python -m agentx --version
-# agentx 0.0.1
+# agentx 1.0.0rc1
 
 agentx --help
+agentx init --data-dir .\agentx-data
+agentx doctor --data-dir .\agentx-data
 ```
 
 On macOS/Linux, substitute `python3.12 -m venv .venv` and

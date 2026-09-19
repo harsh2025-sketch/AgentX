@@ -310,21 +310,32 @@ Exit criteria:
 
 ## Milestone 16 — Production Hardening, Benchmarks and Release
 
-**Status:** 4/30 VERIFIED (13.33%); PARTIAL — see TASKS.json for exact remaining states
+**Status:** 25/30 VERIFIED (83.33%); PARTIAL — AX-576/577/578/579/600 BLOCKED on mandatory real-environment release evidence
 
 Turn the research prototype into a defensible, measurable AgentOS release.
 
-Exit criteria:
-- canonical whole-system ledger and documentation synchronized with live code;
-- Windows 10/11 real-host test matrix;
-- crash/restart/database recovery tests;
-- performance, latency, cost and model-call benchmarks;
-- security/adversarial regression suite;
-- representative OS/browser/memory/repair benchmark corpus;
-- full cold -> learn -> restart -> warm reuse -> break -> repair acceptance demonstration;
-- installer/configuration/upgrade/rollback story;
-- privacy, audit and data-retention controls;
-- release candidate passes full exact-head quality gates.
+Locally accepted release scope:
+- canonical 600-task ledger, milestone automation, and dependency-DAG validation;
+- v1 release-candidate wheel with clean install and prior-main upgrade acceptance;
+- versioned atomic configuration migration and canonical SQLite upgrade/reopen acceptance;
+- bounded corruption inspection plus real abrupt-process crash/restart evidence;
+- reproducible restart/latency benchmark with complete samples and failure accounting;
+- controlled model-call/token/cost instrumentation explicitly separated from live-provider claims;
+- Windows/browser/memory/learning/repair acceptance corpora;
+- cross-milestone adversarial/security regression retaining Trusted Kernel and M15 boundaries;
+- cold -> learn -> restart -> warm and break -> detect -> repair -> reuse acceptance;
+- transactional privacy/retention deletion verified across restart;
+- exact-head C1.01 remains the final PR quality gate.
+
+Outstanding mandatory release evidence:
+- genuine Windows 10 workstation matrix;
+- genuine Windows 11 workstation matrix;
+- physical multi-DPI matrix;
+- physical multi-monitor matrix;
+- AX-600 final release after those matrices and retained whole-project blockers are satisfied.
+
+Hosted Windows Server 2025 and deterministic M10 display fixtures are not substituted for these
+physical/workstation requirements. See `docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md`.
 
 ---
 
@@ -348,6 +359,6 @@ Exit criteria:
 | M13 | AX-486–AX-515 | 28 | 30 | 93.33% | BLOCKED=2 | PARTIAL |
 | M14 | AX-516–AX-540 | 25 | 25 | 100.00% | none | COMPLETE |
 | M15 | AX-541–AX-570 | 30 | 30 | 100.00% | none | COMPLETE |
-| M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
+| M16 | AX-571–AX-600 | 25 | 30 | 83.33% | BLOCKED=5 | PARTIAL |
 
-M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 release matrix or a user desktop hardware matrix. M7 uses actual headless Chrome against controlled localhost pages. This proves browser mechanics and governance, not compatibility with arbitrary external sites/accounts. M10 DPI/multi-monitor and visual accuracy evidence uses bounded deterministic fixtures in addition to real native capture. Real model/research credentials were unavailable; controlled-provider metrics do not satisfy live-efficiency acceptance. The CLI exposes metadata/help, not a complete natural-language product session.
+M6/M10/M16 hosted Windows evidence is Windows Server 2025, not the Windows 10/11 workstation release matrix. M7 uses actual headless Chrome against controlled localhost pages. M10 DPI/multi-monitor fixtures prove bounded algorithms but not physical display matrices. Real model/research credentials were unavailable; controlled model/token/cost instrumentation is explicitly not live-provider efficiency evidence. The M16 CLI exposes bounded release operations, not a second natural-language AgentLoop.

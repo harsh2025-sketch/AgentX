@@ -1,16 +1,16 @@
-#|||||||||||||||||||||||||||| AX-515 | M13 | multi-device milestone acceptance | BLOCKED | E2 | REAL ENVIRONMENT EVIDENCE REQUIRED |ne workflow benchmark | BLOCKED | E2 | REAL ENVIRONMENT EVIDENCE REQUIRED |ne handoff | VERIFIED | E3 | NONE |ne -> PC handoff | VERIFIED | E3 | NONE |ne handoff | VERIFIED | E3 | NONE |ng | VERIFIED | E3 | NONE |ndroid permission mapping | VERIFIED | E3 | NONE |ndroid risk policy | VERIFIED | E3 | NONE |ndroid screen fallback | VERIFIED | E3 | NONE |ndroid state verification | VERIFIED | E3 | NONE |ndroid back/home actions | VERIFIED | E3 | NONE |ndroid swipe action | VERIFIED | E3 | NONE |ndroid text entry | VERIFIED | E3 | NONE |ndroid tap action | VERIFIED | E3 | NONE |ndroid semantic target resolution | VERIFIED | E3 | NONE |n | VERIFIED | E3 | NONE |ndroid app launch | VERIFIED | E3 | NONE |ndroid package discovery | VERIFIED | E3 | NONE |nsport | VERIFIED | E3 | NONE |ndroid provider | VERIFIED | E3 | NONE |nvironment identity | VERIFIED | E3 | NONE |nt | VERIFIED | E3 | NONE |ntX 600-task acceptance record
+# AgentX 600-task acceptance record
 
-Repository: `harsh2025-sketch/AgentX`. Final M14 implementation audit baseline is green post-merge main `7fe73850224160fdbd12883185e91e19a2d35991`; exact push C1.01 run `35379021464` passed.
+Repository: `harsh2025-sketch/AgentX`. M16 audit baseline is green canonical main `b9e027dd17bc4816f1920c7855c4a9d0f2d3e24f` (C1.01 run `35429637569`).
 
-M11, M12, M13, and M14 are integrated on canonical main with exact-SHA green CI. M15 PR #181 remains open and intentionally unmerged for a separate controlled integration campaign. Historical `reported_status` remains unchanged.
+M15 is integrated. M16 PR #182 remains open and unmerged. Historical `reported_status` is protected; current strict truth is `acceptance_status`.
 
 | State | Tasks | Percentage |
 | --- | ---: | ---: |
-| VERIFIED | 565 | 94.17% |
+| VERIFIED | 586 | 97.67% |
 | NOT_AUDITED | 0 | 0.00% |
-| IN_PROGRESS | 1 | 0.17% |
-| BLOCKED | 9 | 1.50% |
-| NOT_IMPLEMENTED | 25 | 4.17% |
+| IN_PROGRESS | 0 | 0.00% |
+| BLOCKED | 14 | 2.33% |
+| NOT_IMPLEMENTED | 0 | 0.00% |
 | TOTAL | 600 | 100.00% |
 
 ## Milestones
@@ -33,15 +33,13 @@ M11, M12, M13, and M14 are integrated on canonical main with exact-SHA green CI.
 | M13 | AX-486–AX-515 | 28 | 30 | 93.33% | BLOCKED=2 | PARTIAL |
 | M14 | AX-516–AX-540 | 25 | 25 | 100.00% | none | COMPLETE |
 | M15 | AX-541–AX-570 | 30 | 30 | 100.00% | none | COMPLETE |
-| M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
+| M16 | AX-571–AX-600 | 25 | 30 | 83.33% | BLOCKED=5 | PARTIAL |
 
 ## Evidence boundaries
 
-M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 release matrix or a user desktop hardware matrix. M7 uses actual headless Chrome against controlled localhost pages. This proves browser mechanics and governance, not compatibility with arbitrary external sites/accounts. M10 DPI/multi-monitor and visual accuracy evidence uses bounded deterministic fixtures in addition to real native capture. Real model/research credentials were unavailable; controlled-provider metrics do not satisfy live-efficiency acceptance. M11 has deterministic production-path acceptance and separate real-device/live-provider/interactive-HUD entry points; those three real-environment entry points were not run and are not represented as such. The CLI exposes metadata/help, not a complete natural-language product session.
+Hosted C1.01 currently runs on Microsoft Windows Server 2025. It is Windows-native evidence, but not Windows 10/11 workstation evidence. Physical multi-DPI and multi-monitor matrices are not available. Controlled provider/model fixtures prove instrumentation only and are not live-provider cost/performance evidence. Real Android/voice/provider evidence remains limited exactly where the task ledger says BLOCKED.
 
-M14 acceptance uses deterministic controlled strategy/correction/specialist datasets plus real SQLite/EventJournal restart/concurrency mechanics. It proves production optimization contracts, safety constraints, rollback, and reproducibility; it does **not** claim live-provider cost, statistically representative production improvement, or a real-user preference corpus. See `docs/M14_ADAPTIVE_OPTIMIZATION_ACCEPTANCE.md`.
-
-M15 acceptance uses a deny-by-construction generated-tool language, separate-process sandbox worker, immutable artifact/provenance digests, varied validation, authenticated human approval, canonical registry/Executor integration, HMAC restart persistence, health/revocation/rollback, and explicit Trusted Kernel fingerprint checks. It does **not** claim that arbitrary third-party Python, shell, package installers, native binaries, or unrestricted downloaded repositories can be executed safely. See `docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md`.
+M16 preserves the central security invariant: **untrusted content never grants authority**. The final corpus retains M9 hostile-content defenses, voice/device/World-Model/optimizer authority boundaries, procedure promotion controls, M15 Trusted-Kernel immutability, and release hostile-data chains.
 
 ## Task decisions
 
@@ -534,34 +532,34 @@ M15 acceptance uses a deny-by-construction generated-tool language, separate-pro
 | AX-485 | M12 | proactivity milestone acceptance | VERIFIED | E4 | NONE |
 | AX-486 | M13 | device abstraction foundation | VERIFIED | E2 | NONE |
 | AX-487 | M13 | device protocol foundation | VERIFIED | E2 | NONE |
-| AX-488 | M13 | Device Registry | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-489 | M13 | device discovery | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-490 | M13 | device capability advertisement | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-491 | M13 | device health model | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-492 | M13 | device environment identity | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-493 | M13 | Android provider | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-494 | M13 | ADB transport | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-495 | M13 | Android package discovery | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-496 | M13 | Android app launch | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-497 | M13 | accessibility-tree observation | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-498 | M13 | Android semantic target resolution | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-499 | M13 | Android tap action | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-500 | M13 | Android text entry | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-501 | M13 | Android swipe action | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-502 | M13 | Android back/home actions | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-503 | M13 | Android state verification | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-504 | M13 | Android screen fallback | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-505 | M13 | Android risk policy | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-506 | M13 | Android permission mapping | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-507 | M13 | cross-device Task DAG | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-508 | M13 | device-target routing | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-509 | M13 | PC -> phone handoff | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-510 | M13 | phone -> PC handoff | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-511 | M13 | browser -> phone handoff | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-512 | M13 | device-specific Procedure applicability | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-513 | M13 | cross-device causal episode | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-514 | M13 | PC/browser/phone workflow benchmark | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-515 | M13 | multi-device milestone acceptance | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
+| AX-488 | M13 | Device Registry | VERIFIED | E3 | NONE |
+| AX-489 | M13 | device discovery | VERIFIED | E3 | NONE |
+| AX-490 | M13 | device capability advertisement | VERIFIED | E3 | NONE |
+| AX-491 | M13 | device health model | VERIFIED | E3 | NONE |
+| AX-492 | M13 | device environment identity | VERIFIED | E3 | NONE |
+| AX-493 | M13 | Android provider | VERIFIED | E3 | NONE |
+| AX-494 | M13 | ADB transport | VERIFIED | E3 | NONE |
+| AX-495 | M13 | Android package discovery | VERIFIED | E3 | NONE |
+| AX-496 | M13 | Android app launch | VERIFIED | E3 | NONE |
+| AX-497 | M13 | accessibility-tree observation | VERIFIED | E3 | NONE |
+| AX-498 | M13 | Android semantic target resolution | VERIFIED | E3 | NONE |
+| AX-499 | M13 | Android tap action | VERIFIED | E3 | NONE |
+| AX-500 | M13 | Android text entry | VERIFIED | E3 | NONE |
+| AX-501 | M13 | Android swipe action | VERIFIED | E3 | NONE |
+| AX-502 | M13 | Android back/home actions | VERIFIED | E3 | NONE |
+| AX-503 | M13 | Android state verification | VERIFIED | E3 | NONE |
+| AX-504 | M13 | Android screen fallback | VERIFIED | E3 | NONE |
+| AX-505 | M13 | Android risk policy | VERIFIED | E3 | NONE |
+| AX-506 | M13 | Android permission mapping | VERIFIED | E3 | NONE |
+| AX-507 | M13 | cross-device Task DAG | VERIFIED | E3 | NONE |
+| AX-508 | M13 | device-target routing | VERIFIED | E3 | NONE |
+| AX-509 | M13 | PC -> phone handoff | VERIFIED | E3 | NONE |
+| AX-510 | M13 | phone -> PC handoff | VERIFIED | E3 | NONE |
+| AX-511 | M13 | browser -> phone handoff | VERIFIED | E3 | NONE |
+| AX-512 | M13 | device-specific Procedure applicability | VERIFIED | E3 | NONE |
+| AX-513 | M13 | cross-device causal episode | VERIFIED | E3 | NONE |
+| AX-514 | M13 | PC/browser/phone workflow benchmark | BLOCKED | E2 | REAL ENVIRONMENT EVIDENCE REQUIRED |
+| AX-515 | M13 | multi-device milestone acceptance | BLOCKED | E2 | REAL ENVIRONMENT EVIDENCE REQUIRED |
 | AX-516 | M14 | strategy-performance evidence foundation | VERIFIED | E3 | NONE |
 | AX-517 | M14 | execution-level metrics foundation | VERIFIED | E3 | NONE |
 | AX-518 | M14 | deterministic strategy baseline | VERIFIED | E3 | NONE |
@@ -617,53 +615,41 @@ M15 acceptance uses a deny-by-construction generated-tool language, separate-pro
 | AX-568 | M15 | generated-capability rollback | VERIFIED | E4 | NONE |
 | AX-569 | M15 | Trusted-Kernel immutability proof | VERIFIED | E4 | NONE |
 | AX-570 | M15 | self-extension milestone acceptance | VERIFIED | E4 | NONE |
-| AX-571 | M16 | synchronize README with live architecture | VERIFIED | E2 | NONE |
-| AX-572 | M16 | establish canonical 600-task ledger file | VERIFIED | E2 | NONE |
-| AX-573 | M16 | machine-readable task-status ledger | VERIFIED | E2 | NONE |
-| AX-574 | M16 | dependency DAG synchronization | IN_PROGRESS | E2 | INTEGRATION MISSING |
+| AX-571 | M16 | synchronize README with live architecture | VERIFIED | E3 | NONE |
+| AX-572 | M16 | establish canonical 600-task ledger file | VERIFIED | E3 | NONE |
+| AX-573 | M16 | machine-readable task-status ledger | VERIFIED | E3 | NONE |
+| AX-574 | M16 | dependency DAG synchronization | VERIFIED | E3 | NONE |
 | AX-575 | M16 | milestone-status automation | VERIFIED | E3 | NONE |
-| AX-576 | M16 | Windows 10 real-host test matrix | NOT_IMPLEMENTED | E0 | REAL ENVIRONMENT REQUIRED |
-| AX-577 | M16 | Windows 11 real-host test matrix | NOT_IMPLEMENTED | E0 | REAL ENVIRONMENT REQUIRED |
-| AX-578 | M16 | multi-DPI test matrix | NOT_IMPLEMENTED | E0 | REAL ENVIRONMENT REQUIRED |
-| AX-579 | M16 | multi-monitor test matrix | NOT_IMPLEMENTED | E0 | REAL ENVIRONMENT REQUIRED |
-| AX-580 | M16 | fresh-install test | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-581 | M16 | upgrade test | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-582 | M16 | configuration migration test | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-583 | M16 | database migration upgrade test | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-584 | M16 | database corruption recovery test | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-585 | M16 | abrupt-process-crash recovery | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-586 | M16 | restart-state recovery benchmark | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-587 | M16 | execution latency benchmark | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-588 | M16 | model-call benchmark | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-589 | M16 | token/cost benchmark | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-590 | M16 | Windows-action benchmark corpus | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-591 | M16 | browser-workflow benchmark corpus | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-592 | M16 | memory/retrieval benchmark corpus | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-593 | M16 | skill-learning benchmark corpus | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-594 | M16 | repair benchmark corpus | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-595 | M16 | security/adversarial regression corpus | NOT_IMPLEMENTED | E0 | SECURITY GAP |
-| AX-596 | M16 | cold -> learn -> restart -> warm E2E proof | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-597 | M16 | break -> detect -> repair -> reuse E2E proof | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-598 | M16 | privacy/data-retention controls | NOT_IMPLEMENTED | E0 | SECURITY GAP |
-| AX-599 | M16 | release candidate / installer | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
-| AX-600 | M16 | AgentX v1 whole-system acceptance and release | NOT_IMPLEMENTED | E0 | IMPLEMENTATION MISSING |
+| AX-576 | M16 | Windows 10 real-host test matrix | BLOCKED | E3 | REAL ENVIRONMENT REQUIRED |
+| AX-577 | M16 | Windows 11 real-host test matrix | BLOCKED | E3 | REAL ENVIRONMENT REQUIRED |
+| AX-578 | M16 | multi-DPI test matrix | BLOCKED | E3 | REAL ENVIRONMENT REQUIRED |
+| AX-579 | M16 | multi-monitor test matrix | BLOCKED | E3 | REAL ENVIRONMENT REQUIRED |
+| AX-580 | M16 | fresh-install test | VERIFIED | E3 | NONE |
+| AX-581 | M16 | upgrade test | VERIFIED | E3 | NONE |
+| AX-582 | M16 | configuration migration test | VERIFIED | E3 | NONE |
+| AX-583 | M16 | database migration upgrade test | VERIFIED | E3 | NONE |
+| AX-584 | M16 | database corruption recovery test | VERIFIED | E3 | NONE |
+| AX-585 | M16 | abrupt-process-crash recovery | VERIFIED | E3 | NONE |
+| AX-586 | M16 | restart-state recovery benchmark | VERIFIED | E3 | NONE |
+| AX-587 | M16 | execution latency benchmark | VERIFIED | E3 | NONE |
+| AX-588 | M16 | model-call benchmark | VERIFIED | E3 | NONE |
+| AX-589 | M16 | token/cost benchmark | VERIFIED | E3 | NONE |
+| AX-590 | M16 | Windows-action benchmark corpus | VERIFIED | E3 | NONE |
+| AX-591 | M16 | browser-workflow benchmark corpus | VERIFIED | E3 | NONE |
+| AX-592 | M16 | memory/retrieval benchmark corpus | VERIFIED | E3 | NONE |
+| AX-593 | M16 | skill-learning benchmark corpus | VERIFIED | E3 | NONE |
+| AX-594 | M16 | repair benchmark corpus | VERIFIED | E3 | NONE |
+| AX-595 | M16 | security/adversarial regression corpus | VERIFIED | E3 | NONE |
+| AX-596 | M16 | cold -> learn -> restart -> warm E2E proof | VERIFIED | E4 | NONE |
+| AX-597 | M16 | break -> detect -> repair -> reuse E2E proof | VERIFIED | E4 | NONE |
+| AX-598 | M16 | privacy/data-retention controls | VERIFIED | E3 | NONE |
+| AX-599 | M16 | release candidate / installer | VERIFIED | E3 | NONE |
+| AX-600 | M16 | AgentX v1 whole-system acceptance and release | BLOCKED | E3 | REAL ENVIRONMENT REQUIRED |
 
-## Project readiness
+## M16 release decision
 
-| Area | Accepted scope and remaining requirements |
-| --- | --- |
-| Core runtime | L0–L5 governed composition, bounded attempts, independent verification; natural-goal/live-provider vertical and final M1 release proof remain blocked. |
-| Memory/learning | Restart-safe Hive, compiled ACTIVE reuse and repair/rollback accepted; real-provider efficiency measurements remain blocked. |
-| Windows capability layer | M6 scope accepted on hosted Windows; Windows 10/11 release matrix remains open. |
-| Browser | M7 forms, sessions, transfers, tabs, recovery and governed workflows have real headless Chrome fixture evidence. |
-| Model/research | HTTP adapter, bounded gateway and inert verified-research handoff implemented; external model vertical/signoff remain blocked. |
-| Security | M9 hostile-content, restart, privacy and authority suites retained; untrusted content remains data. |
-| World model | Freshness/invalidation, real filesystem change, bounded frame capture and grounding accepted within documented environment limits. |
-| Voice/HUD | M11 production voice/HUD path, governed authorization, interruption, telemetry/control and deterministic end-to-end acceptance are complete for AX-436–AX-460. Real microphone/speaker, live STT/TTS credentials and interactive desktop entry points remain separately not run and are not claimed as release-matrix evidence. |
-| Scheduling | M12 scheduler, one-shot/recurring work, durable recovery, event-trigger launch, proactive policy, quotas, approval expiry and stale-state rejection are integrated with governed execution. |
-| Multi-device/Android | AX-486–AX-513 are accepted with controlled production-path evidence; AX-514/515 require a real PC + browser + authorized Android target and remain BLOCKED rather than simulated. |
-| Optimization | M14 strategy history/statistics, constrained contextual-bandit and preference experiments, specialist datasets/models, offline evaluation, rollbackable policy and safety acceptance are implemented with controlled evidence; live-provider and real-user performance claims remain unmade. |
-| Self-extension | Capability-gap foundation; safe extension lifecycle remains open. |
-| Production/release | Release is not ready; installer, upgrades, privacy/product controls, platform matrix and whole-system acceptance remain open. |
+AX-571..AX-575 and AX-580..AX-599 are VERIFIED by the M16 second-pass audit, subject to exact final PR-head C1.01. AX-576..AX-579 are BLOCKED solely on mandatory real workstation/physical-display evidence after local harness completion. AX-600 is BLOCKED on those release matrices and the retained whole-project real-environment blockers.
 
-Implementation coverage is not inferred from acceptance totals. See each task's implementation/test paths and blockers in AUDIT_600.json.
+**Release state: READY_FOR_FINAL_INTEGRATION / READY_FOR_REAL_ENVIRONMENT_ACCEPTANCE.** This is not an unconditional production-ready claim.
+
+See `docs/M16_PRODUCTION_RELEASE_ACCEPTANCE.md`, `docs/TASKS.json`, and `docs/AUDIT_600.json` for implementation paths and machine-readable evidence.
