@@ -2,7 +2,7 @@
 
 Repository: `harsh2025-sketch/AgentX`. Final M14 implementation audit baseline is green post-merge main `7fe73850224160fdbd12883185e91e19a2d35991`; exact push C1.01 run `35379021464` passed.
 
-M11, M12, and M14 are integrated on canonical main with exact-SHA green CI. PR #176 merged successfully after exact reconciled-head CI, and the post-merge main quality gate passed. Historical `reported_status` remains unchanged. Counts below are calculated from the merged 600-task records.
+M11, M12, and M14 are integrated on canonical main with exact-SHA green CI. M13 PR #180 remains open and unmerged; the M13 rows below are the evidence-supported candidate acceptance state on this branch. Historical `reported_status` remains unchanged.
 
 | State | Tasks | Percentage |
 | --- | ---: | ---: |
