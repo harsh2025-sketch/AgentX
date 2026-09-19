@@ -1,4 +1,4 @@
-# AgentX 600-task acceptance record
+#|||||||||||||||||||||||||||| AX-515 | M13 | multi-device milestone acceptance | BLOCKED | E2 | REAL ENVIRONMENT EVIDENCE REQUIRED |ne workflow benchmark | BLOCKED | E2 | REAL ENVIRONMENT EVIDENCE REQUIRED |ne handoff | VERIFIED | E3 | NONE |ne -> PC handoff | VERIFIED | E3 | NONE |ne handoff | VERIFIED | E3 | NONE |ng | VERIFIED | E3 | NONE |ndroid permission mapping | VERIFIED | E3 | NONE |ndroid risk policy | VERIFIED | E3 | NONE |ndroid screen fallback | VERIFIED | E3 | NONE |ndroid state verification | VERIFIED | E3 | NONE |ndroid back/home actions | VERIFIED | E3 | NONE |ndroid swipe action | VERIFIED | E3 | NONE |ndroid text entry | VERIFIED | E3 | NONE |ndroid tap action | VERIFIED | E3 | NONE |ndroid semantic target resolution | VERIFIED | E3 | NONE |n | VERIFIED | E3 | NONE |ndroid app launch | VERIFIED | E3 | NONE |ndroid package discovery | VERIFIED | E3 | NONE |nsport | VERIFIED | E3 | NONE |ndroid provider | VERIFIED | E3 | NONE |nvironment identity | VERIFIED | E3 | NONE |nt | VERIFIED | E3 | NONE |ntX 600-task acceptance record
 
 Repository: `harsh2025-sketch/AgentX`. Final M14 implementation audit baseline is green post-merge main `7fe73850224160fdbd12883185e91e19a2d35991`; exact push C1.01 run `35379021464` passed.
 
@@ -6,11 +6,11 @@ M11, M12, and M14 are integrated on canonical main with exact-SHA green CI. PR #
 
 | State | Tasks | Percentage |
 | --- | ---: | ---: |
-| VERIFIED | 510 | 85.00% |
+| VERIFIED | 536 | 89.33% |
 | NOT_AUDITED | 0 | 0.00% |
 | IN_PROGRESS | 1 | 0.17% |
-| BLOCKED | 7 | 1.17% |
-| NOT_IMPLEMENTED | 82 | 13.67% |
+| BLOCKED | 9 | 1.50% |
+| NOT_IMPLEMENTED | 54 | 9.00% |
 | TOTAL | 600 | 100.00% |
 
 ## Milestones
@@ -30,7 +30,7 @@ M11, M12, and M14 are integrated on canonical main with exact-SHA green CI. PR #
 | M10 | AX-406–AX-435 | 30 | 30 | 100.00% | none | COMPLETE |
 | M11 | AX-436–AX-460 | 25 | 25 | 100.00% | none | COMPLETE |
 | M12 | AX-461–AX-485 | 25 | 25 | 100.00% | none | COMPLETE |
-| M13 | AX-486–AX-515 | 2 | 30 | 6.67% | NOT_IMPLEMENTED=28 | PARTIAL |
+| M13 | AX-486–AX-515 | 28 | 30 | 93.33% | BLOCKED=2 | PARTIAL |
 | M14 | AX-516–AX-540 | 25 | 25 | 100.00% | none | COMPLETE |
 | M15 | AX-541–AX-570 | 1 | 30 | 3.33% | NOT_IMPLEMENTED=29 | PARTIAL |
 | M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
@@ -659,7 +659,7 @@ M14 acceptance uses deterministic controlled strategy/correction/specialist data
 | World model | Freshness/invalidation, real filesystem change, bounded frame capture and grounding accepted within documented environment limits. |
 | Voice/HUD | M11 production voice/HUD path, governed authorization, interruption, telemetry/control and deterministic end-to-end acceptance are complete for AX-436–AX-460. Real microphone/speaker, live STT/TTS credentials and interactive desktop entry points remain separately not run and are not claimed as release-matrix evidence. |
 | Scheduling | M12 scheduler, one-shot/recurring work, durable recovery, event-trigger launch, proactive policy, quotas, approval expiry and stale-state rejection are integrated with governed execution. |
-| Multi-device/Android | Protocol contracts only; real devices, transport and Android execution remain open. |
+| Multi-device/Android | AX-486–AX-513 are accepted with controlled production-path evidence; AX-514/515 require a real PC + browser + authorized Android target and remain BLOCKED rather than simulated. |
 | Optimization | M14 strategy history/statistics, constrained contextual-bandit and preference experiments, specialist datasets/models, offline evaluation, rollbackable policy and safety acceptance are implemented with controlled evidence; live-provider and real-user performance claims remain unmade. |
 | Self-extension | Capability-gap foundation; safe extension lifecycle remains open. |
 | Production/release | Release is not ready; installer, upgrades, privacy/product controls, platform matrix and whole-system acceptance remain open. |
