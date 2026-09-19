@@ -68,7 +68,7 @@ def migrate_config_file(path: str | Path) -> ConfigMigrationResult:
     raw_version = document.get("schema_version", 0)
     if type(raw_version) is not int:
         raise ConfigMigrationError("schema_version must be an integer")
-    version = cast(int, raw_version)
+    version = raw_version
     if version < 0:
         raise ConfigMigrationError("schema_version must not be negative")
     if version > CURRENT_CONFIG_SCHEMA_VERSION:
