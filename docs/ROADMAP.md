@@ -292,7 +292,9 @@ Exit criteria:
 
 ## Milestone 15 — Safe Self-Extension and Tool/Capability Creation
 
-**Status:** 1/30 VERIFIED (3.33%); PARTIAL — see TASKS.json for exact remaining states
+**Status:** 30/30 VERIFIED (100.00%); COMPLETE — governed safe self-extension acceptance
+
+M15 campaign evidence: PR #181 implements typed capability-gap contracts, immutable provenance and dependency identity, a deny-by-construction generated-tool language and separate-process sandbox, varied validation, authenticated human review/installation approval, versioned canonical registration, health/degradation/revocation/rollback, restart integrity, and Trusted Kernel fingerprint protection. See `docs/M15_SAFE_SELF_EXTENSION_ACCEPTANCE.md`.
 
 Allow AgentX to propose and validate new capabilities without granting itself unrestricted code-install authority.
 
@@ -345,7 +347,7 @@ Exit criteria:
 | M12 | AX-461–AX-485 | 25 | 25 | 100.00% | none | COMPLETE |
 | M13 | AX-486–AX-515 | 28 | 30 | 93.33% | BLOCKED=2 | PARTIAL |
 | M14 | AX-516–AX-540 | 25 | 25 | 100.00% | none | COMPLETE |
-| M15 | AX-541–AX-570 | 1 | 30 | 3.33% | NOT_IMPLEMENTED=29 | PARTIAL |
+| M15 | AX-541–AX-570 | 30 | 30 | 100.00% | none | COMPLETE |
 | M16 | AX-571–AX-600 | 4 | 30 | 13.33% | IN_PROGRESS=1; NOT_IMPLEMENTED=25 | PARTIAL |
 
 M6/M10 host evidence is hosted Windows Server 2025, not the Windows 10/11 release matrix or a user desktop hardware matrix. M7 uses actual headless Chrome against controlled localhost pages. This proves browser mechanics and governance, not compatibility with arbitrary external sites/accounts. M10 DPI/multi-monitor and visual accuracy evidence uses bounded deterministic fixtures in addition to real native capture. Real model/research credentials were unavailable; controlled-provider metrics do not satisfy live-efficiency acceptance. The CLI exposes metadata/help, not a complete natural-language product session.
