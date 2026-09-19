@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 import pytest
@@ -92,10 +91,10 @@ def test_interrupted_atomic_replace_preserves_original(
     original = 'profile = "safe"\n'
     path.write_text(original, encoding="utf-8")
 
-    def fail_replace(_source: object, _target: object) -> None:
+    def fail_replace(_self: Path, _target: Path) -> Path:
         raise OSError("simulated interruption")
 
-    monkeypatch.setattr(os, "replace", fail_replace)
+    monkeypatch.setattr(Path, "replace", fail_replace)
     with pytest.raises(ConfigMigrationError, match="failed safely"):
         migrate_config_file(path)
 
