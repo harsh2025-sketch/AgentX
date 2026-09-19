@@ -17,8 +17,9 @@ from agentx.capabilities.android import (
     AndroidUiValidationError,
     parse_android_ui_tree,
 )
-from agentx.capabilities.device import DevicePlatform
+from agentx.capabilities.device import DevicePlatform, DeviceProviderId
 from agentx.capabilities.device_registry import (
+    DeviceDiscovery,
     DeviceRegistry,
     DeviceRegistryConflictError,
 )
@@ -313,3 +314,74 @@ def test_android_descriptor_integrates_into_world_model_as_evidence_only() -> No
     assert state.availability is WorldAvailability.AVAILABLE
     assert state.metadata.source.reference == "adb:controlled-test"
     assert state.capability_health
+
+
+
+class MismatchedProvider:
+    def __init__(self, descriptor) -> None:
+        self._descriptor = descriptor
+
+    @property
+    def provider_id(self) -> DeviceProviderId:
+        return DeviceProviderId("malicious.provider")
+
+    def discover(
+        self,
+        *,
+        context: ExecutionContext,
+        observed_at: datetime,
+    ):
+        del context, observed_at
+        return Result.success((self._descriptor,))
+
+
+def test_provider_identity_mismatch_is_atomic_and_leaves_registry_unchanged() -> None:
+    android = AndroidProvider(AdbTransport(runner=Runner("emulator-5554 device\n")))
+    descriptor = android.discover(context=ctx(), observed_at=_T0).unwrap()[0]
+    registry = DeviceRegistry()
+    discovery = DeviceDiscovery(
+        registry=registry,
+        providers=(MismatchedProvider(descriptor),),
+    )
+    report = discovery.discover(context=ctx(), observed_at=_T0)
+    assert report.discovered == ()
+    assert tuple(report.provider_errors) == (DeviceProviderId("malicious.provider"),)
+    assert report.provider_errors[DeviceProviderId("malicious.provider")].code == (
+        "device.discovery.invalid_provider_batch"
+    )
+    assert registry.descriptors() == ()
+
+
+def test_discovery_disappearance_marks_device_unavailable_until_fresh_reconnect() -> None:
+    registry = DeviceRegistry()
+    connected = AndroidProvider(AdbTransport(runner=Runner("emulator-5554 device\n")))
+    first = DeviceDiscovery(registry=registry, providers=(connected,)).discover(
+        context=ctx(),
+        observed_at=_T0,
+    )
+    assert len(first.discovered) == 1
+    device_id = first.discovered[0].device_id
+    assert registry.available(now=_T0, max_age=timedelta(seconds=30))
+
+    absent = AndroidProvider(AdbTransport(runner=Runner("")))
+    second = DeviceDiscovery(registry=registry, providers=(absent,)).discover(
+        context=ctx(),
+        observed_at=_T0 + timedelta(seconds=1),
+    )
+    assert second.provider_errors == {}
+    assert registry.available(
+        now=_T0 + timedelta(seconds=1),
+        max_age=timedelta(seconds=30),
+    ) == ()
+    assert registry.require(device_id).availability.value == "unavailable"
+
+    reconnected = AndroidProvider(AdbTransport(runner=Runner("emulator-5554 device\n")))
+    third = DeviceDiscovery(registry=registry, providers=(reconnected,)).discover(
+        context=ctx(),
+        observed_at=_T0 + timedelta(seconds=2),
+    )
+    assert len(third.discovered) == 1
+    assert registry.available(
+        now=_T0 + timedelta(seconds=2),
+        max_age=timedelta(seconds=30),
+    )[0].device_id == device_id
