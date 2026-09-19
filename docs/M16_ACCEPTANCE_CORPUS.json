@@ -16,7 +16,7 @@
       "task": "AX-591",
       "tests": [
         "tests/windows/test_m7_real_browser_acceptance.py",
-        "tests/adversarial/test_browser_untrusted_content.py"
+        "tests/adversarial/test_browser_actions_adversarial.py"
       ]
     },
     "memory": {
