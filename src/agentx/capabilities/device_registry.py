@@ -206,7 +206,6 @@ class DeviceRegistry:
     def snapshot(self) -> DeviceRegistrySnapshot:
         return DeviceRegistrySnapshot(descriptors=self.descriptors())
 
-
     def reconcile_provider(
         self,
         provider_id: DeviceProviderId,
@@ -255,9 +254,7 @@ class DeviceRegistry:
                 incoming_at = descriptor.observation.observed_at
                 existing_at = existing.observation.observed_at
                 if incoming_at < existing_at:
-                    raise DeviceRegistryConflictError(
-                        "stale/replayed device observation rejected"
-                    )
+                    raise DeviceRegistryConflictError("stale/replayed device observation rejected")
                 if incoming_at == existing_at and descriptor != existing:
                     raise DeviceRegistryConflictError(
                         "equally fresh conflicting device observations are ambiguous"
