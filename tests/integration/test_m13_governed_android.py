@@ -242,7 +242,6 @@ def test_android_permission_mapping_is_canonical_and_operation_specific() -> Non
     )
 
 
-
 def test_cross_device_task_dag_requires_explicit_binding_for_every_node() -> None:
     root = Task.create("root cross-device task")
     child = Task.create("phone child")
