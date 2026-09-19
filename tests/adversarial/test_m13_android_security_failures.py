@@ -241,17 +241,17 @@ def test_adb_subprocess_boundary_is_argv_only_shell_false() -> None:
         / "transport.py"
     )
     tree = ast.parse(source_path.read_text(encoding="utf-8"))
-    run_calls = [
+    process_calls = [
         node
         for node in ast.walk(tree)
         if isinstance(node, ast.Call)
         and isinstance(node.func, ast.Attribute)
         and isinstance(node.func.value, ast.Name)
         and node.func.value.id == "subprocess"
-        and node.func.attr == "run"
+        and node.func.attr == "Popen"
     ]
-    assert len(run_calls) == 1
-    call = run_calls[0]
+    assert len(process_calls) == 1
+    call = process_calls[0]
     shell_keywords = [item for item in call.keywords if item.arg == "shell"]
     assert len(shell_keywords) == 1
     assert isinstance(shell_keywords[0].value, ast.Constant)
