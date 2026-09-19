@@ -25,7 +25,7 @@ Baseline: `72bf7059d64a38ed9512aedf420ec7b1d2552837`. User-supplied reconciliati
 | M12 Scheduling | 1 | 0 | 24 | 25 | 0 | 0 | 0 | 0 |
 | M13 Multi-device and Android | 2 | 0 | 28 | 28 | 0 | 0 | 2 | 0 |
 | M14 Optimization | 2 | 0 | 23 | 25 | 0 | 0 | 0 | 0 |
-| M15 Self-extension | 1 | 0 | 29 | 1 | 0 | 0 | 0 | 29 |
+| M15 Self-extension | 1 | 0 | 29 | 30 | 0 | 0 | 0 | 0 |
 | M16 Production and Release | 1 | 0 | 29 | 4 | 0 | 1 | 0 | 25 |
 
 A zero verified-acceptance count means this ledger has not yet recorded a task-level
@@ -574,35 +574,35 @@ acceptance audit; it does not mean the existing implementation is absent.
 | AX-539 | rollbackable optimization policy | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-540 | optimization milestone acceptance | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-541 | missing-capability detector foundation | COMPLETE | VERIFIED |  |
-| AX-542 | capability-gap record | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-543 | capability research objective | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-544 | capability design proposal | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-545 | proposal provenance tracking | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-546 | generated-tool specification | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-547 | generated-code isolation environment | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-548 | generated dependency policy | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-549 | generated-code static analysis | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-550 | generated-code type checking | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-551 | generated-code lint gate | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-552 | generated unit tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-553 | generated adversarial tests | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-554 | sandbox execution | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-555 | resource-limited tool test | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-556 | network-isolated test mode | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-557 | filesystem-isolated test mode | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-558 | generated capability ABI validation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-559 | generated risk declaration validation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-560 | generated permission declaration validation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-561 | generated verification contract validation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-562 | repeated-success promotion threshold | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-563 | human review package | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-564 | installation approval | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-565 | versioned capability registration | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-566 | generated-capability health tracking | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-567 | generated-capability degradation | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-568 | generated-capability rollback | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-569 | Trusted-Kernel immutability proof | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
-| AX-570 | self-extension milestone acceptance | NOT_IMPLEMENTED | NOT_IMPLEMENTED |  |
+| AX-542 | capability-gap record | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-543 | capability research objective | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-544 | capability design proposal | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-545 | proposal provenance tracking | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-546 | generated-tool specification | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-547 | generated-code isolation environment | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-548 | generated dependency policy | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-549 | generated-code static analysis | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-550 | generated-code type checking | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-551 | generated-code lint gate | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-552 | generated unit tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-553 | generated adversarial tests | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-554 | sandbox execution | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-555 | resource-limited tool test | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-556 | network-isolated test mode | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-557 | filesystem-isolated test mode | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-558 | generated capability ABI validation | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-559 | generated risk declaration validation | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-560 | generated permission declaration validation | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-561 | generated verification contract validation | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-562 | repeated-success promotion threshold | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-563 | human review package | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-564 | installation approval | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-565 | versioned capability registration | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-566 | generated-capability health tracking | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-567 | generated-capability degradation | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-568 | generated-capability rollback | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-569 | Trusted-Kernel immutability proof | NOT_IMPLEMENTED | VERIFIED |  |
+| AX-570 | self-extension milestone acceptance | NOT_IMPLEMENTED | VERIFIED |  |
 | AX-571 | synchronize README with live architecture | COMPLETE | VERIFIED |  |
 | AX-572 | establish canonical 600-task ledger file | NOT_IMPLEMENTED | VERIFIED | AX-571 |
 | AX-573 | machine-readable task-status ledger | NOT_IMPLEMENTED | VERIFIED | AX-572 |
