@@ -192,7 +192,7 @@ class DeviceWorldModelBridge:
             )
         return DeviceWorldRefresh(
             report=report,
-            states=tuple(sorted(states, key=lambda state: state.entity_id.key)),
+            states=tuple(sorted(states, key=lambda state: state.entity_id.to_str())),
         )
 
 
