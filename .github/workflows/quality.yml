@@ -53,14 +53,14 @@ jobs:
             bytes = $wheel.Length
             python = (python --version)
           } | ConvertTo-Json | Set-Content artifacts/release-artifact.json
-          "AGENTX_WHEEL=$($wheel.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "M16_WHEEL=$($wheel.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Fresh wheel install acceptance
         shell: pwsh
         run: |
           python -m venv .fresh-venv
           $freshPython = (Resolve-Path ".fresh-venv\Scripts\python.exe").Path
-          & $freshPython -m pip install $env:AGENTX_WHEEL
+          & $freshPython -m pip install $env:M16_WHEEL
           $freshData = Join-Path $env:RUNNER_TEMP "agentx-m16-fresh"
           Remove-Item -Recurse -Force $freshData -ErrorAction SilentlyContinue
           & $freshPython -I -m agentx init --data-dir $freshData
@@ -82,15 +82,17 @@ jobs:
           $upgradeData = Join-Path $env:RUNNER_TEMP "agentx-m16-upgrade"
           Remove-Item -Recurse -Force $upgradeData -ErrorAction SilentlyContinue
           & $upgradePython -I -c "from pathlib import Path; from agentx.infrastructure.persistence import SQLiteDatabase; p=Path(r'$upgradeData')/'agentx.sqlite3'; cm=SQLiteDatabase(p).connection(); c=cm.__enter__(); c.execute('CREATE TABLE IF NOT EXISTS m16_upgrade_sentinel(value TEXT NOT NULL)'); c.execute('INSERT INTO m16_upgrade_sentinel(value) VALUES (?)', ('preserved',)); cm.__exit__(None,None,None)"
-          & $upgradePython -m pip install --upgrade --force-reinstall $env:AGENTX_WHEEL
+          & $upgradePython -m pip install --upgrade --force-reinstall $env:M16_WHEEL
           & $upgradePython -I -m agentx doctor --data-dir $upgradeData
           & $upgradePython -I -c "import sqlite3; from pathlib import Path; p=Path(r'$upgradeData')/'agentx.sqlite3'; c=sqlite3.connect(p); assert c.execute('SELECT value FROM m16_upgrade_sentinel').fetchone()[0] == 'preserved'; c.close()"
           git worktree remove --force .m16-baseline
 
       - name: Capture M16 environment and benchmark evidence
+        shell: pwsh
         run: |
-          python scripts/m16_environment_matrix.py --output artifacts/environment-matrix.json
-          python scripts/m16_benchmark.py --repetitions 5 --output artifacts/benchmark.json
+          $releasePython = (Resolve-Path ".fresh-venv\Scripts\python.exe").Path
+          & $releasePython scripts/m16_environment_matrix.py --output artifacts/environment-matrix.json
+          & $releasePython scripts/m16_benchmark.py --repetitions 5 --output artifacts/benchmark.json
 
       - name: Install development tools
         run: python -m pip install ".[dev]"
