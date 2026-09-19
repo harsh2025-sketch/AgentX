@@ -95,7 +95,7 @@ def candidate(
         'def run(payload):\n    return {"answer": globals()}\n',
         'def run(payload):\n    return {"answer": payload.__class__.__mro__}\n',
         'def run(payload):\n    __import__("os").environ["X"]="1"\n    return {"answer": 1}\n',
-        'def run(payload):\n    while True:\n        pass\n',
+        "def run(payload):\n    while True:\n        pass\n",
         'def run(payload):\n    return {"answer": (lambda: 1)()}\n',
     ),
 )
