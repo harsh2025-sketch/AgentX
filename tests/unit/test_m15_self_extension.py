@@ -39,6 +39,7 @@ from agentx.self_extension import (
     SelfExtensionSecurityError,
     TrustedApprovalAuthority,
     ValidationCase,
+    ValidationEvidence,
     ValidationKind,
     classify_runtime_failure,
     inspect_candidate,
@@ -115,7 +116,7 @@ def cases() -> tuple[ValidationCase, ...]:
     )
 
 
-def validated(value: CandidateArtifact):
+def validated(value: CandidateArtifact) -> ValidationEvidence:
     return validate_candidate(
         artifact=value,
         cases=cases(),
@@ -129,7 +130,9 @@ def authority() -> TrustedApprovalAuthority:
     return TrustedApprovalAuthority(authority_id="host-review", key=KEY)
 
 
-def approved_bundle(value: CandidateArtifact):
+def approved_bundle(
+    value: CandidateArtifact,
+) -> tuple[ValidationEvidence, HumanReviewPackage, InstallationApproval]:
     evidence = validated(value)
     assert evidence.passed
     review = HumanReviewPackage.create(artifact=value, evidence=evidence, created_at=NOW)
