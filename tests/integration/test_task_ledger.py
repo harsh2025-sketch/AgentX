@@ -75,10 +75,9 @@ class TaskLedgerTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "invalid dependency"):
             self.script["validate"](self.data)
 
-    def test_forward_dependency_is_rejected_after_cycle_validation(self) -> None:
+    def test_acyclic_forward_numbered_dependency_is_allowed(self) -> None:
         self.data["tasks"][2]["depends_on"] = ["AX-004"]
-        with self.assertRaisesRegex(ValueError, "must precede dependent task"):
-            self.script["validate"](self.data)
+        self.script["validate"](self.data)
 
     def test_wrong_milestone_is_rejected(self) -> None:
         self.data["tasks"][0]["milestone"] = "M16"
