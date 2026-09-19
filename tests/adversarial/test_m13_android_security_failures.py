@@ -30,6 +30,7 @@ from agentx.core.causal_experience import (
 from agentx.core.events import ActionPayload, ObservationPayload, VerificationPayload
 from agentx.core.execution import CancellationSource, ExecutionContext
 from agentx.core.ids import ProcedureId, TaskId
+from agentx.core.knowledge import ProvenanceKind, ProvenanceReference
 from agentx.core.procedure_matching import (
     ProcedureApplicabilityMatcher,
     ProcedureCandidate,
@@ -43,6 +44,7 @@ from agentx.core.procedures import (
     ProcedureStatus,
 )
 from agentx.core.result import Result
+from agentx.world_model import ObservationMetadata, WorldAvailability, WorldModel
 from agentx.device_orchestration import (
     CrossDeviceCausalEpisode,
     DeviceCausalStep,
@@ -286,3 +288,28 @@ def test_device_specific_procedure_scope_rejects_different_phone() -> None:
     )
     assert same.structurally_applicable
     assert other.outcome is ProcedureMatchOutcome.INCOMPATIBLE
+
+
+def test_android_descriptor_integrates_into_world_model_as_evidence_only() -> None:
+    provider = AndroidProvider(AdbTransport(runner=Runner("emulator-5554 device\n")))
+    descriptor = provider.discover(context=ctx(), observed_at=_T0).unwrap()[0]
+    model = WorldModel()
+    metadata = ObservationMetadata(
+        observation_id="android-device-1",
+        source=ProvenanceReference(
+            kind=ProvenanceKind.SYSTEM,
+            reference="adb:controlled-test",
+        ),
+        observed_at=_T0,
+        ttl=timedelta(seconds=30),
+        environment_id="controlled-m13",
+    )
+    state = model.ingest_device_descriptor(
+        descriptor,
+        metadata=metadata,
+        role="phone",
+    )
+    assert state.platform == "android"
+    assert state.availability is WorldAvailability.AVAILABLE
+    assert state.metadata.source.reference == "adb:controlled-test"
+    assert state.capability_health
