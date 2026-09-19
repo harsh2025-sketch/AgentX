@@ -71,6 +71,15 @@ def validate(data: dict[str, Any]) -> None:
     for task_id in by_id:
         visit(task_id)
 
+    for task in tasks:
+        task_number = int(task["id"][3:])
+        for dependency in task["depends_on"]:
+            dependency_number = int(dependency[3:])
+            if dependency_number >= task_number:
+                raise ValueError(
+                    f"dependency must precede dependent task: {task['id']} -> {dependency}"
+                )
+
 
 def render(data: dict[str, Any]) -> str:
     lines = [
