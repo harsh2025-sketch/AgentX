@@ -36,7 +36,6 @@ from agentx.self_extension import (
     validate_candidate,
 )
 
-
 NOW = datetime(2026, 9, 19, 7, 30, tzinfo=UTC)
 KEY = b"m15-adversarial-integrity-key-0001"
 
@@ -66,7 +65,11 @@ def proposal() -> CapabilityDesignProposal:
     )
 
 
-def candidate(source: str, *, dependencies: tuple[GeneratedDependency, ...] = ()) -> CandidateArtifact:
+def candidate(
+    source: str,
+    *,
+    dependencies: tuple[GeneratedDependency, ...] = (),
+) -> CandidateArtifact:
     return CandidateArtifact.create(
         proposal=proposal(),
         source=source,
@@ -205,7 +208,10 @@ def test_self_extension_module_exposes_no_generic_exec_or_eval_call() -> None:
     tree = ast.parse(module_path.read_text(encoding="utf-8"))
     forbidden = []
     for node in ast.walk(tree):
-        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
-            if node.func.id in {"eval", "exec", "compile"}:
-                forbidden.append(node.func.id)
+        if (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id in {"eval", "exec", "compile"}
+        ):
+            forbidden.append(node.func.id)
     assert forbidden == []
