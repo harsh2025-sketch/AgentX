@@ -6,7 +6,13 @@ from uuid import uuid4
 
 import pytest
 
-from agentx.capabilities.abi import CapabilityName, CapabilityPlatform, CapabilityVersion
+from agentx.capabilities.abi import (
+    CapabilityIdentity,
+    CapabilityName,
+    CapabilityPlatform,
+    CapabilityRequest,
+    CapabilityVersion,
+)
 from agentx.capabilities.executor import Executor, ExecutorRequest
 from agentx.capabilities.registry import CapabilityRegistry
 from agentx.capabilities.runtime import CapabilityExecutionLoop, LoopOutcome
@@ -38,7 +44,6 @@ from agentx.self_extension import (
     ValidationKind,
     validate_candidate,
 )
-from agentx.capabilities.abi import CapabilityIdentity, CapabilityRequest
 
 
 NOW = datetime(2026, 9, 19, 7, 0, tzinfo=UTC)
