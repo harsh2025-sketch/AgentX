@@ -119,7 +119,7 @@ def make_executor(registry: CapabilityRegistry) -> Executor:
     audits: list[SecurityAuditRecord] = []
     bus.subscribe(events.append)
     loop = CapabilityExecutionLoop(
-        register_capability=registry.register,
+        registry=registry,
         action_gate=ActionGate(),
         authority=None,
         emergency_stop=EmergencyStop(),
