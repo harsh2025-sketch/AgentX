@@ -19,13 +19,16 @@ from agentx.capabilities.runtime import CapabilityExecutionLoop, LoopOutcome
 from agentx.core.errors import AgentXError
 from agentx.core.execution import CancellationSource, ExecutionContext
 from agentx.core.result import Result
+from agentx.core.task_decomposition import DecompositionNode, TaskDecomposition
 from agentx.core.tasks import Task
 from agentx.device_orchestration import (
+    CrossDeviceTaskDAG,
     DeviceHandoff,
     DeviceHandoffDirection,
     DeviceHandoffExecutor,
     DeviceRequirement,
     DeviceRouter,
+    DeviceTaskBinding,
 )
 from agentx.kernel.action_gate import ActionGate
 from agentx.kernel.emergency_stop import EmergencyStop
@@ -237,3 +240,53 @@ def test_android_permission_mapping_is_canonical_and_operation_specific() -> Non
     assert by_name["android.text_entry"].required_permissions == frozenset(
         {Permission.WRITE, Permission.EXECUTE}
     )
+
+
+
+def test_cross_device_task_dag_requires_explicit_binding_for_every_node() -> None:
+    root = Task.create("root cross-device task")
+    child = Task.create("phone child")
+    decomposition = TaskDecomposition.create(
+        root.task_id,
+        (
+            DecompositionNode(
+                task_id=root.task_id,
+                objective=root.objective,
+                parent_task_id=None,
+                order_index=0,
+            ),
+            DecompositionNode(
+                task_id=child.task_id,
+                objective=child.objective,
+                parent_task_id=root.task_id,
+                order_index=0,
+            ),
+        ),
+        created_at=_T0,
+    )
+    runner = GovernedAndroidRunner()
+    provider = AndroidProvider(AdbTransport(runner=runner))
+    descriptor = provider.discover(context=_task_context(Task.create("discover")), observed_at=_T0)
+    assert descriptor.is_success
+    phone = descriptor.unwrap()[0]
+    capability = phone.capabilities[0].capability
+
+    root_requirement = DeviceRequirement(
+        capability=capability,
+        device_id=phone.device_id,
+    )
+    phone_requirement = DeviceRequirement(
+        capability=capability,
+        platform=phone.platform,
+        device_id=phone.device_id,
+    )
+
+    dag = CrossDeviceTaskDAG(
+        decomposition=decomposition,
+        bindings=(
+            DeviceTaskBinding(root.task_id, root_requirement),
+            DeviceTaskBinding(child.task_id, phone_requirement),
+        ),
+    )
+    assert dag.requirement_for(root.task_id) == root_requirement
+    assert dag.requirement_for(child.task_id) == phone_requirement
