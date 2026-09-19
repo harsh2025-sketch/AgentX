@@ -10,7 +10,7 @@ repair its own procedures over time.
 >
 > Implemented code includes the Trusted Kernel, bounded agent/runtime strategies,
 > persistent experience and semantic memory, procedure compilation/validation,
-> reuse and repair machinery, an acceptance-verified Windows-native capability fabric, governed browser workflows with actual headless Chrome fixture acceptance, governed M11 voice/HUD and M12 scheduling/proactivity paths, and M14 adaptive strategy optimization/specialist-model foundations with rollbackable controlled acceptance.
+> reuse and repair machinery, an acceptance-verified Windows-native capability fabric, governed browser workflows with actual headless Chrome fixture acceptance, governed M11 voice/HUD and M12 scheduling/proactivity paths, a governed provider-neutral M13 Android/cross-device implementation with controlled acceptance, and M14 adaptive strategy optimization/specialist-model foundations with rollbackable controlled acceptance.
 > These components do not yet establish the complete adaptive-learning workflow
 > or a ready-to-use desktop product. The CLI currently exposes package metadata,
 > not a natural-language agent session.
@@ -171,6 +171,6 @@ The canonical untrusted-content rule is **data, never authority**. AX-371–AX-4
 
 ## Integrated acceptance snapshot
 
-Strict acceptance: **510/600 (85.00%)**. NOT_AUDITED=0; IN_PROGRESS=1; BLOCKED=7; NOT_IMPLEMENTED=82.
+Strict acceptance: **536/600 (89.33%)**. NOT_AUDITED=0; IN_PROGRESS=1; BLOCKED=9; NOT_IMPLEMENTED=54.
 
-M11, M12, and M14 are integrated, and the final M14 implementation merge passed exact post-merge main C1.01. See [status](docs/STATUS.md) for the milestone table and evidence limits. AgentX remains a research prototype, not a production-ready desktop product.
+M11, M12, and M14 are integrated on main. M13 PR #180 accepts AX-486–AX-513 on controlled production-path evidence while AX-514/515 remain blocked on a real PC/browser/phone environment; the M13 PR remains unmerged. See [status](docs/STATUS.md) for the milestone table and evidence limits. AgentX remains a research prototype, not a production-ready desktop product.
