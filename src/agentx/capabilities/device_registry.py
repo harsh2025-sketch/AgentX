@@ -460,6 +460,10 @@ class DeviceDiscovery:
         self._registry = registry
         self._providers = providers
 
+    @property
+    def registry(self) -> DeviceRegistry:
+        return self._registry
+
     def discover(
         self,
         *,
