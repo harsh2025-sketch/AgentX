@@ -244,9 +244,7 @@ class SubprocessAdbRunner:
                 )
 
             try:
-                stdout, stderr = process.communicate(
-                    timeout=min(_POLL_INTERVAL_SECONDS, remaining)
-                )
+                stdout, stderr = process.communicate(timeout=min(_POLL_INTERVAL_SECONDS, remaining))
                 break
             except subprocess.TimeoutExpired as exc:
                 partial_stdout = exc.output if isinstance(exc.output, bytes) else b""
@@ -350,9 +348,7 @@ class AdbTransport:
                         retryability=Retryability.RETRYABLE,
                     )
                 )
-            if self._slots.acquire(
-                timeout=min(_POLL_INTERVAL_SECONDS, queue_remaining)
-            ):
+            if self._slots.acquire(timeout=min(_POLL_INTERVAL_SECONDS, queue_remaining)):
                 break
         try:
             stop_error = _stopped_error(context)
