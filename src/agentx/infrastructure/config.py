@@ -18,13 +18,13 @@ from pathlib import Path, PureWindowsPath
 from typing import Final, cast
 
 __all__ = [
+    "CURRENT_CONFIG_SCHEMA_VERSION",
     "AgentXConfig",
     "ConfigError",
     "ConfigFileError",
     "ConfigFileNotFoundError",
     "ConfigParseError",
     "ConfigValidationError",
-    "CURRENT_CONFIG_SCHEMA_VERSION",
     "LogLevel",
     "default_config_path",
     "default_data_dir",
