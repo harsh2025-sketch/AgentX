@@ -290,3 +290,60 @@ def test_cross_device_task_dag_requires_explicit_binding_for_every_node() -> Non
     )
     assert dag.requirement_for(root.task_id) == root_requirement
     assert dag.requirement_for(child.task_id) == phone_requirement
+
+
+
+def test_phone_to_pc_handoff_rejects_android_target_platform() -> None:
+    runner = GovernedAndroidRunner()
+    provider = AndroidProvider(AdbTransport(runner=runner))
+    descriptor_result = provider.discover(
+        context=_task_context(Task.create("discover")),
+        observed_at=_T0,
+    )
+    assert descriptor_result.is_success
+    phone = descriptor_result.unwrap()[0]
+
+    device_registry = DeviceRegistry()
+    device_registry.observe(phone)
+    capability = next(
+        item
+        for item in provider.capabilities()
+        if item.descriptor.identity.name.value == "android.package_discovery"
+    )
+    capability_registry = CapabilityRegistry()
+    capability_registry.register(capability)
+    executor = _executor(
+        capability_registry,
+        AuthorityContext(frozenset({Permission.READ})),
+    )
+
+    task = Task.create("invalid phone to PC handoff")
+    request = ExecutorRequest(
+        task=task,
+        capability_request=CapabilityRequest(
+            identity=capability.descriptor.identity,
+            params=AndroidActionParams(
+                operation=AndroidOperation.PACKAGE_DISCOVERY,
+                serial=phone.device_id.value,
+            ),
+        ),
+        context=_task_context(task),
+    )
+    handoff = DeviceHandoff(
+        direction=DeviceHandoffDirection.PHONE_TO_PC,
+        source_device=phone.device_id,
+        target_device=phone.device_id,
+        task_id=task.task_id,
+        capability=capability.descriptor.identity,
+    )
+    result = DeviceHandoffExecutor(
+        router=DeviceRouter(device_registry),
+        executor=executor,
+    ).execute(
+        handoff=handoff,
+        request=request,
+        now=_T0,
+        max_age=timedelta(seconds=30),
+    )
+    assert result.is_failure
+    assert result.unwrap_error().code == "device.handoff.platform_mismatch"
