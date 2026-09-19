@@ -25,6 +25,7 @@ __all__ = [
     "ADB_DEFAULT_MAX_CONCURRENCY",
     "ADB_DEFAULT_OUTPUT_LIMIT",
     "ADB_DEFAULT_TIMEOUT_SECONDS",
+    "ADB_MAX_RETRIES",
     "AdbCommandResult",
     "AdbDeviceRecord",
     "AdbDeviceState",
@@ -257,10 +258,20 @@ class SubprocessAdbRunner:
 
         if len(stdout) + len(stderr) > max_output_bytes:
             return Result.failure(_output_limit_error(max_output_bytes))
+        returncode = process.returncode
+        if returncode is None:
+            return Result.failure(
+                AgentXError(
+                    code="android.adb.host_failure",
+                    message="ADB process ended without a return code",
+                    category=ErrorCategory.INTERNAL,
+                    retryability=Retryability.NON_RETRYABLE,
+                )
+            )
         return Result.success(
             AdbCommandResult(
                 argv=(executable, *args),
-                returncode=process.returncode,
+                returncode=returncode,
                 stdout=bytes(stdout),
                 stderr=bytes(stderr),
             )
@@ -325,11 +336,12 @@ class AdbTransport:
         if type(limit) is not int or limit < 1:
             raise TypeError("max_output_bytes must be a positive int")
         started = time.monotonic()
-        while not self._slots.acquire(timeout=_POLL_INTERVAL_SECONDS):
+        while True:
             stop_error = _stopped_error(context)
             if stop_error is not None:
                 return Result.failure(stop_error)
-            if time.monotonic() - started >= timeout:
+            queue_remaining = timeout - (time.monotonic() - started)
+            if queue_remaining <= 0:
                 return Result.failure(
                     AgentXError(
                         code="android.adb.concurrency_timeout",
@@ -338,6 +350,10 @@ class AdbTransport:
                         retryability=Retryability.RETRYABLE,
                     )
                 )
+            if self._slots.acquire(
+                timeout=min(_POLL_INTERVAL_SECONDS, queue_remaining)
+            ):
+                break
         try:
             stop_error = _stopped_error(context)
             if stop_error is not None:
