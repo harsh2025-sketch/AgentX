@@ -371,7 +371,6 @@ def test_mutating_android_actions_without_postcondition_do_not_self_verify() -> 
     assert "no independent postcondition" in verification.detail
 
 
-
 class BlockingAdbRunner:
     def __init__(self) -> None:
         self.entered = Event()
