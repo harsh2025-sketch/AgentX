@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
@@ -23,7 +24,6 @@ from agentx.self_extension import (
     CandidateSourceType,
     CapabilityDesignProposal,
     CapabilityGapReason,
-    CapabilityGapRecord,
     CapabilityResearchObjective,
     DependencyPolicy,
     ExtensionHealthState,
@@ -275,8 +275,9 @@ def test_restart_restores_only_hmac_bound_unchanged_artifacts(tmp_path: Path) ->
     assert restarted.lifecycle(identity()) is CandidateLifecycle.ACTIVE
     assert identity() in restarted_registry
 
-    raw = path.read_text(encoding="utf-8")
-    path.write_text(raw.replace("payload[\\\"x\\\"] + 1", "payload[\\\"x\\\"] + 2"), encoding="utf-8")
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    raw["records"][0]["source"] = 'def run(payload):\\n    return {"answer": payload["x"] + 2}\\n'
+    path.write_text(json.dumps(raw), encoding="utf-8")
     with pytest.raises(SelfExtensionSecurityError):
         SelfExtensionManager(
             registry=CapabilityRegistry(),
