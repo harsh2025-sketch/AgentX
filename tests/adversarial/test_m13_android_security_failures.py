@@ -316,7 +316,6 @@ def test_android_descriptor_integrates_into_world_model_as_evidence_only() -> No
     assert state.capability_health
 
 
-
 class MismatchedProvider:
     def __init__(self, descriptor: DeviceDescriptor) -> None:
         self._descriptor = descriptor
@@ -369,10 +368,13 @@ def test_discovery_disappearance_marks_device_unavailable_until_fresh_reconnect(
         observed_at=_T0 + timedelta(seconds=1),
     )
     assert second.provider_errors == {}
-    assert registry.available(
-        now=_T0 + timedelta(seconds=1),
-        max_age=timedelta(seconds=30),
-    ) == ()
+    assert (
+        registry.available(
+            now=_T0 + timedelta(seconds=1),
+            max_age=timedelta(seconds=30),
+        )
+        == ()
+    )
     assert registry.require(device_id).availability.value == "unavailable"
 
     reconnected = AndroidProvider(AdbTransport(runner=Runner("emulator-5554 device\n")))
@@ -381,7 +383,10 @@ def test_discovery_disappearance_marks_device_unavailable_until_fresh_reconnect(
         observed_at=_T0 + timedelta(seconds=2),
     )
     assert len(third.discovered) == 1
-    assert registry.available(
-        now=_T0 + timedelta(seconds=2),
-        max_age=timedelta(seconds=30),
-    )[0].device_id == device_id
+    assert (
+        registry.available(
+            now=_T0 + timedelta(seconds=2),
+            max_age=timedelta(seconds=30),
+        )[0].device_id
+        == device_id
+    )
