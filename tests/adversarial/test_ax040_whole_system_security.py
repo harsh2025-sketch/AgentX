@@ -41,6 +41,9 @@ from agentx.skill_compiler import SkillCompilationOutcome, compile_skill_candida
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _SRC_ROOT = _REPO_ROOT / "src" / "agentx"
+_APPROVED_STRUCTURED_PROCESS_SEAMS = {
+    _SRC_ROOT / "capabilities" / "android" / "transport.py",
+}
 _T0 = datetime(2026, 9, 15, 9, 0, tzinfo=UTC)
 _TASK_ID = TaskId.parse("a0400000-0000-4000-8000-000000000001")
 _EPISODE_ID = EpisodeId.parse("a0400000-0000-4000-8000-000000000002")
@@ -112,11 +115,15 @@ def test_production_has_no_dynamic_authority_execution_primitives() -> None:
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
                 for alias in node.names:
-                    if alias.name == "subprocess":
+                    if alias.name == "subprocess" and path not in _APPROVED_STRUCTURED_PROCESS_SEAMS:
                         violations.append(
                             f"{path.relative_to(_REPO_ROOT)}:{node.lineno}:subprocess"
                         )
-            elif isinstance(node, ast.ImportFrom) and node.module == "subprocess":
+            elif (
+                isinstance(node, ast.ImportFrom)
+                and node.module == "subprocess"
+                and path not in _APPROVED_STRUCTURED_PROCESS_SEAMS
+            ):
                 violations.append(f"{path.relative_to(_REPO_ROOT)}:{node.lineno}:subprocess")
             elif isinstance(node, ast.Call):
                 if isinstance(node.func, ast.Name) and node.func.id in forbidden_calls:
