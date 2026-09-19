@@ -45,7 +45,6 @@ from agentx.self_extension import (
     validate_candidate,
 )
 
-
 NOW = datetime(2026, 9, 19, 7, 0, tzinfo=UTC)
 KEY = b"m15-integration-key-material-000001"
 
