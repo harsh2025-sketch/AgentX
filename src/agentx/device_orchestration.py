@@ -242,6 +242,25 @@ class DeviceHandoffExecutor:
         if selected.is_failure:
             return Result.failure(selected.unwrap_error())
         target = selected.unwrap()
+        expected_platform = (
+            DevicePlatform.WINDOWS
+            if handoff.direction is DeviceHandoffDirection.PHONE_TO_PC
+            else DevicePlatform.ANDROID
+        )
+        if target.platform is not expected_platform:
+            return Result.failure(
+                AgentXError(
+                    code="device.handoff.platform_mismatch",
+                    message="handoff direction does not match the target device platform",
+                    category=ErrorCategory.VALIDATION,
+                    retryability=Retryability.NON_RETRYABLE,
+                    details={
+                        "direction": handoff.direction.value,
+                        "target_platform": target.platform.value,
+                        "expected_platform": expected_platform.value,
+                    },
+                )
+            )
         serial = getattr(request.capability_request.params, "serial", None)
         if serial is not None and serial != target.device_id.value:
             return Result.failure(
