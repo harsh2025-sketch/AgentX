@@ -29,13 +29,26 @@ from agentx.core.causal_experience import (
 )
 from agentx.core.events import ActionPayload, ObservationPayload, VerificationPayload
 from agentx.core.execution import CancellationSource, ExecutionContext
-from agentx.core.ids import TaskId
+from agentx.core.ids import ProcedureId, TaskId
+from agentx.core.procedure_matching import (
+    ProcedureApplicabilityMatcher,
+    ProcedureCandidate,
+    ProcedureMatchOutcome,
+)
+from agentx.core.procedures import (
+    ProcedurePayload,
+    ProcedurePayloadKind,
+    ProcedureRecord,
+    ProcedureScope,
+    ProcedureStatus,
+)
 from agentx.core.result import Result
 from agentx.device_orchestration import (
     CrossDeviceCausalEpisode,
     DeviceCausalStep,
     DeviceRequirement,
     DeviceRouter,
+    procedure_requirement_for_device,
 )
 from agentx.core.errors import AgentXError
 
@@ -241,3 +254,35 @@ def test_adb_subprocess_boundary_is_argv_only_shell_false() -> None:
     assert shell_keywords[0].value.value is False
     assert call.args
     assert isinstance(call.args[0], ast.List)
+
+
+def test_device_specific_procedure_scope_rejects_different_phone() -> None:
+    first_provider = AndroidProvider(AdbTransport(runner=Runner("emulator-5554 device\n")))
+    second_provider = AndroidProvider(AdbTransport(runner=Runner("emulator-5556 device\n")))
+    first = first_provider.discover(context=ctx(), observed_at=_T0).unwrap()[0]
+    second = second_provider.discover(context=ctx(), observed_at=_T0).unwrap()[0]
+
+    first_requirement = procedure_requirement_for_device(descriptor=first)
+    candidate = ProcedureCandidate(
+        record=ProcedureRecord(
+            procedure_id=ProcedureId.parse("66666666-6666-4666-8666-666666666666"),
+            revision=1,
+            payload=ProcedurePayload(
+                kind=ProcedurePayloadKind.CANONICAL_JSON,
+                content='{"steps":[]}',
+            ),
+            created_at=_T0,
+            status=ProcedureStatus.ACTIVE,
+            scope=ProcedureScope(first_requirement.scope.dimensions),
+        )
+    )
+    same = ProcedureApplicabilityMatcher().assess(
+        candidate,
+        procedure_requirement_for_device(descriptor=first),
+    )
+    other = ProcedureApplicabilityMatcher().assess(
+        candidate,
+        procedure_requirement_for_device(descriptor=second),
+    )
+    assert same.structurally_applicable
+    assert other.outcome is ProcedureMatchOutcome.INCOMPATIBLE
