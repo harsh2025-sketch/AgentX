@@ -22,7 +22,7 @@ import subprocess
 import sys
 import tempfile
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 from enum import StrEnum
@@ -67,9 +67,9 @@ __all__ = [
     "DependencyPolicy",
     "ExtensionHealthState",
     "GeneratedCapability",
-    "GeneratedToolSandbox",
     "GeneratedCapabilityParams",
     "GeneratedDependency",
+    "GeneratedToolSandbox",
     "GeneratedToolSpecification",
     "HumanReviewPackage",
     "InstallationApproval",
@@ -689,12 +689,16 @@ def _parse_candidate_source(source: str) -> tuple[ast.FunctionDef | None, tuple[
     for node in nodes:
         if not isinstance(node, _ALLOWED_AST_NODES):
             violations.append(f"forbidden AST node: {type(node).__name__}")
-        if isinstance(node, ast.Name):
-            if node.id != "payload" and node.id not in _ALLOWED_CALLS:
-                violations.append(f"forbidden name: {node.id}")
-        if isinstance(node, ast.Call):
-            if not isinstance(node.func, ast.Name) or node.func.id not in _ALLOWED_CALLS:
-                violations.append("only approved pure builtin calls are allowed")
+        if (
+            isinstance(node, ast.Name)
+            and node.id != "payload"
+            and node.id not in _ALLOWED_CALLS
+        ):
+            violations.append(f"forbidden name: {node.id}")
+        if isinstance(node, ast.Call) and (
+            not isinstance(node.func, ast.Name) or node.func.id not in _ALLOWED_CALLS
+        ):
+            violations.append("only approved pure builtin calls are allowed")
         if isinstance(node, ast.Constant):
             if isinstance(node.value, str) and len(node.value) > 4_096:
                 violations.append("string literal exceeds limit")
@@ -745,7 +749,10 @@ def inspect_candidate(artifact: CandidateArtifact) -> StaticAnalysisReport:
         for node in ast.walk(function):
             if isinstance(node, ast.Name) and node.id in forbidden_names:
                 extra.append(f"forbidden authority primitive: {node.id}")
-    return StaticAnalysisReport(artifact_digest=artifact.digest, violations=tuple(sorted(set(extra))))
+    return StaticAnalysisReport(
+        artifact_digest=artifact.digest,
+        violations=tuple(sorted(set(extra))),
+    )
 
 
 def lint_candidate(artifact: CandidateArtifact) -> tuple[str, ...]:
@@ -981,10 +988,11 @@ class GeneratedToolSandbox:
 
     __slots__ = ("_policy",)
 
-    def __init__(self, policy: SandboxPolicy = SandboxPolicy()) -> None:
-        if not isinstance(policy, SandboxPolicy):
-            raise TypeError("policy must be SandboxPolicy")
-        self._policy = policy
+    def __init__(self, policy: SandboxPolicy | None = None) -> None:
+        resolved = SandboxPolicy() if policy is None else policy
+        if not isinstance(resolved, SandboxPolicy):
+            raise TypeError("policy must be SandboxPolicy or None")
+        self._policy = resolved
 
     @property
     def policy(self) -> SandboxPolicy:
@@ -1032,8 +1040,7 @@ class GeneratedToolSandbox:
                 completed = subprocess.run(
                     [sys.executable, "-I", "-m", "agentx.self_extension_worker"],
                     input=_canonical_json(envelope),
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
+                    capture_output=True,
                     cwd=working_dir,
                     env=child_env,
                     timeout=self._policy.timeout_seconds,
@@ -1481,7 +1488,10 @@ class GeneratedCapability:
             preconditions=(),
             rollback=RollbackDeclaration(
                 support=RollbackSupport.NOT_APPLICABLE,
-                detail="Generated M15 tools are side-effect-free; external rollback is not applicable.",
+                detail=(
+                    "Generated M15 tools are side-effect-free; external rollback "
+                    "is not applicable."
+                ),
             ),
             estimate=ResourceEstimate(
                 wall_clock=timedelta(seconds=sandbox.policy.timeout_seconds),
@@ -1848,7 +1858,7 @@ class SelfExtensionManager:
         ]
         if not candidates:
             return
-        identity, record = max(
+        _identity, record = max(
             candidates,
             key=lambda item: (
                 item[0].version.major,
@@ -1930,7 +1940,11 @@ class SelfExtensionManager:
         schema = raw.get("schema")
         records_raw = raw.get("records")
         mac = raw.get("mac")
-        if schema != _SCHEMA_VERSION or not isinstance(records_raw, list) or not isinstance(mac, str):
+        if (
+            schema != _SCHEMA_VERSION
+            or not isinstance(records_raw, list)
+            or not isinstance(mac, str)
+        ):
             raise SelfExtensionSecurityError("extension persistence schema is malformed")
         signed = _canonical_json({"schema": schema, "records": records_raw})
         expected = _digest_bytes(hmac.new(self._integrity_key, signed, hashlib.sha256).digest())
