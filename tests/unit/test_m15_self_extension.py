@@ -213,7 +213,7 @@ def test_promotion_requires_trusted_approval_and_exact_digest(tmp_path: Path) ->
     evidence = validated(value)
     review = HumanReviewPackage.create(artifact=value, evidence=evidence, created_at=NOW)
     manager = SelfExtensionManager(
-        registry=CapabilityRegistry(),
+        register_capability=CapabilityRegistry().register,
         sandbox=GeneratedToolSandbox(),
         approval_authority=authority(),
         integrity_key=KEY,
@@ -253,7 +253,7 @@ def test_restart_restores_only_hmac_bound_unchanged_artifacts(tmp_path: Path) ->
     evidence, review, approval = approved_bundle(value)
     registry = CapabilityRegistry()
     manager = SelfExtensionManager(
-        registry=registry,
+        register_capability=registry.register,
         sandbox=GeneratedToolSandbox(),
         approval_authority=authority(),
         integrity_key=KEY,
@@ -268,7 +268,7 @@ def test_restart_restores_only_hmac_bound_unchanged_artifacts(tmp_path: Path) ->
 
     restarted_registry = CapabilityRegistry()
     restarted = SelfExtensionManager(
-        registry=restarted_registry,
+        register_capability=restarted_registry.register,
         sandbox=GeneratedToolSandbox(),
         approval_authority=authority(),
         integrity_key=KEY,
@@ -282,7 +282,7 @@ def test_restart_restores_only_hmac_bound_unchanged_artifacts(tmp_path: Path) ->
     path.write_text(json.dumps(raw), encoding="utf-8")
     with pytest.raises(SelfExtensionSecurityError):
         SelfExtensionManager(
-            registry=CapabilityRegistry(),
+            register_capability=CapabilityRegistry().register,
             sandbox=GeneratedToolSandbox(),
             approval_authority=authority(),
             integrity_key=KEY,
@@ -293,7 +293,7 @@ def test_restart_restores_only_hmac_bound_unchanged_artifacts(tmp_path: Path) ->
 def test_degradation_revokes_bad_version_and_rolls_back_previous() -> None:
     registry = CapabilityRegistry()
     manager = SelfExtensionManager(
-        registry=registry,
+        register_capability=registry.register,
         sandbox=GeneratedToolSandbox(),
         approval_authority=authority(),
         integrity_key=KEY,
